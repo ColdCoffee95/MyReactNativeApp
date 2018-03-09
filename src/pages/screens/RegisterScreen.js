@@ -43,7 +43,12 @@ export default class RegisterScreen extends Component<Props> {
                         keyboardType={'numeric'}
                         maxLength={6}
                     />
-                    <Button title="获取验证码"></Button>
+                    <Text
+                        style={styles.messageBtn}
+                        onPress={()=>this.getMessageCode()}
+                    >
+                        获取验证码
+                        </Text>
                 </View>
                 <TextInput
                     style={styles.password}
@@ -75,6 +80,9 @@ export default class RegisterScreen extends Component<Props> {
             this.props.navigator.navigate('IndexPage')
         })
     }
+    getMessageCode(){
+        alert('123')
+    }
 }
 const styles = StyleSheet.create({
     container: {
@@ -86,22 +94,38 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     messageInputView: {
+        width: 250,
+        height: 40,
+        marginTop: 10,
         flexDirection: 'row',
-        justifyContent:'flex-start'
+        justifyContent:'flex-start',
+        alignItems: 'center'
     },
-    logo: {
-        marginTop: 40,
-        width: 100,
-        height: 100,
-    },
+    
     code:{
         width: 150,
+        height:40,
+        borderWidth:1,
+        paddingLeft:10,
+        borderColor:'#ededed'
+    },
+    messageBtn:{
+        marginLeft: 10
     },
     phone: {
-        width: 300,
-        marginTop: 20
+        width: 250,
+        height:40,
+        marginTop: 40,
+        borderWidth:1,
+        paddingLeft:10,
+        borderColor:'#ededed'
     },
     password: {
-        width: 300
+        width: 250,
+        height: 40,
+        marginTop: 10,
+        borderWidth:1,
+        paddingLeft:10,
+        borderColor:'#ededed'
     },
 });

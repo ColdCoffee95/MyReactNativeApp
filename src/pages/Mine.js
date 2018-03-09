@@ -15,18 +15,12 @@ import {
 } from 'react-native';
 import {
     StackNavigator,
-    TabNavigator
-} from 'react-navigation';
+} from 'react-navigation'
 import HttpUtils from '../utils/http'
 type Props = {};
-export default class IndexPage extends Component<Props> {
-    static navigationOptions = {
-        title: '我的',
-        header: {
-            backTitle: ' ',//返回按钮标题内容（默认为上一级标题内容）
-        }
-    }
 
+export default class Mine extends Component<Props> {
+    
     constructor(props) {
         super(props);
         this.state = {loginId: '', pwd: ''}
@@ -65,16 +59,7 @@ export default class IndexPage extends Component<Props> {
         );
     }
 
-    login() {
-        let params = {
-            loginId: this.state.loginId,
-            pwd: this.state.pwd
-        };
-        HttpUtils.post('/login/doLogin', params, data => {
-            alert(JSON.stringify(data))
-            this.props.navigator.navigate('Home')
-        })
-    }
+    
 }
 const styles = StyleSheet.create({
     container: {

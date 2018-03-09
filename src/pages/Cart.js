@@ -21,9 +21,7 @@ import HttpUtils from '../utils/http'
 type Props = {};
 
 export default class Cart extends Component<Props> {
-    static navigationOptions = {
-        title:'进货单'
-    }
+    
     constructor(props) {
         super(props);
         this.state = {loginId: '', pwd: ''}

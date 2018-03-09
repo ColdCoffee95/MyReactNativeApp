@@ -15,6 +15,7 @@ import {
     View
 } from 'react-native';
 import HttpUtils from '../../utils/http'
+import CryptoJS from 'crypto-js'
 type Props = {};
 
 export default class LoginScreen extends Component<Props> {
@@ -40,28 +41,35 @@ export default class LoginScreen extends Component<Props> {
                     onChangeText={(text) => this.setState({loginId: text})}
                     keyboardType={'numeric'}
                     maxLength={11}
+                    value="15957103422"
                 />
                 <TextInput
                     style={styles.password}
                     placeholder="请输入密码"
                     secureTextEntry={true}
                     onChangeText={(text) => this.setState({pwd: text})}
+                    value="a123456"
                 />
-                <View style={styles.registerForgetView}>
-                    <Text style={styles.register} onPress={()=>this.props.navigation.navigate('Register')}>
-                        申请入驻
-                    </Text>
-                    <Text style={styles.forget}>
-                        忘记密码
-                    </Text>
-                </View>
-
-
                 <Button
                     onPress={() => this.login()}
                     title="登录"
                     color="#ff6a68"
                 />
+                <View style={styles.registerForgetView}>
+                    <Button
+                        onPress={() => this.props.navigation.navigate('Register')}
+                        title="申请入驻"
+                        color="#ff6a68"
+                    />
+                    <Button
+                        onPress={() => this.props.navigation.navigate('ForgetPwd')}
+                        title="忘记密码"
+                        color="#ff6a68"
+                    />
+                </View>
+
+
+                
             </View>
         );
     }
@@ -69,10 +77,10 @@ export default class LoginScreen extends Component<Props> {
     login() {
         let params = {
             loginId: this.state.loginId,
-            pwd: this.state.pwd
+            pwd: CryptoJS.MD5(this.state.pwd).toString()
         };
         HttpUtils.post('/login/doLogin', params, data => {
-            this.props.navigator.navigate('IndexPage')
+            this.props.navigation.navigate('Main')
         })
     }
 }
@@ -86,26 +94,39 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     logo: {
-        marginTop: 40,
+        marginTop: 80,
         width: 100,
         height: 100,
     },
     registerForgetView: {
-        flex: 1,
         flexDirection: 'row',
-        width:100
+        justifyContent: 'space-between',
+        width:200,
+        marginTop: 10,
     },
     register: {
         color: '#fd4a70'
     },
     forget: {
-        color: '#fd4a70'
+        color: '#fd4a70',
     },
     phone: {
         width: 200,
-        marginTop: 20
+        height:40,
+        marginTop: 20,
+        borderWidth:1,
+        paddingLeft:10,
+        borderColor:'#ededed'
     },
     password: {
-        width: 200
+        width: 200,
+        height:40,
+        marginTop: 10,
+        marginBottom: 10,
+        borderWidth:1,
+        paddingLeft:10,
+        borderColor:'#ededed'
+        
+        
     },
 });
