@@ -14,7 +14,7 @@ import {
     TextInput,
     View
 } from 'react-native';
-import HttpUtils from '../utils/http'
+import HttpUtils from '../../utils/http'
 type Props = {};
 
 export default class LoginScreen extends Component<Props> {
@@ -27,7 +27,7 @@ export default class LoginScreen extends Component<Props> {
         return (
             <View style={styles.container}>
                 <Image
-                    source={require('../images/logo.png')}
+                    source={require('../../images/logo.png')}
                     style={styles.logo}
                 />
                 <Text style={styles.version}>
@@ -47,6 +47,16 @@ export default class LoginScreen extends Component<Props> {
                     secureTextEntry={true}
                     onChangeText={(text) => this.setState({pwd: text})}
                 />
+                <View style={styles.registerForgetView}>
+                    <Text style={styles.register} onPress={()=>this.props.navigation.navigate('Register')}>
+                        申请入驻
+                    </Text>
+                    <Text style={styles.forget}>
+                        忘记密码
+                    </Text>
+                </View>
+
+
                 <Button
                     onPress={() => this.login()}
                     title="登录"
@@ -80,7 +90,17 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
     },
-
+    registerForgetView: {
+        flex: 1,
+        flexDirection: 'row',
+        width:100
+    },
+    register: {
+        color: '#fd4a70'
+    },
+    forget: {
+        color: '#fd4a70'
+    },
     phone: {
         width: 200,
         marginTop: 20

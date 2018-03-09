@@ -14,10 +14,16 @@ import {
     TextInput,
     View
 } from 'react-native';
+import {
+    StackNavigator,
+} from 'react-navigation'
 import HttpUtils from '../utils/http'
 type Props = {};
 
-export default class LoginScreen extends Component<Props> {
+export default class Cart extends Component<Props> {
+    static navigationOptions = {
+        title:'进货单'
+    }
     constructor(props) {
         super(props);
         this.state = {loginId: '', pwd: ''}
@@ -35,7 +41,7 @@ export default class LoginScreen extends Component<Props> {
                 </Text>
                 <TextInput
                     style={styles.phone}
-                    // autoFocus={true}
+                    autoFocus={true}
                     placeholder="请输入手机号"
                     onChangeText={(text) => this.setState({loginId: text})}
                     keyboardType={'numeric'}
@@ -66,6 +72,7 @@ export default class LoginScreen extends Component<Props> {
         })
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
