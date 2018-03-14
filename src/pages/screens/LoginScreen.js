@@ -16,12 +16,13 @@ import {
 } from 'react-native';
 import HttpUtils from '../../utils/http'
 import CryptoJS from 'crypto-js'
+
 type Props = {};
 
 export default class LoginScreen extends Component<Props> {
     constructor(props) {
         super(props);
-        this.state = {loginId: '', pwd: ''}
+        this.state = {loginId: '15957103422', pwd: 'a123456'}
     }
 
     render() {
@@ -41,14 +42,12 @@ export default class LoginScreen extends Component<Props> {
                     onChangeText={(text) => this.setState({loginId: text})}
                     keyboardType={'numeric'}
                     maxLength={11}
-                    value="15957103422"
                 />
                 <TextInput
                     style={styles.password}
                     placeholder="请输入密码"
                     secureTextEntry={true}
                     onChangeText={(text) => this.setState({pwd: text})}
-                    value="a123456"
                 />
                 <Button
                     onPress={() => this.login()}
@@ -69,7 +68,6 @@ export default class LoginScreen extends Component<Props> {
                 </View>
 
 
-                
             </View>
         );
     }
@@ -80,6 +78,13 @@ export default class LoginScreen extends Component<Props> {
             pwd: CryptoJS.MD5(this.state.pwd).toString()
         };
         HttpUtils.post('/login/doLogin', params, data => {
+            storage.save({
+                key: 'loginState',
+                data: {
+                    token:data.data.token,
+                    memberId:data.data.memberId
+                }
+            });
             this.props.navigation.navigate('Main')
         })
     }
@@ -101,7 +106,7 @@ const styles = StyleSheet.create({
     registerForgetView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width:200,
+        width: 200,
         marginTop: 10,
     },
     register: {
@@ -112,21 +117,21 @@ const styles = StyleSheet.create({
     },
     phone: {
         width: 200,
-        height:40,
+        height: 40,
         marginTop: 20,
-        borderWidth:1,
-        paddingLeft:10,
-        borderColor:'#ededed'
+        borderWidth: 1,
+        paddingLeft: 10,
+        borderColor: '#ededed'
     },
     password: {
         width: 200,
-        height:40,
+        height: 40,
         marginTop: 10,
         marginBottom: 10,
-        borderWidth:1,
-        paddingLeft:10,
-        borderColor:'#ededed'
-        
-        
+        borderWidth: 1,
+        paddingLeft: 10,
+        borderColor: '#ededed'
+
+
     },
 });

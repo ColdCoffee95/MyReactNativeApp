@@ -5,7 +5,7 @@ import {
     Style,
 } from 'react-native';
 import {StackNavigator} from "react-navigation";
-
+import './src/utils/storage';
 import MainScreen from './src/pages/screens/MainScreen';
 import LoginScreen from './src/pages/screens/LoginScreen';
 import RegisterScreen from './src/pages/screens/RegisterScreen';
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fd4a70'
     }
 });
+
 const SimpleApp = StackNavigator({
     Login: {
         screen: LoginScreen,

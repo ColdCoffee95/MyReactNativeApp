@@ -1,5 +1,7 @@
-const baseUrl = 'http://192.168.41.78:9010/api'
+const baseUrl = 'http://192.168.41.78:9003/api';
+const successCode = 10000;
 export default class HttpUtils {
+
     static get(url, params, callback) {
         if (params) {
             let paramsArray = [];
@@ -15,11 +17,12 @@ export default class HttpUtils {
         fetch(baseUrl + url, {
             method: 'GET',
         })
-            .then((response) => {
-                callback(response)
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                callback(responseJSON)
             })
             .catch((error) => {
-                alert(error)
+                console.error(error)
             });
     }
 
@@ -29,15 +32,24 @@ export default class HttpUtils {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'isValidate': 1,
+                'token': storage.load({key: 'loginState'}).then(res => res.token) || '',
+                'memberId': storage.load({key: 'loginState'}).then(res => res.memberId) || '',
             },
             body: JSON.stringify(params)
         })
             .then((response) => response.json())
             .then((responseJSON) => {
-                callback(responseJSON)
+                switch (responseJSON.code) {
+                    case successCode:
+                        callback(responseJSON);
+                        break;
+                    default:
+                        alert(responseJSON.message)
+                }
             })
             .catch((error) => {
-                console.log("error = " + error)
+                console.error("error = " + error)
             });
     }
 }
