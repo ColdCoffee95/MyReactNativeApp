@@ -21,7 +21,8 @@ export default class HomeCategory extends Component<Props> {
         super(props);
         this.state = {
             catList : [],
-            dataComplete:false
+            isLoading:true,
+            error:false
         }
     }
     componentDidMount(){
@@ -44,11 +45,11 @@ export default class HomeCategory extends Component<Props> {
     async fetchData(){
         HttpUtils.get('/goodsCat/catList',{catId:-1},data => {
             this.setState({catList:data.data});
-            this.setState({dataComplete:true});
+            this.setState({isLoading:false});
         })
     }
     showPage(){
-        if(this.state.dataComplete){
+        if(!this.state.isLoading){
             let catImgList= [];
             this.state.catList.map(value => {
                 catImgList.push(
@@ -64,7 +65,7 @@ export default class HomeCategory extends Component<Props> {
             });
             return catImgList
         }else{
-            return <ActivityIndicator animating={this.state.dataComplete}></ActivityIndicator>
+            return <ActivityIndicator animating={true}></ActivityIndicator>
         }
     }
 }
