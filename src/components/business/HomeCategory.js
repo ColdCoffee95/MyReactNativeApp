@@ -21,8 +21,7 @@ export default class HomeCategory extends Component<Props> {
         super(props);
         this.state = {
             catList : [],
-            isLoading:true,
-            error:false
+            isLoading:true
         }
     }
     componentDidMount(){
@@ -65,7 +64,7 @@ export default class HomeCategory extends Component<Props> {
             });
             return catImgList
         }else{
-            return <ActivityIndicator animating={true}></ActivityIndicator>
+            return <ActivityIndicator></ActivityIndicator>
         }
     }
 }

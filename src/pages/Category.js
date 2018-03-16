@@ -7,87 +7,141 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Button,
     Image,
-    Text,
-    TextInput,
-    View
+    Dimensions,
+    ActivityIndicator,
+    ScrollView,
+    View,
+    Text
 } from 'react-native';
-import {
-    StackNavigator,
-} from 'react-navigation'
 import HttpUtils from '../utils/http'
-type Props = {};
 
-export default class Category extends Component<Props> {
+const {width} = Dimensions.get('window');  //解构赋值 获取屏幕宽度
+type Props = {};
+export default class RecommandForYou extends Component<Props> {
     constructor(props) {
         super(props);
-        this.state = {loginId: '', pwd: ''}
+        this.state = {
+            catList: [],
+            isLoading: true,
+            error: false,
+            errorInfo: '',
+            leftCheckedIndex: 0
+        }
+    }
+
+    componentDidMount() {
+        this.getFirstAllCategories()
     }
 
     render() {
+        if (this.state.isLoading) {
+            return this.renderLoadingView();
+        }
+        if (this.state.error) {
+            return this.renderErrorView();
+        } else {
+            return this.renderSuccessView();
+        }
+    }
+
+    async getFirstAllCategories() {//获取所有一级分类
+        let params = {
+            catId: -1
+        };
+        HttpUtils.get('/goodsCat/catList', params, data => {
+            data.data.map(value => {
+                value.children = []
+            });
+            this.setState({
+                catList: data.data,
+                isLoading: false
+            });
+            console.warn(data.data)
+        })
+    }
+
+    getSecondCategories(catId) {//获取二级分类
+        let clickItem = this.state.catList.find(n => n.id === catId);
+        if (clickItem.children.length > 0) {
+            return
+        }
+        let params = {
+            catId: catId
+        };
+        this.setState({isLoading: true});
+        HttpUtils.get('/goodsCat/catList', params, data => {
+            console.warn('getchild')
+            clickItem.children = data.data;
+            this.setState({
+                isLoading: false
+            });
+            console.warn(this.state.catList)
+        })
+    }
+
+    renderLoadingView() {
+        return <ActivityIndicator></ActivityIndicator>
+    }
+
+    renderErrorView() {
+
+    }
+
+    renderSuccessView() {
+        let arr = []
+        this.state.catList.map(value => {
+            arr.push(
+                <View style={styles.leftItem}>
+                    <Text style={styles.leftText}
+                          onPress={()=>this.getSecondCategories(value.id)}
+                    >{value.name}</Text>
+                </View>
+            )
+        })
         return (
             <View style={styles.container}>
-                <Image
-                    source={require('../images/logo.png')}
-                    style={styles.logo}
-                />
-                <Text style={styles.version}>
-                    v1.2.2
-                </Text>
-                <TextInput
-                    style={styles.phone}
-                    autoFocus={true}
-                    placeholder="请输入手机号"
-                    onChangeText={(text) => this.setState({loginId: text})}
-                    keyboardType={'numeric'}
-                    maxLength={11}
-                />
-                <TextInput
-                    style={styles.password}
-                    placeholder="请输入密码"
-                    secureTextEntry={true}
-                    onChangeText={(text) => this.setState({pwd: text})}
-                />
-                <Button
-                    onPress={() => this.login()}
-                    title="登录"
-                    color="#ff6a68"
-                />
+                <View>
+                    <ScrollView contentContainerStyle={styles.leftScrollView}>
+                        {arr}
+                    </ScrollView>
+                </View>
+                <View>
+                    <ScrollView contentContainerStyle={styles.rightScrollView}>
+
+                    </ScrollView>
+                </View>
             </View>
         );
     }
-
-    login() {
-        let params = {
-            loginId: this.state.loginId,
-            pwd: this.state.pwd
-        };
-        HttpUtils.post('/login/doLogin', params, data => {
-            this.props.navigator.navigate('IndexPage')
-        })
-    }
 }
+
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        backgroundColor: '#fff',
+        flexDirection: 'row'
+    },
+    leftScrollView: {
+        flexDirection: 'column',
+        width: 80,
+    },
+    leftItem: {
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        justifyContent: 'center',
+        width: 80,
+        height: 50,
+        backgroundColor: '#f2f2f2'
     },
-    version: {
-        marginTop: 20
+    leftCheckedItem: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 80,
+        height: 50,
+        backgroundColor: 'white',
+        borderLeftColor: '#fd4a70',
+        borderWidth: 4
     },
-    logo: {
-        marginTop: 40,
-        width: 100,
-        height: 100,
-    },
+    leftText: {},
+    rightScrollView: {}
 
-    phone: {
-        width: 200,
-        marginTop: 20
-    },
-    password: {
-        width: 200
-    },
 });

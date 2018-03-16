@@ -20,7 +20,7 @@ const {width} = Dimensions.get('window');  //解构赋值 获取屏幕宽度
 type Props = {};
 let pageNo = 1;
 let totalPage = 5;
-let pageSize = 10;
+let pageSize = 6;
 export default class RecommandForYou extends Component<Props> {
     constructor(props) {
         super(props);
@@ -39,33 +39,36 @@ export default class RecommandForYou extends Component<Props> {
     }
 
     render() {
-        if (this.state.isLoading && !this.state.error) {
+        if (this.state.isLoading) {
             return this.renderLoadingView();
-        } else if (this.state.error) {
-            return this.renderErrorView();
         }
-        return this.renderSuccessView();
-
+        if (this.state.error) {
+            return this.renderErrorView();
+        } else {
+            return this.renderSuccessView();
+        }
     }
 
     async fetchData(pageNo) {
-        console.warn('1111111')
+        console.warn('123')
+        this.setState({
+            showFoot: 2,
+        });
         let params = {
             type: 1, //1是人气排序
-            pageSize: this.state.pageSize,
+            pageSize: pageSize,
             pageNo: pageNo
         };
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
             totalPage = data.data.pages;
             let foot = 0;
-            if(pageNo >= data.data.pages){
+            if (pageNo >= data.data.pages) {
                 foot = 1;
             }
             this.setState({
                 goodsList: this.state.goodsList.concat(data.data.list),
-                showFoot:foot,
+                showFoot: foot,
                 isLoading: false,
-                isRefreshing:false,
             });
         })
     }
@@ -85,7 +88,7 @@ export default class RecommandForYou extends Component<Props> {
     );
 
     renderLoadingView() {
-        return <ActivityIndicator animating={true}></ActivityIndicator>
+        return <ActivityIndicator></ActivityIndicator>
     }
 
     renderErrorView() {
@@ -99,21 +102,20 @@ export default class RecommandForYou extends Component<Props> {
                     <Image style={styles.imageLogo} resizeMode='contain' source={require('../../images/tjlogo.png')}/>
                     <Image style={styles.imageTitle} resizeMode='contain' source={require('../../images/tjword.png')}/>
                 </View>
-                    <FlatList
-                        data={this.state.goodsList}
-                        renderItem={this._renderItem}
-                        ListFooterComponent={this._renderFooter.bind(this)}
-                        onEndReached={this._onEndReached.bind(this)}
-                        onEndReachedThreshold={0.6}
-                        refreshing={this.state.isRefreshing}
-                        numColumns={2}
-                    />
+                <FlatList
+                    data={this.state.goodsList}
+                    renderItem={this._renderItem}
+                    ListFooterComponent={this._renderFooter.bind(this)}
+                    onEndReached={this._onEndReached.bind(this)}
+                    onEndReachedThreshold={0.1}
+                    refreshing={this.state.isLoading}
+                    numColumns={2}
+                />
             </View>
         );
     }
 
     _onEndReached() {
-
         //如果是正在加载中或没有更多数据了，则返回
         if (this.state.showFoot != 0) {
             return;
@@ -124,28 +126,28 @@ export default class RecommandForYou extends Component<Props> {
         } else {
             pageNo++;
         }
-        //底部显示正在加载更多数据
-        this.setState({showFoot: 2});
+
         //获取数据
         this.fetchData(pageNo);
     }
-    _renderFooter(){
+
+    _renderFooter() {
         if (this.state.showFoot === 1) {
             return (
-                <View style={{height:30,alignItems:'center',justifyContent:'flex-start',}}>
-                    <Text style={{color:'#999999',fontSize:14,marginTop:5,marginBottom:5,}}>
+                <View style={{height: 30, alignItems: 'center', justifyContent: 'flex-start',}}>
+                    <Text style={{color: '#999999', fontSize: 14, marginTop: 5, marginBottom: 5,}}>
                         没有更多数据了
                     </Text>
                 </View>
             );
-        } else if(this.state.showFoot === 2) {
+        } else if (this.state.showFoot === 2) {
             return (
                 <View style={styles.footer}>
-                    <ActivityIndicator />
+                    <ActivityIndicator/>
                     <Text>正在加载更多数据...</Text>
                 </View>
             );
-        } else if(this.state.showFoot === 0){
+        } else if (this.state.showFoot === 0) {
             return (
                 <View style={styles.footer}>
                     <Text></Text>
@@ -214,12 +216,12 @@ const styles = StyleSheet.create({
         color: '#fd4a70',
         margin: 10,
     },
-    footer:{
-        flexDirection:'row',
-        height:24,
-        justifyContent:'center',
-        alignItems:'center',
-        marginBottom:10,
+    footer: {
+        flexDirection: 'row',
+        height: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10,
     }
 
 });
