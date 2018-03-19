@@ -8,15 +8,11 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    Dimensions,
     ActivityIndicator,
     View,
     FlatList,
     Text
 } from 'react-native';
-import HttpUtils from '../../utils/http'
-
-const {width} = Dimensions.get('window');  //解构赋值 获取屏幕宽度
 type Props = {};
 let pageNo = 1;
 let totalPage = 5;
@@ -167,7 +163,7 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 5,
         flexDirection: 'row',
-        width: width
+        width: screenWidth
     },
     imageLogo: {
         width: 18,
@@ -177,19 +173,19 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     goodsWrapper: {
-        width: width,
+        width: screenWidth,
     },
     catImg: {
 
-        width: width / 8,
-        height: width / 8
+        width: screenWidth / 8,
+        height: screenWidth / 8
     },
     catName: {
         marginTop: 10
     },
     singleGoods: {
         backgroundColor: '#fff',
-        width: (width - 30) / 2,
+        width: (screenWidth - 30) / 2,
         borderWidth: 1,
         borderColor: '#e3e3e3',
         justifyContent: 'flex-end',
@@ -199,7 +195,7 @@ const styles = StyleSheet.create({
     goodsImgView: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: (width - 30) / 2,
+        width: (screenWidth - 30) / 2,
         height: 150
 
     },

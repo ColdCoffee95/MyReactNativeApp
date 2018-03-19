@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    Style,
 } from 'react-native';
 import {TabNavigator} from "react-navigation";
 
@@ -98,7 +97,7 @@ const mainPage = TabNavigator({
         },
         labelStyle: {
             fontSize: 12, // 文字大小,
-            marginTop: 0,
+            marginBottom: 6,
         },
     },
 });

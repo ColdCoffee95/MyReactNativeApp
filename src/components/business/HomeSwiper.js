@@ -8,12 +8,9 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    Dimensions,
     View,
 } from 'react-native';
 import Swiper from 'react-native-swiper'
-import HttpUtils from '../../utils/http'
-const {width} = Dimensions.get('window');  //解构赋值 获取屏幕宽度
 type Props = {};
 export default class Home extends Component<Props> {
     constructor(props) {
@@ -37,7 +34,7 @@ export default class Home extends Component<Props> {
                     id: "485af5e8df0b40b287d61326e05ebe87"
                 }
             ],
-            wrapperHeight : width*521/750
+            wrapperHeight : screenWidth*521/750
 
         }
     }
@@ -49,7 +46,6 @@ export default class Home extends Component<Props> {
                 <View style={styles.slide}>
                     <Image
                         style={styles.banner}
-
                         resizeMode='contain'
                         source={{uri:value.url}}
                     />
@@ -72,7 +68,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     banner: {
-        width: width,
+        width: screenWidth,
         flex: 1
     },
 

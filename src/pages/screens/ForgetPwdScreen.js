@@ -6,7 +6,6 @@
 
 import React, {Component} from 'react';
 import {
-    Platform,
     StyleSheet,
     Button,
     Image,
@@ -14,7 +13,6 @@ import {
     TextInput,
     View
 } from 'react-native';
-import HttpUtils from '../../utils/http'
 type Props = {};
 
 export default class RegisterScreen extends Component<Props> {

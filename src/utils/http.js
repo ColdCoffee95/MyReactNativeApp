@@ -1,4 +1,4 @@
-const baseUrl = 'http://192.168.41.78:9003/api';
+const baseUrl = 'http://api.metchange.com/api';
 const successCode = 10000;
 export default class HttpUtils {
 
@@ -14,42 +14,54 @@ export default class HttpUtils {
             }
         }
         //fetch请求
-        fetch(baseUrl + url, {
-            method: 'GET',
-        })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                callback(responseJSON)
+        storage.load({key: 'loginState'}).then(res => {
+            fetch(baseUrl + url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'isValidate': 1,
+                    'token': res.token || '',
+                    'memberId': res.memberId || '',
+                },
             })
-            .catch((error) => {
-                console.error(error)
-            });
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    callback(responseJSON)
+                })
+                .catch((error) => {
+                    console.error(error)
+                });
+        })
+
     }
 
     static post(url, params, callback) {
-        fetch(baseUrl + url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'isValidate': 1,
-                'token': storage.load({key: 'loginState'}).then(res => res.token) || '',
-                'memberId': storage.load({key: 'loginState'}).then(res => res.memberId) || '',
-            },
-            body: JSON.stringify(params)
-        })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                switch (responseJSON.code) {
-                    case successCode:
-                        callback(responseJSON);
-                        break;
-                    default:
-                        alert(responseJSON.message)
-                }
+        storage.load({key: 'loginState'}).then(res => {
+            fetch(baseUrl + url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'isValidate': 1,
+                    'token': res.token || '',
+                    'memberId': res.memberId || '',
+                },
+                body: JSON.stringify(params)
             })
-            .catch((error) => {
-                console.error("error = " + error)
-            });
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    switch (responseJSON.code) {
+                        case successCode:
+                            callback(responseJSON);
+                            break;
+                        default:
+                            alert(responseJSON.message)
+                    }
+                })
+                .catch((error) => {
+                    console.error("error = " + error)
+                });
+        });
+
     }
 }

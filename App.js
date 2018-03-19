@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import {StackNavigator} from "react-navigation";
 import './src/utils/storage';
+import './src/utils/globalVariables';
 import MainScreen from './src/pages/screens/MainScreen';
 import LoginScreen from './src/pages/screens/LoginScreen';
 import RegisterScreen from './src/pages/screens/RegisterScreen';

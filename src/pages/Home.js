@@ -28,6 +28,7 @@ export default class Home extends Component<Props> {
                 <HomeSwiper></HomeSwiper>
                 <PlatformPlate></PlatformPlate>
                 <HomeCategory></HomeCategory>
+
                 {/*<RecommandForYou></RecommandForYou>*/}
             </ScrollView>
 

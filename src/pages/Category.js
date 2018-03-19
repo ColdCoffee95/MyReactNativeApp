@@ -8,15 +8,11 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    Dimensions,
     ActivityIndicator,
     ScrollView,
     View,
     Text
 } from 'react-native';
-import HttpUtils from '../utils/http'
-
-const {width} = Dimensions.get('window');  //解构赋值 获取屏幕宽度
 type Props = {};
 export default class RecommandForYou extends Component<Props> {
     constructor(props) {
@@ -24,9 +20,8 @@ export default class RecommandForYou extends Component<Props> {
         this.state = {
             catList: [],
             isLoading: true,
-            error: false,
-            errorInfo: '',
-            leftCheckedIndex: 0
+            currentLeftId: '',//当前左边选中的id
+
         }
     }
 
@@ -37,9 +32,6 @@ export default class RecommandForYou extends Component<Props> {
     render() {
         if (this.state.isLoading) {
             return this.renderLoadingView();
-        }
-        if (this.state.error) {
-            return this.renderErrorView();
         } else {
             return this.renderSuccessView();
         }
@@ -50,65 +42,92 @@ export default class RecommandForYou extends Component<Props> {
             catId: -1
         };
         HttpUtils.get('/goodsCat/catList', params, data => {
-            data.data.map(value => {
-                value.children = []
-            });
             this.setState({
                 catList: data.data,
-                isLoading: false
+                currentLeftId: data.data[0].id,
             });
+            this.getSecondCategories(data.data[0].id);//获取第一个分类的子分类
             console.warn(data.data)
         })
     }
 
     getSecondCategories(catId) {//获取二级分类
+        this.setState({
+            currentLeftId: catId,
+        });
         let clickItem = this.state.catList.find(n => n.id === catId);
-        if (clickItem.children.length > 0) {
-            return
+        if (!clickItem.children) {
+            this.setState({isLoading: true});
+            HttpUtils.get('/goodsCat/catList', {catId: catId}, data => {
+                clickItem.children = data.data;
+                this.setState({
+                    isLoading: false
+                })
+            })
         }
-        let params = {
-            catId: catId
-        };
-        this.setState({isLoading: true});
-        HttpUtils.get('/goodsCat/catList', params, data => {
-            console.warn('getchild')
-            clickItem.children = data.data;
-            this.setState({
-                isLoading: false
-            });
-            console.warn(this.state.catList)
-        })
     }
 
     renderLoadingView() {
         return <ActivityIndicator></ActivityIndicator>
     }
 
-    renderErrorView() {
-
-    }
 
     renderSuccessView() {
-        let arr = []
-        this.state.catList.map(value => {
-            arr.push(
-                <View style={styles.leftItem}>
+        let catList = this.state.catList;
+        let leftArr = [];
+        catList.map(value => {
+            leftArr.push(
+                <View style={value.id === this.state.currentLeftId ? styles.leftCheckedItem : styles.leftItem}
+                      onStartShouldSetResponder={() => {
+                          this.getSecondCategories(value.id)
+                      }}>
                     <Text style={styles.leftText}
-                          onPress={()=>this.getSecondCategories(value.id)}
                     >{value.name}</Text>
                 </View>
             )
-        })
+        });
+        let rightArr = [];
+        let leftIndex = this.state.catList.findIndex(n => n.id === this.state.currentLeftId);
+        rightArr.push(
+            <View style={styles.rightCatView}>
+                <View style={styles.rightCatImgView}>
+                    <Image
+                        style={styles.rightCatImg}
+                        source={{uri: catList[leftIndex].img}}
+                        resizeMode='contain'
+                    />
+                </View>
+
+                <Text style={styles.rightCatName}>全部</Text>
+            </View>
+        );
+        catList[leftIndex].children.map(value => {
+            rightArr.push(
+                <View style={styles.rightCatView}>
+                    <View style={styles.rightCatImgView}>
+                        <Image
+                            style={styles.rightCatImg}
+                            source={{uri: value.img}}
+                            resizeMode='contain'
+                        />
+                    </View>
+                    <Text style={styles.rightCatName} numberOfLines={1}>{value.name}</Text>
+                </View>
+            )
+        });
         return (
             <View style={styles.container}>
                 <View>
                     <ScrollView contentContainerStyle={styles.leftScrollView}>
-                        {arr}
+                        {leftArr}
                     </ScrollView>
                 </View>
                 <View>
                     <ScrollView contentContainerStyle={styles.rightScrollView}>
-
+                        <Text style={styles.rightTitle}>分类</Text>
+                        <View style={styles.rightCatWrapper}>
+                            {rightArr}
+                        </View>
                     </ScrollView>
                 </View>
             </View>
@@ -137,11 +156,43 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: 80,
         height: 50,
-        backgroundColor: 'white',
-        borderLeftColor: '#fd4a70',
-        borderWidth: 4
+        backgroundColor: '#fff',
+        borderLeftWidth: 4,
+        borderLeftColor: '#fd4a70'
     },
     leftText: {},
-    rightScrollView: {}
+    rightScrollView: {},
+    rightTitle: {
+        fontSize: 16,
+        lineHeight:50,
+        paddingLeft:10
+    },
+    rightCatWrapper: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        padding: 10,
+        width: screenWidth - 80
+    },
+    rightCatView: {
+        width: (screenWidth - 100) / 3,
+        alignItems: 'center',
+        justifyContent:'center',
+        marginBottom: 10
+    },
+    rightCatImgView:{
+        width: 40,
+        height:40,
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    rightCatImg: {
+        width: 40,
+        height: 40
+    },
+    rightCatName: {
+        marginTop: 10,
+        color:'#b0b0b0',
+        fontSize:12
+    }
 
 });
