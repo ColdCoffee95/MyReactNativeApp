@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 type Props = {};
 
-export default class RegisterScreen extends Component<Props> {
+export default class ForgetPwdScreen extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {code: '', pwd: '', mobile: '', pwdAgain: ''}

@@ -27,6 +27,9 @@ const mainPage = TabNavigator({
                     style={[styles.icon, {tintColor: tintColor}]}// {tintColor: tintColor} 选中的图片和文字颜色
                 />
             ),
+            headerTitleStyle: {
+                alignSelf: 'center'
+            }
         }
     },
     Category: {
@@ -43,6 +46,9 @@ const mainPage = TabNavigator({
                     style={[styles.icon, {tintColor: tintColor}]}// {tintColor: tintColor} 选中的图片和文字颜色
                 />
             ),
+            headerTitleStyle: {
+                alignSelf: 'center'
+            }
         }
     },
     Cart: {
@@ -59,15 +65,17 @@ const mainPage = TabNavigator({
                     style={[styles.icon, {tintColor: tintColor}]}// {tintColor: tintColor} 选中的图片和文字颜色
                 />
             ),
+            headerTitleStyle: {
+                alignSelf: 'center'
+            }
         }
     },
     Mine: {
         screen: MinePage,
         //以下参数也可放置在MinePage.js页面
         navigationOptions: {
-            title:'我的',
             tabBarLabel: '我的',
-            headerLeft:null,
+            header:null,
             tabBarIcon: ({tintColor}) => (
                 <Image
                     source={
@@ -76,9 +84,7 @@ const mainPage = TabNavigator({
                     style={[styles.icon, {tintColor: tintColor}]}// {tintColor: tintColor} 选中的图片和文字颜色
                 />
             ),
-            headerTitleStyle: {
-                alignSelf: 'center'
-            }
+
         }
     },
 }, {

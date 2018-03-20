@@ -10,16 +10,19 @@ import {
     Image,
     ActivityIndicator,
     ScrollView,
+    TouchableHighlight,
     View,
     Text
 } from 'react-native';
+
 type Props = {};
-export default class RecommandForYou extends Component<Props> {
+export default class Category extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
             catList: [],
-            isLoading: true,
+            leftLoading: true,
+            rightLoading: true,
             currentLeftId: '',//当前左边选中的id
 
         }
@@ -30,11 +33,82 @@ export default class RecommandForYou extends Component<Props> {
     }
 
     render() {
-        if (this.state.isLoading) {
-            return this.renderLoadingView();
-        } else {
-            return this.renderSuccessView();
+        let catList = this.state.catList;
+        let leftArr = [];
+        catList.map(value => {
+            leftArr.push(
+                <TouchableHighlight onPress={() => this.getSecondCategories(value.id)}>
+                    <View style={value.id === this.state.currentLeftId ? styles.leftCheckedItem : styles.leftItem}>
+                        <Text style={styles.leftText}
+                        >{value.name}</Text>
+                    </View>
+                </TouchableHighlight>
+            )
+        });
+        let rightArr = [];
+        let leftIndex = this.state.catList.findIndex(n => n.id === this.state.currentLeftId);
+
+        if(!this.state.rightLoading){
+            rightArr.push(
+                <View style={styles.rightCatView}>
+                    <View style={styles.rightCatImgView}>
+                        <Image
+                            style={styles.rightCatImg}
+                            source={{uri: catList[leftIndex].img}}
+                            resizeMode='contain'
+                        />
+                    </View>
+
+                    <Text style={styles.rightCatName}>全部</Text>
+                </View>
+            );
+            catList[leftIndex].children.map(value => {
+                rightArr.push(
+                    <View style={styles.rightCatView}>
+                        <View style={styles.rightCatImgView}>
+                            <Image
+                                style={styles.rightCatImg}
+                                source={{uri: value.img}}
+                                resizeMode='contain'
+                            />
+                        </View>
+                        <Text style={styles.rightCatName} numberOfLines={1}>{value.name}</Text>
+                    </View>
+                )
+            });
         }
+
+        return (
+            <View style={styles.container}>
+                <View>
+                    {
+                        this.leftLoading ? (
+                            <ActivityIndicator></ActivityIndicator>
+                        ) : (
+                            <ScrollView contentContainerStyle={styles.leftScrollView}>
+                                {leftArr}
+                            </ScrollView>
+                        )
+                    }
+
+                </View>
+                <View>
+                    {
+                        this.rightLoading ? (
+                            <ActivityIndicator></ActivityIndicator>
+                        ) : (
+                            <ScrollView contentContainerStyle={styles.rightScrollView}>
+                                <Text style={styles.rightTitle}>分类</Text>
+                                <View style={styles.rightCatWrapper}>
+                                    {rightArr}
+                                </View>
+                            </ScrollView>
+                        )
+                    }
+
+                </View>
+            </View>
+        );
     }
 
     async getFirstAllCategories() {//获取所有一级分类
@@ -45,9 +119,9 @@ export default class RecommandForYou extends Component<Props> {
             this.setState({
                 catList: data.data,
                 currentLeftId: data.data[0].id,
+                leftLoading: false
             });
             this.getSecondCategories(data.data[0].id);//获取第一个分类的子分类
-            console.warn(data.data)
         })
     }
 
@@ -57,81 +131,16 @@ export default class RecommandForYou extends Component<Props> {
         });
         let clickItem = this.state.catList.find(n => n.id === catId);
         if (!clickItem.children) {
-            this.setState({isLoading: true});
+            this.setState({
+                rightLoading: true
+            });
             HttpUtils.get('/goodsCat/catList', {catId: catId}, data => {
                 clickItem.children = data.data;
                 this.setState({
-                    isLoading: false
-                })
+                    rightLoading: false
+                });
             })
         }
-    }
-
-    renderLoadingView() {
-        return <ActivityIndicator></ActivityIndicator>
-    }
-
-
-    renderSuccessView() {
-        let catList = this.state.catList;
-        let leftArr = [];
-        catList.map(value => {
-            leftArr.push(
-                <View style={value.id === this.state.currentLeftId ? styles.leftCheckedItem : styles.leftItem}
-                      onStartShouldSetResponder={() => {
-                          this.getSecondCategories(value.id)
-                      }}>
-                    <Text style={styles.leftText}
-                    >{value.name}</Text>
-                </View>
-            )
-        });
-        let rightArr = [];
-        let leftIndex = this.state.catList.findIndex(n => n.id === this.state.currentLeftId);
-        rightArr.push(
-            <View style={styles.rightCatView}>
-                <View style={styles.rightCatImgView}>
-                    <Image
-                        style={styles.rightCatImg}
-                        source={{uri: catList[leftIndex].img}}
-                        resizeMode='contain'
-                    />
-                </View>
-
-                <Text style={styles.rightCatName}>全部</Text>
-            </View>
-        );
-        catList[leftIndex].children.map(value => {
-            rightArr.push(
-                <View style={styles.rightCatView}>
-                    <View style={styles.rightCatImgView}>
-                        <Image
-                            style={styles.rightCatImg}
-                            source={{uri: value.img}}
-                            resizeMode='contain'
-                        />
-                    </View>
-                    <Text style={styles.rightCatName} numberOfLines={1}>{value.name}</Text>
-                </View>
-            )
-        });
-        return (
-            <View style={styles.container}>
-                <View>
-                    <ScrollView contentContainerStyle={styles.leftScrollView}>
-                        {leftArr}
-                    </ScrollView>
-                </View>
-                <View>
-                    <ScrollView contentContainerStyle={styles.rightScrollView}>
-                        <Text style={styles.rightTitle}>分类</Text>
-                        <View style={styles.rightCatWrapper}>
-                            {rightArr}
-                        </View>
-                    </ScrollView>
-                </View>
-            </View>
-        );
     }
 }
 
@@ -164,8 +173,8 @@ const styles = StyleSheet.create({
     rightScrollView: {},
     rightTitle: {
         fontSize: 16,
-        lineHeight:50,
-        paddingLeft:10
+        lineHeight: 50,
+        paddingLeft: 10
     },
     rightCatWrapper: {
         flexDirection: 'row',
@@ -176,14 +185,14 @@ const styles = StyleSheet.create({
     rightCatView: {
         width: (screenWidth - 100) / 3,
         alignItems: 'center',
-        justifyContent:'center',
+        justifyContent: 'center',
         marginBottom: 10
     },
-    rightCatImgView:{
+    rightCatImgView: {
         width: 40,
-        height:40,
-        alignItems:'center',
-        justifyContent:'center'
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     rightCatImg: {
         width: 40,
@@ -191,8 +200,8 @@ const styles = StyleSheet.create({
     },
     rightCatName: {
         marginTop: 10,
-        color:'#b0b0b0',
-        fontSize:12
+        color: '#b0b0b0',
+        fontSize: 12
     }
 
 });

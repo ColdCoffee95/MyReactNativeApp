@@ -11,6 +11,10 @@ import MainScreen from './src/pages/screens/MainScreen';
 import LoginScreen from './src/pages/screens/LoginScreen';
 import RegisterScreen from './src/pages/screens/RegisterScreen';
 import ForgetPwdScreen from './src/pages/screens/ForgetPwdScreen';
+
+import Hotline from './src/pages/user/Hotline';
+import Settings from './src/pages/user/Settings';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -46,6 +50,22 @@ const SimpleApp = StackNavigator({
         screen: ForgetPwdScreen,
         navigationOptions: {
             title: '忘记密码',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff'
+        }
+    },
+    Hotline:{
+        screen: Hotline,
+        navigationOptions: {
+            title: '客服热线',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff'
+        }
+    },
+    Settings:{
+        screen: Settings,
+        navigationOptions: {
+            title: '设置',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff'
         }

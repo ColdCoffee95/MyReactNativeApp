@@ -14,6 +14,7 @@ import {
     View
 } from 'react-native';
 import CryptoJS from 'crypto-js'
+import HttpUtils from "../../utils/http";
 
 type Props = {};
 
@@ -31,7 +32,7 @@ export default class LoginScreen extends Component<Props> {
                     style={styles.logo}
                 />
                 <Text style={styles.version}>
-                    v1.2.2
+                    v1.3.0
                 </Text>
                 <TextInput
                     style={styles.phone}
@@ -79,11 +80,18 @@ export default class LoginScreen extends Component<Props> {
             storage.save({
                 key: 'loginState',
                 data: {
-                    token:data.data.token,
-                    memberId:data.data.memberId
+                    token: data.data.token,
+                    memberId: data.data.memberId
                 }
             });
-            this.props.navigation.navigate('Main')
+            HttpUtils.get('/member/selectStoreMemberById', {}, data => {
+                console.warn(data.data)
+                storage.save({
+                    key: 'userInfo', 
+                    data: data.data
+                });
+                this.props.navigation.navigate('Main')
+            });
         })
     }
 }
@@ -129,7 +137,5 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingLeft: 10,
         borderColor: '#ededed'
-
-
     },
 });
