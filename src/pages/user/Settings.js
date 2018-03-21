@@ -49,7 +49,7 @@ export default class Settings extends Component<Props> {
                         <Text style={styles.rightCellText}>查看所有订单</Text>
                     </View>
                 </View>
-                <View style={styles.cellView}>
+                <View style={styles.cellView2}>
                     <Text style={styles.leftCell}>关于我们</Text>
                     <View style={styles.rightCell}>
                         <Text style={styles.rightCellText}>查看所有订单</Text>
@@ -65,36 +65,30 @@ export default class Settings extends Component<Props> {
         );
     }
 
-    callPhone() {
-        return Linking.openURL('tel:' + hotline).catch(e => {
-            console.warn(e)
-        })
-    }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: whiteColor,
-    },
-    text: {
-        marginTop: 20,
-        marginBottom: 20
-    },
-    hotlineView: {
-        borderWidth: 1,
-        borderColor: borderColor,
-        padding: 10,
-        width: screenWidth - 40,
-        alignItems: 'center'
+        backgroundColor: '#f2f2f2',
     },
     cellView: {
         width: screenWidth,
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: whiteColor,
-        padding: 10,
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: borderColor
+    },
+    cellView2: {
+        width: screenWidth,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: whiteColor,
+        padding: 15,
+        marginTop:10,
         borderBottomWidth: 1,
         borderBottomColor: borderColor
     },

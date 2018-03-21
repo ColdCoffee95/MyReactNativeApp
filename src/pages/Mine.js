@@ -13,8 +13,8 @@ import {
     TouchableHighlight,
     View
 } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker'
-
+import ImagePicker from 'react-native-image-crop-picker';
+import Toast,{DURATION} from 'react-native-easy-toast';
 type Props = {};
 export default class Mine extends Component<Props> {
 
@@ -124,7 +124,9 @@ export default class Mine extends Component<Props> {
         let toolList = [];
         this.state.toolList.map(value => {
             toolList.push(
-                <TouchableHighlight onPress={() => this.jumpToTools(value.id)}>
+                <TouchableHighlight
+                    underlayColor='#fff'
+                    onPress={() => this.jumpToTools(value.id)}>
                     <View style={styles.toolItemView}>
                         <Image
                             style={styles.toolImg}
@@ -133,6 +135,7 @@ export default class Mine extends Component<Props> {
                         />
                         <Text style={styles.toolName}>{value.name}</Text>
                     </View>
+
                 </TouchableHighlight>
             )
         });
@@ -160,6 +163,7 @@ export default class Mine extends Component<Props> {
                 <View style={styles.toolView}>
                     {toolList}
                 </View>
+                <Toast ref='toast' position='center'></Toast>
             </View>
         );
     }
@@ -190,6 +194,15 @@ export default class Mine extends Component<Props> {
                 break;
             case 2://我的设置
                 this.props.navigation.navigate('Settings');
+                break;
+            case 3://会员中心
+                this.refs.toast.show('此功能暂未开放，敬请期待!',500);
+                break;
+            case 4://意见反馈
+                this.props.navigation.navigate('Feedback');
+                break;
+            case 5://
+                this.props.navigation.navigate('ManageAddress');
                 break;
         }
     }

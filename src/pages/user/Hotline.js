@@ -37,9 +37,7 @@ export default class Hotline extends Component<Props> {
     }
 
     callPhone() {
-        return Linking.openURL('tel:' + hotline).catch(e => {
-            console.warn(e)
-        })
+        return Linking.openURL('tel:' + hotline)
     }
 }
 

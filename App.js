@@ -14,7 +14,10 @@ import ForgetPwdScreen from './src/pages/screens/ForgetPwdScreen';
 
 import Hotline from './src/pages/user/Hotline';
 import Settings from './src/pages/user/Settings';
+import Feedback from './src/pages/user/Feedback';
 
+import ManageAddress from './src/pages/address/ManageAddress';
+import AddAddress from './src/pages/address/AddAddress';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -43,7 +46,8 @@ const SimpleApp = StackNavigator({
         navigationOptions: {
             title: '注册',
             headerStyle: styles.headerStyles,
-            headerTintColor: '#fff'
+            headerTintColor: '#fff',
+            headerBackTitle:null
         }
     },
     ForgetPwd: {
@@ -51,7 +55,8 @@ const SimpleApp = StackNavigator({
         navigationOptions: {
             title: '忘记密码',
             headerStyle: styles.headerStyles,
-            headerTintColor: '#fff'
+            headerTintColor: '#fff',
+            headerBackTitle:null
         }
     },
     Hotline:{
@@ -59,7 +64,8 @@ const SimpleApp = StackNavigator({
         navigationOptions: {
             title: '客服热线',
             headerStyle: styles.headerStyles,
-            headerTintColor: '#fff'
+            headerTintColor: '#fff',
+            headerBackTitle:null
         }
     },
     Settings:{
@@ -67,8 +73,38 @@ const SimpleApp = StackNavigator({
         navigationOptions: {
             title: '设置',
             headerStyle: styles.headerStyles,
-            headerTintColor: '#fff'
+            headerTintColor: '#fff',
+            headerBackTitle:null
         }
-    }
+    },
+    Feedback:{
+        screen: Feedback,
+        navigationOptions: {
+            title: '意见反馈',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null
+        }
+    },
+    ManageAddress:{
+        screen: ManageAddress,
+        navigationOptions: {
+            title: '大贸地址管理',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null
+        }
+    },
+    AddAddress:{
+        screen: AddAddress,
+        navigationOptions: {
+            title: '添加大贸地址',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null
+        },
+
+    },
+
 });
 module.exports = SimpleApp;
