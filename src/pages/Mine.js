@@ -169,12 +169,14 @@ export default class Mine extends Component<Props> {
     }
 
     async getUserInfo() {
-        storage.load({key: 'loginState'}).then(res => {
-            HttpUtils.get('/member/selectStoreMemberById', res.memberId, data => {
-                console.warn(data.data)
-                this.setState({userInfo: data.data, isLoading: false});
-            })
-        })
+        this.setState({isLoading: false});
+
+        // storage.load({key: 'loginState'}).then(res => {
+        //     HttpUtils.get('/member/selectStoreMemberById', res.memberId, data => {
+        //         console.warn(data.data)
+        //         this.setState({userInfo: data.data, isLoading: false});
+        //     })
+        // })
     }
 
     uploadAvatar() {

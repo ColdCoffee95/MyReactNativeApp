@@ -22,6 +22,7 @@ export default class RegisterScreen extends Component<Props> {
     }
 
     render() {
+
         return (
             <View style={styles.container}>
 

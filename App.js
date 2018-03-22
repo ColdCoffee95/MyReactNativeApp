@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Image,
-    Style,
+    View
 } from 'react-native';
 import {StackNavigator} from "react-navigation";
 import './src/utils/storage';
@@ -19,17 +18,13 @@ import Feedback from './src/pages/user/Feedback';
 import ManageAddress from './src/pages/address/ManageAddress';
 import AddAddress from './src/pages/address/AddAddress';
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    icon: {
-        width: 20,
-        height: 20
-    },
     headerStyles: {
         backgroundColor: '#fd4a70'
+    },
+    headerTitleStyle:{
+        alignSelf:'center',
+        textAlign:'center',
+        color:'#000'
     }
 });
 
@@ -47,7 +42,9 @@ const SimpleApp = StackNavigator({
             title: '注册',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
-            headerBackTitle:null
+            headerTitleStyle:styles.headerTitleStyle,
+            headerRight:<View />,
+            headerBackTitle:null,
         }
     },
     ForgetPwd: {
@@ -55,6 +52,7 @@ const SimpleApp = StackNavigator({
         navigationOptions: {
             title: '忘记密码',
             headerStyle: styles.headerStyles,
+            headerTitleStyle:styles.headerTitleStyle,
             headerTintColor: '#fff',
             headerBackTitle:null
         }

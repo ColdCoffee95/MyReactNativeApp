@@ -100,6 +100,7 @@ android {
     defaultConfig {
         applicationId "com.awesomeproject"
         minSdkVersion 16
+        vectorDrawables.useSupportLibrary = true
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -139,10 +140,6 @@ android {
 dependencies {
     compile project(':react-native-spinkit')
     compile project(':react-native-picker')
-    compile project(':react-native-image-crop-picker')
-    compile project(':react-native-spinkit')
-    compile project(':react-native-picker')
-    compile project(':react-native-image-crop-picker')
     compile project(':react-native-image-crop-picker')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"

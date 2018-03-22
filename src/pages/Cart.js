@@ -38,7 +38,14 @@ export default class Cart extends Component<Props> {
                         tabBarActiveTextColor={activeColor}
                         tabBarUnderlineStyle={styles.underlineStyle}
                         initialPage={0}>
-                        {arr}
+                        <View tabLabel='一'>
+
+                        </View>
+                        <View tabLabel='二'>
+
+                        </View>
+
+                        {/*{arr}*/}
                     </ScrollableTabView>
                 </View>
             </View>

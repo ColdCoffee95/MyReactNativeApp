@@ -13,7 +13,7 @@ import {
 
     View
 } from 'react-native';
-import Picker from 'react-native-picker'
+// import Picker from 'react-native-picker'
 import HttpUtils from "../../utils/http";
 type Props = {};
 
@@ -59,24 +59,24 @@ export default class AddressPicker extends Component<Props> {
         for(var i=0;i<100;i++){
             data.push(i);
         }
-        Picker.init({
-            pickerData: data,
-            pickerTitleText:'请选择',
-            pickerCancelBtnText:'取消',
-            pickerConfirmBtnText:'确定',
-            onPickerConfirm: data => {
-                console.warn(data);
-            },
-            onPickerCancel: data => {
-                console.warn(data);
-            },
-            onPickerSelect: data => {
-                console.warn(data);
-            }
-        });
+        // Picker.init({
+        //     pickerData: data,
+        //     pickerTitleText:'请选择',
+        //     pickerCancelBtnText:'取消',
+        //     pickerConfirmBtnText:'确定',
+        //     onPickerConfirm: data => {
+        //         console.warn(data);
+        //     },
+        //     onPickerCancel: data => {
+        //         console.warn(data);
+        //     },
+        //     onPickerSelect: data => {
+        //         console.warn(data);
+        //     }
+        // });
     }
     pickerShow(){
-        Picker.show();
+        // Picker.show();
     }
 }
 
