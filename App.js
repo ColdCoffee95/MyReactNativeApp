@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     headerTitleStyle:{
         alignSelf:'center',
         textAlign:'center',
-        color:'#000'
+        flex:1
     }
 });
 
@@ -43,8 +43,8 @@ const SimpleApp = StackNavigator({
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
             headerTitleStyle:styles.headerTitleStyle,
-            headerRight:<View />,
             headerBackTitle:null,
+            headerRight:<View/>
         }
     },
     ForgetPwd: {
@@ -54,7 +54,8 @@ const SimpleApp = StackNavigator({
             headerStyle: styles.headerStyles,
             headerTitleStyle:styles.headerTitleStyle,
             headerTintColor: '#fff',
-            headerBackTitle:null
+            headerBackTitle:null,
+            headerRight:<View/>
         }
     },
     Hotline:{
@@ -63,7 +64,9 @@ const SimpleApp = StackNavigator({
             title: '客服热线',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
-            headerBackTitle:null
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
         }
     },
     Settings:{
@@ -72,7 +75,9 @@ const SimpleApp = StackNavigator({
             title: '设置',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
-            headerBackTitle:null
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
         }
     },
     Feedback:{
@@ -81,7 +86,9 @@ const SimpleApp = StackNavigator({
             title: '意见反馈',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
-            headerBackTitle:null
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
         }
     },
     ManageAddress:{
@@ -90,7 +97,9 @@ const SimpleApp = StackNavigator({
             title: '大贸地址管理',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
-            headerBackTitle:null
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
         }
     },
     AddAddress:{
@@ -99,7 +108,9 @@ const SimpleApp = StackNavigator({
             title: '添加大贸地址',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
-            headerBackTitle:null
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
         },
 
     },

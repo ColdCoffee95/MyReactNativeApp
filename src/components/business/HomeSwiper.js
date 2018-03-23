@@ -8,6 +8,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
+    Text,
     View,
 } from 'react-native';
 import Swiper from 'react-native-swiper'
@@ -34,29 +35,40 @@ export default class Home extends Component<Props> {
                     id: "485af5e8df0b40b287d61326e05ebe87"
                 }
             ],
-            wrapperHeight : screenWidth*521/750
-
+            wrapperHeight : screenWidth*521/750,
+            visibleSwiper: false
         }
     }
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                visibleSwiper: true
+            });
+        }, 100);
+    }
     render() {
-
-        const swiperList= [];
-        this.state.carouselList.map(value => {
-            swiperList.push(
-                <View style={styles.slide}>
-                    <Image
-                        style={styles.banner}
-                        resizeMode='contain'
-                        source={{uri:value.url}}
-                    />
-                </View>
-            );
-        });
-        return (
-                <Swiper style={styles.wrapper} height={this.state.wrapperHeight} autoplay={true}>
+        if (this.state.visibleSwiper) {
+            const swiperList= [];
+            this.state.carouselList.map(value => {
+                swiperList.push(
+                    <View style={styles.slide}>
+                        <Image
+                            style={styles.banner}
+                            resizeMode='contain'
+                            source={{uri:value.url}}
+                        />
+                    </View>
+                );
+            });
+            return (
+                <Swiper style={styles.wrapper} width={screenWidth} height={this.state.wrapperHeight} autoplay={true}>
                     {swiperList}
                 </Swiper>
-        );
+            );
+        }else{
+            return <View></View>
+        }
+
     }
 
 
@@ -65,11 +77,12 @@ const styles = StyleSheet.create({
     wrapper: {
     },
     slide: {
-        flex: 1,
+        width: screenWidth,
+        height: 521*screenWidth/750,
     },
     banner: {
         width: screenWidth,
-        flex: 1
+        height: 521*screenWidth/750,
     },
 
 });

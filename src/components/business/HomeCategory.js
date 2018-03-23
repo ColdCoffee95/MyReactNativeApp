@@ -50,7 +50,7 @@ export default class HomeCategory extends Component<Props> {
             let catImgList = [];
             this.state.catList.map(value => {
                 catImgList.push(
-                    <View style={styles.imgWrapper}>
+                    <View style={styles.imgWrapper} key={value.id}>
                         <Image
                             style={styles.catImg}
                             resizeMode='contain'

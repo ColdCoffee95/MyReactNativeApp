@@ -37,7 +37,7 @@ export default class Category extends Component<Props> {
         let leftArr = [];
         catList.map(value => {
             leftArr.push(
-                <TouchableHighlight onPress={() => this.getSecondCategories(value.id)}>
+                <TouchableHighlight onPress={() => this.getSecondCategories(value.id)} key={value.id}>
                     <View style={value.id === this.state.currentLeftId ? styles.leftCheckedItem : styles.leftItem}>
                         <Text style={styles.leftText}
                         >{value.name}</Text>
@@ -50,7 +50,7 @@ export default class Category extends Component<Props> {
 
         if(!this.state.rightLoading){
             rightArr.push(
-                <View style={styles.rightCatView}>
+                <View style={styles.rightCatView} key={0}>
                     <View style={styles.rightCatImgView}>
                         <Image
                             style={styles.rightCatImg}
@@ -64,7 +64,7 @@ export default class Category extends Component<Props> {
             );
             catList[leftIndex].children.map(value => {
                 rightArr.push(
-                    <View style={styles.rightCatView}>
+                    <View style={styles.rightCatView} key={value.id}>
                         <View style={styles.rightCatImgView}>
                             <Image
                                 style={styles.rightCatImg}

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
+    View
 } from 'react-native';
 import {TabNavigator} from "react-navigation";
 

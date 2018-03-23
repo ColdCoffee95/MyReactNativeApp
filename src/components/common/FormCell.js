@@ -19,24 +19,29 @@ export default class FormCell extends Component<Props> {
 
     constructor(props) {
         super(props);
-        this.state = {
-
-        }
+        this.state = {}
     }
 
     render() {
         return (
             <View style={styles.formCellView}>
-                <Text style={{width:this.props.labelWidth?this.props.labelWidth:60}}>{this.props.title}</Text>
+                <Text style={{marginLeft:10,lineHeight:41,height: 41,width: this.props.labelWidth ? this.props.labelWidth : 60}}>{this.props.title}</Text>
                 <TextInput
-                    style={{marginLeft:10,width:this.props.labelWidth?(screenWidth-this.props.labelWidth):(screenWidth-60)}}
+                    style={{
+                        marginLeft: 10,
+                        height: 41,
+                        width: this.props.labelWidth ? (screenWidth - this.props.labelWidth-20) : (screenWidth - 80)
+                    }}
                     autoFocus={this.props.autoFocus}
                     keyboardType={this.props.keyboardType}
                     maxLength={this.props.maxLength}
+                    underlineColorAndroid='transparent'
                     secureTextEntry={this.props.secureTextEntry}
                     onChangeText={(text) => this.setState({sugMessage: text})}
                     placeholder={this.props.placeholder}>
                 </TextInput>
+
+
             </View>
         );
     }
@@ -47,17 +52,14 @@ export default class FormCell extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-    formCellView:{
-        width:screenWidth,
-        flexDirection:'row',
-        padding:12,
-        borderBottomColor:borderColor,
-        borderBottomWidth:1
+    formCellView: {
+        width: screenWidth,
+        flexDirection: 'row',
+        borderBottomColor: borderColor,
+        borderBottomWidth: StyleSheet.hairlineWidth,
     },
-    cellTitle:{
-
-    },
-    cellInput:{
-        marginLeft:10
+    cellTitle: {},
+    cellInput: {
+        marginLeft: 10
     }
 });

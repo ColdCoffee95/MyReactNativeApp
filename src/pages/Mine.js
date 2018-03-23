@@ -111,7 +111,7 @@ export default class Mine extends Component<Props> {
         let orderTypeList = [];
         this.state.orderTypeList.map(value => {
             orderTypeList.push(
-                <View style={styles.orderItemView}>
+                <View style={styles.orderItemView} key={value.id}>
                     <Image
                         style={styles.orderImg}
                         resizeMode='contain'
@@ -126,7 +126,8 @@ export default class Mine extends Component<Props> {
             toolList.push(
                 <TouchableHighlight
                     underlayColor='#fff'
-                    onPress={() => this.jumpToTools(value.id)}>
+                    onPress={() => this.jumpToTools(value.id)}
+                    key={value.id}>
                     <View style={styles.toolItemView}>
                         <Image
                             style={styles.toolImg}

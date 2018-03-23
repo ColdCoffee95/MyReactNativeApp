@@ -31,10 +31,10 @@ export default class AddressPicker extends Component<Props> {
     render() {
         return (
             <View style={styles.formCellView}>
-                <Text style={{width:this.props.labelWidth?this.props.labelWidth:60}}>{this.props.title}</Text>
-                <View style={{marginLeft:10,width:this.props.labelWidth?(screenWidth-this.props.labelWidth):(screenWidth-60)}}>
+                <Text style={{marginLeft:10,lineHeight:41,height: 41,width:this.props.labelWidth?this.props.labelWidth:60}}>{this.props.title}</Text>
+                <View style={{height: 41,marginLeft:10,width:this.props.labelWidth?(screenWidth-this.props.labelWidth-20):(screenWidth-80)}}>
                     <TouchableHighlight onPress={()=>this.pickerShow()} underlayColor='#fff'>
-                        <Text style={{color:'#c8c8c8'}}>请选择地址</Text>
+                        <Text style={{color:'#c8c8c8',lineHeight:41,marginLeft:5}}>请选择地址</Text>
                     </TouchableHighlight>
                 </View>
             </View>
@@ -84,9 +84,8 @@ const styles = StyleSheet.create({
     formCellView:{
         width:screenWidth,
         flexDirection:'row',
-        padding:12,
         borderBottomColor:borderColor,
-        borderBottomWidth:1
+        borderBottomWidth:StyleSheet.hairlineWidth,
     },
     addressView:{
 

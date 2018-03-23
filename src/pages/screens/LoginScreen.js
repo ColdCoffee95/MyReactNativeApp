@@ -41,12 +41,14 @@ export default class LoginScreen extends Component<Props> {
                     onChangeText={(text) => this.setState({loginId: text})}
                     keyboardType={'numeric'}
                     maxLength={11}
+                    underlineColorAndroid='transparent'
                 />
                 <TextInput
                     style={styles.password}
                     placeholder="请输入密码"
                     secureTextEntry={true}
                     onChangeText={(text) => this.setState({pwd: text})}
+                    underlineColorAndroid='transparent'
                 />
                 <Button
                     onPress={() => this.login()}

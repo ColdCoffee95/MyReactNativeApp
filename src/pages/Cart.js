@@ -51,16 +51,6 @@ export default class Cart extends Component<Props> {
             </View>
         );
     }
-
-    login() {
-        let params = {
-            loginId: this.state.loginId,
-            pwd: this.state.pwd
-        };
-        HttpUtils.post('/login/doLogin', params, data => {
-            this.props.navigator.navigate('IndexPage')
-        })
-    }
 }
 
 const styles = StyleSheet.create({

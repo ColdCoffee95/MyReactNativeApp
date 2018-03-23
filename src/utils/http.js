@@ -60,14 +60,16 @@ export default class HttpUtils {
     }
 
     static async post(url, params, callback) {
-        await fetch(baseUrl + url, {
+        let loginState = await this.getLoginState();
+        let userInfo = await this.getUserInfo();
+        fetch(baseUrl + url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'isValidate': 1,
-                'token': storage.load({key: 'loginState'}).then(res => res.token) || '',
-                'memberId': storage.load({key: 'loginState'}).then(res => res.memberId) || '',
+                'isValidate': userInfo.authentication == 1 ? 1 : 0,
+                'token': loginState.token || '',
+                'memberId': loginState.memberId || '',
             },
             body: JSON.stringify(params)
         })

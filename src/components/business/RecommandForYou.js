@@ -103,7 +103,7 @@ export default class RecommandForYou extends Component<Props> {
                     renderItem={this._renderItem}
                     ListFooterComponent={this._renderFooter.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
-                    onEndReachedThreshold={0.1}
+                    onEndReachedThreshold={0.5}
                     refreshing={this.state.isLoading}
                     numColumns={2}
                 />
