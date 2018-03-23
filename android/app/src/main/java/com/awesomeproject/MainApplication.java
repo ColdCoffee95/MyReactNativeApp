@@ -3,18 +3,9 @@ package com.awesomeproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.beefe.picker.PickerViewPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.react.rnspinkit.RNSpinkitPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.react.rnspinkit.RNSpinkitPackage;
-import com.beefe.picker.PickerViewPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.react.rnspinkit.RNSpinkitPackage;
-import com.beefe.picker.PickerViewPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -36,8 +27,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new PickerPackage(),
+            new VectorIconsPackage(),
             new RNSpinkitPackage(),
+            new PickerPackage(),
             new PickerViewPackage()
       );
     }

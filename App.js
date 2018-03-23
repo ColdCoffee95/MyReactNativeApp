@@ -17,6 +17,11 @@ import Feedback from './src/pages/user/Feedback';
 
 import ManageAddress from './src/pages/address/ManageAddress';
 import AddAddress from './src/pages/address/AddAddress';
+import ManageCrossAddress from './src/pages/address/ManageCrossAddress';
+import AddCrossAddress from './src/pages/address/AddCrossAddress';
+
+import ManageCertification from './src/pages/certification/ManageCertification';
+import AddCertification from './src/pages/certification/AddCertification';
 const styles = StyleSheet.create({
     headerStyles: {
         backgroundColor: '#fd4a70'
@@ -114,6 +119,50 @@ const SimpleApp = StackNavigator({
         },
 
     },
+    ManageCrossAddress:{
+        screen: ManageCrossAddress,
+        navigationOptions: {
+            title: '跨境地址管理',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        }
+    },
+    AddCrossAddress:{
+        screen: AddCrossAddress,
+        navigationOptions: {
+            title: '添加跨境地址',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        },
 
+    },
+    ManageCertification:{
+        screen: ManageCertification,
+        navigationOptions: {
+            title: '实名认证管理',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        }
+    },
+    AddCertification:{
+        screen: AddCertification,
+        navigationOptions: {
+            title: '添加实名认证',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        },
+    },
 });
 module.exports = SimpleApp;

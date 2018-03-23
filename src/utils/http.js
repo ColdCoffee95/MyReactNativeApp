@@ -1,4 +1,3 @@
-const baseUrl = 'http://api.metchange.com/api';
 const successCode = 10000;
 export default class HttpUtils {
     static getLoginState() {
@@ -41,7 +40,7 @@ export default class HttpUtils {
         let loginState = await this.getLoginState();
         let userInfo = await this.getUserInfo();
         //fetch请求
-        fetch(baseUrl + url, {
+        fetch(serverUrl + url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -62,7 +61,7 @@ export default class HttpUtils {
     static async post(url, params, callback) {
         let loginState = await this.getLoginState();
         let userInfo = await this.getUserInfo();
-        fetch(baseUrl + url, {
+        fetch(serverUrl + url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -75,6 +74,7 @@ export default class HttpUtils {
         })
             .then((response) => response.json())
             .then((responseJSON) => {
+            console.warn(responseJSON.code)
                 switch (responseJSON.code) {
                     case successCode:
                         callback(responseJSON);

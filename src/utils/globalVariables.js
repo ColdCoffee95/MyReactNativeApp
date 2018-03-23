@@ -22,4 +22,5 @@ global.screenHeight = Dimensions.get('window').height;
 global.HttpUtils = HttpUtils;
 global.version = '1.3.2';
 global.hotline = '0571-28218551';
-global.serverUrl = 'http://api.metchange.com/api';
+global.serverUrl = 'http://192.168.41.78:9003/api';
+global.imgDomain = 'http://dianlijiheoss.metchange.com/';

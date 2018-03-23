@@ -34,7 +34,7 @@ export default class AddressPicker extends Component<Props> {
                 <Text style={{marginLeft:10,lineHeight:41,height: 41,width:this.props.labelWidth?this.props.labelWidth:60}}>{this.props.title}</Text>
                 <View style={{height: 41,marginLeft:10,width:this.props.labelWidth?(screenWidth-this.props.labelWidth-20):(screenWidth-80)}}>
                     <TouchableHighlight onPress={()=>this.pickerShow()} underlayColor='#fff'>
-                        <Text style={{color:'#c8c8c8',lineHeight:41,marginLeft:5}}>请选择地址</Text>
+                        <Text style={{color:'#c8c8c8',lineHeight:41}}>请选择地址</Text>
                     </TouchableHighlight>
                 </View>
             </View>

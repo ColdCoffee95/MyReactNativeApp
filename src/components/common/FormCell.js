@@ -25,19 +25,24 @@ export default class FormCell extends Component<Props> {
     render() {
         return (
             <View style={styles.formCellView}>
-                <Text style={{marginLeft:10,lineHeight:41,height: 41,width: this.props.labelWidth ? this.props.labelWidth : 60}}>{this.props.title}</Text>
+                <Text style={{
+                    marginLeft: 10,
+                    lineHeight: 41,
+                    height: 41,
+                    width: this.props.labelWidth ? this.props.labelWidth : 60
+                }}>{this.props.title}</Text>
                 <TextInput
                     style={{
                         marginLeft: 10,
                         height: 41,
-                        width: this.props.labelWidth ? (screenWidth - this.props.labelWidth-20) : (screenWidth - 80)
+                        width: this.props.labelWidth ? (screenWidth - this.props.labelWidth - 20) : (screenWidth - 80)
                     }}
                     autoFocus={this.props.autoFocus}
                     keyboardType={this.props.keyboardType}
                     maxLength={this.props.maxLength}
                     underlineColorAndroid='transparent'
                     secureTextEntry={this.props.secureTextEntry}
-                    onChangeText={(text) => this.setState({sugMessage: text})}
+                    onChangeText={(text) => this.props.onChange(text)}
                     placeholder={this.props.placeholder}>
                 </TextInput>
 

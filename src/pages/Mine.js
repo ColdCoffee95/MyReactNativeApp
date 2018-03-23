@@ -199,13 +199,19 @@ export default class Mine extends Component<Props> {
                 this.props.navigation.navigate('Settings');
                 break;
             case 3://会员中心
-                this.refs.toast.show('此功能暂未开放，敬请期待!',500);
+                toast.show('此功能暂未开放，敬请期待!',500);
                 break;
             case 4://意见反馈
                 this.props.navigation.navigate('Feedback');
                 break;
-            case 5://
+            case 5://大贸地址
                 this.props.navigation.navigate('ManageAddress');
+                break;
+            case 6://跨境地址
+                this.props.navigation.navigate('ManageCrossAddress');
+                break;
+            case 7://实名认证
+                this.props.navigation.navigate('ManageCertification');
                 break;
         }
     }
