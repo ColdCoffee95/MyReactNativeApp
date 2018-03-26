@@ -32,7 +32,7 @@ export default class LoginScreen extends Component<Props> {
                     style={styles.logo}
                 />
                 <Text style={styles.version}>
-                    v1.3.0
+                    v1.4.1
                 </Text>
                 <TextInput
                     style={styles.phone}

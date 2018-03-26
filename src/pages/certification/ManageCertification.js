@@ -11,10 +11,13 @@ import {
     TouchableHighlight,
     Linking,
     TextInput,
+    Alert,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ActiveButton from '../../components/common/ActiveButton'
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+import Toast, {DURATION} from 'react-native-easy-toast';
+import ActiveButton from '../../components/common/ActiveButton';
 
 type Props = {};
 
@@ -39,17 +42,34 @@ export default class ManageCertification extends Component<Props> {
                     <Text style={styles.contacts}>{value.contacts}</Text>
                     <Text style={styles.idCard}>{value.idCard}</Text>
                     <View style={styles.operate}>
-                        <View>
-                            <Text style={styles.defaultOperate}>默认实名信息</Text>
-                        </View>
+                        <TouchableHighlight
+                            onPress={() => this.setDefaultCertification(value.id)}
+                            underlayColor='#fff'>
+                            <View style={styles.defaultView}>
+                                {
+                                    value.defaults ?
+                                        (<Icon name="check-circle" size={16} color={activeColor}></Icon>) :
+                                        (<Icon2 name="checkbox-blank-circle-outline" size={16}></Icon2>)
+                                }
+
+
+                                <Text style={styles.defaultOperate}>默认实名信息</Text>
+                            </View>
+                        </TouchableHighlight>
+
                         <View style={styles.editDeleteView}>
-                            <View>
-                                <Icon name="address-book" size={40}></Icon>
-                                <Text>编辑</Text>
-                            </View>
-                            <View>
-                                <Text>删除</Text>
-                            </View>
+                            {/*<View style={styles.editView}>*/}
+                            {/*<Icon name="edit" size={20}></Icon>*/}
+                            {/*<Text style={styles.editText}>编辑</Text>*/}
+                            {/*</View>*/}
+                            <TouchableHighlight
+                                onPress={() => this.deleteCertification(value.id)}
+                                underlayColor='#fff'>
+                                <View style={styles.editView}>
+                                    <Icon name="trash" size={16}></Icon>
+                                    <Text style={styles.editText}>删除</Text>
+                                </View>
+                            </TouchableHighlight>
                         </View>
                     </View>
                 </View>
@@ -60,6 +80,7 @@ export default class ManageCertification extends Component<Props> {
                 <View>
                     {certificationList}
                 </View>
+                <Toast ref='toast' position='center'></Toast>
                 <View style={styles.bottomBtnView}>
                     <ActiveButton clickBtn={() => this.addAddress()} text='添加实名认证'
                                   style={styles.activeButton}></ActiveButton>
@@ -70,13 +91,40 @@ export default class ManageCertification extends Component<Props> {
 
     async fetchData() {
         HttpUtils.get('/idCard/selectIdCardList', {}, data => {
-            console.warn(data.data)
             this.setState({certificationList: data.data});
         })
     }
 
-    submit() {
-        alert('13')
+    setDefaultCertification(id) {//设为默认
+        HttpUtils.get('/idCard/setIdCardDefaultsById', {id: id}, data => {
+            let defaultCrossAddress = this.state.certificationList.find(n => n.id === id);
+            console.warn(defaultCrossAddress)
+            storage.save({
+                key: 'defaultCrossAddress',
+                data: defaultCrossAddress
+            });
+            this.refs.toast.show('设置成功!', 10);
+            this.fetchData();
+        })
+    }
+
+    deleteCertification(id) {
+        Alert.alert(null, '删除后将无法恢复，确认删除？',
+            [
+                {
+                    text: "确定", onPress: () => {
+                        HttpUtils.get('/idCard/deleteIdCardById', {id: id}, data => {
+                            this.refs.toast.show('删除成功!', 10);
+                            this.fetchData();
+                        })
+                    }
+                },
+                {
+                    text: "取消", onPress: () => {}
+                },
+            ],
+            { cancelable: false }
+            )
     }
 
     addAddress() {
@@ -95,7 +143,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         paddingTop: 10,
-        paddingBottom: 10,
+        paddingBottom: 8,
         width: screenWidth,
         marginBottom: 10
     },
@@ -103,13 +151,26 @@ const styles = StyleSheet.create({
     operate: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 5
+        marginTop: 8
     },
     defaultOperate: {
-        color: activeColor
+        color: activeColor,
+        marginLeft: 5
+    },
+    defaultView: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     editDeleteView: {
         flexDirection: 'row',
+    },
+    editView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 10
+    },
+    editText: {
+        marginLeft: 5
     },
     idCard: {
         borderBottomColor: borderColor,

@@ -74,7 +74,6 @@ export default class HttpUtils {
         })
             .then((response) => response.json())
             .then((responseJSON) => {
-            console.warn(responseJSON.code)
                 switch (responseJSON.code) {
                     case successCode:
                         callback(responseJSON);

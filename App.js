@@ -11,6 +11,9 @@ import LoginScreen from './src/pages/screens/LoginScreen';
 import RegisterScreen from './src/pages/screens/RegisterScreen';
 import ForgetPwdScreen from './src/pages/screens/ForgetPwdScreen';
 
+import GoodsList from './src/pages/goods/GoodsList';
+import GoodsDetail from './src/pages/goods/GoodsDetail';
+
 import Hotline from './src/pages/user/Hotline';
 import Settings from './src/pages/user/Settings';
 import Feedback from './src/pages/user/Feedback';
@@ -157,6 +160,28 @@ const SimpleApp = StackNavigator({
         screen: AddCertification,
         navigationOptions: {
             title: '添加实名认证',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        },
+    },
+    GoodsList:{
+        screen: GoodsList,
+        navigationOptions: {
+            title: '商品列表',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        },
+    },
+    GoodsDetail:{
+        screen: GoodsDetail,
+        navigationOptions: {
+            title: '商品详情',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
             headerBackTitle:null,

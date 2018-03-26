@@ -13,7 +13,6 @@ import {
 
     View
 } from 'react-native';
-// import Picker from 'react-native-picker'
 import HttpUtils from "../../utils/http";
 type Props = {};
 
@@ -37,6 +36,7 @@ export default class AddressPicker extends Component<Props> {
                         <Text style={{color:'#c8c8c8',lineHeight:41}}>请选择地址</Text>
                     </TouchableHighlight>
                 </View>
+
             </View>
         );
     }

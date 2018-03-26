@@ -9,6 +9,7 @@ import {
     StyleSheet,
     Button,
     Image,
+    ScrollView,
     Text,
     TextInput,
     View

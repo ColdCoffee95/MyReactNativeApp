@@ -48,7 +48,7 @@ export default class Category extends Component<Props> {
         let rightArr = [];
         let leftIndex = this.state.catList.findIndex(n => n.id === this.state.currentLeftId);
 
-        if(!this.state.rightLoading){
+        if (!this.state.rightLoading) {
             rightArr.push(
                 <View style={styles.rightCatView} key={0}>
                     <View style={styles.rightCatImgView}>
@@ -64,16 +64,20 @@ export default class Category extends Component<Props> {
             );
             catList[leftIndex].children.map(value => {
                 rightArr.push(
-                    <View style={styles.rightCatView} key={value.id}>
-                        <View style={styles.rightCatImgView}>
-                            <Image
-                                style={styles.rightCatImg}
-                                source={{uri: value.img}}
-                                resizeMode='contain'
-                            />
+                    <TouchableHighlight
+                        underlayColor='#fff'
+                        onPress={() => this.clickCategory(value.parentId, value.id)}>
+                        <View style={styles.rightCatView} key={value.id}>
+                            <View style={styles.rightCatImgView}>
+                                <Image
+                                    style={styles.rightCatImg}
+                                    source={{uri: value.img}}
+                                    resizeMode='contain'
+                                />
+                            </View>
+                            <Text style={styles.rightCatName} numberOfLines={1}>{value.name}</Text>
                         </View>
-                        <Text style={styles.rightCatName} numberOfLines={1}>{value.name}</Text>
-                    </View>
+                    </TouchableHighlight>
                 )
             });
         }
@@ -123,6 +127,10 @@ export default class Category extends Component<Props> {
             });
             this.getSecondCategories(data.data[0].id);//获取第一个分类的子分类
         })
+    }
+
+    clickCategory(parentId, id) {//点击分类
+        this.props.navigation.navigate('GoodsList', {id: parentId, secondId: id});
     }
 
     getSecondCategories(catId) {//获取二级分类

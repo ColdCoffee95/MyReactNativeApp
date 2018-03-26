@@ -92,7 +92,7 @@ const mainPage = TabNavigator({
     animationEnabled: true, // 切换页面时不显示动画
     tabBarPosition: 'bottom', // 显示在底端，android 默认是显示在页面顶端的
     swipeEnabled: false, // 禁止左右滑动
-    backBehavior: 'none', // 按 back 键是否跳转到第一个 Tab， none 为不跳转
+    backBehavior: true, // 按 back 键是否跳转到第一个 Tab， none 为不跳转
     tabBarOptions: {
         activeTintColor: '#fd4a70', // 文字和图片选中颜色
         inactiveTintColor: '#999', // 文字和图片默认颜色
@@ -100,11 +100,12 @@ const mainPage = TabNavigator({
         indicatorStyle: {height: 0}, // android 中TabBar下面会显示一条线，高度设为 0 后就不显示线了， 不知道还有没有其它方法隐藏？？？
         style: {
             backgroundColor: '#fff', // TabBar 背景色
-            height: 56
+            height: 56,
+            justifyContent:'center'
         },
         labelStyle: {
             fontSize: 12, // 文字大小,
-            marginBottom: 6,
+            marginTop: 0,
         },
     },
 });

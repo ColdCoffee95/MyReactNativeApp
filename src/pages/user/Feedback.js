@@ -13,7 +13,7 @@ import {
     TextInput,
     View
 } from 'react-native';
-import ScrollableTabView from 'react-native-scrollable-tab-view'
+import ScrollableTabView,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import ImagePicker from 'react-native-image-crop-picker'
 import ActiveButton from '../../components/common/ActiveButton'
 
@@ -68,6 +68,7 @@ export default class Feedback extends Component<Props> {
         return (
             <View style={styles.container}>
                 <ScrollableTabView
+                    renderTabBar={() => <ScrollableTabBar />}
                     style={{marginTop: 10, marginBottom: 0}}
                     tabBarActiveTextColor={activeColor}
                     tabBarUnderlineStyle={styles.underlineStyle}
@@ -92,7 +93,7 @@ export default class Feedback extends Component<Props> {
                     </View>
                     <View tabLabel='咨询投诉' style={styles.consult}>
                         <Text style={styles.text}>商品/商家投诉，请拨打店力集盒客服电话</Text>
-                        <TouchableHighlight onPress={() => this.callPhone()}>
+                        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.callPhone()}>
                             <View style={styles.hotlineView}>
                                 <Text>{hotline}</Text>
                             </View>
@@ -165,9 +166,9 @@ const styles = StyleSheet.create({
     },
     textInput: {
         width: screenWidth * 0.9,
-        height: 100,
         borderWidth: 1,
         borderColor: '#e9e9e9',
+        lineHeight:30,
         padding: 10
     },
     submitView: {
