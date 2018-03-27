@@ -44,7 +44,7 @@ export default class Home extends Component<Props> {
             this.setState({
                 visibleSwiper: true
             });
-        }, 100);
+        }, 1);
     }
     render() {
         if (this.state.visibleSwiper) {

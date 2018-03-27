@@ -26,15 +26,13 @@ export default class ActiveButton extends Component<Props> {
 
     render() {
         return (
-            <View style={styles.btnContainer}>
                 <TouchableHighlight
                     onPress={()=>this.props.clickBtn()}
                     underlayColor='#fff'>
                     <View style={this.props.style?this.props.style:styles.submitView}>
-                        <Text style={styles.submitText}>{this.props.text}</Text>
+                        <Text style={this.props.textStyle?this.props.textStyle:styles.submitText}>{this.props.text}</Text>
                     </View>
                 </TouchableHighlight>
-            </View>
         );
     }
 

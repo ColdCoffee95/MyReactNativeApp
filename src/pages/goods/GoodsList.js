@@ -15,12 +15,11 @@ import {
     Image,
     View
 } from 'react-native';
-import {DrawerNavigator} from "react-navigation";
-import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view'
-import SideMenu from 'react-native-side-menu'
+import Drawer from "react-native-drawer";
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {LargeList} from 'react-native-largelist'
+
 import GoodsSideMenu from '../../components/business/GoodsSideMenu'
-import {Drawer} from 'teaset'
-import ActiveButton from '../../components/common/ActiveButton'
 type Props = {};
 
 export default class GoodsList extends Component<Props> {
@@ -30,19 +29,26 @@ export default class GoodsList extends Component<Props> {
         this.state = {
             sideMenuOpening: false,
             isLoading: true,
-            firstCategories: [],
-            secondCategories: [],
-            currentFirstId: '',//右侧筛选中暂时的id
-            currentSecondIds: [],//右侧筛选中暂时的id
+            loadingMore:false,//是否在下拉加载中
             goodsList: [],
             firstCatId: "",
             secondCatIds: [],
             brandIds: [],
             keyword: "",
             pageSize: 5,
-            pageNo: 0,
+            pageNo: 1,
             type: 1,
+            allLoadCompleted: false,//是否全部加载完
+            totalNum: 1,
+            totalPages:1
         }
+    }
+
+    componentDidMount() {
+        this.state.firstCatId = this.props.navigation.state.params.id || '';
+        this.state.secondCatIds = this.props.navigation.state.params.secondId ?
+            [this.props.navigation.state.params.secondId] : []
+        this.fetchData();
     }
 
     render() {
@@ -50,130 +56,174 @@ export default class GoodsList extends Component<Props> {
         if (this.state.isLoading) {
             goodsList = <ActivityIndicator style={styles.loadingStyle}></ActivityIndicator>
         } else {
-            goodsList = [];
-            this.state.goodsList.map(value => {
-                goodsList.push(
-                    <View style={styles.goodsView}>
-                        <View style={styles.goodsImgView}>
-                            <Image
-                                style={styles.goodsImg}
-                                resizeMode='contain'
-                                source={{uri: value.img + '?imageView2/1/w/200/h/200'}}
-                            />
-                        </View>
-                        <View style={styles.goodsInfoView}>
-                            <View style={styles.goodsTitleView}>
-                                <Text numberOfLines={2}>{value.title}</Text>
-                            </View>
-                            <View style={styles.goodsPriceView}>
-                                <Text style={styles.goodsPrice}>{value.marketPrice}</Text>
-                                <Text style={styles.goodsTrade}>{value.tradeName}</Text>
-                            </View>
-                        </View>
-                    </View>
-                )
-            });
+            goodsList = <LargeList
+                ref={ref => this.largeList = ref}
+                style={{width: screenWidth, height: screenHeight - 100}}
+                onLoadMore={() => this.loadMore()}
+                safeMargin={600}
+                numberOfSections={()=>1}
+                numberOfRowsInSection={() => this.state.goodsList.length}
+                allLoadCompleted={this.state.allLoadCompleted}
+                renderCell={this.renderItem.bind(this)}
+                heightForCell={() => 120}
+                renderEmpty={() =>
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginTop: 50
+                        }}
+                    >
+                        <Image
+                            style={{width: 100, height: 100}}
+                            resizeMode='contain'
+                            source={require('../../images/no-order.jpg')}
+                        />
+                    </View>}
+            />
         }
+
         return (
-            <View style={styles.container}>
-                <ScrollableTabView
-                    renderTabBar={() => <ScrollableTabBar />}
-                    style={{marginTop: 10, marginBottom: 0}}
-                    tabBarActiveTextColor={activeColor}
-                    tabBarUnderlineStyle={styles.underlineStyle}
-                    initialPage={0}
-                    onChangeTab={(index) => this.changeTab(index)}
-                    scrollWithoutAnimation={true}
-                >
-                    <View tabLabel='人气' style={styles.consult}>
-                        {goodsList}
+            <Drawer
+                type="overlay"
+                ref={(ref) => this._drawer = ref}
+                content={<GoodsSideMenu
+                    firstId={this.props.navigation.state.params.id || ''}
+                    secondIds={this.props.navigation.state.params.secondId ?
+                        [this.props.navigation.state.params.secondId] : []}
+                    sureBtn={(obj) => this.sureBtn(obj)}/>}
+                openDrawerOffset={0.2}
+                panCloseMask={0.2}
+                side="right"
+                tapToClose={true}
+                styles={{
+                    mainOverlay: {
+                        backgroundColor: 'black',
+                        opacity: 0,
+                    },
+                }}
+                tweenHandler={(ratio) => ({
+                    mainOverlay: {
+                        opacity: ratio / 2,
+                    }
+                })}
+            >
+                <View style={styles.container}>
+                    <View style={styles.tabView}>
+                        <TouchableHighlight
+                            onPress={() => this.changeTab(1)}
+                            underlayColor='#fff'>
+                            <View style={styles.singleTab}>
+                                <Text style={this.state.type === 1 ? styles.activeTab : styles.negativeTab}>人气</Text>
+                            </View>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            onPress={() => this.changeTab(2)}
+                            underlayColor='#fff'>
+                            <View style={styles.singleTab}>
+                                <Text style={this.state.type === 2 ? styles.activeTab : styles.negativeTab}>销量</Text>
+                            </View>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            onPress={() => this.changeTab(3)}
+                            underlayColor='#fff'>
+                            <View style={styles.singleTab}>
+                                <Text style={this.state.type === 3 ? styles.activeTab : styles.negativeTab}>新品</Text>
+                            </View>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            onPress={() => this.changeTab(4)}
+                            underlayColor='#fff'>
+                            <View style={styles.singleTab}>
+                                <Text style={this.state.type === 4 ? styles.activeTab : styles.negativeTab}>筛选</Text>
+                                <Icon name="filter" size={16}></Icon>
+                            </View>
+                        </TouchableHighlight>
                     </View>
-                    <View tabLabel='销量' style={styles.consult}>
-                        {goodsList}
-                    </View>
-                    <View tabLabel='新品' style={styles.consult}>
-                        {goodsList}
-                    </View>
-                    <View tabLabel='筛选' style={styles.consult}>
-                        {goodsList}
-                    </View>
-                </ScrollableTabView>
-            </View>
+                    {goodsList}
+                </View>
+            </Drawer>
+
         );
     }
 
+    sureBtn(obj) {//子组件筛选完成
+        this._drawer.close();
+        this.state.firstCatId = obj.firstId;
+        this.state.secondCatIds = obj.secondIds;
+        this.fetchData();
+    }
+
     changeTab(index) {
-        if (index.i === 3) {
-            this.openDrawer();
+        if (index === 4) {
+            this._drawer.open();
         } else {
-            this.state.type = index.i + 1;
+            this.state.type = index;
             this.fetchData();
         }
     }
 
-    async openDrawer() {//打开右侧筛选侧栏
-        let firstCategories = await this.getFirstCategories();
-        let renderFirstCategories = [];
-        firstCategories.map(value => {
-            renderFirstCategories.push(
-                <TouchableHighlight underlayColor='#fff' onPress={() => this.getSecondCategories(value.id)}>
-                    <View style={this.state.currentFirstId === value.id ? styles.activeFirst : styles.negativeFirst}>
-                        <Text
-                            style={this.state.currentFirstId === value.id ? styles.activeText : styles.negativeText}>{value.name}</Text>
-                    </View>
-                </TouchableHighlight>
-            )
-        });
-        let secondCategories = this.state.secondCategories;
-        let renderSecondCategories = [];
-        secondCategories.map(value => {
-            renderSecondCategories.push(
-                <TouchableHighlight underlayColor='#fff' onPress={() => this.getSecondCategories(value.id)}>
-                    <View
-                        style={this.state.currentSecondIds.indexOf(value.id) !== -1 ? styles.activeFirst : styles.negativeFirst}>
-                        <Text
-                            style={this.state.currentSecondIds.indexOf(value.id) !== -1 ? styles.activeText : styles.negativeText}>{value.name}</Text>
-                    </View>
-                </TouchableHighlight>
-            )
-        });
-        let sideMenu = <View style={styles.sideMenuView}>
-            <View>
-                <Text>类目</Text>
-                <View style={styles.catView}>
-                    {renderFirstCategories}
+    renderItem(section, row) {
+
+        let goods = this.state.goodsList[row];
+        if (goods) {
+            return (<View style={styles.goodsView} key={goods.id}>
+                <View style={styles.goodsImgView}>
+                    <Image
+                        style={styles.goodsImg}
+                        resizeMode='contain'
+                        source={{uri: goods.img + '?imageView2/1/w/200/h/200'}}
+                    />
                 </View>
-            </View>
-            <View>
-                <Text>分类</Text>
-                <View style={styles.catView}>
-                    {renderSecondCategories}
+                <View style={styles.goodsInfoView}>
+                    <View style={styles.goodsTitleView}>
+                        <Text numberOfLines={2}>{goods.title}</Text>
+                    </View>
+                    <View style={styles.goodsPriceView}>
+                        <Text style={styles.goodsPrice}>{goods.marketPrice}</Text>
+                        <Text style={styles.goodsTrade}>{goods.tradeName}</Text>
+                    </View>
                 </View>
-            </View>
-        </View>;
-        Drawer.open(sideMenu, 'right')
+            </View>)
+        }
+
+
     }
 
-    getFirstCategories() {//筛选侧栏里获取分类列表
-        return new Promise((resolve, reject) => {
-            if (this.state.firstCategories.length > 0) {
-                resolve(this.state.firstCategories);
-            } else {
-                HttpUtils.get('/goodsCat/catList', {catId: -1}, data => {
-                    this.setState({firstCategories: data.data});
-                })
+    loadMore() {
+        this.state.loadingMore = true;
+        let params = {
+            firstCatId: this.state.firstCatId,
+            secondCatIds: this.state.secondCatIds,
+            brandIds: this.state.brandIds,
+            keyword: this.state.keyword,
+            pageSize: this.state.pageSize,
+            pageNo: this.state.pageNo + 1,
+            type: this.state.type
+        };
+        console.warn('loadmoreparams',params)
+        HttpUtils.post('/goods/catBrandGoodsList', params, data => {
+            console.warn('loadMore',data.data.list)
+            if(data.data.isLastPage){
+                this.setState({
+                    allLoadCompleted: true,
+                });
             }
-        });
-    }
-
-    getSecondCategories(id) {//筛选侧栏点击第一级分类获取第二级分类
-        this.setState({currentFirstId: id});
-        HttpUtils.get('/goodsCat/catList', {catId: id}, data => {
-            this.setState({secondCategories: data.data});
+            this.state.goodsList.concat(data.data.list)
+            console.warn('goodslist',this.state.goodsList.length)
+            this.state.loadingMore = false;
+            this.forceUpdate();
+            this.largeList.reloadData();
         })
     }
 
-    fetchData() {
+    async fetchData() {
+
+        this.setState({
+            isLoading: true,
+            pageNo: 1,
+            pageSize: 5
+        });
         let params = {
             firstCatId: this.state.firstCatId,
             secondCatIds: this.state.secondCatIds,
@@ -183,11 +233,19 @@ export default class GoodsList extends Component<Props> {
             pageNo: 1,
             type: this.state.type
         };
+        console.warn('params',params)
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
-            console.warn(JSON.stringify(params))
+            console.warn('fetchData',data.data)
+            if(data.data.isLastPage){
+                this.setState({
+                    allLoadCompleted: true,
+                });
+            }
             this.setState({
                 goodsList: data.data.list,
-                isLoading: false
+                isLoading: false,
+                totalNum: data.data.total,
+                totalPages: data.data.pages
             });
         })
     }
@@ -195,6 +253,34 @@ export default class GoodsList extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+    openingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#ccc',
+        opacity: 0.1
+    },
+    tabView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 50,
+        width: screenWidth,
+        backgroundColor: whiteColor,
+        borderBottomWidth: 1,
+        borderBottomColor: borderColor
+    },
+    singleTab: {
+        width: screenWidth / 4,
+        height: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    activeTab: {
+        color: activeColor
+    },
+    negativeTab: {
+        color: '#444'
+    },
     container: {
         flex: 1,
         alignItems: 'center',
@@ -214,30 +300,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap'
     },
-    activeFirst: {
-        backgroundColor: '#fce7e9',
-        width: 60,
-        height: 30,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    negativeFirst: {
-        backgroundColor: '#f7f7f7',
-        width: 60,
-        height: 30,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    activeText: {
-        color: activeColor
-    },
-    negativeText: {
-        color: '#333'
-    },
+
     goodsView: {
         flexDirection: 'row',
-        borderBottomWidth: 1,
-        borderColor: borderColor,
         padding: 10
     },
     goodsImgView: {

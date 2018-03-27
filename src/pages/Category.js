@@ -50,17 +50,21 @@ export default class Category extends Component<Props> {
 
         if (!this.state.rightLoading) {
             rightArr.push(
-                <View style={styles.rightCatView} key={0}>
-                    <View style={styles.rightCatImgView}>
-                        <Image
-                            style={styles.rightCatImg}
-                            source={{uri: catList[leftIndex].img}}
-                            resizeMode='contain'
-                        />
-                    </View>
+                <TouchableHighlight
+                    underlayColor='#fff'
+                    onPress={() => this.clickCategory(this.state.currentLeftId, '')}>
+                    <View style={styles.rightCatView} key={0}>
+                        <View style={styles.rightCatImgView}>
+                            <Image
+                                style={styles.rightCatImg}
+                                source={{uri: catList[leftIndex].img}}
+                                resizeMode='contain'
+                            />
+                        </View>
 
-                    <Text style={styles.rightCatName}>全部</Text>
-                </View>
+                        <Text style={styles.rightCatName}>全部</Text>
+                    </View>
+                </TouchableHighlight>
             );
             catList[leftIndex].children.map(value => {
                 rightArr.push(
