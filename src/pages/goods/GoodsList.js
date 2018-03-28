@@ -57,15 +57,18 @@ export default class GoodsList extends Component<Props> {
             goodsList = <ActivityIndicator style={styles.loadingStyle}></ActivityIndicator>
         } else {
             goodsList = <LargeList
-                ref={ref => this.largeList = ref}
+                ref={ref => this.root = ref}
+                bounces={true}
+                safeMargin={screenHeight}
                 style={{width: screenWidth, height: screenHeight - 100}}
                 onLoadMore={() => this.loadMore()}
-                safeMargin={600}
+                refreshing={this.state.loadingMore}
                 numberOfSections={()=>1}
-                numberOfRowsInSection={() => this.state.goodsList.length}
+                numberOfRowsInSection={() => this.state.pageSize}
                 allLoadCompleted={this.state.allLoadCompleted}
                 renderCell={this.renderItem.bind(this)}
                 heightForCell={() => 120}
+                heightForLoadMore={() => 100}
                 renderEmpty={() =>
                     <View
                         style={{
@@ -191,7 +194,6 @@ export default class GoodsList extends Component<Props> {
     }
 
     loadMore() {
-        this.state.loadingMore = true;
         let params = {
             firstCatId: this.state.firstCatId,
             secondCatIds: this.state.secondCatIds,
@@ -201,19 +203,24 @@ export default class GoodsList extends Component<Props> {
             pageNo: this.state.pageNo + 1,
             type: this.state.type
         };
-        console.warn('loadmoreparams',params)
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
-            console.warn('loadMore',data.data.list)
-            if(data.data.isLastPage){
-                this.setState({
-                    allLoadCompleted: true,
-                });
-            }
-            this.state.goodsList.concat(data.data.list)
-            console.warn('goodslist',this.state.goodsList.length)
-            this.state.loadingMore = false;
+            // console.warn('loadMore',data.data.list)
+            this.state.goodsList = this.state.goodsList.concat(data.data.list);
             this.forceUpdate();
-            this.largeList.reloadData();
+            setTimeout(()=>{
+                this.root.reloadData();
+
+            },2000)
+            // if(data.data.isLastPage){
+            //     this.setState({
+            //         allLoadCompleted: true,
+            //     });
+            // }
+            // this.state.goodsList.concat(data.data.list)
+            // console.warn('goodslist',this.state.goodsList.length)
+            // this.state.loadingMore = false;
+            // this.forceUpdate();
+            // this.largeList.reloadData();
         })
     }
 
