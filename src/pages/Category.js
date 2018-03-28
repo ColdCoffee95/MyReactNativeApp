@@ -51,7 +51,7 @@ export default class Category extends Component<Props> {
         if (!this.state.rightLoading) {
             rightArr.push(
                 <TouchableHighlight
-                    underlayColor='#fff'
+                    underlayColor='#f2f2f2'
                     onPress={() => this.clickCategory(this.state.currentLeftId, '')}>
                     <View style={styles.rightCatView} key={0}>
                         <View style={styles.rightCatImgView}>
@@ -69,7 +69,7 @@ export default class Category extends Component<Props> {
             catList[leftIndex].children.map(value => {
                 rightArr.push(
                     <TouchableHighlight
-                        underlayColor='#fff'
+                        underlayColor='#f2f2f2'
                         onPress={() => this.clickCategory(value.parentId, value.id)}>
                         <View style={styles.rightCatView} key={value.id}>
                             <View style={styles.rightCatImgView}>

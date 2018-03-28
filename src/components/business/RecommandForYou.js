@@ -11,64 +11,83 @@ import {
     ActivityIndicator,
     View,
     FlatList,
-    Text
+    Text,
 } from 'react-native';
-type Props = {};
-let pageNo = 1;
-let totalPage = 5;
-let pageSize = 6;
+import Toast, {DURATION} from 'react-native-easy-toast';
 export default class RecommandForYou extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
             goodsList: [],
-            isLoading: true,
-            error: false,
-            errorInfo: '',
-            showFoot: 0, // 控制foot， 0：隐藏footer  1：已加载完成,没有更多数据   2 ：显示加载中
-            isRefreshing: false,//下拉控制
+            allLoadCompleted:false,
+            pageSize:10,
+            pageNo:1,
+            isLoading:false,
+            type:1
         }
     }
 
     componentDidMount() {
-        this.fetchData(pageNo)
+        this.fetchData()
     }
 
     render() {
-        if (this.state.isLoading) {
-            return this.renderLoadingView();
-        }
-        if (this.state.error) {
-            return this.renderErrorView();
-        } else {
-            return this.renderSuccessView();
-        }
-    }
+        return <View style={styles.container}>
+            <View style={styles.activityTitle}>
+                <Image style={styles.imageLogo} resizeMode='contain' source={require('../../images/tjlogo.png')}/>
+                <Image style={styles.imageTitle} resizeMode='contain' source={require('../../images/tjword.png')}/>
+            </View>
+            <FlatList
+                data={this.state.goodsList}
+                extraData={this.state}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderItem}
+                onEndReached={this._onEndReached.bind(this)}
+                onEndReachedThreshold={0.05}
+                numColumns={2}
 
-    async fetchData(pageNo) {
-        console.warn('123')
-        this.setState({
-            showFoot: 2,
-        });
+                ListEmptyComponent={() => <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: 50
+                    }}
+                >
+                    <Image
+                        style={{width: 100, height: 100}}
+                        resizeMode='contain'
+                        source={require('../../images/no-order.jpg')}
+                    />
+                </View>}
+            />
+            <Toast ref='toast' position='center'></Toast>
+        </View>
+    }
+    _onEndReached() {
+        if (this.state.allLoadCompleted) {
+            this.refs.toast.show('到底了',500)
+            return;
+        }
+        this.state.pageNo += 1;
         let params = {
-            type: 1, //1是人气排序
-            pageSize: pageSize,
-            pageNo: pageNo
+            pageSize: this.state.pageSize,
+            pageNo: this.state.pageNo,
+            type: this.state.type
         };
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
-            totalPage = data.data.pages;
-            let foot = 0;
-            if (pageNo >= data.data.pages) {
-                foot = 1;
+            console.warn('reached')
+            if (data.data.isLastPage) {
+                this.setState({
+                    allLoadCompleted: true,
+                });
             }
             this.setState({
                 goodsList: this.state.goodsList.concat(data.data.list),
-                showFoot: foot,
-                isLoading: false,
             });
         })
     }
 
+    _keyExtractor = (item, index) => item.id;
     _renderItem = ({item}) => (
         <View style={styles.singleGoods}>
             <View style={styles.goodsImgView}>
@@ -83,79 +102,34 @@ export default class RecommandForYou extends Component<Props> {
         </View>
     );
 
-    renderLoadingView() {
-        return <ActivityIndicator></ActivityIndicator>
-    }
-
-    renderErrorView() {
-
-    }
-
-    renderSuccessView() {
-        return (
-            <View style={styles.container}>
-                <View style={styles.activityTitle}>
-                    <Image style={styles.imageLogo} resizeMode='contain' source={require('../../images/tjlogo.png')}/>
-                    <Image style={styles.imageTitle} resizeMode='contain' source={require('../../images/tjword.png')}/>
-                </View>
-                <FlatList
-                    data={this.state.goodsList}
-                    renderItem={this._renderItem}
-                    ListFooterComponent={this._renderFooter.bind(this)}
-                    onEndReached={this._onEndReached.bind(this)}
-                    onEndReachedThreshold={0.5}
-                    refreshing={this.state.isLoading}
-                    numColumns={2}
-                />
-            </View>
-        );
-    }
-
-    _onEndReached() {
-        //如果是正在加载中或没有更多数据了，则返回
-        if (this.state.showFoot != 0) {
-            return;
-        }
-        //如果当前页大于或等于总页数，那就是到最后一页了，返回
-        if ((pageNo != 1) && (pageNo >= totalPage)) {
-            return;
-        } else {
-            pageNo++;
-        }
-
-        //获取数据
-        this.fetchData(pageNo);
-    }
-
-    _renderFooter() {
-        if (this.state.showFoot === 1) {
-            return (
-                <View style={{height: 30, alignItems: 'center', justifyContent: 'flex-start',}}>
-                    <Text style={{color: '#999999', fontSize: 14, marginTop: 5, marginBottom: 5,}}>
-                        没有更多数据了
-                    </Text>
-                </View>
-            );
-        } else if (this.state.showFoot === 2) {
-            return (
-                <View style={styles.footer}>
-                    <ActivityIndicator/>
-                    <Text>正在加载更多数据...</Text>
-                </View>
-            );
-        } else if (this.state.showFoot === 0) {
-            return (
-                <View style={styles.footer}>
-                    <Text></Text>
-                </View>
-            );
-        }
+    async fetchData() {
+        this.setState({
+            isLoading: true,
+            pageNo: 1,
+        });
+        let params = {
+            pageSize: 10,
+            pageNo: 1,
+            type: this.state.type
+        };
+        HttpUtils.post('/goods/catBrandGoodsList', params, data => {
+            if (data.data.isLastPage) {
+                this.setState({
+                    allLoadCompleted: true,
+                });
+            }
+            this.setState({
+                goodsList: data.data.list,
+                isLoading: false,
+            });
+        })
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        width:screenWidth,
     },
     activityTitle: {
         justifyContent: 'center',

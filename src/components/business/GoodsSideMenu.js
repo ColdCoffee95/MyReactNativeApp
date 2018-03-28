@@ -148,10 +148,9 @@ export default class GoodsSideMenu extends Component<Props> {
 
     clickFirstCat(id) {//筛选侧栏点击第一级分类获取第二级分类
         if (this.state.currentFirstId === id) {
-            alert('123')
             this.setState({currentFirstId: '', secondCategories: [], currentSecondIds: []});
         } else {
-            this.setState({currentFirstId: id});
+            this.setState({currentFirstId: id, currentSecondIds: []});
             HttpUtils.get('/goodsCat/catList', {catId: id}, data => {
                 this.setState({secondCategories: data.data});
             })

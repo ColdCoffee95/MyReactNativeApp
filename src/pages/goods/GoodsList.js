@@ -12,13 +12,12 @@ import {
     ActivityIndicator,
     Linking,
     TextInput,
+    FlatList,
     Image,
     View
 } from 'react-native';
 import Drawer from "react-native-drawer";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {LargeList} from 'react-native-largelist'
-
 import GoodsSideMenu from '../../components/business/GoodsSideMenu'
 type Props = {};
 
@@ -29,18 +28,16 @@ export default class GoodsList extends Component<Props> {
         this.state = {
             sideMenuOpening: false,
             isLoading: true,
-            loadingMore:false,//是否在下拉加载中
+            loadingMore: false,//是否在下拉加载中
             goodsList: [],
             firstCatId: "",
             secondCatIds: [],
             brandIds: [],
             keyword: "",
-            pageSize: 5,
+            pageSize: 10,
             pageNo: 1,
             type: 1,
             allLoadCompleted: false,//是否全部加载完
-            totalNum: 1,
-            totalPages:1
         }
     }
 
@@ -56,33 +53,31 @@ export default class GoodsList extends Component<Props> {
         if (this.state.isLoading) {
             goodsList = <ActivityIndicator style={styles.loadingStyle}></ActivityIndicator>
         } else {
-            goodsList = <LargeList
-                ref={ref => this.root = ref}
-                bounces={true}
-                safeMargin={screenHeight}
-                style={{width: screenWidth, height: screenHeight - 100}}
-                onLoadMore={() => this.loadMore()}
-                refreshing={this.state.loadingMore}
-                numberOfSections={()=>1}
-                numberOfRowsInSection={() => this.state.pageSize}
-                allLoadCompleted={this.state.allLoadCompleted}
-                renderCell={this.renderItem.bind(this)}
-                heightForCell={() => 120}
-                heightForLoadMore={() => 100}
-                renderEmpty={() =>
-                    <View
-                        style={{
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginTop: 50
-                        }}
-                    >
-                        <Image
-                            style={{width: 100, height: 100}}
-                            resizeMode='contain'
-                            source={require('../../images/no-order.jpg')}
-                        />
-                    </View>}
+            goodsList = <FlatList
+                data={this.state.goodsList}
+                extraData={this.state}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderItem}
+                onEndReached={this._onEndReached.bind(this)}
+                onEndReachedThreshold={0.2}
+                refreshing={true}
+                ItemSeparatorComponent={() => <View
+                    style={{backgroundColor: borderColor, height: 1}}
+                />}
+                ListFooterComponent={this._renderFooter.bind(this)}
+                ListEmptyComponent={() => <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: 50
+                    }}
+                >
+                    <Image
+                        style={{width: 100, height: 100}}
+                        resizeMode='contain'
+                        source={require('../../images/no-order.jpg')}
+                    />
+                </View>}
             />
         }
 
@@ -150,6 +145,74 @@ export default class GoodsList extends Component<Props> {
         );
     }
 
+    _renderFooter() {
+        if (this.state.loadingMore) {
+            return (<View>
+                <ActivityIndicator></ActivityIndicator>
+            </View>)
+        } else if (this.state.allLoadCompleted) {
+            return (<View style={{alignItems:'center'}}>
+                <Text>没有更多商品了</Text>
+            </View>)
+        } else {
+            return (<View></View>)
+        }
+    }
+
+    _onEndReached() {
+        if (this.state.allLoadCompleted || this.state.loadingMore) {
+            return;
+        }
+        this.setState({
+            loadingMore: true
+        });
+        this.state.pageNo += 1;
+        let params = {
+            firstCatId: this.state.firstCatId,
+            secondCatIds: this.state.secondCatIds,
+            brandIds: this.state.brandIds,
+            keyword: this.state.keyword,
+            pageSize: this.state.pageSize,
+            pageNo: this.state.pageNo,
+            type: this.state.type
+        };
+        HttpUtils.post('/goods/catBrandGoodsList', params, data => {
+            if (data.data.isLastPage) {
+                this.setState({
+                    allLoadCompleted: true,
+                });
+            }
+            this.setState({
+                goodsList: this.state.goodsList.concat(data.data.list),
+                loadingMore: false
+            });
+        })
+    }
+
+    _keyExtractor = (item, index) => item.id;
+    _renderItem = ({item}) => (
+        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.goodsDetail(item.id)}>
+            <View style={styles.goodsView} key={item.id}>
+                <View style={styles.goodsImgView}>
+                    <Image
+                        style={styles.goodsImg}
+                        resizeMode='contain'
+                        source={{uri: item.img + '?imageView2/1/w/200/h/200'}}
+                    />
+                </View>
+                <View style={styles.goodsInfoView}>
+                    <View style={styles.goodsTitleView}>
+                        <Text numberOfLines={2}>{item.title}</Text>
+                    </View>
+                    <View style={styles.goodsPriceView}>
+                        <Text style={styles.goodsPrice}>{item.marketPrice}</Text>
+                        <Text style={styles.goodsTrade}>{item.tradeName}</Text>
+                    </View>
+                </View>
+            </View>
+        </TouchableHighlight>
+    );
+
     sureBtn(obj) {//子组件筛选完成
         this._drawer.close();
         this.state.firstCatId = obj.firstId;
@@ -166,84 +229,27 @@ export default class GoodsList extends Component<Props> {
         }
     }
 
-    renderItem(section, row) {
-
-        let goods = this.state.goodsList[row];
-        if (goods) {
-            return (<View style={styles.goodsView} key={goods.id}>
-                <View style={styles.goodsImgView}>
-                    <Image
-                        style={styles.goodsImg}
-                        resizeMode='contain'
-                        source={{uri: goods.img + '?imageView2/1/w/200/h/200'}}
-                    />
-                </View>
-                <View style={styles.goodsInfoView}>
-                    <View style={styles.goodsTitleView}>
-                        <Text numberOfLines={2}>{goods.title}</Text>
-                    </View>
-                    <View style={styles.goodsPriceView}>
-                        <Text style={styles.goodsPrice}>{goods.marketPrice}</Text>
-                        <Text style={styles.goodsTrade}>{goods.tradeName}</Text>
-                    </View>
-                </View>
-            </View>)
-        }
-
-
-    }
-
-    loadMore() {
-        let params = {
-            firstCatId: this.state.firstCatId,
-            secondCatIds: this.state.secondCatIds,
-            brandIds: this.state.brandIds,
-            keyword: this.state.keyword,
-            pageSize: this.state.pageSize,
-            pageNo: this.state.pageNo + 1,
-            type: this.state.type
-        };
-        HttpUtils.post('/goods/catBrandGoodsList', params, data => {
-            // console.warn('loadMore',data.data.list)
-            this.state.goodsList = this.state.goodsList.concat(data.data.list);
-            this.forceUpdate();
-            setTimeout(()=>{
-                this.root.reloadData();
-
-            },2000)
-            // if(data.data.isLastPage){
-            //     this.setState({
-            //         allLoadCompleted: true,
-            //     });
-            // }
-            // this.state.goodsList.concat(data.data.list)
-            // console.warn('goodslist',this.state.goodsList.length)
-            // this.state.loadingMore = false;
-            // this.forceUpdate();
-            // this.largeList.reloadData();
-        })
+    goodsDetail(id) {
+        this.props.navigation.navigate('GoodsDetail', {id: id});
     }
 
     async fetchData() {
-
         this.setState({
             isLoading: true,
             pageNo: 1,
-            pageSize: 5
         });
         let params = {
             firstCatId: this.state.firstCatId,
             secondCatIds: this.state.secondCatIds,
             brandIds: this.state.brandIds,
             keyword: this.state.keyword,
-            pageSize: 5,
+            pageSize: this.state.pageSize,
             pageNo: 1,
             type: this.state.type
         };
-        console.warn('params',params)
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
-            console.warn('fetchData',data.data)
-            if(data.data.isLastPage){
+            console.warn('fetchData', data.data)
+            if (data.data.isLastPage) {
                 this.setState({
                     allLoadCompleted: true,
                 });
@@ -251,8 +257,6 @@ export default class GoodsList extends Component<Props> {
             this.setState({
                 goodsList: data.data.list,
                 isLoading: false,
-                totalNum: data.data.total,
-                totalPages: data.data.pages
             });
         })
     }
@@ -310,7 +314,9 @@ const styles = StyleSheet.create({
 
     goodsView: {
         flexDirection: 'row',
-        padding: 10
+        padding: 10,
+        width: screenWidth,
+        height: 120,
     },
     goodsImgView: {
         width: 100,
