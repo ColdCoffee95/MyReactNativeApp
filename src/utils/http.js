@@ -47,6 +47,8 @@ export default class HttpUtils {
                 'isValidate': userInfo.authentication == 1 ? 1 : 0,
                 'token': loginState.token || '',
                 'memberId': loginState.memberId || '',
+                'version':global.version,
+                'platform':global.platform
             },
         })
             .then((response) => response.json())
@@ -69,6 +71,8 @@ export default class HttpUtils {
                 'isValidate': userInfo.authentication == 1 ? 1 : 0,
                 'token': loginState.token || '',
                 'memberId': loginState.memberId || '',
+                'version':global.version,
+                'platform':global.platform
             },
             body: JSON.stringify(params)
         })

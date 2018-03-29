@@ -103,7 +103,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "1.4.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -138,6 +138,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-autoheight-webview')
+    compile project(':react-native-device-info')
     compile project(':react-native-spinkit')
     compile project(':react-native-picker')
     compile project(':react-native-image-crop-picker')
