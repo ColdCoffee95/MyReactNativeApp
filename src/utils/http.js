@@ -69,6 +69,8 @@ export default class HttpUtils {
                 'isValidate': userInfo.authentication == 1 ? 1 : 0,
                 'token': loginState.token || '',
                 'memberId': loginState.memberId || '',
+                'platformVersion':global.version,
+                'platform':global.platform
             },
             body: JSON.stringify(params)
         })

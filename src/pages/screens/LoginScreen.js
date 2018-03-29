@@ -14,8 +14,6 @@ import {
     View
 } from 'react-native';
 import CryptoJS from 'crypto-js'
-import HttpUtils from "../../utils/http";
-
 type Props = {};
 
 export default class LoginScreen extends Component<Props> {
@@ -79,6 +77,7 @@ export default class LoginScreen extends Component<Props> {
             pwd: CryptoJS.MD5(this.state.pwd).toString()
         };
         HttpUtils.post('/login/doLogin', params, data => {
+
             storage.save({
                 key: 'loginState',
                 data: {
@@ -87,7 +86,6 @@ export default class LoginScreen extends Component<Props> {
                 }
             });
             HttpUtils.get('/member/selectStoreMemberById', {}, data => {
-                console.warn(data.data)
                 storage.save({
                     key: 'userInfo', 
                     data: data.data

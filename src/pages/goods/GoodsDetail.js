@@ -16,7 +16,8 @@ import {
     Modal,
     WebView
 } from 'react-native';
-import MyHTMLView from '../../components/common/HTMLView';
+// import MyHTMLView from '../../components/common/HTMLView';
+import AutoHeightWebview from 'react-native-autoheight-webview'
 import Swiper from 'react-native-swiper'
 import ActiveButton from '../../components/common/ActiveButton'
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -65,7 +66,44 @@ export default class GoodsDetail extends Component<Props> {
                     tradeNameText = <Text style={{color: '#78E285'}}>一般贸易</Text>;
                     break;
             }
-            const htmlContent = `<html><head><style>img{width:100%;vertical-align:top}</style></head><body>${detail.goodsExtend.content}</body></html>`;
+
+            let basicAttrView = <View></View>;//基本属性view
+            let basicAttr = [];
+            // detail.goodsExtend.annex.map(value => {
+            //     basicAttr.push(
+            //         <View style={styles.basicAttrView}>
+            //             <Text style={styles.basicAttrName}>{value.name}</Text>
+            //             <Text style={styles.basicAttrValue}>{value.value}</Text>
+            //         </View>
+            //     )
+            // });
+            if (basicAttr.length > 0) {
+                basicAttrView = (<View>
+                    <Text style={styles.goodsSpecText}>商品规格</Text>
+                    {basicAttr}
+                </View>);
+            }
+
+            let goodsContentView = <View></View>;
+            if(detail.goodsExtend.content){
+                let htmlContent = `<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>${detail.goodsExtend.content}</body></html>`;
+                goodsContentView = <View  style={styles.goodsDescView}>
+                    <Text style={styles.goodsDescText}>商品描述</Text>
+                    <View style={styles.goodsDescHtmlView}>
+                        <AutoHeightWebview
+                            source={{html: htmlContent}}
+                            customStyle={`
+                                          img {
+                                            width:100%;
+                                            vertical-align:top
+                                          }
+                                        `}
+                        />
+                    </View>
+                </View>
+            }
+
+
             return (
                 <View contentContainerStyle={styles.container}>
                     <ScrollView contentContainerStyle={styles.scrollView}>
@@ -100,49 +138,28 @@ export default class GoodsDetail extends Component<Props> {
                             </View>
                         </View>
                         <View style={styles.goodsExtendView}>
-                            <View>
-                                <Text style={styles.goodsDescText}>商品描述</Text>
-                                <View style={styles.goodsDescHtmlView}>
-                                    {/*<MyHTMLView*/}
-                                        {/*content={htmlContent}*/}
-                                        {/*stylesheet={htmlStyles}*/}
-                                    {/*/>*/}
-                                    <WebView
-                                        style={{
-                                            backgroundColor: whiteColor,
-                                            width:screenWidth,
-                                            height:1000,
-                                        }}
-                                        scalesPageToFit={true}
-                                        scrollEnabled={true}
-                                        domStorageEnabled={true}
-                                        source={{html:htmlContent}}
-                                    />
-                                </View>
-
-                            </View>
-                            <View style={styles.goodsSpecView}>
-                                <Text>商品规格</Text>
-                            </View>
+                            {basicAttrView}
+                            {goodsContentView}
                         </View>
+
                     </ScrollView>
-                    {/*<View style={styles.bottomView}>*/}
-                    {/*<ActiveButton*/}
-                    {/*style={styles.addToCartBtn}*/}
-                    {/*textStyle={styles.addToCartText}*/}
-                    {/*text="加入进货单"*/}
-                    {/*clickBtn={() => this.addToCart()}>*/}
-                    {/*</ActiveButton>*/}
-                    {/*<ActiveButton*/}
-                    {/*style={styles.buyNowBtn}*/}
-                    {/*textStyle={styles.buyNowText}*/}
-                    {/*text="立即抢购"*/}
-                    {/*clickBtn={() => this.props.buyNow({*/}
-                    {/*firstId: this.state.currentFirstId,*/}
-                    {/*secondIds: this.state.currentSecondIds*/}
-                    {/*})}>*/}
-                    {/*</ActiveButton>*/}
-                    {/*</View>*/}
+                    <View style={styles.bottomView}>
+                        <ActiveButton
+                            style={styles.addToCartBtn}
+                            textStyle={styles.addToCartText}
+                            text="加入进货单"
+                            clickBtn={() => this.addToCart()}>
+                        </ActiveButton>
+                        <ActiveButton
+                            style={styles.buyNowBtn}
+                            textStyle={styles.buyNowText}
+                            text="立即抢购"
+                            clickBtn={() => this.props.buyNow({
+                                firstId: this.state.currentFirstId,
+                                secondIds: this.state.currentSecondIds
+                            })}>
+                        </ActiveButton>
+                    </View>
                 </View>
 
 
@@ -177,6 +194,8 @@ export default class GoodsDetail extends Component<Props> {
             detail.goodsExtend.annex = JSON.parse(detail.goodsExtend.annex);
 
             detail.goodsExtend.imgs = JSON.parse(detail.goodsExtend.imgs);
+            console.warn(detail);
+            console.warn(detail.goodsExtend.imgs);
             detail.nowImgs = [];
             detail.nowImgs.push({url: detail.nowSku.img});
             detail.goodsExtend.imgs.map(value => {
@@ -212,13 +231,13 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-start',
         alignItems: 'center',
-        flex: 1,
+        width:screenWidth,
+        height:screenHeight
 
     },
     scrollView: {
         backgroundColor: whiteColor,
-        // paddingLeft:15,
-        // paddingRight:15
+
     },
     swiper: {
         backgroundColor: whiteColor,
@@ -235,11 +254,14 @@ const styles = StyleSheet.create({
         width: screenWidth / 1.5,
         height: screenWidth / 1.5,
     },
-    goodsSimpleView: {},
+    goodsSimpleView: {
+        paddingLeft: 15,
+        paddingRight: 15
+    },
 
     titleText: {
-        color:'#444',
-        fontWeight:'bold'
+        color: '#444',
+        fontWeight: 'bold'
     },
     buyInfoView: {
         flexDirection: 'row',
@@ -266,18 +288,40 @@ const styles = StyleSheet.create({
         marginRight: 5
     },
     tradeNameView: {
-        backgroundColor: '#f7f7f7'
+        backgroundColor: '#f7f7f7',
+        paddingLeft:5,
+        paddingRight:5
     },
-
+    basicAttrView: {
+        flexDirection: 'row'
+    },
+    basicAttrName: {
+        width: 100,
+        color: '#ababab'
+    },
+    basicAttrValue: {
+        marginLeft: 20
+    },
     goodsExtendView: {
         marginTop: 15
     },
-    goodsDescText:{
-        color:'#444',
-        fontWeight:'bold'
+    goodsDescText: {
+        color: '#444',
+        fontWeight: 'bold',
+        paddingLeft: 15,
+        paddingRight: 15
     },
-    goodsDescHtmlView:{
-      marginTop:10
+    goodsDescHtmlView: {
+        marginTop: 10
+    },
+    goodsSpecText: {
+        color: '#444',
+        fontWeight: 'bold',
+        paddingLeft: 15,
+        paddingRight: 15
+    },
+    goodsSpecView: {
+        marginTop: 10
     },
 
     addToCartBtn: {
@@ -287,14 +331,14 @@ const styles = StyleSheet.create({
         backgroundColor: whiteColor,
         borderTopColor: borderColor,
         borderTopWidth: 1,
-        height: 30
+        height: 50
     },
     buyNowBtn: {
         width: screenWidth / 2,
         backgroundColor: activeColor,
         alignItems: 'center',
         justifyContent: 'center',
-        height: 30,
+        height: 50,
     },
     addToCartText: {
         color: activeColor
@@ -305,11 +349,11 @@ const styles = StyleSheet.create({
     bottomView: {
         position: 'absolute',
         width: screenWidth,
-        height: 10,
+        height: 50,
         backgroundColor: '#000',
         bottom: 0,
         left: 0,
-
+        right:0,
         flexDirection: 'row'
     }
 });
