@@ -26,7 +26,7 @@ export default class Hotline extends Component<Props> {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>商品/商家投诉，请拨打店力集盒客服电话</Text>
-                <TouchableHighlight onPress={() => this.callPhone()}>
+                <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.callPhone()}>
                     <View style={styles.hotlineView}>
                         <Text>{hotline}</Text>
                     </View>

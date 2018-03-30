@@ -9,6 +9,7 @@ import {
     StyleSheet,
     Image,
     ActivityIndicator,
+    TouchableHighlight,
     View,
     Text
 } from 'react-native';
@@ -50,14 +51,16 @@ export default class HomeCategory extends Component<Props> {
             let catImgList = [];
             this.state.catList.map(value => {
                 catImgList.push(
-                    <View style={styles.imgWrapper} key={value.id}>
-                        <Image
-                            style={styles.catImg}
-                            resizeMode='contain'
-                            source={{uri: value.img + '?imageView2/1/w/100/h/100'}}
-                        />
-                        <Text style={styles.catName}>{value.name}</Text>
-                    </View>
+                    <TouchableHighlight underlayColor='#f2f2f2' key={value.id} onPress={() => this.goodsList(value.id)}>
+                        <View style={styles.imgWrapper}>
+                            <Image
+                                style={styles.catImg}
+                                resizeMode='contain'
+                                source={{uri: value.img + '?imageView2/1/w/100/h/100'}}
+                            />
+                            <Text style={styles.catName}>{value.name}</Text>
+                        </View>
+                    </TouchableHighlight>
                 );
             });
             return <View style={styles.catWrapper}>
@@ -66,6 +69,10 @@ export default class HomeCategory extends Component<Props> {
         } else {
             return <ActivityIndicator style={styles.loadingStyle}></ActivityIndicator>
         }
+    }
+
+    goodsList(id){
+        this.props.navigation.navigate('GoodsList', {id: id});
     }
 }
 
@@ -100,7 +107,6 @@ const styles = StyleSheet.create({
     imgWrapper: {
         width: screenWidth / 4,
         alignItems: 'center',
-
     },
     catImg: {
 

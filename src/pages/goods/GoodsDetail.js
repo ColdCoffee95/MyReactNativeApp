@@ -44,22 +44,6 @@ export default class GoodsDetail extends Component<Props> {
                     </TouchableHighlight>
                 )
             });
-            let tradeNameText = null;
-            switch (detail.tradeType) {
-                case 1:
-                    tradeNameText = <Text style={{color: '#78E285'}}>一般贸易</Text>;
-                    break;
-                case 2:
-                    tradeNameText = <Text style={{color: '#C685FF'}}>保税区发货</Text>;
-                    break;
-                case 3:
-                    tradeNameText = <Text style={{color: '#6086DE'}}>海外直邮</Text>;
-                    break;
-                default:
-                    tradeNameText = <Text style={{color: '#78E285'}}>一般贸易</Text>;
-                    break;
-            }
-
             let basicAttrView = <View></View>;//基本属性view
             let basicAttr = [];
             // detail.goodsExtend.annex.map(value => {
@@ -78,9 +62,9 @@ export default class GoodsDetail extends Component<Props> {
             }
 
             let goodsContentView = <View></View>;
-            if(detail.goodsExtend.content){
+            if (detail.goodsExtend && detail.goodsExtend.content) {
                 let htmlContent = `<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>${detail.goodsExtend.content}</body></html>`;
-                goodsContentView = <View  style={styles.goodsDescView}>
+                goodsContentView = <View>
                     <Text style={styles.goodsDescText}>商品描述</Text>
                     <View style={styles.goodsDescHtmlView}>
                         <AutoHeightWebview
@@ -98,7 +82,7 @@ export default class GoodsDetail extends Component<Props> {
 
 
             return (
-                <View contentContainerStyle={styles.container}>
+                <View style={styles.container}>
                     <ScrollView contentContainerStyle={styles.scrollView}>
                         <Swiper style={styles.swiper} width={screenWidth} height={screenWidth}>
                             {swiperList}
@@ -116,7 +100,7 @@ export default class GoodsDetail extends Component<Props> {
                             </View>
                             <View style={styles.buyInfoView}>
                                 <View style={styles.tradeNameView}>
-                                    {tradeNameText}
+                                    <Text style={{color: this.getColor(detail.tradeType)}}>{detail.tradeName}</Text>
                                 </View>
                                 <View style={styles.shu}>
                                     <Text>|</Text>
@@ -167,6 +151,16 @@ export default class GoodsDetail extends Component<Props> {
 
     addToCart() {
 
+    }
+
+    getColor(type) {
+        let color = '#78E285';
+        cartTabList.map(value => {
+            if (value.id === type) {
+                color = value.color;
+            }
+        });
+        return color;
     }
 
     buyNow() {
@@ -224,9 +218,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-start',
         alignItems: 'center',
-        width:screenWidth,
-        height:screenHeight
-
+        flex:1
     },
     scrollView: {
         backgroundColor: whiteColor,
@@ -282,8 +274,8 @@ const styles = StyleSheet.create({
     },
     tradeNameView: {
         backgroundColor: '#f7f7f7',
-        paddingLeft:5,
-        paddingRight:5
+        paddingLeft: 5,
+        paddingRight: 5
     },
     basicAttrView: {
         flexDirection: 'row'
@@ -346,7 +338,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#000',
         bottom: 0,
         left: 0,
-        right:0,
+        right: 0,
         flexDirection: 'row'
     }
 });

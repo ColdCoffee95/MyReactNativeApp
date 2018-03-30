@@ -7,10 +7,8 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Button,
     Image,
-    Text,
-    TextInput,
+    TouchableHighlight,
     View
 } from 'react-native';
 type Props = {};
@@ -28,25 +26,61 @@ export default class PlatformPlate extends Component<Props> {
                     <Image style={styles.imageTitle} resizeMode='contain' source={require('../../images/ptword.png')}/>
                 </View>
                 <View style={styles.topTwoActivity}>
-                    <Image style={styles.topLeftImg} resizeMode='contain'
-                           source={require('../../images/plat1.png')}/>
-                    <Image style={styles.topRightImg} resizeMode='contain'
-                           source={require('../../images/plat2.png')}/>
+                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.milkCurrency()}>
+                        <View>
+                            <Image style={styles.topImg} resizeMode='contain'
+                                   source={require('../../images/plat1.png')}/>
+                        </View>
+                    </TouchableHighlight>
+                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.diaperCurrency()}>
+                        <View>
+                            <Image style={styles.topImg} resizeMode='contain'
+                                   source={require('../../images/plat2.png')}/>
+                        </View>
+                    </TouchableHighlight>
                 </View>
 
-                <View style={styles.lastThreeActivity}>
-                    <Image style={styles.lastActivityImg} resizeMode='contain'
-                           source={require('../../images/plat3.png')}/>
-                    <Image style={styles.lastActivityImg} resizeMode='contain'
-                           source={require('../../images/plat4.png')}/>
-                    <Image style={styles.lastActivityImg} resizeMode='contain'
-                           source={require('../../images/plat5.png')}/>
-                </View>
+                <TouchableHighlight style={styles.lastThreeTouch} underlayColor='#f2f2f2' onPress={() => this.limitedPurchase()}>
+                    <View>
+                        <Image style={styles.lastActivityImg} resizeMode='contain'
+                               source={require('../../images/plat3.png')}/>
+                    </View>
+                </TouchableHighlight>
+                <TouchableHighlight style={styles.lastThreeTouch} underlayColor='#f2f2f2' onPress={() => this.brandSelection()}>
+                    <View>
+                        <Image style={styles.lastActivityImg} resizeMode='contain'
+                               source={require('../../images/plat4.png')}/>
+                    </View>
+                </TouchableHighlight>
+                <TouchableHighlight style={styles.lastThreeTouch} underlayColor='#f2f2f2' onPress={() => this.newSale()}>
+                    <View>
+                        <Image style={styles.lastActivityImg} resizeMode='contain'
+                               source={require('../../images/plat5.png')}/>
+                    </View>
+                </TouchableHighlight>
             </View>
         );
     }
 
+    milkCurrency() {
+        this.props.navigation.navigate('MilkCurrency');
+    }
 
+    diaperCurrency() {
+        this.props.navigation.navigate('DiaperCurrency');
+    }
+
+    limitedPurchase() {
+        this.props.navigation.navigate('LimitedPurchase');
+    }
+
+    brandSelection() {
+        this.props.navigation.navigate('BrandSelection');
+    }
+
+    newSale() {
+        this.props.navigation.navigate('NewSale');
+    }
 }
 
 const styles = StyleSheet.create({
@@ -58,45 +92,33 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 5,
         paddingBottom: 5,
-        flexDirection:'row'
+        flexDirection: 'row'
     },
-    imageLogo:{
+    imageLogo: {
         width: 18,
     },
     imageTitle: {
         width: 81,
-        marginLeft:10
-    },
-    activityWrapper: {
-        marginTop: 0,
-        width: screenWidth,
-        height: 400,
-        alignItems: 'center',
-        backgroundColor: '#fff'
+        marginLeft: 10
     },
     topTwoActivity: {
         flexDirection: 'row',
         backgroundColor: '#fff',
         alignItems: 'center',
-        width: screenWidth,
-        height: (screenWidth - 6) / 2 * 260 / 375
+        justifyContent: 'space-between',
     },
-    topLeftImg: {
-        flex: 0.5,
-        marginRight: 5
+
+    topImg: {
+        width: (screenWidth - 5) / 2,
+        height: ((screenWidth - 5) / 2) * 260 / 375
     },
-    topRightImg: {
-        flex: 0.5,
-    },
-    lastThreeActivity: {
-        backgroundColor: '#fff',
-        width: screenWidth,
-        height: (260 * screenWidth / 750) * 3 + 5 * 3
+    lastThreeTouch:{
+        marginTop: 5,
+
     },
     lastActivityImg: {
-        flex: 1,
-        marginTop: 5,
-        width: screenWidth
+        width: screenWidth,
+        height: 260 * screenWidth / 750
     }
 
 });

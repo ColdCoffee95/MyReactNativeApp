@@ -4,15 +4,18 @@ import DeviceInfo from 'react-native-device-info'
 global.cartTabList = [
     {
         id: 1,
-        name: "一般贸易"
+        name: "一般贸易",
+        color: '#78E285'
     },
     {
         id: 2,
-        name: "保税区发货"
+        name: "保税区发货",
+        color: '#C685FF'
     },
     {
         id: 3,
-        name: "海外直邮"
+        name: "海外直邮",
+        color: '#78E285'
     }
 ];
 global.activeColor = '#fd4a70';

@@ -7,7 +7,9 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    ScrollView
+    ScrollView,
+    View,
+    Text
 } from 'react-native';
 import HomeSwiper from '../components/business/HomeSwiper'
 import PlatformPlate from '../components/business/PlatformPlate'
@@ -23,20 +25,24 @@ export default class Home extends Component<Props> {
     }
     render() {
         return (
-            <ScrollView contentContainerStyle={styles.container}>
-                <HomeSwiper></HomeSwiper>
-                <PlatformPlate></PlatformPlate>
-                <HomeCategory></HomeCategory>
-                {/*<RecommandForYou></RecommandForYou>*/}
-            </ScrollView>
-
+            <View style={styles.container}>
+                <ScrollView contentContainerStyle={styles.scrollView}>
+                    <HomeSwiper {...this.props}></HomeSwiper>
+                    <PlatformPlate {...this.props}></PlatformPlate>
+                    <HomeCategory {...this.props}></HomeCategory>
+                </ScrollView>
+                <RecommandForYou {...this.props}></RecommandForYou>
+            </View>
         );
     }
 
 
 }
 const styles = StyleSheet.create({
-    container: {
+    container:{
+        backgroundColor: whiteColor,
+    },
+    scrollView: {
         justifyContent:'flex-start',
         alignItems: 'center',
     },

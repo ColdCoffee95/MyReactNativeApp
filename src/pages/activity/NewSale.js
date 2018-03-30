@@ -8,23 +8,27 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
+    FlatList,
     ActivityIndicator,
     TouchableHighlight,
-    View,
-    FlatList,
     Text,
+    View
 } from 'react-native';
-export default class RecommandForYou extends Component<Props> {
+import ActiveButton from '../../components/common/ActiveButton'
+type Props = {};
+
+export default class NewSale extends Component<Props> {
+
     constructor(props) {
         super(props);
         this.state = {
             goodsList: [],
+            isLoading: true,
             allLoadCompleted: false,
             loadingMore: false,
             pageSize: 10,
             pageNo: 1,
-            isLoading: false,
-            type: 1
+            type: 2//2是新品
         }
     }
 
@@ -44,7 +48,17 @@ export default class RecommandForYou extends Component<Props> {
                 renderItem={this._renderItem}
                 onEndReached={this._onEndReached.bind(this)}
                 onEndReachedThreshold={0.2}
-                numColumns={2}
+                refreshing={true}
+                ItemSeparatorComponent={() => <View
+                    style={{backgroundColor: borderColor, height: 1}}
+                />}
+                ListHeaderComponent={()=><View>
+                    <Image
+                        resizeMode='contain'
+                        style={styles.banner}
+                        source={require('../../images/newSale.png')}
+                    />
+                </View>}
                 ListFooterComponent={this._renderFooter.bind(this)}
                 ListEmptyComponent={() => <View
                     style={{
@@ -61,17 +75,32 @@ export default class RecommandForYou extends Component<Props> {
                 </View>}
             />
         }
-        return <View style={styles.container}>
-            <View style={styles.activityTitle}>
-                <Image style={styles.imageLogo} resizeMode='contain'
-                       source={require('../../images/tjlogo.png')}/>
-                <Image style={styles.imageTitle} resizeMode='contain'
-                       source={require('../../images/tjword.png')}/>
+        return (
+            <View style ={styles.container}>
+                <View style={styles.goodsListView}>
+                    {goodsList}
+                </View>
             </View>
-            <View style={styles.goodsListView}>
-                {goodsList}
-            </View>
-        </View>
+        );
+    }
+
+    fetchData() {
+        let params = {
+            pageSize: this.state.pageSize,
+            pageNo: 1,
+            type: this.state.type
+        };
+        HttpUtils.post('/goods/selectActivityGoodsList', params, data => {
+            if (data.data.isLastPage) {
+                this.setState({
+                    allLoadCompleted: true,
+                });
+            }
+            this.setState({
+                goodsList: data.data.list,
+                isLoading: false,
+            });
+        })
     }
 
     _renderFooter() {
@@ -92,7 +121,6 @@ export default class RecommandForYou extends Component<Props> {
         if (this.state.allLoadCompleted || this.state.loadingMore) {
             return;
         }
-        console.warn('reaching')
         this.state.loadingMore = true;
         this.state.pageNo += 1;
         let params = {
@@ -100,7 +128,7 @@ export default class RecommandForYou extends Component<Props> {
             pageNo: this.state.pageNo,
             type: this.state.type
         };
-        HttpUtils.post('/goods/catBrandGoodsList', params, data => {
+        HttpUtils.post('/goods/selectActivityGoodsList', params, data => {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
@@ -111,141 +139,86 @@ export default class RecommandForYou extends Component<Props> {
 
     _keyExtractor = (item, index) => item.id;
     _renderItem = ({item}) => (
-        <TouchableHighlight underlayColor='#f2f2f2' style={styles.goodsTouch} onPress={() => this.goodsDetail(item.id)}>
-            <View style={styles.singleGoods}>
+        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.goodsDetail(item.id)}>
+            <View style={styles.goodsView} key={item.id}>
                 <View style={styles.goodsImgView}>
                     <Image
-                        source={{uri: item.img + '?imageView2/1/w/100/h/100'}}
                         style={styles.goodsImg}
                         resizeMode='contain'
+                        source={{uri: item.img + '?imageView2/1/w/200/h/200'}}
                     />
                 </View>
-                <Text style={styles.goodsTitle} numberOfLines={2}>{item.title}</Text>
-                <View style={styles.goodsPriceView}>
-                    <Text style={styles.goodsPrice}>¥{item.marketPrice}</Text>
-                    <Text style={{
-                        color: this.getColor(item.tradeType)
-                    }}>{item.tradeName}</Text>
-                </View>
+                <View style={styles.goodsInfoView}>
 
+                    <View style={styles.goodsTitleView}>
+                        <Text numberOfLines={2}>{item.title}</Text>
+                    </View>
+                    <View style={styles.goodsPriceView}>
+                        <Text style={styles.goodsPrice}>¥{item.marketPrice}</Text>
+                        <Text style={styles.goodsTrade}>{item.tradeName}</Text>
+                    </View>
+                    <View>
+                        <ActiveButton text="立即抢购" style={styles.buyBtn}/>
+                    </View>
+                </View>
             </View>
         </TouchableHighlight>
     );
 
-    getColor(type) {
-        let color = '#78E285';
-        cartTabList.map(value => {
-            if (value.id === type) {
-                color = value.color;
-            }
-        });
-        return color;
-    }
-
     goodsDetail(id) {
         this.props.navigation.navigate('GoodsDetail', {id: id});
-    }
-
-    async fetchData() {
-        let params = {
-            pageSize: this.state.pageSize,
-            pageNo: 1,
-            type: this.state.type
-        };
-        HttpUtils.post('/goods/catBrandGoodsList', params, data => {
-            if (data.data.isLastPage) {
-                this.setState({
-                    allLoadCompleted: true,
-                });
-            }
-            this.setState({
-                goodsList: data.data.list,
-                isLoading: false,
-            });
-        })
     }
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         backgroundColor: whiteColor,
-        width: screenWidth,
-        height: screenHeight
     },
-    activityTitle: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 5,
-        paddingBottom: 5,
-        flexDirection: 'row',
-        width: screenWidth
+    banner: {
+        width: screenWidth,
+        height: 384 * screenWidth / 750
     },
     goodsListView: {
         width: screenWidth,
-        justifyContent: 'space-between'
     },
-    imageLogo: {
-        width: 18,
-    },
-    imageTitle: {
-        width: 81,
-        marginLeft: 10
-    },
-    goodsWrapper: {
+    goodsView: {
+        flexDirection: 'row',
+        padding: 10,
         width: screenWidth,
-    },
-    catImg: {
-        width: screenWidth / 8,
-        height: screenWidth / 8
-    },
-    catName: {
-        marginTop: 10
-    },
-    goodsTouch: {
-        marginBottom: 10,
-        marginLeft: 10
-    },
-    singleGoods: {
-        width: (screenWidth - 30) / 2,
-        borderWidth: 1,
-        borderColor: '#e3e3e3',
-
+        height: 120,
     },
     goodsImgView: {
-        justifyContent: 'center',
+        width: 100,
+        height: 100,
         alignItems: 'center',
-        width: (screenWidth - 30) / 2,
-        height: 120
-
+        justifyContent: 'center',
+        flex: 0.3
     },
     goodsImg: {
-        width: 100,
-        height: 100
+        width: 80,
+        height: 80
     },
-    goodsTitle: {
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft: 10,
-        marginRight: 10,
+    goodsInfoView: {
+        justifyContent: 'space-between',
+        flex: 0.7
     },
+    goodsTitleView: {},
     goodsPriceView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 30,
-        paddingLeft: 10,
-        paddingRight: 10,
     },
     goodsPrice: {
-        color: '#fd4a70',
+        color: activeColor
     },
-    footer: {
-        flexDirection: 'row',
-        height: 24,
-        justifyContent: 'center',
+    goodsTrade: {
+        color: '#c685ff',
+    },
+    buyBtn: {
+        backgroundColor: activeColor,
         alignItems: 'center',
-        marginBottom: 10,
+        width: screenWidth * 0.7 - 20,
+        padding: 5,
+        borderRadius: 5
     }
-
 });

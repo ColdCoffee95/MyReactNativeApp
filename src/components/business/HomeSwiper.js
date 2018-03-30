@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    Text,
+    TouchableHighlight,
     View,
 } from 'react-native';
 import Swiper from 'react-native-swiper'
@@ -51,13 +51,16 @@ export default class Home extends Component<Props> {
             const swiperList= [];
             this.state.carouselList.map(value => {
                 swiperList.push(
-                    <View style={styles.slide}>
-                        <Image
-                            style={styles.banner}
-                            resizeMode='contain'
-                            source={{uri:value.url}}
-                        />
-                    </View>
+                    <TouchableHighlight underlayColor='#f2f2f2' onPress={()=>this.toGoodsDetail(value.id)}>
+                        <View style={styles.slide}>
+                            <Image
+                                style={styles.banner}
+                                resizeMode='contain'
+                                source={{uri:value.url}}
+                            />
+                        </View>
+                    </TouchableHighlight>
+
                 );
             });
             return (
@@ -70,9 +73,11 @@ export default class Home extends Component<Props> {
         }
 
     }
+    toGoodsDetail(id){
+        this.props.navigation.navigate('GoodsDetail', {id: id});
+    }}
 
 
-}
 const styles = StyleSheet.create({
     wrapper: {
     },

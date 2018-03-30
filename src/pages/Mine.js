@@ -125,7 +125,7 @@ export default class Mine extends Component<Props> {
         this.state.toolList.map(value => {
             toolList.push(
                 <TouchableHighlight
-                    underlayColor='#fff'
+                    underlayColor='#f2f2f2'
                     onPress={() => this.jumpToTools(value.id)}
                     key={value.id}>
                     <View style={styles.toolItemView}>

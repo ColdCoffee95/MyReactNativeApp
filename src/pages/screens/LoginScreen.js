@@ -24,7 +24,7 @@ export default class LoginScreen extends Component<Props> {
                     style={styles.logo}
                 />
                 <Text style={styles.version}>
-                    v1.4.1
+                    {global.version}
                 </Text>
                 <TextInput
                     style={styles.phone}

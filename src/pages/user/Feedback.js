@@ -13,7 +13,7 @@ import {
     TextInput,
     View
 } from 'react-native';
-import ScrollableTabView,{ScrollableTabBar} from 'react-native-scrollable-tab-view'
+import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import ImagePicker from 'react-native-image-crop-picker'
 import ActiveButton from '../../components/common/ActiveButton'
 
@@ -85,10 +85,13 @@ export default class Feedback extends Component<Props> {
                                     onChangeText={(text) => this.setState({sugMessage: text})}
                                     maxLength={200}
                                     multiline={true}
+                                    underlineColorAndroid='transparent'
                                     placeholder='请输入一下您的意见(限200字内)'>
                                 </TextInput>
                             </View>
-                            <ActiveButton clickBtn={() => this.submit()} text='提交'></ActiveButton>
+                            <View style={styles.btnContainer}>
+                                <ActiveButton clickBtn={() => this.submit()} text='提交'></ActiveButton>
+                            </View>
                         </View>
                     </View>
                     <View tabLabel='咨询投诉' style={styles.consult}>
@@ -107,6 +110,7 @@ export default class Feedback extends Component<Props> {
     submit() {
         alert('13')
     }
+
     callPhone() {
         return Linking.openURL('tel:' + hotline)
     }
@@ -117,6 +121,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: whiteColor,
+    },
+    btnContainer: {
+        alignItems: 'center',
+        width: screenWidth,
+        height: 100
     },
     problemTitle: {
         padding: 15
@@ -168,7 +177,7 @@ const styles = StyleSheet.create({
         width: screenWidth * 0.9,
         borderWidth: 1,
         borderColor: '#e9e9e9',
-        lineHeight:30,
+        lineHeight: 30,
         padding: 10
     },
     submitView: {
@@ -182,20 +191,20 @@ const styles = StyleSheet.create({
     submitText: {
         color: whiteColor
     },
-    consult:{
+    consult: {
         alignItems: 'center',
     },
     text: {
         marginTop: 20,
         marginBottom: 20
     },
-    activeButton:{
-        backgroundColor:activeColor,
-        marginTop:20,
-        alignItems:'center',
-        width:screenWidth*0.6,
-        padding:10,
-        borderRadius:5
+    activeButton: {
+        backgroundColor: activeColor,
+        marginTop: 20,
+        alignItems: 'center',
+        width: screenWidth * 0.6,
+        padding: 10,
+        borderRadius: 5
     },
     hotlineView: {
         borderWidth: 1,

@@ -9,8 +9,7 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    Linking,
-    TextInput,
+    ScrollView,
     Alert,
     View
 } from 'react-native';
@@ -77,9 +76,9 @@ export default class ManageCertification extends Component<Props> {
         });
         return (
             <View style={styles.container}>
-                <View>
+                <ScrollView contentContainerStyle={styles.scrollView}>
                     {certificationList}
-                </View>
+                </ScrollView>
                 <Toast ref='toast' position='center'></Toast>
                 <View style={styles.bottomBtnView}>
                     <ActiveButton clickBtn={() => this.addAddress()} text='添加实名认证'
@@ -138,6 +137,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#f2f2f2',
     },
+    scrollView:{
+        paddingBottom:40
+    },
+
     singleView: {
         backgroundColor: whiteColor,
         paddingLeft: 15,

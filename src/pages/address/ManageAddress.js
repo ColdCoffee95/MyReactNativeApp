@@ -7,6 +7,7 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
+    ScrollView,
     Text,
     TouchableHighlight,
     Linking,
@@ -31,6 +32,8 @@ export default class ManageAddress extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
+                <ScrollView contentContainerStyle={styles.scrollView}>
+                </ScrollView>
                 <View style={styles.bottomBtnView}>
                     <ActiveButton clickBtn={() => this.addAddress()} text='添加大贸地址' style={styles.activeButton}></ActiveButton>
                 </View>
@@ -64,6 +67,9 @@ const styles = StyleSheet.create({
         alignItems:'center',
         width:screenWidth,
         padding:10,
-    }
+    },
+    scrollView:{
+        paddingBottom:40
+    },
 
 });

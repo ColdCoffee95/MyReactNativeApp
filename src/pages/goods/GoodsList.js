@@ -151,7 +151,7 @@ export default class GoodsList extends Component<Props> {
                 <ActivityIndicator></ActivityIndicator>
             </View>)
         } else if (this.state.allLoadCompleted) {
-            return (<View style={{alignItems:'center'}}>
+            return (<View style={{alignItems:'center', height: 30, justifyContent: 'center'}}>
                 <Text>没有更多商品了</Text>
             </View>)
         } else {
@@ -163,9 +163,7 @@ export default class GoodsList extends Component<Props> {
         if (this.state.allLoadCompleted || this.state.loadingMore) {
             return;
         }
-        this.setState({
-            loadingMore: true
-        });
+        this.state.loadingMore = true;
         this.state.pageNo += 1;
         let params = {
             firstCatId: this.state.firstCatId,
@@ -178,14 +176,10 @@ export default class GoodsList extends Component<Props> {
         };
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
             if (data.data.isLastPage) {
-                this.setState({
-                    allLoadCompleted: true,
-                });
+                this.state.allLoadCompleted = true;
             }
-            this.setState({
-                goodsList: this.state.goodsList.concat(data.data.list),
-                loadingMore: false
-            });
+            this.setState({goodsList:this.state.goodsList.concat(data.data.list)});
+            this.state.loadingMore = false;
         })
     }
 
@@ -206,7 +200,7 @@ export default class GoodsList extends Component<Props> {
                     </View>
                     <View style={styles.goodsPriceView}>
                         <Text style={styles.goodsPrice}>{item.marketPrice}</Text>
-                        <Text style={styles.goodsTrade}>{item.tradeName}</Text>
+                        <Text style={{color: this.getColor(item.tradeType)}}>{item.tradeName}</Text>
                     </View>
                 </View>
             </View>
@@ -259,6 +253,15 @@ export default class GoodsList extends Component<Props> {
                 isLoading: false,
             });
         })
+    }
+    getColor(type) {
+        let color = '#78E285';
+        cartTabList.map(value => {
+            if (value.id === type) {
+                color = value.color;
+            }
+        });
+        return color;
     }
 
 }
