@@ -14,7 +14,7 @@ import {
     View
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import Toast,{DURATION} from 'react-native-easy-toast';
+import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 export default class Mine extends Component<Props> {
 
@@ -143,9 +143,21 @@ export default class Mine extends Component<Props> {
         return (
             <View style={styles.container}>
                 <View style={styles.mineHeader}>
+                    <View style={styles.mineHeaderActive}>
+
+                    </View>
+                    <View style={styles.mineHeaderBackground}>
+
+                    </View>
+
                     <View style={styles.userView}>
+
+                    </View>
+                    <View style={styles.avatarView}>
                         <Image
-                            source={{uri: this.state.userInfo.avatar}}
+                            style={styles.avatar}
+                            resizeMode='contain'
+                            source={this.state.userInfo.avatar?{uri: this.state.userInfo.avatar}:{uri: 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}}
                         />
                     </View>
                 </View>
@@ -170,14 +182,10 @@ export default class Mine extends Component<Props> {
     }
 
     async getUserInfo() {
-        this.setState({isLoading: false});
-
-        // storage.load({key: 'loginState'}).then(res => {
-        //     HttpUtils.get('/member/selectStoreMemberById', res.memberId, data => {
-        //         console.warn(data.data)
-        //         this.setState({userInfo: data.data, isLoading: false});
-        //     })
-        // })
+        HttpUtils.get('/member/selectStoreMemberById', {}, data => {
+            console.warn(data.data)
+            this.setState({userInfo: data.data, isLoading: false});
+        })
     }
 
     uploadAvatar() {
@@ -199,7 +207,7 @@ export default class Mine extends Component<Props> {
                 this.props.navigation.navigate('Settings');
                 break;
             case 3://会员中心
-                this.refs.toast.show('此功能暂未开放，敬请期待!',500);
+                this.refs.toast.show('此功能暂未开放，敬请期待!', 500);
                 break;
             case 4://意见反馈
                 this.props.navigation.navigate('Feedback');
@@ -222,11 +230,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#f2f2f2',
     },
-    mineHeader: {
+    mineHeader: {},
+    mineHeaderActive: {
         width: screenWidth,
         height: 100,
         backgroundColor: activeColor,
-        marginBottom: 100
+    },
+    mineHeaderBackground: {
+        width: screenWidth,
+        height: 100,
+        backgroundColor: '#f2f2f2',
+    },
+    avatarView: {
+        position: 'absolute',
+        top: 25,
+        left: screenWidth * 0.1,
+        backgroundColor: whiteColor,
+        borderRadius: 50,
+        borderWidth: 1,
+        borderColor: activeColor,
+        width: 50,
+        height: 50,
+
+    },
+    avatar: {
+        width: 50,
+        height: 50
     },
     userView: {
         position: 'absolute',

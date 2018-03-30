@@ -6,6 +6,7 @@ import {
 import {StackNavigator} from "react-navigation";
 import './src/utils/storage';
 import './src/utils/globalVariables';
+import './src/utils/globalFunctions';
 import MainScreen from './src/pages/screens/MainScreen';
 import LoginScreen from './src/pages/screens/LoginScreen';
 import RegisterScreen from './src/pages/screens/RegisterScreen';
@@ -23,6 +24,8 @@ import NewSale from './src/pages/activity/NewSale';
 import Hotline from './src/pages/user/Hotline';
 import Settings from './src/pages/user/Settings';
 import Feedback from './src/pages/user/Feedback';
+import Aboutus from './src/pages/user/Aboutus';
+import SecurityCheck from './src/pages/user/SecurityCheck';
 
 import ManageAddress from './src/pages/address/ManageAddress';
 import AddAddress from './src/pages/address/AddAddress';
@@ -42,7 +45,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const SimpleApp = StackNavigator({
+export default SimpleApp = StackNavigator({
     Login: {
         screen: LoginScreen,
         navigationOptions: {
@@ -98,6 +101,28 @@ const SimpleApp = StackNavigator({
         screen: Feedback,
         navigationOptions: {
             title: '意见反馈',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        }
+    },
+    Aboutus:{
+        screen: Aboutus,
+        navigationOptions: {
+            title: '关于店力集盒',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        }
+    },
+    SecurityCheck:{
+        screen: SecurityCheck,
+        navigationOptions: {
+            title: '安全校验',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
             headerBackTitle:null,
@@ -252,4 +277,3 @@ const SimpleApp = StackNavigator({
         },
     },
 });
-module.exports = SimpleApp;

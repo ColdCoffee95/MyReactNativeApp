@@ -18,6 +18,24 @@ global.cartTabList = [
         color: '#78E285'
     }
 ];
+global.authList = [
+    {
+        id: 0,
+        name: "未认证",
+    },
+    {
+        id: 1,
+        name: "已认证",
+    },
+    {
+        id: 2,
+        name: "待审核",
+    },
+    {
+        id: -1,
+        name: "认证驳回",
+    }
+];
 global.activeColor = '#fd4a70';
 global.whiteColor = '#fff';
 global.borderColor = '#e9e9e9';

@@ -5,64 +5,100 @@ import {
     Image,
     Text,
     TextInput,
+    ActivityIndicator,
     View
 } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import CryptoJS from 'crypto-js'
-type Props = {};
+import {NavigationActions} from 'react-navigation'
+// type Props = {};
 
 export default class LoginScreen extends Component<Props> {
     constructor(props) {
         super(props);
-        this.state = {loginId: '15957103422', pwd: 'a123456'}
+        this.state = {loginId: '15957103422', pwd: 'a123456', havaToken: true}
+    }
+
+    componentDidMount() {
+        SplashScreen.hide();
+        this.checkToken();
+    }
+
+    async checkToken() {
+        let loginState = await HttpUtils.getLoginState();
+        let params = {memberId: loginState.memberId, token: loginState.token};
+        fetch(serverUrl + '/login/checkToken', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params)
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.code === 10000) {
+                    this.toMain();
+                } else {
+                    this.setState({havaToken: false});
+                }
+            })
+            .catch((error) => {
+                console.error("error = " + error)
+            });
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <Image
-                    source={require('../../images/logo.png')}
-                    style={styles.logo}
-                />
-                <Text style={styles.version}>
-                    {global.version}
-                </Text>
-                <TextInput
-                    style={styles.phone}
-                    // autoFocus={true}
-                    placeholder="请输入手机号"
-                    onChangeText={(text) => this.setState({loginId: text})}
-                    keyboardType={'numeric'}
-                    maxLength={11}
-                    underlineColorAndroid='transparent'
-                />
-                <TextInput
-                    style={styles.password}
-                    placeholder="请输入密码"
-                    secureTextEntry={true}
-                    onChangeText={(text) => this.setState({pwd: text})}
-                    underlineColorAndroid='transparent'
-                />
-                <Button
-                    onPress={() => this.login()}
-                    title="登录"
-                    color="#ff6a68"
-                />
-                <View style={styles.registerForgetView}>
-                    <Button
-                        onPress={() => this.props.navigation.navigate('Register')}
-                        title="申请入驻"
-                        color="#ff6a68"
+        if (!this.state.havaToken) {
+            return (
+                <View style={styles.container}>
+                    <Image
+                        source={require('../../images/logo.png')}
+                        style={styles.logo}
+                    />
+                    <Text style={styles.version}>
+                        {global.version}
+                    </Text>
+                    <TextInput
+                        style={styles.phone}
+                        // autoFocus={true}
+                        placeholder="请输入手机号"
+                        onChangeText={(text) => this.setState({loginId: text})}
+                        keyboardType={'numeric'}
+                        maxLength={11}
+                        underlineColorAndroid='transparent'
+                    />
+                    <TextInput
+                        style={styles.password}
+                        placeholder="请输入密码"
+                        secureTextEntry={true}
+                        onChangeText={(text) => this.setState({pwd: text})}
+                        underlineColorAndroid='transparent'
                     />
                     <Button
-                        onPress={() => this.props.navigation.navigate('ForgetPwd')}
-                        title="忘记密码"
+                        onPress={() => this.login()}
+                        title="登录"
                         color="#ff6a68"
                     />
+                    <View style={styles.registerForgetView}>
+                        <Button
+                            onPress={() => this.props.navigation.navigate('Register')}
+                            title="申请入驻"
+                            color="#ff6a68"
+                        />
+                        <Button
+                            onPress={() => this.props.navigation.navigate('ForgetPwd')}
+                            title="忘记密码"
+                            color="#ff6a68"
+                        />
+                    </View>
+
+
                 </View>
-
-
-            </View>
-        );
+            );
+        } else {
+            return <ActivityIndicator/>
+        }
     }
 
     login() {
@@ -84,9 +120,13 @@ export default class LoginScreen extends Component<Props> {
                     key: 'userInfo',
                     data: data.data
                 });
-                this.props.navigation.navigate('Main')
+                this.toMain()
             });
         })
+    }
+
+    toMain() {
+        jumpAndClear(this.props.navigation, 'Main')
     }
 }
 const styles = StyleSheet.create({

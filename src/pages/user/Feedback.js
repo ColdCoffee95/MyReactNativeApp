@@ -11,10 +11,11 @@ import {
     TouchableHighlight,
     Linking,
     TextInput,
-    View
+    View,
+    Alert
 } from 'react-native';
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view'
-import ImagePicker from 'react-native-image-crop-picker'
+import uploadMultiImg from '../../components/common/uploadMultiImg'
 import ActiveButton from '../../components/common/ActiveButton'
 
 type Props = {};
@@ -64,7 +65,7 @@ export default class Feedback extends Component<Props> {
                     </View>
                 </TouchableHighlight>
             )
-        })
+        });
         return (
             <View style={styles.container}>
                 <ScrollableTabView
@@ -89,6 +90,12 @@ export default class Feedback extends Component<Props> {
                                     placeholder='请输入一下您的意见(限200字内)'>
                                 </TextInput>
                             </View>
+                            <View>
+                                <uploadMultiImg
+                                    onChange={imgs => this.setState({fileList: imgs})}>
+
+                                </uploadMultiImg>
+                            </View>
                             <View style={styles.btnContainer}>
                                 <ActiveButton clickBtn={() => this.submit()} text='提交'></ActiveButton>
                             </View>
@@ -107,8 +114,26 @@ export default class Feedback extends Component<Props> {
         );
     }
 
-    submit() {
-        alert('13')
+    async submit() {
+        let userInfo = await HttpUtils.getUserInfo();
+        if(!this.state.sugMessage){
+            Alert.alert(null,'请描述您的意见');
+            return;
+        }
+        let params = {
+            fileList: [],
+            sugType: 0,
+            sugImage: "",
+            sugMessage: this.state.sugMessage,
+            sugProType: this.state.sugProType,
+            userId: `${userInfo.memberName}(${userInfo.memberId})`,
+            userPhone: userInfo.mobile
+        };
+        alert(JSON.stringify(params))
+        return
+        HttpUtils.post('/suggest/setSug',params,data=>{
+            this.props.navigation.goBack();
+        })
     }
 
     callPhone() {
@@ -170,15 +195,16 @@ const styles = StyleSheet.create({
     sugMessageView: {
         marginTop: 20,
         alignItems: 'center',
-        width: screenWidth,
-        height: 100
+        width: screenWidth-20,
+        height: 100,
+        borderWidth: 1,
+        borderColor: '#e9e9e9',
+        margin: 10,
     },
     textInput: {
         width: screenWidth * 0.9,
-        borderWidth: 1,
-        borderColor: '#e9e9e9',
-        lineHeight: 30,
-        padding: 10
+        lineHeight: 20,
+        padding:5
     },
     submitView: {
         backgroundColor: activeColor,

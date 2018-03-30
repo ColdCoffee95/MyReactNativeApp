@@ -17,13 +17,13 @@ import ActionSheet from 'react-native-actionsheet'
 import ImagePicker from 'react-native-image-crop-picker'
 type Props = {};
 
-export default class UploadOneImg extends Component<Props> {
+export default class UploadMultiImg extends Component<Props> {
 
     constructor(props) {
         super(props);
         this.state = {
             selected: '',
-            img: '',
+            imgs: '',
             imageUploading: false
         }
     }
@@ -124,10 +124,10 @@ export default class UploadOneImg extends Component<Props> {
                 .then((responseData) => {
                     let url = `${imgDomain}${responseData.key}?imageView2/1/w/${this.props.width || 100}/h/${this.props.height || 100}`
                     this.setState({
-                        img: {uri: url},
+                        imgs: this.state.imgs.push(url),
                         imageUploading: false
                     });
-                    this.props.onChange(url);
+                    this.props.onChange(this.state.imgs);
                 })
                 .catch((error) => {
                     alert('上传失败，请稍后再试')
