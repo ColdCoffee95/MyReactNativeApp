@@ -15,7 +15,7 @@ import {
     Alert
 } from 'react-native';
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view'
-import uploadMultiImg from '../../components/common/uploadMultiImg'
+// import uploadMultiImg from '../../components/common/uploadMultiImg'
 import ActiveButton from '../../components/common/ActiveButton'
 
 type Props = {};
@@ -91,10 +91,10 @@ export default class Feedback extends Component<Props> {
                                 </TextInput>
                             </View>
                             <View>
-                                <uploadMultiImg
-                                    onChange={imgs => this.setState({fileList: imgs})}>
+                                {/*<uploadMultiImg*/}
+                                    {/*onChange={imgs => this.setState({fileList: imgs})}>*/}
 
-                                </uploadMultiImg>
+                                {/*</uploadMultiImg>*/}
                             </View>
                             <View style={styles.btnContainer}>
                                 <ActiveButton clickBtn={() => this.submit()} text='提交'></ActiveButton>

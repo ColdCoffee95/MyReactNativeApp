@@ -209,9 +209,13 @@ export default class GoodsList extends Component<Props> {
 
     sureBtn(obj) {//子组件筛选完成
         this._drawer.close();
-        this.state.firstCatId = obj.firstId;
-        this.state.secondCatIds = obj.secondIds;
-        this.fetchData();
+        setTimeout(()=>{
+            this.state.firstCatId = obj.firstId;
+            this.state.secondCatIds = obj.secondIds;
+            this.fetchData();
+        },500)
+
+
     }
 
     changeTab(index) {
