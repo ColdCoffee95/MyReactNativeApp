@@ -215,7 +215,6 @@ export default SimpleApp = StackNavigator({
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
             headerBackTitle:null,
-            headerRight:<View/>,
             headerTitleStyle:styles.headerTitleStyle,
         },
     },

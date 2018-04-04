@@ -19,6 +19,7 @@ import {
 import Drawer from "react-native-drawer";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GoodsSideMenu from '../../components/business/GoodsSideMenu'
+
 type Props = {};
 
 export default class GoodsList extends Component<Props> {
@@ -151,7 +152,7 @@ export default class GoodsList extends Component<Props> {
                 <ActivityIndicator></ActivityIndicator>
             </View>)
         } else if (this.state.allLoadCompleted) {
-            return (<View style={{alignItems:'center', height: 30, justifyContent: 'center'}}>
+            return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
                 <Text>没有更多商品了</Text>
             </View>)
         } else {
@@ -178,14 +179,23 @@ export default class GoodsList extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList:this.state.goodsList.concat(data.data.list)});
+            this.setState({goodsList: this.state.goodsList.concat(data.data.list)});
             this.state.loadingMore = false;
         })
     }
 
     _keyExtractor = (item, index) => item.id;
-    _renderItem = ({item}) => (
-        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.goodsDetail(item.id)}>
+    _renderItem = ({item}) => {
+        let sellout = <View></View>
+        if(item.count===0){
+            sellout = <Image
+                style={styles.goodsImgSellout}
+                resizeMode='contain'
+                source={require('../../images/sellout.png')}
+            />;
+        }
+
+        return <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.goodsDetail(item.id)}>
             <View style={styles.goodsView} key={item.id}>
                 <View style={styles.goodsImgView}>
                     <Image
@@ -193,27 +203,28 @@ export default class GoodsList extends Component<Props> {
                         resizeMode='contain'
                         source={{uri: item.img + '?imageView2/1/w/200/h/200'}}
                     />
+                    {sellout}
                 </View>
                 <View style={styles.goodsInfoView}>
                     <View style={styles.goodsTitleView}>
                         <Text numberOfLines={2}>{item.title}</Text>
                     </View>
                     <View style={styles.goodsPriceView}>
-                        <Text style={styles.goodsPrice}>{item.marketPrice}</Text>
+                        <Text style={styles.goodsPrice}>¥{item.marketPrice}</Text>
                         <Text style={{color: this.getColor(item.tradeType)}}>{item.tradeName}</Text>
                     </View>
                 </View>
             </View>
         </TouchableHighlight>
-    );
+    }
 
     sureBtn(obj) {//子组件筛选完成
         this._drawer.close();
-        setTimeout(()=>{
+        setTimeout(() => {
             this.state.firstCatId = obj.firstId;
             this.state.secondCatIds = obj.secondIds;
             this.fetchData();
-        },500)
+        }, 500)
 
 
     }
@@ -258,6 +269,7 @@ export default class GoodsList extends Component<Props> {
             });
         })
     }
+
     getColor(type) {
         let color = '#78E285';
         cartTabList.map(value => {
@@ -335,6 +347,12 @@ const styles = StyleSheet.create({
     goodsImg: {
         width: 80,
         height: 80
+    },
+    goodsImgSellout: {
+        position: 'absolute',
+        width: 80,
+        height: 80
+
     },
     goodsInfoView: {
         justifyContent: 'space-between',
