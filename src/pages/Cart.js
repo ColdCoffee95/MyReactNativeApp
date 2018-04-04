@@ -15,10 +15,14 @@ import {
     TextInput,
     TouchableHighlight,
     RefreshControl,
+    TouchableOpacity,
     View
 } from 'react-native';
 import HttpUtils from "../utils/http";
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActiveButton from '../components/common/ActiveButton';
+import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 
 type Props = {};
 
@@ -30,11 +34,25 @@ export default class Cart extends Component<Props> {
             tradeType: 1,
             isRefreshing: false,
             isLoading: true,
+            isEditing: false,
             cartList: []
         }
     }
 
+    static navigationOptions = ({navigation, screenProps}) => ({
+        headerRight: (
+            <View style={styles.headerRightView}>
+                <TouchableHighlight style={{marginRight: 10}} underlayColor='#f2f2f2'
+                                    onPress={() => navigation.state.params.editCart()}>
+                    <View>
+                        <Text>{this.isEditing}</Text>
+                    </View>
+                </TouchableHighlight>
+            </View>)
+    });
+
     componentDidMount() {
+        this.props.navigation.setParams({editCart: this.editCart.bind(this)});
         this.fetchData()
     }
 
@@ -44,13 +62,72 @@ export default class Cart extends Component<Props> {
         } else {
             let cartList = [];
             if (this.state.cartList.length > 0) {
-                this.state.cartList.map(value => {
-                    cartList.push(
-                        <View key={value.id}>
-
+                cartList = <SwipeListView
+                    useFlatList
+                    rightOpenValue={-60}
+                    data={this.state.cartList}
+                    disableRightSwipe={true}
+                    stopRightSwipe={-150}
+                    previewRowKey={'12adf'}
+                    closeOnRowBeginSwipe={true}
+                    closeOnRowPress={true}
+                    closeOnScroll={true}
+                    keyExtractor={(item) => item.goodsSkuId}
+                    renderHiddenItem={(rowData, rowMap) => (
+                        <View style={styles.rowBack}>
+                            <TouchableOpacity
+                                onPress={_ => {
+                                    this.closeRow(rowMap, rowData.item.goodsSkuId);
+                                    // this.deleteGoods(rowData.item.goodsSkuId)
+                                }}>
+                                <View style={styles.deleteGoodsView}>
+                                    <Text style={styles.deleteGoods}>删除</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    )
-                });
+
+                    )}
+                    renderItem={(data, rowMap) => (
+                        <View style={styles.cartItemView}>
+                            <TouchableHighlight underlayColor='#fff'
+                                                style={styles.iconTouch}
+                                                onPress={() => this.clickIcon(data.index)}>
+                                <View>
+                                    {
+                                        data.item.itemSelect === 1 ?
+                                            (<Icon name="check-circle" size={20} color={activeColor}></Icon>) :
+                                            (<Icon2 name="checkbox-blank-circle-outline" size={20}></Icon2>)
+                                    }
+                                </View>
+                            </TouchableHighlight>
+                            <TouchableHighlight underlayColor='#f2f2f2'
+                                                style={styles.goodsTouch}
+                                                onPress={() => this.toGoodsDetail(data.item.goodsSkuId)}>
+                                <View style={styles.cartGoodsView}>
+                                    <View style={styles.cartGoodsImgView}>
+                                        <Image
+                                            source={{uri: data.item.goodsImg + '?imageView2/1/w/200/h/200'}}
+                                            resizeMode='contain'
+                                            style={styles.cartGoodsImg}
+                                        />
+                                    </View>
+                                    <View style={styles.cartGoodsInfoView}>
+                                        <Text style={styles.cartGoodsTitle}
+                                              numberOfLines={2}>{data.item.goodsTitle}</Text>
+                                        <View>
+                                            <Text style={styles.cartSku}>{data.item.sku}</Text>
+                                            <Text style={styles.cartEms}>运费:{data.item.emsPrice}</Text>
+                                        </View>
+                                        <View style={styles.priceNumberView}>
+                                            <Text style={styles.priceText}>¥{data.item.putPrice}</Text>
+                                            <Text>×{data.item.number}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </TouchableHighlight>
+                        </View>
+                    )}>
+                </SwipeListView>;
             } else {
                 cartList = <View style={styles.noGoodsView}>
                     <Image
@@ -66,14 +143,14 @@ export default class Cart extends Component<Props> {
             }
 
             return (
-                <ScrollView contentContainerStyle={styles.container}>
-                    <RefreshControl
-                        refreshing={this.state.isRefreshing}
-                        onRefresh={this._onRefresh.bind(this)}
-                        title="加载中..."
-                        progressBackgroundColor="#ffff00">
+                <View style={styles.container}>
+                    {/*<RefreshControl*/}
+                    {/*refreshing={this.state.isRefreshing}*/}
+                    {/*onRefresh={this._onRefresh.bind(this)}*/}
+                    {/*title="加载中..."*/}
+                    {/*progressBackgroundColor="#ffff00">*/}
 
-                    </RefreshControl>
+                    {/*</RefreshControl>*/}
                     <View style={styles.tabView}>
                         <TouchableHighlight
                             onPress={() => this.changeTab(1)}
@@ -101,14 +178,40 @@ export default class Cart extends Component<Props> {
                         </TouchableHighlight>
                     </View>
                     {cartList}
-                </ScrollView>
+                </View>
             );
         }
+    }
+    editCart() {
+        let editing = !this.state.isEditing;
+        this.setState({isEditing: editing});
     }
 
     _onRefresh() {
         this.setState({isRefreshing: true});
         this.fetchData();
+    }
+
+    closeRow(rowMap, rowKey) {
+        if (rowMap[rowKey]) {
+            rowMap[rowKey].closeRow();
+        }
+    }
+
+    clickIcon(index) {//点击图标
+        this.state.cartList[index].itemSelect = this.state.cartList[index].itemSelect === 1 ? 0 : 1;
+        this.setState({cartList: this.state.cartList});
+    }
+
+    deleteGoods(id) {//删掉购物车中某个商品
+        let params = {deleteGoodsSkuIds: [id]};
+        HttpUtils.post('/shoppingCart/deleteShoppingCartItem', params, data => {
+            this.fetchData();
+        })
+    }
+
+    toGoodsDetail(id) {
+        this.props.navigation.navigate('GoodsDetail', {id: id});
     }
 
     changeTab(index) {
@@ -124,7 +227,6 @@ export default class Cart extends Component<Props> {
         let params = {
             tradeType: this.state.tradeType
         };
-        console.warn('fetching')
         HttpUtils.get('/shoppingCart/viewShoppingCart', params, data => {
             let cartList = data.data;
             cartList.map(value => {
@@ -146,7 +248,21 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: whiteColor,
+    },
+    rowBack: {
+        width: screenWidth,
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
+    },
+    deleteGoodsView: {
+        backgroundColor: activeColor,
+        width: 60,
+        height: screenWidth * 0.25 + 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    deleteGoods: {
+        color: whiteColor
     },
     tabView: {
         flexDirection: 'row',
@@ -171,7 +287,10 @@ const styles = StyleSheet.create({
         color: '#444'
     },
     noGoodsView: {
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: whiteColor,
+        width: screenWidth,
+        paddingBottom: 10
     },
     noGoodsImg: {
         width: screenWidth * 0.6,
@@ -192,5 +311,57 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         borderRadius: 5
+    },
+    cartItemView: {
+        flexDirection: 'row',
+        width: screenWidth,
+        alignItems: 'center',
+        backgroundColor: whiteColor,
+        marginBottom: 10,
+        paddingTop: 10,
+        paddingBottom: 10
+    },
+    cartGoodsImgView: {
+        width: screenWidth * 0.25,
+        height: screenWidth * 0.25,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: borderColor
+    },
+    cartGoodsImg: {
+        width: 80,
+        height: 80
+    },
+    iconTouch: {
+        flex: 0.1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    goodsTouch: {
+        flex: 0.9
+    },
+    cartGoodsView: {
+        flexDirection: 'row'
+    },
+    cartGoodsInfoView: {
+        justifyContent: 'space-between',
+        width: screenWidth * 0.65,
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    cartGoodsTitle: {},
+    priceNumberView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    priceText: {
+        color: activeColor
+    },
+    cartSku: {
+        color: '#ababab'
+    },
+    cartEms: {
+        color: '#ababab'
     }
 });

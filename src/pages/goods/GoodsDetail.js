@@ -39,19 +39,19 @@ export default class GoodsDetail extends Component<Props> {
     }
 
     componentDidMount() {
-        this.props.navigation.setParams({toCart: this.jumpToCart.bind(this),collect:this.collect.bind(this)});
+        this.props.navigation.setParams({toCart: this.jumpToCart.bind(this), collect: this.collect.bind(this)});
         this.fetchData(this.props.navigation.state.params.id);
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
         headerRight: (
-            <View>
-                <TouchableHighlight underlayColor='#f2f2f2' onPress={() => navigation.state.params.collect()}>
+            <View style={styles.headerRightView}>
+                <TouchableHighlight style={{marginRight:10}} underlayColor='#f2f2f2' onPress={() => navigation.state.params.collect()}>
                     <View>
                         <Icon name='heart' size={20} color={whiteColor}></Icon>
                     </View>
                 </TouchableHighlight>
-                <TouchableHighlight underlayColor='#f2f2f2' onPress={() => navigation.state.params.toCart()}>
+                <TouchableHighlight style={{marginRight:10}} underlayColor='#f2f2f2' onPress={() => navigation.state.params.toCart()}>
                     <View>
                         <Icon name='shopping-cart' size={20} color={whiteColor}></Icon>
                     </View>
@@ -427,6 +427,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         flex: 1
+    },
+    headerRightView: {
+        flexDirection: 'row'
     },
     dialogWrapper: {
         width: screenWidth,
