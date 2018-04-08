@@ -17,11 +17,10 @@ import ActiveButton from '../../components/common/ActiveButton';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Counter from '../../components/common/Counter'
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
+import Counter from '../../components/common/Counter';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import HttpUtils from "../../utils/http";
-import CartPage from "../Cart";
 
 type Props = {};
 export default class GoodsDetail extends Component<Props> {
@@ -46,12 +45,14 @@ export default class GoodsDetail extends Component<Props> {
     static navigationOptions = ({navigation, screenProps}) => ({
         headerRight: (
             <View style={styles.headerRightView}>
-                <TouchableHighlight style={{marginRight:10}} underlayColor='#f2f2f2' onPress={() => navigation.state.params.collect()}>
+                <TouchableHighlight style={{marginRight: 10}} underlayColor='#f2f2f2'
+                                    onPress={() => navigation.state.params.collect()}>
                     <View>
                         <Icon name='heart' size={20} color={whiteColor}></Icon>
                     </View>
                 </TouchableHighlight>
-                <TouchableHighlight style={{marginRight:10}} underlayColor='#f2f2f2' onPress={() => navigation.state.params.toCart()}>
+                <TouchableHighlight style={{marginRight: 10}} underlayColor='#f2f2f2'
+                                    onPress={() => navigation.state.params.toCart()}>
                     <View>
                         <Icon name='shopping-cart' size={20} color={whiteColor}></Icon>
                     </View>
@@ -332,7 +333,9 @@ export default class GoodsDetail extends Component<Props> {
             sellerId: detail.brandId,
             sellerName: detail.brandName,
             tradeName: nowSku.tradeName,
-            tradeType: nowSku.tradeType
+            tradeType: nowSku.tradeType,
+            categoryId: detail.catId,
+            categoryName: detail.catName
         };
         HttpUtils.post('/shoppingCart/putGoodsInCart', params, data => {
             this.refs.toast.show('加入进货单成功', 500);

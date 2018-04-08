@@ -14,24 +14,11 @@ import {
     KeyboardAvoidingView,
     View
 } from 'react-native';
+import {observer} from 'mobx-react/native';
+import {action, autorun, observe} from 'mobx';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {
-    Kaede,
-    Hoshi,
-    Jiro,
-    Isao,
-    Madoka,
-    Akira,
-    Hideo,
-    Kohana,
-    Makiko,
-    Sae,
-    Fumi,
-} from 'react-native-textinput-effects';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
-
 type Props = {};
-
+@observer
 export default class Counter extends Component<Props> {
 
     constructor(props) {

@@ -108,6 +108,8 @@ export default class Mine extends Component<Props> {
     }
 
     renderSuccessView() {
+        console.warn(this.state.userInfo)
+        return <View></View>
         let orderTypeList = [];
         this.state.orderTypeList.map(value => {
             orderTypeList.push(

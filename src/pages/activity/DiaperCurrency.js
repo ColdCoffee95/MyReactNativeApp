@@ -15,6 +15,7 @@ import {
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
+
 type Props = {};
 
 export default class DiaperCurrency extends Component<Props> {
@@ -130,7 +131,7 @@ export default class DiaperCurrency extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList:this.state.goodsList.concat(data.data.list)});
+            this.setState({goodsList: this.state.goodsList.concat(data.data.list)});
             this.state.loadingMore = false;
         })
     }
@@ -157,7 +158,9 @@ export default class DiaperCurrency extends Component<Props> {
                     }}>{item.tradeName}</Text>
                 </View>
                 <View>
-                    <ActiveButton text="立即抢购" style={styles.buyBtn}/>
+                    <ActiveButton text="立即抢购" style={styles.buyBtn} clickBtn={() => {
+                        this.goodsDetail(item.id)
+                    }}/>
                 </View>
             </View>
         </TouchableHighlight>
@@ -238,6 +241,6 @@ const styles = StyleSheet.create({
         backgroundColor: activeColor,
         alignItems: 'center',
         width: (screenWidth - 6) / 2,
-        padding: 5,
+        padding: 10,
     }
 });

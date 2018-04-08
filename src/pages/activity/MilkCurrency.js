@@ -160,7 +160,7 @@ export default class MilkCurrency extends Component<Props> {
                     }}>{item.tradeName}</Text>
                 </View>
                 <View>
-                    <ActiveButton text="立即抢购" style={styles.buyBtn}/>
+                    <ActiveButton text="立即抢购" style={styles.buyBtn} clickBtn={()=>{this.goodsDetail(item.id)}}/>
                 </View>
             </View>
         </TouchableHighlight>
@@ -241,6 +241,6 @@ const styles = StyleSheet.create({
         backgroundColor: activeColor,
         alignItems: 'center',
         width: (screenWidth - 6) / 2,
-        padding: 5,
+        padding: 10,
     }
 });

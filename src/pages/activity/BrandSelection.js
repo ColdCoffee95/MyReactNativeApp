@@ -164,7 +164,7 @@ export default class BrandSelection extends Component<Props> {
                         <Text style={styles.goodsTrade}>{item.tradeName}</Text>
                     </View>
                     <View>
-                        <ActiveButton text="立即抢购" style={styles.buyBtn}/>
+                        <ActiveButton text="立即抢购" style={styles.buyBtn} clickBtn={()=>{this.goodsDetail(item.id)}}/>
                     </View>
                 </View>
             </View>
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
         backgroundColor: activeColor,
         alignItems: 'center',
         width: screenWidth * 0.7 - 20,
-        padding: 5,
+        padding: 10,
         borderRadius: 5
     }
 });

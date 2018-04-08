@@ -8,7 +8,7 @@ import {TabNavigator} from "react-navigation";
 
 import HomePage from '../Home';
 import CategoryPage from '../Category';
-import CartPage from '../Cart';
+import CartPage from '../cart/Cart';
 import MinePage from '../Mine';
 
 
@@ -107,6 +107,9 @@ const mainPage = TabNavigator({
             fontSize: 12, // 文字大小,
             marginTop: 0,
         },
+        iconStyle:{
+            height:0
+        }
     },
 });
 const styles = StyleSheet.create({
