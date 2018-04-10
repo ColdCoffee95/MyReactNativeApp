@@ -170,7 +170,7 @@ export default class ConfirmOrder extends Component<Props> {
                             </View>
                             <View style={styles.rightCell}>
                                 <Text>共{totalNum}件商品</Text>
-                                <Text>合计：¥{totalPrice}</Text>
+                                <Text>合计：¥{totalPrice.toFixed(2)}</Text>
                             </View>
                         </View>
                         <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
@@ -188,7 +188,7 @@ export default class ConfirmOrder extends Component<Props> {
                 <Toast ref='toast' position='center'></Toast>
                 <View style={styles.bottomView}>
                     <View style={styles.bottomLeftView}>
-                        <Text style={{marginLeft: 5}}>合计：¥{totalPrice}</Text>
+                        <Text style={{marginLeft: 5}}>合计：¥{totalPrice.toFixed(2)}</Text>
                     </View>
                     <View style={styles.bottomRightView}>
                         <ActiveButton

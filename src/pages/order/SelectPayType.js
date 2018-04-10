@@ -14,6 +14,7 @@ import {
     Image,
     Alert,
     ScrollView,
+    AppState,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -23,6 +24,8 @@ import {observer} from 'mobx-react';
 import {action, autorun} from 'mobx';
 import selectPayTypeCountdown from '../../mobx/selectPayTypeCountdown'
 import * as WeChat from 'react-native-wechat';
+
+WeChat.registerApp('wxb8f9e4f7b2576589');
 type Props = {};
 @observer
 export default class SelectPayType extends Component<Props> {
@@ -34,13 +37,16 @@ export default class SelectPayType extends Component<Props> {
             order: {},
             isLoading: true,
             payType: 1,//1是支付宝，2是微信
-            toggle: false
+            toggle: false,
+            interval: null,
+            currentAppState: AppState.currentState
         };
         this.data = new selectPayTypeCountdown()
     }
 
     componentDidMount() {
         this.state.orderId = this.props.navigation.state.params.orderId;
+        AppState.addEventListener('change', this._handleAppStateChange.bind(this));
         this.fetchData()
     }
 
@@ -211,14 +217,13 @@ export default class SelectPayType extends Component<Props> {
 
     }
 
+    _handleAppStateChange() {
+        this.fetchData();
+    }
+
     async weixinPay() {
         let loginState = await HttpUtils.getLoginState();
         let wxParams = await this.getWxParams(loginState);
-        let registerDone = await WeChat.registerApp(wxParams.appId);
-        if (!registerDone) {
-            alert('系统出错,请稍后再试')
-            return
-        }
         let isInstalled = await WeChat.isWXAppInstalled();
         if (!isInstalled) {
             alert('请先安装微信');
@@ -227,13 +232,14 @@ export default class SelectPayType extends Component<Props> {
         try {
             let payResult = await WeChat.pay(wxParams);
             if (payResult.errCode === 0) {
-                alert('支付成功')
-            } else {
-                alert(payResult.errStr)
+                this.props.navigation.navigate('PaySuccess', {type: 'weixin'});
+            } else if(payResult.errCode === -1){
+                console.warn(payResult.errStr);
+                alert('支付失败,如果您已经支付,请联系客服');
             }
         } catch (e) {
             if (e instanceof WeChat.WechatError) {
-                alert(e.stack);
+                console.warn(e.stack);
             } else {
                 throw e;
             }
@@ -271,10 +277,13 @@ export default class SelectPayType extends Component<Props> {
 
     @action
     start() {
-        let interval = setInterval(() => {
+        if (this.state.interval) {
+            clearInterval(this.state.interval)
+        }
+        this.state.interval = setInterval(() => {
             this.data.time--;
             if (this.data.time <= 0) {
-                clearInterval(interval)
+                clearInterval(this.state.interval)
                 Alert.alert(null, '订单支付超时，请重新下单',
                     [
                         {
