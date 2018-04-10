@@ -3,6 +3,13 @@ package com.awesomeproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
+import com.beefe.picker.PickerViewPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.dscj.autoheightwebview.AutoHeightWebViewPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -34,6 +41,13 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new VectorIconsPackage(),
+            new SplashScreenReactPackage(),
+            new RNSpinkitPackage(),
+            new PickerViewPackage(),
+            new PickerPackage(),
+            new RNDeviceInfo(),
+            new AutoHeightWebViewPackage(),
             new SplashScreenReactPackage(),
             new SplashScreenReactPackage(),
             new RNDeviceInfo(),

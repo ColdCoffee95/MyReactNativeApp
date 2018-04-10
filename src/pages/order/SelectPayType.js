@@ -22,7 +22,7 @@ import ActiveButton from '../../components/common/ActiveButton';
 import {observer} from 'mobx-react';
 import {action, autorun} from 'mobx';
 import selectPayTypeCountdown from '../../mobx/selectPayTypeCountdown'
-
+import * as WeChat from 'react-native-wechat';
 type Props = {};
 @observer
 export default class SelectPayType extends Component<Props> {
@@ -211,8 +211,62 @@ export default class SelectPayType extends Component<Props> {
 
     }
 
-    weixinPay() {
+    async weixinPay() {
+        let loginState = await HttpUtils.getLoginState();
+        let wxParams = await this.getWxParams(loginState);
+        let registerDone = await WeChat.registerApp(wxParams.appId);
+        if (!registerDone) {
+            alert('系统出错,请稍后再试')
+            return
+        }
+        let isInstalled = await WeChat.isWXAppInstalled();
+        if (!isInstalled) {
+            alert('请先安装微信');
+            return
+        }
+        try {
+            let payResult = await WeChat.pay(wxParams);
+            if (payResult.errCode === 0) {
+                alert('支付成功')
+            } else {
+                alert(payResult.errStr)
+            }
+        } catch (e) {
+            if (e instanceof WeChat.WechatError) {
+                alert(e.stack);
+            } else {
+                throw e;
+            }
+        }
 
+    }
+
+    getWxParams(loginState) {
+        return new Promise((resolve, reject) => {
+            try {
+                let params = {
+                    memberId: loginState.memberId,
+                    token: loginState.token,
+                    orderId: this.state.orderId
+                };
+                HttpUtils.get('/pay/wxPayApp', params, data => {
+                    let dealParams = {
+                        appId: data.data.appid,
+                        partnerId: data.data.partnerid, // merchant id
+                        prepayId: data.data.prepayid, // prepay id
+                        nonceStr: data.data.noncestr, // nonce
+                        timeStamp: data.data.timestamp, // timestamp
+                        package: data.data.package,
+                        sign: data.data.sign // signed string
+                    };
+                    resolve(dealParams);
+                })
+            } catch (e) {
+                alert('系统出错，请稍后再试');
+                resolve({})
+            }
+
+        })
     }
 
     @action
