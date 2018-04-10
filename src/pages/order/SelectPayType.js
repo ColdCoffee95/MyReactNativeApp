@@ -23,6 +23,7 @@ import ActiveButton from '../../components/common/ActiveButton';
 import {observer} from 'mobx-react';
 import {action, autorun} from 'mobx';
 import selectPayTypeCountdown from '../../mobx/selectPayTypeCountdown'
+import Alipay from 'react-native-yunpeng-alipay';
 import * as WeChat from 'react-native-wechat';
 
 WeChat.registerApp('wxb8f9e4f7b2576589');
@@ -187,7 +188,9 @@ export default class SelectPayType extends Component<Props> {
 
     fetchData() {
         HttpUtils.post('/order/viewOrderInfo', {orderId: this.state.orderId}, data => {
-            console.warn(data.data)
+            if (!data.data) {
+                return;
+            }
             let order = data.data;
             this.data.replace(order.payRemainingTime);
             this.start();
@@ -213,8 +216,37 @@ export default class SelectPayType extends Component<Props> {
         }
     }
 
-    aliPay() {
+    async aliPay() {
+        let loginState = await HttpUtils.getLoginState();
+        let alipayParams = await this.getAliPayParams(loginState);
+        // let isInstalled = await WeChat.isWXAppInstalled();
+        Alipay.pay(alipayParams).then(data => {
+            console.warn(data);
+            if (data[0].resultStatus == '9000') {
+                this.props.navigation.navigate('PaySuccess', {type: 'alipay'});
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    }
 
+    getAliPayParams(loginState) {
+        return new Promise((resolve, reject) => {
+            try {
+                let params = {
+                    memberId: loginState.memberId,
+                    token: loginState.token,
+                    orderId: this.state.orderId
+                };
+                HttpUtils.get('/pay/getAliPayAppSingOrderInfo', params, data => {
+                    resolve(data.data);
+                })
+            } catch (e) {
+                alert('系统出错，请稍后再试');
+                resolve({})
+            }
+
+        })
     }
 
     _handleAppStateChange() {
@@ -233,7 +265,7 @@ export default class SelectPayType extends Component<Props> {
             let payResult = await WeChat.pay(wxParams);
             if (payResult.errCode === 0) {
                 this.props.navigation.navigate('PaySuccess', {type: 'weixin'});
-            } else if(payResult.errCode === -1){
+            } else if (payResult.errCode === -1) {
                 console.warn(payResult.errStr);
                 alert('支付失败,如果您已经支付,请联系客服');
             }
@@ -257,7 +289,6 @@ export default class SelectPayType extends Component<Props> {
                 };
                 HttpUtils.get('/pay/wxPayApp', params, data => {
                     let dealParams = {
-                        appId: data.data.appid,
                         partnerId: data.data.partnerid, // merchant id
                         prepayId: data.data.prepayid, // prepay id
                         nonceStr: data.data.noncestr, // nonce

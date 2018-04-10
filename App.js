@@ -41,6 +41,8 @@ import SelectCertification from './src/pages/certification/SelectCertification';
 
 import ConfirmOrder from './src/pages/order/ConfirmOrder'
 import SelectPayType from './src/pages/order/SelectPayType'
+import PaySuccess from './src/pages/order/PaySuccess'
+import Order from './src/pages/order/Order'
 const styles = StyleSheet.create({
     headerStyles: {
         backgroundColor: '#fd4a70'
@@ -317,6 +319,28 @@ export default SimpleApp = StackNavigator({
         screen: SelectPayType,
         navigationOptions: {
             title: '选择支付方式',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        },
+    },
+    PaySuccess:{
+        screen: PaySuccess,
+        navigationOptions: {
+            title: '支付成功',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        },
+    },
+    Order:{
+        screen: Order,
+        navigationOptions: {
+            title: '订单列表',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
             headerBackTitle:null,

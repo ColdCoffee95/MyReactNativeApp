@@ -1,6 +1,7 @@
 import {Dimensions} from "react-native";
 import HttpUtils from "./http";
 import DeviceInfo from 'react-native-device-info'
+
 global.cartTabList = [
     {
         id: 1,
@@ -18,24 +19,50 @@ global.cartTabList = [
         color: '#78E285'
     }
 ];
-global.authList = [
-    {
-        id: 0,
-        name: "未认证",
-    },
+global.orderStatusList = [
     {
         id: 1,
-        name: "已认证",
+        name: "待支付"
     },
     {
         id: 2,
-        name: "待审核",
+        name: "待收货"
     },
     {
-        id: -1,
-        name: "认证驳回",
+        id: 3,
+        name: "待发货"
+    },
+    {
+        id: 4,
+        name: "待评价"
+    },
+    {
+        id: 5,
+        name: "已完成"
+    },
+    {
+        id: 6,
+        name: "已关闭"
     }
-];
+],
+    global.authList = [
+        {
+            id: 0,
+            name: "未认证",
+        },
+        {
+            id: 1,
+            name: "已认证",
+        },
+        {
+            id: 2,
+            name: "待审核",
+        },
+        {
+            id: -1,
+            name: "认证驳回",
+        }
+    ];
 global.activeColor = '#fd4a70';
 global.whiteColor = '#fff';
 global.borderColor = '#e9e9e9';

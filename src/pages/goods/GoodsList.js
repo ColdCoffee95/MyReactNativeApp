@@ -10,6 +10,7 @@ import {
     Text,
     TouchableHighlight,
     ActivityIndicator,
+    TouchableOpacity,
     Linking,
     TextInput,
     FlatList,
@@ -29,7 +30,7 @@ export default class GoodsList extends Component<Props> {
         this.state = {
             sideMenuOpening: false,
             isLoading: true,
-            loadingMore: false,//是否在下拉加载中
+            loadingMore: false,//是否在上拉拉加载更多中
             goodsList: [],
             firstCatId: "",
             secondCatIds: [],
@@ -109,35 +110,31 @@ export default class GoodsList extends Component<Props> {
             >
                 <View style={styles.container}>
                     <View style={styles.tabView}>
-                        <TouchableHighlight
-                            onPress={() => this.changeTab(1)}
-                            underlayColor='#fff'>
+                        <TouchableOpacity
+                            onPress={() => this.changeTab(1)}>
                             <View style={styles.singleTab}>
                                 <Text style={this.state.type === 1 ? styles.activeTab : styles.negativeTab}>人气</Text>
                             </View>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            onPress={() => this.changeTab(2)}
-                            underlayColor='#fff'>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.changeTab(2)}>
                             <View style={styles.singleTab}>
                                 <Text style={this.state.type === 2 ? styles.activeTab : styles.negativeTab}>销量</Text>
                             </View>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            onPress={() => this.changeTab(3)}
-                            underlayColor='#fff'>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.changeTab(3)}>
                             <View style={styles.singleTab}>
                                 <Text style={this.state.type === 3 ? styles.activeTab : styles.negativeTab}>新品</Text>
                             </View>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            onPress={() => this.changeTab(4)}
-                            underlayColor='#fff'>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.changeTab(4)}>
                             <View style={styles.singleTab}>
                                 <Text style={this.state.type === 4 ? styles.activeTab : styles.negativeTab}>筛选</Text>
                                 <Icon name="filter" size={16}></Icon>
                             </View>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                     </View>
                     {goodsList}
                 </View>

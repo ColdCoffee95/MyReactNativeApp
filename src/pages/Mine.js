@@ -10,7 +10,7 @@ import {
     Image,
     ActivityIndicator,
     Text,
-    TouchableHighlight,
+    TouchableOpacity,
     View
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -113,21 +113,22 @@ export default class Mine extends Component<Props> {
         let orderTypeList = [];
         this.state.orderTypeList.map(value => {
             orderTypeList.push(
-                <View style={styles.orderItemView} key={value.id}>
-                    <Image
-                        style={styles.orderImg}
-                        resizeMode='contain'
-                        source={value.img}
-                    />
-                    <Text style={styles.orderName}>{value.name}</Text>
-                </View>
+                <TouchableOpacity onPress={() => this.jumpToOrder(value.id)} key={value.id}>
+                    <View style={styles.orderItemView}>
+                        <Image
+                            style={styles.orderImg}
+                            resizeMode='contain'
+                            source={value.img}
+                        />
+                        <Text style={styles.orderName}>{value.name}</Text>
+                    </View>
+                </TouchableOpacity>
             )
         });
         let toolList = [];
         this.state.toolList.map(value => {
             toolList.push(
-                <TouchableHighlight
-                    underlayColor='#f2f2f2'
+                <TouchableOpacity
                     style={styles.toolItemTouch}
                     onPress={() => this.jumpToTools(value.id)}
                     key={value.id}>
@@ -140,7 +141,7 @@ export default class Mine extends Component<Props> {
                         <Text style={styles.toolName}>{value.name}</Text>
                     </View>
 
-                </TouchableHighlight>
+                </TouchableOpacity>
             )
         });
         return (
@@ -166,10 +167,13 @@ export default class Mine extends Component<Props> {
                 </View>
                 <View style={styles.cellView}>
                     <Text style={styles.leftCell}>我的订单</Text>
-                    <View style={styles.rightCell}>
-                        <Text style={styles.rightCellText}>查看所有订单</Text>
-                        <Icon name="angle-right" size={20} color="#999"/>
-                    </View>
+                    <TouchableOpacity onPress={() => this.jumpToOrder(-1)}>
+                        <View style={styles.rightCell}>
+                            <Text style={styles.rightCellText}>查看所有订单</Text>
+                            <Icon name="angle-right" size={20} color="#999"/>
+                        </View>
+                    </TouchableOpacity>
+
                 </View>
                 <View style={styles.orderView}>
                     {orderTypeList}
@@ -226,6 +230,10 @@ export default class Mine extends Component<Props> {
                 this.props.navigation.navigate('ManageCertification');
                 break;
         }
+    }
+
+    jumpToOrder(id) {
+        this.props.navigation.navigate('Order', {type: id});
     }
 }
 const styles = StyleSheet.create({

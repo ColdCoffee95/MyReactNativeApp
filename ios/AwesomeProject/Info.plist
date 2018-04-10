@@ -32,9 +32,24 @@
 				<string>wxb8f9e4f7b2576589</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>alipay</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>alipay2017121200648255</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>weixin</string>
+		<string>wechat</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -80,11 +95,6 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>weixin</string>
-    <string>wechat</string>
-  </array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

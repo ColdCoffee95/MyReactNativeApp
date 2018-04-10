@@ -37,8 +37,10 @@ export default class Category extends Component<Props> {
         let leftArr = [];
         catList.map(value => {
             leftArr.push(
-                <TouchableHighlight onPress={() => this.getSecondCategories(value.id)} key={value.id}>
-                    <View style={value.id === this.state.currentLeftId ? styles.leftCheckedItem : styles.leftItem}>
+                <TouchableHighlight underlayColor='white'
+                                    style={value.id === this.state.currentLeftId ? styles.leftCheckedItem : styles.leftItem}
+                                    onPress={() => this.getSecondCategories(value.id)} key={value.id}>
+                    <View>
                         <Text style={styles.leftText}
                         >{value.name}</Text>
                     </View>
@@ -160,13 +162,13 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
         flexDirection: 'row',
-        flex:1
+        flex: 1
     },
     leftScrollView: {
         flexDirection: 'column',
         width: 80,
-        backgroundColor:'#f2f2f2',
-        flex:1
+        backgroundColor: '#f2f2f2',
+        flex: 1
     },
     leftItem: {
         alignItems: 'center',
