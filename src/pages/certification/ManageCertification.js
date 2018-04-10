@@ -81,7 +81,7 @@ export default class ManageCertification extends Component<Props> {
                 </ScrollView>
                 <Toast ref='toast' position='center'></Toast>
                 <View style={styles.bottomBtnView}>
-                    <ActiveButton clickBtn={() => this.addAddress()} text='添加实名认证'
+                    <ActiveButton clickBtn={() => this.addCertification()} text='添加实名认证'
                                   style={styles.activeButton}></ActiveButton>
                 </View>
             </View>
@@ -96,11 +96,10 @@ export default class ManageCertification extends Component<Props> {
 
     setDefaultCertification(id) {//设为默认
         HttpUtils.get('/idCard/setIdCardDefaultsById', {id: id}, data => {
-            let defaultCrossAddress = this.state.certificationList.find(n => n.id === id);
-            console.warn(defaultCrossAddress)
+            let defaultCertification = this.state.certificationList.find(n => n.id === id);
             storage.save({
-                key: 'defaultCrossAddress',
-                data: defaultCrossAddress
+                key: 'defaultCertification',
+                data: defaultCertification
             });
             this.refs.toast.show('设置成功!', 10);
             this.fetchData();
@@ -119,14 +118,15 @@ export default class ManageCertification extends Component<Props> {
                     }
                 },
                 {
-                    text: "取消", onPress: () => {}
+                    text: "取消", onPress: () => {
+                    }
                 },
             ],
-            { cancelable: false }
-            )
+            {cancelable: false}
+        )
     }
 
-    addAddress() {
+    addCertification() {
         this.props.navigation.navigate('AddCertification');
     }
 }
@@ -137,8 +137,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#f2f2f2',
     },
-    scrollView:{
-        paddingBottom:40
+    scrollView: {
+        paddingBottom: 40
     },
 
     singleView: {

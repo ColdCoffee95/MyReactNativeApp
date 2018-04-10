@@ -40,13 +40,6 @@ export default class ManageAddress extends Component<Props> {
             </View>
         );
     }
-
-    submit() {
-        alert('13')
-    }
-    callPhone() {
-        return Linking.openURL('tel:' + hotline)
-    }
     addAddress(){
         this.props.navigation.navigate('AddAddress');
     }

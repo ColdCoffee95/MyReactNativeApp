@@ -4,9 +4,7 @@ import {
     Text,
     View,
     Image,
-    TouchableOpacity,
     TouchableHighlight,
-    DeviceEventEmitter
 } from 'react-native';
 import Counter from '../../components/common/Counter';
 import Icon from 'react-native-vector-icons/FontAwesome';

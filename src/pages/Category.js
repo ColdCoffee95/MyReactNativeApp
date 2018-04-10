@@ -159,11 +159,14 @@ export default class Category extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        flex:1
     },
     leftScrollView: {
         flexDirection: 'column',
         width: 80,
+        backgroundColor:'#f2f2f2',
+        flex:1
     },
     leftItem: {
         alignItems: 'center',

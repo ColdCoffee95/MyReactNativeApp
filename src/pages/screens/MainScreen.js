@@ -57,7 +57,6 @@ const mainPage = TabNavigator({
         navigationOptions: {
             title:'进货单',
             tabBarLabel: '进货单',
-            headerLeft:null,
             tabBarIcon: ({tintColor}) => (
                 <Image
                     source={

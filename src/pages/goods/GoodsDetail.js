@@ -270,7 +270,7 @@ export default class GoodsDetail extends Component<Props> {
     }
 
     jumpToCart() {
-        this.props.navigation.navigate('Cart');
+        this.props.navigation.navigate('Cart', {type: this.state.goodsDetail.tradeType});
     }
 
     collect() {

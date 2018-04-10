@@ -45,7 +45,7 @@ export default class Cart extends Component<Props> {
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
-        headerRight: (navigation.state.params && navigation.state.params.cartList.length > 0 &&
+        headerRight: (navigation.state.params && navigation.state.params.cartList && navigation.state.params.cartList.length > 0 &&
             <View style={styles.headerRightView}>
                 <TouchableHighlight style={{marginRight: 10}} underlayColor='#f2f2f2'
                                     onPress={() => navigation.setParams({isEditing: !navigation.state.params.isEditing})}>
@@ -58,6 +58,10 @@ export default class Cart extends Component<Props> {
 
 
     componentDidMount() {
+        if (this.props.navigation.state.params) {
+            this.state.tradeType = this.props.navigation.state.params.type || 1;
+
+        }
         this.fetchData()
     }
 
@@ -68,35 +72,41 @@ export default class Cart extends Component<Props> {
             let cartList = [];
             let data = this.data.itemData;
             if (data.data.length > 0) {
-                cartList = <SwipeListView
-                    useFlatList
-                    rightOpenValue={-60}
-                    data={data.data}
-                    disableRightSwipe={true}
-                    stopRightSwipe={-150}
-                    previewRowKey={'12adf'}
-                    closeOnRowBeginSwipe={true}
-                    closeOnRowPress={true}
-                    closeOnScroll={true}
-                    keyExtractor={(item) => item.goodsSkuId}
-                    renderHiddenItem={(rowData, rowMap) => (
-                        <View style={styles.rowBack}>
-                            <TouchableOpacity
-                                onPress={_ => {
-                                    this.closeRow(rowMap, rowData.item.goodsSkuId);
-                                    this.deleteGoods(rowData.item.goodsSkuId)
-                                }}>
-                                <View style={styles.deleteGoodsView}>
-                                    <Text style={styles.deleteGoods}>删除</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
 
-                    )}
-                    renderItem={(data, rowMap) => (
-                        <CartComponent {...this.props} itemData={data.item} data={this.data}></CartComponent>
-                    )}>
-                </SwipeListView>;
+                cartList =
+                    <View style={styles.swipeWrapper}>
+                        <SwipeListView
+                            useFlatList
+                            rightOpenValue={-60}
+                            data={data.data}
+                            disableRightSwipe={true}
+                            stopRightSwipe={-150}
+                            previewRowKey={'12adf'}
+                            closeOnRowBeginSwipe={true}
+                            closeOnRowPress={true}
+                            closeOnScroll={true}
+                            keyExtractor={(item) => item.goodsSkuId}
+                            renderHiddenItem={(rowData, rowMap) => (
+                                <View style={styles.rowBack}>
+                                    <TouchableOpacity
+                                        onPress={_ => {
+                                            this.closeRow(rowMap, rowData.item.goodsSkuId);
+                                            this.deleteGoods(rowData.item.goodsSkuId)
+                                        }}>
+                                        <View style={styles.deleteGoodsView}>
+                                            <Text style={styles.deleteGoods}>删除</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+
+                            )}
+                            renderItem={(data, rowMap) => (
+                                <CartComponent {...this.props} itemData={data.item} data={this.data}></CartComponent>
+                            )}>
+                        </SwipeListView>
+
+                    </View>
+
             } else {
                 cartList = <View style={styles.noGoodsView}>
                     <Image
@@ -113,6 +123,8 @@ export default class Cart extends Component<Props> {
 
             return (
                 <View style={styles.container}>
+                    <Toast ref='toast' position='center'></Toast>
+
                     {/*<RefreshControl*/}
                     {/*refreshing={this.state.isRefreshing}*/}
                     {/*onRefresh={this._onRefresh.bind(this)}*/}
@@ -160,7 +172,7 @@ export default class Cart extends Component<Props> {
                                 </TouchableOpacity>
 
                                 <Text style={{marginLeft: 5}}>全选</Text>
-                                <Text style={{marginLeft: 5}}>合计：¥{this.data.totalMoney1}</Text>
+                                <Text style={{marginLeft: 5}}>合计：¥{this.data.totalMoney}</Text>
                             </View>
                             <View style={styles.cartTotalRightView}>
                                 <ActiveButton
@@ -175,7 +187,6 @@ export default class Cart extends Component<Props> {
                             </View>
                         </View>
                     }
-                    <Toast ref='toast' position='center'></Toast>
                 </View>
             );
         }
@@ -194,7 +205,7 @@ export default class Cart extends Component<Props> {
 
     confirmOrder() {
         //生成订单
-        let cartList = this.state.cartList;
+        let cartList = this.data.itemData.data;
         let arr = [];
         cartList.filter(value => value.itemSelect === 1).map(value => {
             arr.push(value)
@@ -203,22 +214,14 @@ export default class Cart extends Component<Props> {
             this.refs.toast.show("您还没有选择商品哦", 500);
             return;
         }
-        if (this.state.tradeType === 1) {
-            this.props.navigation.navigate('ConfirmOrder', {cartList: arr});
-        } else {
-            this.props.navigation.navigate('ConfirmCrossOrder', {cartList: arr});
-        }
+        this.props.navigation.navigate('ConfirmOrder', {cartList: arr, tradeType: this.state.tradeType});
     }
 
     deleteGoods(id) {//删掉购物车中某个商品
         let params = {deleteGoodsSkuIds: [id]};
         HttpUtils.post('/shoppingCart/deleteShoppingCartItem', params, data => {
-            this.fetchData();
+            this.data.itemData.data.splice(this.data.itemData.data.findIndex(value => value.goodsSkuId === id), 1);
         })
-    }
-
-    toGoodsDetail(id) {
-        this.props.navigation.navigate('GoodsDetail', {id: id});
     }
 
     changeTab(index) {
@@ -256,7 +259,7 @@ export default class Cart extends Component<Props> {
                     isAllSelect = false;
                 }
             });
-            this.data.replace({data: cartList, isAllSelect: isAllSelect, totalMoney: totalMoney, totalNum: totalNum});
+            this.data.replace({data: cartList});
             this.setState({isLoading: false, isRefreshing: false});
             this.props.navigation.setParams({isEditing: false, cartList: cartList});
 
@@ -266,7 +269,6 @@ export default class Cart extends Component<Props> {
 
     @action
     allSelect() {
-        // DeviceEventEmitter.emit('allSelect', !this.data.itemData.isAllSelect);
         this.data.isAllSelect = !this.data.isAllSelect;
     }
 }
@@ -275,6 +277,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
+    },
+    swipeWrapper: {
+        paddingBottom: 96
     },
     cartTotalView: {
         position: 'absolute',

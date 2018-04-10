@@ -15,6 +15,8 @@ import {
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast, {DURATION} from 'react-native-easy-toast';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 type Props = {};
 export default class Mine extends Component<Props> {
 
@@ -61,11 +63,11 @@ export default class Mine extends Component<Props> {
                     name: "我的设置",
                     img: require('../images/settings.png')
                 },
-                {
-                    id: 3,
-                    name: "会员中心",
-                    img: require('../images/memberCenter.png')
-                },
+                // {
+                //     id: 3,
+                //     name: "会员中心",
+                //     img: require('../images/memberCenter.png')
+                // },
                 {
                     id: 4,
                     name: "意见反馈",
@@ -108,8 +110,6 @@ export default class Mine extends Component<Props> {
     }
 
     renderSuccessView() {
-        console.warn(this.state.userInfo)
-        return <View></View>
         let orderTypeList = [];
         this.state.orderTypeList.map(value => {
             orderTypeList.push(
@@ -128,6 +128,7 @@ export default class Mine extends Component<Props> {
             toolList.push(
                 <TouchableHighlight
                     underlayColor='#f2f2f2'
+                    style={styles.toolItemTouch}
                     onPress={() => this.jumpToTools(value.id)}
                     key={value.id}>
                     <View style={styles.toolItemView}>
@@ -159,7 +160,7 @@ export default class Mine extends Component<Props> {
                         <Image
                             style={styles.avatar}
                             resizeMode='contain'
-                            source={this.state.userInfo.avatar?{uri: this.state.userInfo.avatar}:{uri: 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}}
+                            source={this.state.userInfo.avatar ? {uri: this.state.userInfo.avatar} : {uri: 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}}
                         />
                     </View>
                 </View>
@@ -167,6 +168,7 @@ export default class Mine extends Component<Props> {
                     <Text style={styles.leftCell}>我的订单</Text>
                     <View style={styles.rightCell}>
                         <Text style={styles.rightCellText}>查看所有订单</Text>
+                        <Icon name="angle-right" size={20} color="#999"/>
                     </View>
                 </View>
                 <View style={styles.orderView}>
@@ -272,15 +274,22 @@ const styles = StyleSheet.create({
         width: screenWidth,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         backgroundColor: whiteColor,
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: borderColor
     },
-    leftCell: {},
-    rightCell: {},
+    leftCell: {
+        justifyContent: 'center'
+    },
+    rightCell: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
     rightCellText: {
-        color: '#999'
+        color: '#999',
+        marginRight: 5
     },
     orderView: {
         width: screenWidth,
@@ -310,15 +319,18 @@ const styles = StyleSheet.create({
         backgroundColor: whiteColor,
         paddingBottom: 10,
     },
-    toolItemView: {
+    toolItemTouch: {
         width: screenWidth / 5,
         alignItems: 'center',
-        marginTop: 10
+        marginTop: 10,
+    },
+    toolItemView: {
+        alignItems: 'center',
     },
     toolImg: {
         width: 20,
         height: 20,
-        marginBottom: 6
+        marginBottom: 10
     },
     toolName: {
         fontSize: 12

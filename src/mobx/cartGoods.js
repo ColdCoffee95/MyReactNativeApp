@@ -19,13 +19,13 @@ export default class cartGoods {
     };
 
     @computed
-    get totalMoney1() {
+    get totalMoney() {
         let total = 0;
         this.itemData.data.filter(value => value.itemSelect === 1).map(value => {
             let emsPrice = value.emsPrice || 0
             total += value.number * value.putPrice + parseInt(emsPrice);
         });
-        return total;
+        return total.toFixed(2);
     };
 
     @computed
@@ -39,6 +39,7 @@ export default class cartGoods {
         });
         return bool;
     }
+
     set isAllSelect(bool) {
         let data = this.itemData.data;
         bool
@@ -56,49 +57,5 @@ export default class cartGoods {
     itemPress = (id) => {
         let item = this.itemData.data.find(value => value.goodsSkuId === id);
         item.itemSelect = item.itemSelect === 1 ? 0 : 1;
-        // let i = 0;
-        // this.itemData.data.filter(value => value.itemSelect === 0).map((value) => {
-        //     i += 1;
-        // });
-        // if (i === 0) {
-        //     this.itemData.isAllSelect = true;
-        // }
-        // else {
-        //     this.itemData.isAllSelect = false;
-        // }
     };
-    // //加
-    // @action
-    // increase = (money, number) => {
-    //     this.itemData.totalMoney += money;
-    //     this.itemData.totalNum += number;
-    // };
-    //
-    // //减
-    // @action
-    // reduce = (money, number) => {
-    //     this.itemData.totalMoney -= money;
-    //     this.itemData.totalNum -= number;
-    // };
-
-
-    //全选
-    // @action
-    // selectAll = () => {
-    //     this.itemData.isAllSelect = !this.itemData.isAllSelect;
-    //     this.itemData.totalNum = 0;
-    //     this.itemData.totalMoney = 0;
-    //     if (this.itemData.isAllSelect) {
-    //         this.itemData.data.map(value => {
-    //             value.itemSelect = 1;
-    //             let emsPrice = value.emsPrice || 0;
-    //             this.itemData.totalMoney += value.number * value.putPrice + parseInt(emsPrice);
-    //             this.itemData.totalNum += value.number;
-    //         });
-    //     } else {
-    //         this.itemData.data.map(value => {
-    //             value.itemSelect = 0;
-    //         });
-    //     }
-    // }
 }

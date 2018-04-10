@@ -29,11 +29,18 @@ import SecurityCheck from './src/pages/user/SecurityCheck';
 
 import ManageAddress from './src/pages/address/ManageAddress';
 import AddAddress from './src/pages/address/AddAddress';
+import SelectAddress from './src/pages/address/SelectAddress';
 import ManageCrossAddress from './src/pages/address/ManageCrossAddress';
 import AddCrossAddress from './src/pages/address/AddCrossAddress';
+import SelectCrossAddress from './src/pages/address/SelectCrossAddress';
+
 
 import ManageCertification from './src/pages/certification/ManageCertification';
 import AddCertification from './src/pages/certification/AddCertification';
+import SelectCertification from './src/pages/certification/SelectCertification';
+
+import ConfirmOrder from './src/pages/order/ConfirmOrder'
+import SelectPayType from './src/pages/order/SelectPayType'
 const styles = StyleSheet.create({
     headerStyles: {
         backgroundColor: '#fd4a70'
@@ -152,14 +159,24 @@ export default SimpleApp = StackNavigator({
         },
 
     },
-    ManageCrossAddress:{
-        screen: ManageCrossAddress,
+    SelectAddress:{
+        screen: SelectAddress,
         navigationOptions: {
-            title: '跨境地址管理',
+            title: '选择地址',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
             headerBackTitle:null,
-            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        },
+
+    },
+    SelectCrossAddress:{
+        screen: SelectCrossAddress,
+        navigationOptions: {
+            title: '选择跨境地址',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
             headerTitleStyle:styles.headerTitleStyle,
         }
     },
@@ -190,6 +207,17 @@ export default SimpleApp = StackNavigator({
         screen: AddCertification,
         navigationOptions: {
             title: '添加实名认证',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        },
+    },
+    SelectCertification:{
+        screen: SelectCertification,
+        navigationOptions: {
+            title: '选择实名认证',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
             headerBackTitle:null,
@@ -267,6 +295,28 @@ export default SimpleApp = StackNavigator({
         screen: NewSale,
         navigationOptions: {
             title: '新品特卖',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        },
+    },
+    ConfirmOrder:{
+        screen: ConfirmOrder,
+        navigationOptions: {
+            title: '确认订单',
+            headerStyle: styles.headerStyles,
+            headerTintColor: '#fff',
+            headerBackTitle:null,
+            headerRight:<View/>,
+            headerTitleStyle:styles.headerTitleStyle,
+        },
+    },
+    SelectPayType:{
+        screen: SelectPayType,
+        navigationOptions: {
+            title: '选择支付方式',
             headerStyle: styles.headerStyles,
             headerTintColor: '#fff',
             headerBackTitle:null,
