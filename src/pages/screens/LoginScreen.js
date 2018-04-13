@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import CryptoJS from 'crypto-js'
-import {NavigationActions} from 'react-navigation'
-// type Props = {};
+type Props = {};
 
 export default class LoginScreen extends Component<Props> {
     constructor(props) {

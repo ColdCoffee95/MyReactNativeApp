@@ -9,12 +9,14 @@ import {
     StyleSheet,
     Image,
     Text,
-    TouchableHighlight,
+    TouchableOpacity,
     ActivityIndicator,
     View
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import ActionSheet from 'react-native-actionsheet'
 import ImagePicker from 'react-native-image-crop-picker'
+
 type Props = {};
 
 export default class UploadMultiImg extends Component<Props> {
@@ -23,16 +25,17 @@ export default class UploadMultiImg extends Component<Props> {
         super(props);
         this.state = {
             selected: '',
-            imgs: '',
-            imageUploading: false
+            imgs: [],
+            nowIndex: 0,
+            uploadingArr: [],//正在加载的图片的index在这个数组中
+            maxUploadNum: props.maxUploadNum || 5,//最多上传几张
+            isLoading: true
         }
     }
 
     componentDidMount() {
-        if (this.props.img) {
-            this.setState({img: {uri: this.props.img}});
-        } else {
-            this.setState({img: require('../../images/upload.png')});
+        if (this.props.imgs) {
+            this.setState({imgs: this.props.imgs});
         }
     }
 
@@ -42,26 +45,51 @@ export default class UploadMultiImg extends Component<Props> {
             '从相册里选择',
             '取消',
         ];
-        var imgView;
-        if (this.state.imageUploading) {
-            imgView = <ActivityIndicator></ActivityIndicator>
-        } else {
-            imgView =
-                <Image
-                    resizeMode='contain'
-                    style={{
-                        width: this.props.width || 100,
-                        height: this.props.height || 100,
-                    }}
-                    source={this.state.img}
-                >
-                </Image>
-        }
-        return (
-            <View style={styles.btnContainer}>
-                <TouchableHighlight
-                    onPress={() => this.showActionSheet()}
-                    underlayColor='#fff'>
+        let imgView = [];
+        this.state.imgs.map((value, index) => {
+            imgView.push(
+                <TouchableOpacity
+                    onPress={() => {
+                        this.state.nowIndex = index;
+                        this.showActionSheet()
+                    }}>
+                    <View style={styles.uploadView}>
+                        <View style={{
+                            width: this.props.width || 100,
+                            height: this.props.height || 100,
+                            borderWidth: 1,
+                            borderColor: borderColor,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position:'relative'
+                        }}>
+
+                            <Image
+                                resizeMode='contain'
+                                style={{
+                                    width: this.props.width || 100,
+                                    height: this.props.height || 100,
+                                }}
+                                source={{uri: value}}
+                            />
+                            <TouchableOpacity onPress={() => this.deleteImg(index)} style={styles.deleteIconView}>
+                                <View style={styles.deleteIconView}>
+                                    <Icon name='times-circle' color='black' size={30}></Icon>
+                                </View>
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            )
+        });
+        if (imgView.length < this.state.maxUploadNum) {
+            imgView.push(
+                <TouchableOpacity
+                    onPress={() => {
+                        this.state.nowIndex = this.state.imgs.length;
+                        this.showActionSheet()
+                    }}>
                     <View style={styles.uploadView}>
                         <View style={{
                             width: this.props.width || 100,
@@ -71,11 +99,26 @@ export default class UploadMultiImg extends Component<Props> {
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                            {imgView}
+                            <Image
+                                resizeMode='contain'
+                                style={{
+                                    width: this.props.width || 100,
+                                    height: this.props.height || 100,
+                                }}
+                                source={require('../../images/upload.png')}
+                            />
                         </View>
-                        <Text style={styles.uploadTitle}>{this.props.title}</Text>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
+            )
+        }
+
+        return (
+            <View style={styles.btnContainer}>
+                <View style={styles.uploadWrapper}>
+                    {imgView}
+                </View>
+
                 <ActionSheet
                     ref={o => this.ActionSheet = o}
                     title='请选择上传方式'
@@ -88,7 +131,7 @@ export default class UploadMultiImg extends Component<Props> {
     }
 
     handlePress(i) {
-        this.setState({selected: i})
+        this.setState({selected: i});
         if (i === 0) {//拍照上传
             ImagePicker.openCamera({
                 width: 300,
@@ -106,8 +149,14 @@ export default class UploadMultiImg extends Component<Props> {
         }
     }
 
+    deleteImg(index) {
+        this.state.imgs.splice(index, 1);
+        this.setState({imgs: this.state.imgs});
+    }
+
     imageUpload(image) {
-        this.setState({imageUploading: true});
+        // this.state.uploadingArr.push(this.state.nowIndex);
+        // this.setState({uploadingArr:this.state.uploadingArr});
         HttpUtils.post('/oss/imgSignature', {bucketName: 'dianlijihe'}, data => {
             let formData = new FormData();
             formData.append("token", data.data);
@@ -123,9 +172,16 @@ export default class UploadMultiImg extends Component<Props> {
                 .then((response) => response.json())
                 .then((responseData) => {
                     let url = `${imgDomain}${responseData.key}?imageView2/1/w/${this.props.width || 100}/h/${this.props.height || 100}`
+                    if (this.state.imgs.length > this.state.nowIndex) {
+                        this.state.imgs[this.state.nowIndex] = url;
+                    } else {
+                        this.state.imgs.push(url);
+                    }
+                    // this.state.uploadingArr.splice(this.state.nowIndex, 1)
                     this.setState({
-                        imgs: this.state.imgs.push(url),
-                        imageUploading: false
+                        imgs: this.state.imgs,
+                        // uploadingArr: this.state.uploadingArr,
+                        // isLoading:false
                     });
                     this.props.onChange(this.state.imgs);
                 })
@@ -144,11 +200,23 @@ const styles = StyleSheet.create({
     btnContainer: {
         alignItems: 'center'
     },
+    deleteIconView: {
+        position: 'absolute',
+        right: -5,
+        top: -5,
+        backgroundColor:whiteColor,
+        borderRadius:30
+    },
+    uploadWrapper: {
+        flexDirection: 'row',
+        width: screenWidth,
+        flexWrap: 'wrap',
+        paddingLeft: 10,
+        paddingRight: 10
+    },
     uploadView: {
         alignItems: 'center',
+        marginRight: 10,
+        marginTop: 10
     },
-    uploadTitle: {
-        marginTop: 10,
-        fontSize: 12
-    }
 });

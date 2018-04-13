@@ -24,20 +24,20 @@ export default class PaySuccess extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading:true,
+            isLoading: true,
             type: '',//weixin,alipay
         };
     }
 
     componentDidMount() {
         this.state.type = this.props.navigation.state.params.type;
-        this.setState({isLoading:false});
+        this.setState({isLoading: false});
     }
 
     render() {
-        if(this.state.isLoading){
+        if (this.state.isLoading) {
             return <ActivityIndicator></ActivityIndicator>
-        }else{
+        } else {
             return <View style={styles.container}>
                 <View style={styles.imgView}>
                     {
@@ -77,11 +77,13 @@ export default class PaySuccess extends Component<Props> {
             </View>
         }
     }
-    backToOrder(){
-        jumpAndClear(this.props.navigation, 'Order')
+
+    backToOrder() {
+        this.props.navigation.navigate('Order');
     }
-    backToHome(){
-        jumpAndClear(this.props.navigation, 'Home')
+
+    backToHome() {
+        this.props.navigation.navigate('Home');
     }
 
 }
@@ -105,8 +107,8 @@ const styles = StyleSheet.create({
         marginTop: 30,
         fontSize: 20
     },
-    btnView:{
-      alignItems:'center'
+    btnView: {
+        alignItems: 'center'
     },
     alBackOrderBtn: {
         backgroundColor: '#56abe4',
@@ -122,18 +124,18 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5
     },
-    accountsBtnText:{
-        color:whiteColor
+    accountsBtnText: {
+        color: whiteColor
     },
-    backHomeBtn:{
+    backHomeBtn: {
         backgroundColor: '#f8f8f8',
         alignItems: 'center',
         width: screenWidth * 0.9,
         padding: 10,
         borderRadius: 5,
-        marginTop:10
+        marginTop: 10
     },
-    backHomeText:{
-        color:'black'
+    backHomeText: {
+        color: 'black'
     }
 });

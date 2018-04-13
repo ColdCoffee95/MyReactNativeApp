@@ -27,14 +27,14 @@ export default class FormCell extends Component<Props> {
             <View style={styles.formCellView}>
                 <Text style={{
                     marginLeft: 10,
-                    lineHeight: 41,
-                    height: 41,
+                    lineHeight: 40,
+                    height: 40,
                     width: this.props.labelWidth ? this.props.labelWidth : 60
                 }}>{this.props.title}</Text>
                 <TextInput
                     style={{
                         marginLeft: 10,
-                        height: 41,
+                        height: 40,
                         width: this.props.labelWidth ? (screenWidth - this.props.labelWidth - 20) : (screenWidth - 80)
                     }}
                     autoFocus={this.props.autoFocus}
@@ -43,16 +43,11 @@ export default class FormCell extends Component<Props> {
                     underlineColorAndroid='transparent'
                     secureTextEntry={this.props.secureTextEntry}
                     onChangeText={(text) => this.props.onChange(text)}
+                    defaultValue={this.props.defaultValue}
                     placeholder={this.props.placeholder}>
                 </TextInput>
-
-
             </View>
         );
-    }
-
-    submit() {
-
     }
 }
 
@@ -61,7 +56,7 @@ const styles = StyleSheet.create({
         width: screenWidth,
         flexDirection: 'row',
         borderBottomColor: borderColor,
-        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomWidth: 1,
     },
     cellTitle: {},
     cellInput: {

@@ -14,6 +14,7 @@ import {
     FlatList,
     Text,
 } from 'react-native';
+
 export default class RecommandForYou extends Component<Props> {
     constructor(props) {
         super(props);
@@ -23,8 +24,9 @@ export default class RecommandForYou extends Component<Props> {
             loadingMore: false,
             pageSize: 10,
             pageNo: 1,
-            isLoading: false,
-            type: 1
+            isLoading: true,
+            type: 1,
+
         }
     }
 
@@ -35,7 +37,11 @@ export default class RecommandForYou extends Component<Props> {
     render() {
         let goodsList = null;
         if (this.state.isLoading) {
-            goodsList = <ActivityIndicator style={styles.loadingStyle}></ActivityIndicator>
+            return <View style={styles.loadingContainer}>
+                <ActivityIndicator>
+
+                </ActivityIndicator>
+            </View>
         } else {
             goodsList = <FlatList
                 data={this.state.goodsList}
@@ -45,6 +51,7 @@ export default class RecommandForYou extends Component<Props> {
                 onEndReached={this._onEndReached.bind(this)}
                 onEndReachedThreshold={0.2}
                 numColumns={2}
+                ListHeaderComponent={() => this._renderHeader()}
                 ListFooterComponent={this._renderFooter.bind(this)}
                 ListEmptyComponent={() => <View
                     style={{
@@ -60,16 +67,24 @@ export default class RecommandForYou extends Component<Props> {
                     />
                 </View>}
             />
+            return <View style={styles.container}>
+
+                <View style={styles.goodsListView}>
+                    {goodsList}
+                </View>
+            </View>
         }
-        return <View style={styles.container}>
+
+    }
+
+    _renderHeader() {
+        return <View>
+            {this.props.header}
             <View style={styles.activityTitle}>
                 <Image style={styles.imageLogo} resizeMode='contain'
                        source={require('../../images/tjlogo.png')}/>
                 <Image style={styles.imageTitle} resizeMode='contain'
                        source={require('../../images/tjword.png')}/>
-            </View>
-            <View style={styles.goodsListView}>
-                {goodsList}
             </View>
         </View>
     }
@@ -104,7 +119,7 @@ export default class RecommandForYou extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList:this.state.goodsList.concat(data.data.list)});
+            this.setState({goodsList: this.state.goodsList.concat(data.data.list)});
             this.state.loadingMore = false;
         })
     }
@@ -169,8 +184,6 @@ export default class RecommandForYou extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: whiteColor,
-        width: screenWidth,
-        height: screenHeight
     },
     activityTitle: {
         justifyContent: 'center',
@@ -190,6 +203,12 @@ const styles = StyleSheet.create({
     imageTitle: {
         width: 81,
         marginLeft: 10
+    },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: whiteColor
     },
     goodsWrapper: {
         width: screenWidth,

@@ -10,16 +10,13 @@ import {
     Text,
     TouchableHighlight,
     ActivityIndicator,
-    TouchableOpacity,
     FlatList,
     Image,
-    Alert,
     View
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import ActiveButton from '../../components/common/ActiveButton';
+
 type Props = {};
-export default class Order extends Component<Props> {
+export default class AfterSaleOrders extends Component<Props> {
 
     constructor(props) {
         super(props);
@@ -29,50 +26,14 @@ export default class Order extends Component<Props> {
             allLoadCompleted: false,//是否全部加载完
             pageSize: 5,
             pageNo: 1,
-            tabList: [
-                {
-                    id: -1,
-                    name: "全部"
-                },
-                {
-                    id: 1,
-                    name: "待支付"
-                },
-                {
-                    id: 3,
-                    name: "待发货"
-                },
-                {
-                    id: 2,
-                    name: "待收货"
-                },
-                {
-                    id: 4,
-                    name: "待评价"
-                }
-            ],
-            orderType: -1,
             orderList: [],
-            searchWord: ''
         }
     }
 
     componentDidMount() {
-        if (this.props.navigation.state.params && this.props.navigation.state.params.type) {
-            this.state.orderType = this.props.navigation.state.params.type;
-        }
-        this.props.navigation.setParams({orderGoBack: this.orderGoBack.bind(this)});
         this.fetchData()
     }
-    static navigationOptions = ({navigation, screenProps}) => ({
-        headerLeft:
-            <TouchableOpacity onPress={() => navigation.state.params.orderGoBack()}>
-                <View style={{paddingLeft: 15}}>
-                    <Icon name='angle-left' size={40} color='black'></Icon>
-                </View>
-            </TouchableOpacity>
 
-    });
     render() {
         let orderList = null;
         if (this.state.isLoading) {
@@ -104,30 +65,13 @@ export default class Order extends Component<Props> {
                 </View>}
             />
         }
-        let tabList = [];
-        this.state.tabList.map(value => {
-            tabList.push(
-                <TouchableOpacity
-                    key={value.id}
-                    onPress={() => this.changeTab(value.id)}>
-                    <View style={styles.singleTab}>
-                        <Text
-                            style={this.state.orderType === value.id ? styles.activeTab : styles.negativeTab}>{value.name}</Text>
-                    </View>
-                </TouchableOpacity>
-            )
-        })
+
         return <View style={styles.container}>
-            <View style={styles.tabView}>
-                {tabList}
-            </View>
             {orderList}
         </View>
 
     }
-    orderGoBack(){
-        this.props.navigation.navigate('Mine');
-    }
+
     _onEndReached() {
         if (this.state.allLoadCompleted || this.state.loadingMore) {
             return;
@@ -137,15 +81,19 @@ export default class Order extends Component<Props> {
         let params = {
             pageSize: this.state.pageSize,
             pageNum: this.state.pageNo,
-            searchWord: this.state.searchWord,
-            orderStatus: this.state.orderType
         };
-        HttpUtils.post('/order/viewOrderList', params, data => {
+        HttpUtils.post('/order/selectOrderAftersalesByMemberId', params, data => {
             console.warn(data.data.isLastPage)
+            let list = data.data.pageInfo.list;
+            let arr = [];
+            list.map(value => {
+                value.goodsInfo = JSON.parse(value.goodsInfo);
+                arr.push(value);
+            });
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({orderList: this.state.orderList.concat(data.data.list)});
+            this.setState({orderList: this.state.orderList.concat(arr)});
             this.state.loadingMore = false;
         })
     }
@@ -153,7 +101,7 @@ export default class Order extends Component<Props> {
     _keyExtractor = (item, index) => item.id;
     _renderItem = ({item}) => {
         let goodsList = [];
-        item.orderItemList.map(value => {
+        item.goodsInfo.map(value => {
             goodsList.push(
                 <View style={styles.goodsView}>
                     <View style={styles.goodsImgView}>
@@ -166,10 +114,6 @@ export default class Order extends Component<Props> {
                     <View style={styles.goodsInfoView}>
                         <Text style={styles.goodsTitle}
                               numberOfLines={2}>{value.goodsTitle}</Text>
-                        <View>
-                            <Text style={styles.sku}>{value.sku}</Text>
-                        </View>
-
                         <View style={styles.priceNumberView}>
                             <Text style={styles.priceText}>¥{value.putPrice}</Text>
                             <Text>×{value.number}</Text>
@@ -178,71 +122,26 @@ export default class Order extends Component<Props> {
                 </View>
             )
         });
-        let orderTypeName = orderStatusList.find(value => item.orderStatus === value.id).name;
-        return <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.orderDetail(item.orderId)}>
+        let typeName = afterTypes.find(value => item.orderAftersalesStatus == value.id).name;
+        return <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.afterSaleDetail(item.orderAftersalesId)}>
             <View>
                 {/*yMMddHHmmss*/}
                 <View style={styles.orderTopView}>
-                    <Text>{dateFormat(item.createTime)}</Text>
-                    <Text>{orderTypeName}</Text>
+                    <Text>申请时间：{dateFormat(item.createTime)}</Text>
+                    <Text>{typeName}</Text>
                 </View>
                 <View style={styles.goodsWrapper}>
                     {goodsList}
                 </View>
                 <View style={styles.paymentPrice}>
-                    <Text>支付金额：¥{item.paymentPrice}</Text>
+                    <Text>退款金额：¥{item.refundPrice}</Text>
                 </View>
-                {
-                    item.orderStatus === 1 &&
-                    <View style={styles.btnView}>
-                        <ActiveButton clickBtn={() => this.jumpToPay(item.orderId)} text='去支付'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}></ActiveButton>
-                        <ActiveButton clickBtn={() => this.cancelOrder(item.orderId)} text='取消订单'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}></ActiveButton>
-                    </View>
-                }
-                {
-                    item.orderStatus === 2 &&
-                    <View style={styles.btnView}>
-                        <ActiveButton clickBtn={() => this.getDeliveryInfo(item.orderId)} text='查看物流'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}></ActiveButton>
-                        <ActiveButton clickBtn={() => this.confirmReceipt(item.orderId)} text='确认收货'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}></ActiveButton>
-                    </View>
-                }
-                {
-                    item.orderStatus === 3 &&
-                    <View style={styles.btnView}>
-                        <ActiveButton clickBtn={() => this.expediteDelivery(item.orderId)} text='催发货'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}></ActiveButton>
-                    </View>
-                }
-                {
-                    item.orderStatus === 4 &&
-                    <View style={styles.btnView}>
-                        <ActiveButton clickBtn={() => this.comment(item.orderId)} text='评价'
-                                      style={styles.activeButton} textStyle={{color: activeColor}}></ActiveButton>
-                    </View>
-                }
             </View>
         </TouchableHighlight>
-    }
+    };
 
-    orderDetail(id) {
-        this.props.navigation.navigate('OrderDetail', {id: id});
-    }
-
-    changeTab(index) {
-        if (this.state.orderType === index) {
-            return;
-        }
-        this.state.orderType = index;
-        this.fetchData();
+    afterSaleDetail(id) {
+        this.props.navigation.navigate('AfterSaleDetail', {id: id});
     }
 
     _renderFooter() {
@@ -253,7 +152,7 @@ export default class Order extends Component<Props> {
         } else if (this.state.allLoadCompleted) {
             if (this.state.orderList.length > 0) {
                 return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
-                    <Text>没有更多订单了</Text>
+                    <Text>没有更多了</Text>
                 </View>)
             } else {
                 return <View></View>
@@ -271,77 +170,26 @@ export default class Order extends Component<Props> {
         let params = {
             pageSize: this.state.pageSize,
             pageNum: 1,
-            searchWord: this.state.searchWord,
-            orderStatus: this.state.orderType
         };
-        HttpUtils.post('/order/viewOrderList', params, data => {
-            console.warn(data.data.isLastPage)
-            if (data.data.isLastPage) {
+        HttpUtils.post('/order/selectOrderAftersalesByMemberId', params, data => {
+
+            let list = data.data.pageInfo.list;
+            let arr = [];
+            list.map(value => {
+                value.goodsInfo = JSON.parse(value.goodsInfo);
+                arr.push(value);
+            });
+            if (data.data.pageInfo.isLastPage) {
                 this.setState({
                     allLoadCompleted: true,
                 });
             }
+            console.warn(arr[0].orderAftersalesStatus)
             this.setState({
-                orderList: data.data.list,
+                orderList: arr,
                 isLoading: false,
             });
         })
-    }
-
-    jumpToPay(orderId) {//去支付
-        this.props.navigation.navigate('SelectPayType', {orderId: orderId});
-    }
-
-    cancelOrder(orderId) {//取消订单
-        Alert.alert(null, '确认取消该订单？',
-            [
-                {
-                    text: "确定", onPress: () => {
-                        HttpUtils.post('/order/manuallyCancelOrder', {orderId: orderId}, data => {
-                            this.refs.toast.show('操作成功!', 10);
-                            this.fetchData();
-                        })
-                    }
-                },
-                {
-                    text: "取消", onPress: () => {
-                    }
-                },
-            ],
-            {cancelable: false}
-        )
-    }
-
-    getDeliveryInfo(orderId) {//查看物流
-        this.props.navigation.navigate('ViewLogistics', {orderId: orderId});
-    }
-
-    confirmReceipt(orderId) {//确认收货
-        Alert.alert(null, '确认收到货了吗？',
-            [
-                {
-                    text: "确认", onPress: () => {
-                        HttpUtils.post('/order/confirmReceive', {orderId: orderId}, data => {
-                            this.refs.toast.show('操作成功!', 10);
-                            this.fetchData();
-                        })
-                    }
-                },
-                {
-                    text: "取消", onPress: () => {
-                    }
-                },
-            ],
-            {cancelable: false}
-        )
-    }
-
-    expediteDelivery() {
-        alert('操作成功,已提醒商家尽快发货')
-    }
-
-    comment(orderId) {
-        this.props.navigation.navigate('OrderComment', {orderId: orderId});
     }
 }
 

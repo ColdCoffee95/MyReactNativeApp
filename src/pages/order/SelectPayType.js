@@ -45,7 +45,18 @@ export default class SelectPayType extends Component<Props> {
         this.data = new selectPayTypeCountdown()
     }
 
+    static navigationOptions = ({navigation, screenProps}) => ({
+        headerLeft:
+            <TouchableOpacity onPress={() => navigation.state.params.confirmBack()}>
+                <View style={{paddingLeft: 15}}>
+                    <Icon name='angle-left' size={40} color={whiteColor}></Icon>
+                </View>
+            </TouchableOpacity>
+
+    });
+
     componentDidMount() {
+        this.props.navigation.setParams({confirmBack: this.confirmBack.bind(this)});
         this.state.orderId = this.props.navigation.state.params.orderId;
         AppState.addEventListener('change', this._handleAppStateChange.bind(this));
         this.fetchData()
@@ -184,6 +195,23 @@ export default class SelectPayType extends Component<Props> {
                 </View>
             </View>
         }
+    }
+
+    confirmBack() {//是否确认离开
+        Alert.alert(null, '确认放弃支付？',
+            [
+                {
+                    text: "确认离开", onPress: () => {
+                        this.props.navigation.navigate('Order');
+                    }
+                },
+                {
+                    text: "继续支付", onPress: () => {
+                    }
+                },
+            ],
+            {cancelable: false}
+        )
     }
 
     fetchData() {

@@ -45,14 +45,19 @@ export default class Cart extends Component<Props> {
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
+        tabBarOnPress: (scene, jumpToIndex) => {
+            navigation.navigate(scene.scene.route.key);
+            if (navigation.state.params && navigation.state.params.fetchData) {
+                navigation.state.params.fetchData();
+            }
+        },
         headerRight: (navigation.state.params && navigation.state.params.cartList && navigation.state.params.cartList.length > 0 &&
             <View style={styles.headerRightView}>
-                <TouchableHighlight style={{marginRight: 10}} underlayColor='#f2f2f2'
-                                    onPress={() => navigation.setParams({isEditing: !navigation.state.params.isEditing})}>
+                <TouchableOpacity style={{marginRight: 10}} onPress={() => navigation.setParams({isEditing: !navigation.state.params.isEditing})}>
                     <View>
                         <Text>{navigation.state.params.isEditing ? '完成' : '编辑'}</Text>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
             </View>)
     });
 
@@ -60,136 +65,143 @@ export default class Cart extends Component<Props> {
     componentDidMount() {
         if (this.props.navigation.state.params) {
             this.state.tradeType = this.props.navigation.state.params.type || 1;
-
         }
-        this.fetchData()
+        this.fetchData();
     }
 
     render() {
-        if (this.state.isLoading) {
-            return <ActivityIndicator></ActivityIndicator>
-        } else {
-            let cartList = [];
-            let data = this.data.itemData;
-            if (data.data.length > 0) {
+        return (
+            <View style={styles.container}>
+                <Toast ref='toast' position='center'></Toast>
 
-                cartList =
-                    <View style={styles.swipeWrapper}>
-                        <SwipeListView
-                            useFlatList
-                            rightOpenValue={-60}
-                            data={data.data}
-                            disableRightSwipe={true}
-                            stopRightSwipe={-150}
-                            previewRowKey={'12adf'}
-                            closeOnRowBeginSwipe={true}
-                            closeOnRowPress={true}
-                            closeOnScroll={true}
-                            keyExtractor={(item) => item.goodsSkuId}
-                            renderHiddenItem={(rowData, rowMap) => (
-                                <View style={styles.rowBack}>
-                                    <TouchableOpacity
-                                        onPress={_ => {
-                                            this.closeRow(rowMap, rowData.item.goodsSkuId);
-                                            this.deleteGoods(rowData.item.goodsSkuId)
-                                        }}>
-                                        <View style={styles.deleteGoodsView}>
-                                            <Text style={styles.deleteGoods}>删除</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
+                {/*<RefreshControl*/}
+                {/*refreshing={this.state.isRefreshing}*/}
+                {/*onRefresh={this._onRefresh.bind(this)}*/}
+                {/*title="加载中..."*/}
+                {/*progressBackgroundColor="#ffff00">*/}
 
-                            )}
-                            renderItem={(data, rowMap) => (
-                                <CartComponent {...this.props} itemData={data.item} data={this.data}></CartComponent>
-                            )}>
-                        </SwipeListView>
-
-                    </View>
-
-            } else {
-                cartList = <View style={styles.noGoodsView}>
-                    <Image
-                        style={styles.noGoodsImg}
-                        source={require('../../images/cart.png')}
-                        resizeMode='contain'
-                    />
-                    <Text style={styles.cartTextTop}>进货单空空如也～</Text>
-                    <Text style={styles.cartTextNext}>最热门的商品正在等着您呢</Text>
-                    <ActiveButton clickBtn={() => this.backToHome()} text='逛一逛'
-                                  style={styles.activeButton}></ActiveButton>
-                </View>
-            }
-
-            return (
-                <View style={styles.container}>
-                    <Toast ref='toast' position='center'></Toast>
-
-                    {/*<RefreshControl*/}
-                    {/*refreshing={this.state.isRefreshing}*/}
-                    {/*onRefresh={this._onRefresh.bind(this)}*/}
-                    {/*title="加载中..."*/}
-                    {/*progressBackgroundColor="#ffff00">*/}
-
-                    {/*</RefreshControl>*/}
-                    <View style={styles.tabView}>
-                        <TouchableHighlight
-                            onPress={() => this.changeTab(1)}
-                            underlayColor='#fff'>
-                            <View style={styles.singleTab}>
-                                <Text
-                                    style={this.state.tradeType === 1 ? styles.activeTab : styles.negativeTab}>一般贸易</Text>
-                            </View>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            onPress={() => this.changeTab(2)}
-                            underlayColor='#fff'>
-                            <View style={styles.singleTab}>
-                                <Text
-                                    style={this.state.tradeType === 2 ? styles.activeTab : styles.negativeTab}>保税区发货</Text>
-                            </View>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            onPress={() => this.changeTab(3)}
-                            underlayColor='#fff'>
-                            <View style={styles.singleTab}>
-                                <Text
-                                    style={this.state.tradeType === 3 ? styles.activeTab : styles.negativeTab}>海外直邮</Text>
-                            </View>
-                        </TouchableHighlight>
-                    </View>
-                    {cartList}
-                    {
-                        data.data.length > 0 &&
-                        <View style={styles.cartTotalView}>
-                            <View style={styles.cartTotalLeftView}>
-                                <TouchableOpacity onPress={() => this.allSelect()}>
-                                    {
-                                        this.data.isAllSelect ?
-                                            (<Icon name="check-circle" size={20} color={activeColor}></Icon>) :
-                                            (<Icon2 name="checkbox-blank-circle-outline" size={20}></Icon2>)
-                                    }
-                                </TouchableOpacity>
-
-                                <Text style={{marginLeft: 5}}>全选</Text>
-                                <Text style={{marginLeft: 5}}>合计：¥{this.data.totalMoney}</Text>
-                            </View>
-                            <View style={styles.cartTotalRightView}>
-                                <ActiveButton
-                                    text={`去结算(${this.data.totalNumber})`}
-                                    style={styles.accountsBtn}
-                                    textStyle={styles.accountsBtnText}
-                                    clickBtn={() => {
-                                        this.confirmOrder()
-                                    }}>
-
-                                </ActiveButton>
-                            </View>
+                {/*</RefreshControl>*/}
+                <View style={styles.tabView}>
+                    <TouchableHighlight
+                        onPress={() => this.changeTab(1)}
+                        underlayColor='#fff'>
+                        <View style={styles.singleTab}>
+                            <Text
+                                style={this.state.tradeType === 1 ? styles.activeTab : styles.negativeTab}>一般贸易</Text>
                         </View>
-                    }
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        onPress={() => this.changeTab(2)}
+                        underlayColor='#fff'>
+                        <View style={styles.singleTab}>
+                            <Text
+                                style={this.state.tradeType === 2 ? styles.activeTab : styles.negativeTab}>保税区发货</Text>
+                        </View>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        onPress={() => this.changeTab(3)}
+                        underlayColor='#fff'>
+                        <View style={styles.singleTab}>
+                            <Text
+                                style={this.state.tradeType === 3 ? styles.activeTab : styles.negativeTab}>海外直邮</Text>
+                        </View>
+                    </TouchableHighlight>
                 </View>
-            );
+                {
+                    this.state.isLoading && this.renderLoadingView()
+                }
+                {
+                    !this.state.isLoading && this.renderSuccessView()
+                }
+            </View>
+        );
+    }
+
+    renderLoadingView() {//加载页面
+        return <View style={styles.loadingContainer}>
+            <ActivityIndicator></ActivityIndicator>
+        </View>;
+    }
+
+    renderSuccessView() {//加载完成页面
+        let cartList = [];
+        let data = this.data.itemData;
+        console.warn(data.data.length)
+        if (data.data.length > 0) {
+            cartList =
+                <View style={styles.swipeWrapper}>
+                    <SwipeListView
+                        useFlatList
+                        rightOpenValue={-60}
+                        data={data.data}
+                        disableRightSwipe={true}
+                        stopRightSwipe={-150}
+                        previewRowKey={'12adf'}
+                        closeOnRowBeginSwipe={true}
+                        closeOnRowPress={true}
+                        closeOnScroll={true}
+                        keyExtractor={(item) => item.goodsSkuId}
+                        renderHiddenItem={(rowData, rowMap) => (
+                            <View style={styles.rowBack}>
+                                <TouchableOpacity
+                                    onPress={_ => {
+                                        this.closeRow(rowMap, rowData.item.goodsSkuId);
+                                        this.deleteGoods(rowData.item.goodsSkuId)
+                                    }}>
+                                    <View style={styles.deleteGoodsView}>
+                                        <Text style={styles.deleteGoods}>删除</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+
+                        )}
+                        renderItem={(data, rowMap) => (
+                            <CartComponent {...this.props} itemData={data.item} data={this.data}></CartComponent>
+                        )}>
+                    </SwipeListView>
+
+                </View>
+        } else {
+            cartList = <View style={styles.noGoodsView}>
+                <Image
+                    style={styles.noGoodsImg}
+                    source={require('../../images/cart.png')}
+                    resizeMode='contain'
+                />
+                <Text style={styles.cartTextTop}>进货单空空如也～</Text>
+                <Text style={styles.cartTextNext}>最热门的商品正在等着您呢</Text>
+                <ActiveButton clickBtn={() => this.backToHome()} text='逛一逛'
+                              style={styles.activeButton}></ActiveButton>
+            </View>
         }
+        return <View style={styles.goodsWrapper}>
+            {cartList}
+            {data.data.length > 0 && <View style={styles.cartTotalView}>
+                <View style={styles.cartTotalLeftView}>
+                    <TouchableOpacity onPress={() => this.allSelect()}>
+                        {
+                            this.data.isAllSelect ?
+                                (<Icon name="check-circle" size={20} color={activeColor}></Icon>) :
+                                (<Icon2 name="checkbox-blank-circle-outline" size={20}></Icon2>)
+                        }
+                    </TouchableOpacity>
+
+                    <Text style={{marginLeft: 5}}>全选</Text>
+                    <Text style={{marginLeft: 5}}>合计：¥{this.data.totalMoney}</Text>
+                </View>
+                <View style={styles.cartTotalRightView}>
+                    <ActiveButton
+                        text={`去结算(${this.data.totalNumber})`}
+                        style={styles.accountsBtn}
+                        textStyle={styles.accountsBtnText}
+                        clickBtn={() => {
+                            this.confirmOrder()
+                        }}>
+                    </ActiveButton>
+                </View>
+            </View>
+            }
+        </View>
     }
 
     _onRefresh() {
@@ -234,6 +246,7 @@ export default class Cart extends Component<Props> {
     }
 
     fetchData() {
+        this.setState({isLoading: true});
         let params = {
             tradeType: this.state.tradeType
         };
@@ -261,7 +274,11 @@ export default class Cart extends Component<Props> {
             });
             this.data.replace({data: cartList});
             this.setState({isLoading: false, isRefreshing: false});
-            this.props.navigation.setParams({isEditing: false, cartList: cartList});
+            this.props.navigation.setParams({
+                isEditing: false,
+                cartList: cartList,
+                fetchData: this.fetchData.bind(this)
+            });
 
             console.warn(this.data)
         })
@@ -278,8 +295,16 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    goodsWrapper:{
+      flex:1
+    },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     swipeWrapper: {
-        paddingBottom: 96
+        paddingBottom:46
     },
     cartTotalView: {
         position: 'absolute',

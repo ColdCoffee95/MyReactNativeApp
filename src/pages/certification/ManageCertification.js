@@ -96,11 +96,6 @@ export default class ManageCertification extends Component<Props> {
 
     setDefaultCertification(id) {//设为默认
         HttpUtils.get('/idCard/setIdCardDefaultsById', {id: id}, data => {
-            let defaultCertification = this.state.certificationList.find(n => n.id === id);
-            storage.save({
-                key: 'defaultCertification',
-                data: defaultCertification
-            });
             this.refs.toast.show('设置成功!', 10);
             this.fetchData();
         })
@@ -127,7 +122,9 @@ export default class ManageCertification extends Component<Props> {
     }
 
     addCertification() {
-        this.props.navigation.navigate('AddCertification');
+        this.props.navigation.navigate('AddCertification', {
+            goBack: () => this.fetchData(),
+        });
     }
 }
 

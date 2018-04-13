@@ -39,6 +39,7 @@ export default class GoodsList extends Component<Props> {
             pageSize: 10,
             pageNo: 1,
             type: 1,
+            tradeType: '',
             allLoadCompleted: false,//是否全部加载完
         }
     }
@@ -53,7 +54,9 @@ export default class GoodsList extends Component<Props> {
     render() {
         let goodsList = null;
         if (this.state.isLoading) {
-            goodsList = <ActivityIndicator style={styles.loadingStyle}></ActivityIndicator>
+            goodsList = <View style={styles.loadingContainer}>
+                <ActivityIndicator></ActivityIndicator>
+            </View>
         } else {
             goodsList = <FlatList
                 data={this.state.goodsList}
@@ -149,9 +152,13 @@ export default class GoodsList extends Component<Props> {
                 <ActivityIndicator></ActivityIndicator>
             </View>)
         } else if (this.state.allLoadCompleted) {
-            return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
-                <Text>没有更多商品了</Text>
-            </View>)
+            if (this.state.goodsList.length > 0) {
+                return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
+                    <Text>没有更多商品了</Text>
+                </View>)
+            } else {
+                return <View></View>
+            }
         } else {
             return (<View></View>)
         }
@@ -170,7 +177,8 @@ export default class GoodsList extends Component<Props> {
             keyword: this.state.keyword,
             pageSize: this.state.pageSize,
             pageNo: this.state.pageNo,
-            type: this.state.type
+            type: this.state.type,
+            tradeType: this.state.tradeType
         };
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
             if (data.data.isLastPage) {
@@ -184,7 +192,7 @@ export default class GoodsList extends Component<Props> {
     _keyExtractor = (item, index) => item.id;
     _renderItem = ({item}) => {
         let sellout = <View></View>
-        if(item.count===0){
+        if (item.count === 0) {
             sellout = <Image
                 style={styles.goodsImgSellout}
                 resizeMode='contain'
@@ -220,6 +228,7 @@ export default class GoodsList extends Component<Props> {
         setTimeout(() => {
             this.state.firstCatId = obj.firstId;
             this.state.secondCatIds = obj.secondIds;
+            this.state.tradeType = obj.tradeType;
             this.fetchData();
         }, 500)
 
@@ -227,6 +236,9 @@ export default class GoodsList extends Component<Props> {
     }
 
     changeTab(index) {
+        if (this.state.type === index) {
+            return;
+        }
         if (index === 4) {
             this._drawer.open();
         } else {
@@ -251,7 +263,8 @@ export default class GoodsList extends Component<Props> {
             keyword: this.state.keyword,
             pageSize: this.state.pageSize,
             pageNo: 1,
-            type: this.state.type
+            type: this.state.type,
+            tradeType: this.state.tradeType
         };
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
             console.warn('fetchData', data.data)
@@ -285,6 +298,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#ccc',
         opacity: 0.1
+    },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     tabView: {
         flexDirection: 'row',

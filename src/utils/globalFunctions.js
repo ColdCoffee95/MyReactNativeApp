@@ -54,3 +54,42 @@ global.getTotalAddress = async function (addressData, dataArr) {//数据数组
     })
 
 };
+global.validPwd = function (str) {
+    if (str.length < 6 || str.length > 20) {
+        return false
+    }
+    if (/[^a-zA-Z0-9_]/.test(str)) {
+        return false
+    }
+    if (/(^[a-z]+$|^[A-Z]+$|^\d+$|^_+$)/.test(str)) {
+        return false
+    }
+    return true
+};
+global.dateFormat = function (timeStamp) {
+    var time = new Date(timeStamp);
+    let year = time.getFullYear();//ie火狐下都可以
+    let month = time.getMonth() + 1;
+    let day = time.getDate();
+    let hour = time.getHours();
+    let minute = time.getMinutes();
+    let second = time.getSeconds();
+    if (month < 10) {
+        month = '0' + month;
+    }
+    if (day < 10) {
+        day = '0' + day;
+    }
+    if (hour < 10) {
+        hour = '0' + hour;
+    }
+    if (minute < 10) {
+        minute = '0' + minute;
+    }
+    if (second < 10) {
+        second = '0' + second;
+    }
+
+    return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+
+}

@@ -53,7 +53,13 @@ export default class HttpUtils {
         })
             .then((response) => response.json())
             .then((responseJSON) => {
-                callback(responseJSON)
+                switch (responseJSON.code) {
+                    case successCode:
+                        callback(responseJSON);
+                        break;
+                    default:
+                        alert(responseJSON.message)
+                }
             })
             .catch((error) => {
                 console.error(error)

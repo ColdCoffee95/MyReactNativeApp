@@ -6,10 +6,10 @@ import {
     Image,
     TouchableHighlight,
     ActivityIndicator,
+    TouchableOpacity,
     Text,
     Keyboard,
     Modal,
-    WebView
 } from 'react-native';
 import AutoHeightWebview from 'react-native-autoheight-webview';
 import Swiper from 'react-native-swiper';
@@ -45,24 +45,24 @@ export default class GoodsDetail extends Component<Props> {
     static navigationOptions = ({navigation, screenProps}) => ({
         headerRight: (
             <View style={styles.headerRightView}>
-                <TouchableHighlight style={{marginRight: 10}} underlayColor='#f2f2f2'
-                                    onPress={() => navigation.state.params.collect()}>
+                <TouchableOpacity style={{marginRight: 10}} onPress={() => navigation.state.params.collect()}>
                     <View>
-                        <Icon name='heart' size={20} color={whiteColor}></Icon>
+                        <Icon name='heart' size={20} color='black'></Icon>
                     </View>
-                </TouchableHighlight>
-                <TouchableHighlight style={{marginRight: 10}} underlayColor='#f2f2f2'
-                                    onPress={() => navigation.state.params.toCart()}>
+                </TouchableOpacity>
+                <TouchableOpacity style={{marginRight: 10}} onPress={() => navigation.state.params.toCart()}>
                     <View>
-                        <Icon name='shopping-cart' size={20} color={whiteColor}></Icon>
+                        <Icon name='shopping-cart' size={20} color='black'></Icon>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
             </View>)
     });
 
     render() {
         if (this.state.isLoading) {
-            return <ActivityIndicator></ActivityIndicator>
+            return <View style={styles.loadingContainer}>
+                <ActivityIndicator></ActivityIndicator>
+            </View>
         } else {
             let detail = this.state.goodsDetail;
             let swiperList = [];
@@ -273,8 +273,8 @@ export default class GoodsDetail extends Component<Props> {
         this.props.navigation.navigate('Cart', {type: this.state.goodsDetail.tradeType});
     }
 
-    collect() {
-
+    collect() {//收藏
+        console.warn(this.state.goodsDetail.nowSku)
     }
 
     changeSpec(specName, specValue) {
@@ -343,8 +343,38 @@ export default class GoodsDetail extends Component<Props> {
         })
     }
 
-    currentBuy() {//立即抢购
+    async currentBuy() {//立即抢购
+        let validationState = await this.getValidationState();
+        if (validationState != 1) {
+            this.refs.toast.show('审核通过前不允许下单！', 500);
+            return;
+        }
 
+        let detail = this.state.goodsDetail;
+        let nowSku = detail.nowSku;
+        if (nowSku.count === 0) {
+            this.refs.toast.show('该商品库存不足，无法下单！', 500);
+            return;
+        }
+        let params = {
+            goodsImg: nowSku.img,
+            goodsSku: JSON.stringify(nowSku.sku),
+            goodsSkuId: nowSku.id,
+            goodsTitle: nowSku.title,
+            number: this.state.buyNum,
+            putPrice: nowSku.marketPrice,
+            sellerId: detail.brandId,
+            sellerName: detail.brandName,
+            tradeName: nowSku.tradeName,
+            tradeType: nowSku.tradeType,
+            categoryId: detail.catId,
+            categoryName: detail.catName
+        };
+        HttpUtils.post('/shoppingCart/putGoodsInCart', params, data => {
+            this.closePopover();
+            params.cartId = data.data;
+            this.props.navigation.navigate('ConfirmOrder', {cartList: [params], tradeType: nowSku.tradeType});
+        })
     }
 
     showPopup(type) {//显示popup
@@ -366,10 +396,6 @@ export default class GoodsDetail extends Component<Props> {
             }
         });
         return color;
-    }
-
-    buyNow() {
-
     }
 
     fetchData(id) {
@@ -433,6 +459,11 @@ const styles = StyleSheet.create({
     },
     headerRightView: {
         flexDirection: 'row'
+    },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     dialogWrapper: {
         width: screenWidth,

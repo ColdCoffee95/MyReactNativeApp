@@ -84,7 +84,9 @@ export default class AddCertification extends Component<Props> {
         };
         HttpUtils.post('/idCard/addIdCard', params, data => {
             this.refs.toast.show('新增成功', 500, () => {
-                this.props.navigation.goBack();
+                const {navigate, goBack, state} = this.props.navigation;
+                state.params.goBack();
+                goBack();
             });
         });
     }

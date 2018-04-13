@@ -11,11 +11,14 @@ import {
     ActivityIndicator,
     Text,
     TouchableOpacity,
-    View
+    View,
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import Loading from 'react-native-spinkit';
 
 type Props = {};
 export default class Mine extends Component<Props> {
@@ -25,6 +28,8 @@ export default class Mine extends Component<Props> {
         this.state = {
             isLoading: true,
             userInfo: {},
+            isRefreshing: false,
+            isVisible: true,
             orderTypeList: [
                 {
                     id: 1,
@@ -96,20 +101,16 @@ export default class Mine extends Component<Props> {
         this.getUserInfo()
     }
 
+    static navigationOptions = ({navigation, screenProps}) => ({
+        tabBarOnPress: (scene, jumpToIndex) => {
+            navigation.navigate(scene.scene.route.key);
+            if (navigation.state.params && navigation.state.params.getUserInfo) {
+                navigation.state.params.getUserInfo();
+            }
+        },
+    });
+
     render() {
-        if (this.state.isLoading) {
-            return this.renderLoadingView();
-        } else {
-            return this.renderSuccessView();
-        }
-
-    }
-
-    renderLoadingView() {
-        return <ActivityIndicator></ActivityIndicator>
-    }
-
-    renderSuccessView() {
         let orderTypeList = [];
         this.state.orderTypeList.map(value => {
             orderTypeList.push(
@@ -145,7 +146,18 @@ export default class Mine extends Component<Props> {
             )
         });
         return (
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this._onRefresh.bind(this)}
+                                title="加载中..."
+                                progressBackgroundColor="#ffff00">
+
+                            </RefreshControl>
+                        }>
+                {/*<Loading isVisible={this.state.isVisible} size={50} type={'CircleFlip'} color={'orange'}/>*/}
+
                 <View style={styles.mineHeader}>
                     <View style={styles.mineHeaderActive}>
 
@@ -185,14 +197,19 @@ export default class Mine extends Component<Props> {
                     {toolList}
                 </View>
                 <Toast ref='toast' position='center'></Toast>
-            </View>
+            </ScrollView>
         );
+
     }
+
 
     async getUserInfo() {
         HttpUtils.get('/member/selectStoreMemberById', {}, data => {
             console.warn(data.data)
-            this.setState({userInfo: data.data, isLoading: false});
+            this.setState({userInfo: data.data, isLoading: false,isRefreshing:false});
+            this.props.navigation.setParams({
+                getUserInfo: this.getUserInfo.bind(this)
+            });
         })
     }
 
@@ -204,6 +221,11 @@ export default class Mine extends Component<Props> {
         }).then(image => {
             console.log(image);
         });
+    }
+
+    _onRefresh() {
+        this.setState({isRefreshing: true});
+        this.getUserInfo();
     }
 
     jumpToTools(id) {
@@ -233,7 +255,11 @@ export default class Mine extends Component<Props> {
     }
 
     jumpToOrder(id) {
-        this.props.navigation.navigate('Order', {type: id});
+        if(id == 99){
+            this.props.navigation.navigate('AfterSaleOrders', {type: id});
+        }else{
+            this.props.navigation.navigate('Order', {type: id});
+        }
     }
 }
 const styles = StyleSheet.create({

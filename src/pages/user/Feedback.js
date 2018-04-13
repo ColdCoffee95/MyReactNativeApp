@@ -14,10 +14,9 @@ import {
     View,
     Alert
 } from 'react-native';
-import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view'
-// import uploadMultiImg from '../../components/common/uploadMultiImg'
+import UploadMultiImg from '../../components/common/UploadMultiImg'
 import ActiveButton from '../../components/common/ActiveButton'
-
+import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 
 export default class Feedback extends Component<Props> {
@@ -68,40 +67,53 @@ export default class Feedback extends Component<Props> {
         });
         return (
             <View style={styles.container}>
-                <ScrollableTabView
-                    renderTabBar={() => <ScrollableTabBar />}
-                    style={{marginTop: 10, marginBottom: 0}}
-                    tabBarActiveTextColor={activeColor}
-                    tabBarUnderlineStyle={styles.underlineStyle}
-                    initialPage={0}>
-                    <View tabLabel='体验问题'>
-                        <View style={styles.firstContainer}>
-                            <Text style={styles.problemTitle}>问题种类</Text>
-                            <View style={styles.problemWrapper}>
-                                {typeList}
-                            </View>
-                            <View style={styles.sugMessageView}>
-                                <TextInput
-                                    style={styles.textInput}
-                                    onChangeText={(text) => this.setState({sugMessage: text})}
-                                    maxLength={200}
-                                    multiline={true}
-                                    underlineColorAndroid='transparent'
-                                    placeholder='请输入一下您的意见(限200字内)'>
-                                </TextInput>
-                            </View>
-                            <View>
-                                {/*<uploadMultiImg*/}
-                                    {/*onChange={imgs => this.setState({fileList: imgs})}>*/}
+                <View style={styles.tabView}>
+                    <TouchableHighlight
+                        onPress={() => this.setState({sugType: 0})}
+                        underlayColor='#fff'>
+                        <View style={styles.singleTab}>
+                            <Text
+                                style={this.state.sugType === 0 ? styles.activeTab : styles.negativeTab}>体验问题</Text>
+                        </View>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        onPress={() => this.setState({sugType: 1})}
+                        underlayColor='#fff'>
+                        <View style={styles.singleTab}>
+                            <Text
+                                style={this.state.sugType === 1 ? styles.activeTab : styles.negativeTab}>咨询投诉</Text>
+                        </View>
+                    </TouchableHighlight>
+                </View>
+                {
+                    this.state.sugType === 0 && <View style={styles.firstContainer}>
+                        <Text style={styles.problemTitle}>问题种类</Text>
+                        <View style={styles.problemWrapper}>
+                            {typeList}
+                        </View>
+                        <View style={styles.sugMessageView}>
+                            <TextInput
+                                style={styles.textInput}
+                                onChangeText={(text) => this.setState({sugMessage: text})}
+                                maxLength={200}
+                                multiline={true}
+                                underlineColorAndroid='transparent'
+                                placeholder='请输入一下您的意见(限200字内)'>
+                            </TextInput>
+                        </View>
+                        <View>
+                            <UploadMultiImg
+                                onChange={(imgs) => this.setState({fileList: imgs})}>
 
-                                {/*</uploadMultiImg>*/}
-                            </View>
-                            <View style={styles.btnContainer}>
-                                <ActiveButton clickBtn={() => this.submit()} text='提交'></ActiveButton>
-                            </View>
+                            </UploadMultiImg>
+                        </View>
+                        <View style={styles.btnContainer}>
+                            <ActiveButton clickBtn={() => this.submit()} text='提交'></ActiveButton>
                         </View>
                     </View>
-                    <View tabLabel='咨询投诉' style={styles.consult}>
+                }
+                {
+                    this.state.sugType === 1 && <View style={styles.consult}>
                         <Text style={styles.text}>商品/商家投诉，请拨打店力集盒客服电话</Text>
                         <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.callPhone()}>
                             <View style={styles.hotlineView}>
@@ -109,30 +121,31 @@ export default class Feedback extends Component<Props> {
                             </View>
                         </TouchableHighlight>
                     </View>
-                </ScrollableTabView>
+                }
+                <Toast ref='toast' position='center'></Toast>
             </View>
         );
     }
 
     async submit() {
         let userInfo = await HttpUtils.getUserInfo();
-        if(!this.state.sugMessage){
-            Alert.alert(null,'请描述您的意见');
+        if (!this.state.sugMessage) {
+            Alert.alert(null, '请描述您的意见');
             return;
         }
+        let images = this.state.fileList.join(',');
         let params = {
-            fileList: [],
             sugType: 0,
-            sugImage: "",
+            sugImage: images,
             sugMessage: this.state.sugMessage,
             sugProType: this.state.sugProType,
             userId: `${userInfo.memberName}(${userInfo.memberId})`,
             userPhone: userInfo.mobile
         };
-        alert(JSON.stringify(params))
-        return
-        HttpUtils.post('/suggest/setSug',params,data=>{
-            this.props.navigation.goBack();
+        HttpUtils.post('/suggest/setSug', params, data => {
+            this.refs.toast.show('提交成功，请等待处理', 500, () => {
+                this.props.navigation.goBack();
+            });
         })
     }
 
@@ -152,6 +165,28 @@ const styles = StyleSheet.create({
         width: screenWidth,
         height: 100
     },
+    tabView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 50,
+        width: screenWidth,
+        backgroundColor: whiteColor,
+        borderBottomWidth: 1,
+        borderBottomColor: borderColor
+    },
+    singleTab: {
+        width: screenWidth / 2,
+        height: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    activeTab: {
+        color: activeColor
+    },
+    negativeTab: {
+        color: '#444'
+    },
     problemTitle: {
         padding: 15
     },
@@ -165,6 +200,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
+        paddingLeft: 10,
+        paddingRight: 10
     },
     activeProblemView: {
         backgroundColor: activeColor,
@@ -195,7 +232,7 @@ const styles = StyleSheet.create({
     sugMessageView: {
         marginTop: 20,
         alignItems: 'center',
-        width: screenWidth-20,
+        width: screenWidth - 20,
         height: 100,
         borderWidth: 1,
         borderColor: '#e9e9e9',
@@ -204,7 +241,7 @@ const styles = StyleSheet.create({
     textInput: {
         width: screenWidth * 0.9,
         lineHeight: 20,
-        padding:5
+        padding: 5
     },
     submitView: {
         backgroundColor: activeColor,

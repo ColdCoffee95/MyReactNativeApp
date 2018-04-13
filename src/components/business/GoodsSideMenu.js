@@ -14,6 +14,7 @@ import {
     Text
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
+
 type Props = {};
 export default class GoodsSideMenu extends Component<Props> {
     constructor(props) {
@@ -22,7 +23,8 @@ export default class GoodsSideMenu extends Component<Props> {
             firstCategories: [],
             secondCategories: [],
             currentFirstId: '',
-            currentSecondIds: []
+            currentSecondIds: [],
+            tradeType: ''
         }
     }
 
@@ -32,6 +34,19 @@ export default class GoodsSideMenu extends Component<Props> {
     }
 
     render() {
+        let renderTradeTypes = [];
+        cartTabList.map(value => {
+            renderTradeTypes.push(
+                <TouchableHighlight key={value.id} underlayColor='#fff' onPress={() => this.clickTradeType(value.id)}>
+                    <View
+                        style={this.state.tradeType === value.id ? styles.activeFirst : styles.negativeFirst}>
+                        <Text
+                            numberOfLines={1}
+                            style={this.state.tradeType === value.id ? styles.activeText : styles.negativeText}>{value.name}</Text>
+                    </View>
+                </TouchableHighlight>
+            )
+        });
         let renderFirstCategories = [];
         this.state.firstCategories.map(value => {
             renderFirstCategories.push(
@@ -74,6 +89,12 @@ export default class GoodsSideMenu extends Component<Props> {
         }
         return <View style={styles.sideMenuView}>
             <View>
+                <Text style={styles.catTitle}>贸易形态</Text>
+                <View style={styles.catView}>
+                    {renderTradeTypes}
+                </View>
+            </View>
+            <View>
                 <Text style={styles.catTitle}>类目</Text>
                 <View style={styles.catView}>
                     {renderFirstCategories}
@@ -93,7 +114,8 @@ export default class GoodsSideMenu extends Component<Props> {
                     text="确定"
                     clickBtn={() => this.props.sureBtn({
                         firstId: this.state.currentFirstId,
-                        secondIds: this.state.currentSecondIds
+                        secondIds: this.state.currentSecondIds,
+                        tradeType: this.state.tradeType
                     })}>
                 </ActiveButton>
             </View>
@@ -109,7 +131,7 @@ export default class GoodsSideMenu extends Component<Props> {
     }
 
     async fetchData() {
-        this.getCatBrandGoodsList();
+        // this.getCatBrandGoodsList();
         this.getFirstCategories();
         if (this.props.firstId) {
             this.clickFirstCat(this.props.firstId);
@@ -121,24 +143,25 @@ export default class GoodsSideMenu extends Component<Props> {
         }
     }
 
-    getCatBrandGoodsList() {
-        let params = {
-            firstCatId: this.state.firstCatId,
-            secondCatIds: this.state.secondCatIds,
-            brandIds: this.state.brandIds,
-            keyword: this.state.keyword,
-            pageSize: 5,
-            pageNo: 1,
-            type: this.state.type
-        };
-        HttpUtils.post('/goods/catBrandGoodsList', params, data => {
-            console.warn(JSON.stringify(params))
-            this.setState({
-                goodsList: data.data.list,
-                isLoading: false
-            });
-        })
-    }
+    // getCatBrandGoodsList() {
+    //     let params = {
+    //         firstCatId: this.state.firstCatId,
+    //         secondCatIds: this.state.secondCatIds,
+    //         brandIds: this.state.brandIds,
+    //         keyword: this.state.keyword,
+    //         pageSize: 5,
+    //         pageNo: 1,
+    //         type: this.state.type,
+    //         tradeType: this.state.tradeType
+    //     };
+    //     HttpUtils.post('/goods/catBrandGoodsList', params, data => {
+    //         console.warn(JSON.stringify(params))
+    //         this.setState({
+    //             goodsList: data.data.list,
+    //             isLoading: false
+    //         });
+    //     })
+    // }
 
     getFirstCategories() {//筛选侧栏里获取分类列表
         HttpUtils.get('/goodsCat/catList', {catId: -1}, data => {
@@ -154,6 +177,14 @@ export default class GoodsSideMenu extends Component<Props> {
             HttpUtils.get('/goodsCat/catList', {catId: id}, data => {
                 this.setState({secondCategories: data.data});
             })
+        }
+    }
+
+    clickTradeType(id) {
+        if (this.state.tradeType === id) {
+            this.setState({tradeType: ''});
+        } else {
+            this.setState({tradeType: id});
         }
     }
 

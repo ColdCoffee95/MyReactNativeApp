@@ -9,7 +9,7 @@ import {
     StyleSheet,
     Image,
     Text,
-    TouchableHighlight,
+    TouchableOpacity,
     ActivityIndicator,
     View
 } from 'react-native';
@@ -59,9 +59,8 @@ export default class UploadOneImg extends Component<Props> {
         }
         return (
             <View style={styles.btnContainer}>
-                <TouchableHighlight
-                    onPress={() => this.showActionSheet()}
-                    underlayColor='#fff'>
+                <TouchableOpacity
+                    onPress={() => this.showActionSheet()}>
                     <View style={styles.uploadView}>
                         <View style={{
                             width: this.props.width || 100,
@@ -75,7 +74,7 @@ export default class UploadOneImg extends Component<Props> {
                         </View>
                         <Text style={styles.uploadTitle}>{this.props.title}</Text>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
                 <ActionSheet
                     ref={o => this.ActionSheet = o}
                     title='请选择上传方式'

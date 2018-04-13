@@ -48,9 +48,9 @@ export default class CartComponent extends Component {
                     <View style={styles.cartGoodsInfoView}>
                         <Text style={styles.cartGoodsTitle}
                               numberOfLines={2}>{this.itemData.goodsTitle}</Text>
-                        <View>
+                        <View style={styles.skuView}>
                             <Text style={styles.cartSku}>{this.itemData.sku}</Text>
-                            <Text style={styles.cartEms}>运费:{this.itemData.emsPrice}</Text>
+                            <Text style={styles.cartEms}>运费:¥{this.itemData.emsPrice}</Text>
                         </View>
 
                         <View style={styles.priceNumberView}>
@@ -90,16 +90,6 @@ export default class CartComponent extends Component {
 
     @action
     selectPress = (id) => {
-        // this.itemData.itemSelect = this.itemData.itemSelect === 0 ? 1 : 0;
-        // let emsPrice = this.itemData.emsPrice || 0;
-        // let money = this.itemData.putPrice * this.itemData.number + parseInt(emsPrice);
-        // let number = this.itemData.number;
-        // if (this.itemData.itemSelect === 1) {
-        //     this.props.data.increase(money, number);
-        // }
-        // else {
-        //     this.props.data.reduce(money, number)
-        // }
         this.props.data.itemPress(id);
     };
 }
@@ -111,8 +101,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: whiteColor,
         marginBottom: 10,
-        paddingTop: 10,
-        paddingBottom: 10
+        paddingTop: 15,
+        paddingBottom: 15
     },
     cartGoodsImgView: {
         width: screenWidth * 0.25,
@@ -123,8 +113,8 @@ const styles = StyleSheet.create({
         borderColor: borderColor
     },
     cartGoodsImg: {
-        width: 80,
-        height: 80
+        width: screenWidth * 0.25,
+        height: screenWidth * 0.25
     },
     iconTouch: {
         flex: 0.1,
@@ -143,7 +133,8 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10
     },
-    cartGoodsTitle: {},
+    cartGoodsTitle: {
+    },
     priceNumberView: {
         flexDirection: 'row',
         justifyContent: 'space-between'
@@ -151,10 +142,16 @@ const styles = StyleSheet.create({
     priceText: {
         color: activeColor
     },
+    skuView:{
+      flexDirection:'row',
+        justifyContent: 'space-between'
+    },
     cartSku: {
-        color: '#ababab'
+        color: '#ababab',
+        fontSize:12
     },
     cartEms: {
-        color: '#ababab'
+        color: '#ababab',
+        fontSize:12
     }
 });

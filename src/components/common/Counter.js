@@ -101,7 +101,7 @@ export default class Counter extends Component<Props> {
         }
         if (num < this.state.min) {
             this.props.toast.show('购买量不能少于起订量', 300);
-            this.setState({currentValue: this.state.min})
+            this.setState({currentValue: this.state.min});
             this.changeNumber(this.state.min);
             return;
         }

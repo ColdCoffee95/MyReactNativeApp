@@ -69,7 +69,9 @@ export default class Home extends Component<Props> {
                 </Swiper>
             );
         }else{
-            return <View></View>
+            return <View style={styles.emptyView}>
+
+            </View>
         }
 
     }
@@ -80,6 +82,10 @@ export default class Home extends Component<Props> {
 
 const styles = StyleSheet.create({
     wrapper: {
+    },
+    emptyView:{
+        width: screenWidth,
+        height: 521*screenWidth/750
     },
     slide: {
         width: screenWidth,

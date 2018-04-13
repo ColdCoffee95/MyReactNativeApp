@@ -8,8 +8,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    TouchableHighlight,
-    TextInput,
+    TouchableOpacity,
     View
 } from 'react-native';
 
@@ -24,19 +23,14 @@ export default class ActiveButton extends Component<Props> {
 
     render() {
         return (
-            <TouchableHighlight
-                onPress={() => this.props.clickBtn()}
-                underlayColor='#fff'>
+            <TouchableOpacity
+                onPress={() => this.props.clickBtn()}>
                 <View style={this.props.style ? this.props.style : styles.submitView}>
                     <Text
                         style={this.props.textStyle ? this.props.textStyle : styles.submitText}>{this.props.text}</Text>
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         );
-    }
-
-    submit() {
-
     }
 }
 
