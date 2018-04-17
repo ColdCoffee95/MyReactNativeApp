@@ -66,7 +66,7 @@ global.validPwd = function (str) {
     }
     return true
 };
-global.dateFormat = function (timeStamp) {
+global.dateFormat = function (timeStamp) {//1是需要时分秒，2只需要年月日
     var time = new Date(timeStamp);
     let year = time.getFullYear();//ie火狐下都可以
     let month = time.getMonth() + 1;

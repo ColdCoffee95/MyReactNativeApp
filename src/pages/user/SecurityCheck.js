@@ -7,58 +7,286 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
+    Button,
     Image,
-    ScrollView
+    Text,
+    TextInput,
+    TouchableOpacity,
+    Alert,
+    View
 } from 'react-native';
 
 type Props = {};
+import CryptoJS from 'crypto-js'
+import FormCell from '../../components/common/FormCell'
+import ActiveButton from '../../components/common/ActiveButton'
+import TimerButton from '../../components/common/TimerButton'
+import Toast, {DURATION} from 'react-native-easy-toast';
+import HttpUtils from "../../utils/http";
 
-export default class Aboutus extends Component<Props> {
-
+export default class SecurityCheck extends Component<Props> {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            viewPhone: '',
+            realPhone: '',
+            mobileCode: '',
+            imgCode: '',//输入的图片验证码
+            codeImg: '',//验证码图片
+            counting: false,
+            enable: true,
+            timerCount: 60,
+            timerTitle: '获取验证码',
+        }
+    }
+
+    componentDidMount() {
+        this.fetchData();
     }
 
     render() {
+
         return (
-            <ScrollView contentContainerStyle={styles.container}>
-                <Image
-                    source={require('../../images/logo.png')}
-                    resizeMode='contain'
-                    style={styles.logo}
-                />
-                <Text style={styles.version}>{version}</Text>
-                <Text style={styles.desc}>
-                    店力集盒是新一代母婴B2B2C平台，致力于全方位服务全国小店，开发小店潜力，助力小店良性发展。
-                    店力集盒帮助小店解决供应链效率问题，通过高效提供更全面丰富的海内外优秀货品，降低订货成本，提高小店订货效率。同时通过数据化智能化人性化服务，为小店运营加分，绑定更多高忠诚度会员。
-                    角色定位：口碑海淘商品、国内外优质大牌、精选国货供应 + 小店运营顾问，实现小店价值最大化 店力集盒的使命：让中国小店拥有大渠道的竞争优势，让消费者享受近在咫尺的福利。
-                </Text>
-            </ScrollView>
+            <View style={styles.container}>
+                <View style={styles.topMobilePhoneView}>
+                    <Text style={styles.viewPhone}>{this.state.viewPhone}</Text>
+                </View>
+                <View style={styles.formCellView}>
+                    <View style={styles.leftView}>
+                        <Text style={{
+                            marginLeft: 10,
+                            lineHeight: 40,
+                            height: 40,
+                            width: 80
+                        }}>图片验证码</Text>
+                        <TextInput
+                            style={{
+                                marginLeft: 10,
+                                height: 40,
+                                width: 150
+                            }}
+                            keyboardType='numeric'
+                            underlineColorAndroid='transparent'
+                            onChangeText={(text) => this.setState({imgCode: text})}
+                            placeholder='请输入图片验证码'>
+                        </TextInput>
+                    </View>
+                    <TouchableOpacity onPress={() => this.getCodeImg()}>
+                        <View style={styles.codeImgView}>
+                            {
+                                this.state.codeImg && <Image
+                                    resizeMode='contain'
+                                    source={{uri: this.state.codeImg}}
+                                    style={styles.codeImg}
+                                />
+                            }
+
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.formCellView}>
+                    <View style={styles.leftView}>
+                        <Text style={{
+                            marginLeft: 10,
+                            lineHeight: 40,
+                            height: 40,
+                            width: 80
+                        }}>手机验证码</Text>
+                        <TextInput
+                            style={{
+                                marginLeft: 10,
+                                height: 40,
+                                width: 150
+                            }}
+                            keyboardType='numeric'
+                            underlineColorAndroid='transparent'
+                            onChangeText={(text) => this.setState({mobileCode: text})}
+                            placeholder='请输入手机验证码'>
+                        </TextInput>
+                    </View>
+                    <TouchableOpacity activeOpacity={this.state.counting ? 1 : 0.8}
+                                      onPress={() => this.buttonClick(this.state.enable)}>
+                        {
+                            this.state.timerTitle === '获取验证码' && <View style={styles.buttonStyle}>
+                                <Text
+                                    style={styles.textStyle}>获取验证码</Text>
+                            </View>
+
+                        }
+                        {
+                            this.state.timerTitle !== '获取验证码' && <View style={styles.buttonStyleUnable}>
+                                <Text
+                                    style={styles.textStyleUnable}>{this.state.timerCount}秒后重试</Text>
+                            </View>
+
+                        }
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.bottomBtnView}>
+                    <ActiveButton clickBtn={() => this.nextStep()} text='下一步' style={styles.activeButton}>
+
+                    </ActiveButton>
+                </View>
+                <Toast ref='toast' position='center'/>
+            </View>
         );
     }
-}
 
+    fetchData() {
+        this.getViewPhone();
+        this.getCodeImg();
+    }
+
+    async getViewPhone() {
+        let userInfo = await HttpUtils.getUserInfo();
+        let phone = userInfo.mobile;
+        this.setState({realPhone: phone, viewPhone: `${phone.substr(0, 3)}****${phone.substr(7)}`});
+    }
+
+    async getCodeImg() {
+        let loginStatus = await HttpUtils.getLoginState();
+        const {token, memberId} = loginStatus;
+        let codeImg = `${serverUrl}/message/getImgCode?memberId=${memberId}&random=${Math.random()}&token=${token}&platform=${platform}&version=${version}`;
+        console.warn(codeImg)
+        this.setState({codeImg: codeImg});
+    }
+
+    nextStep() {
+        let {realPhone, mobileCode} = this.state;
+        if (!realPhone || !mobileCode) {
+            this.refs.toast.show('请填写完整', 500);
+            return;
+        }
+        let params = {
+            mobile: realPhone,
+            code: mobileCode,
+            type: 2
+        };
+        HttpUtils.get('/message/isMobileCode', params, data => {
+            this.props.navigation.navigate('UpdatePwd');
+        })
+    }
+
+    async buttonClick(enable) {
+        if (!enable) {
+            this.refs.toast.show('请稍后再试', 300);
+            return;
+        }
+        if (!this.state.imgCode) {
+            this.refs.toast.show('请输入图片验证码', 300);
+            return;
+        }
+        let isImgCode = await this.checkImgCode();
+        if (!isImgCode) {
+            this.refs.toast.show('图片验证码输入不正确', 300);
+            return;
+        }
+        this.getMessageCode();
+    }
+
+    checkImgCode() {
+        return new Promise((resolve, reject) => {
+            try {
+                HttpUtils.get('/message/isImgCode', {code: this.state.imgCode, type: 1}, data => {
+                    resolve(true)
+                })
+            } catch (e) {
+                resolve(false)
+            }
+
+        })
+    }
+
+    async getMessageCode() {
+
+        this.setState({enable: false, timerTitle: ''});
+        const messageCount = setInterval(() => {
+            this.state.timerCount--;
+            this.setState({timerCount: this.state.timerCount});
+            if (this.state.timerCount === 0) {
+                clearInterval(messageCount);
+                this.setState({enable: true, timerTitle: "获取验证码"});
+            }
+        }, 1000);
+        let params = {
+            mobile: this.state.realPhone,
+            type: 2//2是安全校验
+        };
+        HttpUtils.post('/message/getMobileMessage', params, data => {
+            this.refs.toast.show('发送成功');
+        })
+    }
+}
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         backgroundColor: whiteColor,
-        paddingTop: 20,
+    },
+    topMobilePhoneView: {
+        height: 100,
+        width: screenWidth,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    viewPhone: {
+        fontSize: 20
+    },
+    codeImgView: {
+        backgroundColor: whiteColor,
+        alignItems: 'center',
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        paddingTop: 8,
+        paddingBottom: 8,
+        borderRadius: 5,
+        marginRight: 10
     },
-    logo: {
-        width: 60,
-        height: 60
+    codeImg: {
+        width: 70,
+        height: 26
     },
-    version: {
-        marginTop: 20
+    formCellView: {
+        width: screenWidth,
+        flexDirection: 'row',
+        borderBottomColor: borderColor,
+        borderBottomWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
-    desc: {
-        marginTop: 20,
-        fontSize:16,
-        lineHeight:30
+    leftView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    cellTitle: {},
+    cellInput: {
+        marginLeft: 10
+    },
+    buttonStyle: {
+        backgroundColor: activeColor,
+        alignItems: 'center',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 8,
+        paddingBottom: 8,
+        borderRadius: 5,
+        marginRight: 10
+    },
+    buttonStyleUnable: {
+        backgroundColor: '#f2f2f2',
+        alignItems: 'center',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 8,
+        paddingBottom: 8,
+        borderRadius: 5,
+        marginRight: 10
+    },
+    textStyle: {
+        color: whiteColor
+    },
+    textStyleUnable: {
+        color: '#333'
     }
 });

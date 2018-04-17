@@ -1,7 +1,20 @@
 import {Dimensions} from "react-native";
 import HttpUtils from "./http";
 import DeviceInfo from 'react-native-device-info'
-
+global.cutTypes = [
+    {
+        name: '满减',
+        value: 'full-cut'
+    },
+    {
+        name: '立减',
+        value: 'minus'
+    },
+    {
+        name: '折扣',
+        value: 'discount'
+    },
+];
 global.afterTypes = [
     {
         id: 0,

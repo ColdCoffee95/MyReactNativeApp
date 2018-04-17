@@ -73,17 +73,20 @@ export default class Register extends Component<Props> {
                     </View>
                     <TouchableOpacity activeOpacity={this.state.counting ? 1 : 0.8}
                                       onPress={() => this.buttonClick(this.state.enable)}>
-                        <View style={styles.buttonStyle}>
-                            {
-                                this.state.timerTitle === '获取验证码' && <Text
+                        {
+                            this.state.timerTitle === '获取验证码' && <View style={styles.buttonStyle}>
+                                <Text
                                     style={styles.textStyle}>获取验证码</Text>
-                            }
-                            {
-                                this.state.timerTitle !== '获取验证码' && <Text
-                                    style={styles.textStyle}>{this.state.timerCount}秒后重试</Text>
-                            }
+                            </View>
 
-                        </View>
+                        }
+                        {
+                            this.state.timerTitle !== '获取验证码' && <View style={styles.buttonStyleUnable}>
+                                <Text
+                                    style={styles.textStyleUnable}>{this.state.timerCount}秒后重试</Text>
+                            </View>
+
+                        }
                     </TouchableOpacity>
                 </View>
                 <FormCell
@@ -140,7 +143,7 @@ export default class Register extends Component<Props> {
                     },
                     {
                         text: "去登录", onPress: () => {
-                            this.props.navigation.navigate('Login');
+                            jumpAndClear(this.props.navigation,'Login')
                         }
                     },
                 ],
@@ -164,12 +167,12 @@ export default class Register extends Component<Props> {
 
     async buttonClick(enable) {
         if (!enable) {
-            this.refs.toast.show('请稍后再试');
+            this.refs.toast.show('请稍后再试', 300);
             return;
         }
         let mobileAble = await this.checkMobile();
         if (!mobileAble) {
-            this.refs.toast.show('该手机号已被使用');
+            this.refs.toast.show('该手机号已被使用', 300);
             return;
         }
         this.getMessageCode();
@@ -182,7 +185,7 @@ export default class Register extends Component<Props> {
             this.state.timerCount--;
             this.setState({timerCount: this.state.timerCount});
             if (this.state.timerCount === 0) {
-                clearInterval();
+                clearInterval(messageCount);
                 this.setState({enable: true, timerTitle: "获取验证码"});
             }
         }, 1000);
@@ -200,44 +203,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: whiteColor,
-    },
-    version: {
-        marginTop: 20
-    },
-    messageInputView: {
-        width: 250,
-        height: 40,
-        marginTop: 10,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
-
-    code: {
-        width: 150,
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 10,
-        borderColor: '#ededed'
-    },
-    messageBtn: {
-        marginLeft: 10
-    },
-    phone: {
-        width: 250,
-        height: 40,
-        marginTop: 40,
-        borderWidth: 1,
-        paddingLeft: 10,
-        borderColor: '#ededed'
-    },
-    password: {
-        width: 250,
-        height: 40,
-        marginTop: 10,
-        borderWidth: 1,
-        paddingLeft: 10,
-        borderColor: '#ededed'
     },
     formCellView: {
         width: screenWidth,
@@ -265,7 +230,20 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginRight: 10
     },
+    buttonStyleUnable:{
+        backgroundColor: '#f2f2f2',
+        alignItems: 'center',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 8,
+        paddingBottom: 8,
+        borderRadius: 5,
+        marginRight: 10
+    },
     textStyle: {
         color: whiteColor
+    },
+    textStyleUnable:{
+        color:'#333'
     }
 });

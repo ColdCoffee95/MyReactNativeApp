@@ -10,6 +10,7 @@ import {
     ScrollView,
     Text,
     TouchableHighlight,
+    TouchableOpacity,
     ActivityIndicator,
     View
 } from 'react-native';
@@ -28,12 +29,12 @@ export default class SelectCrossAddress extends Component<Props> {
 
     static navigationOptions = ({navigation, screenProps}) => ({
         headerRight:
-            (<TouchableHighlight style={{marginRight: 10}} underlayColor={activeColor}
+            (<TouchableOpacity style={{marginRight: 10}}
                                  onPress={() => navigation.state.params.manage()}>
                 <View>
-                    <Text style={{color: whiteColor}}>管理</Text>
+                    <Text style={{color: 'black'}}>管理</Text>
                 </View>
-            </TouchableHighlight>)
+            </TouchableOpacity>)
     });
 
     componentDidMount() {
@@ -91,12 +92,14 @@ export default class SelectCrossAddress extends Component<Props> {
     }
 
     jumpToManage() {
-        this.props.navigation.navigate('ManageCrossAddress');
+        this.props.navigation.navigate('ManageCrossAddress', {
+            goBack: () => this.fetchData()
+        });
     }
 
     selectAddress(address) {
         const {navigate, goBack, state} = this.props.navigation;
-        state.params.addressCallback(address);
+        state.params.callback(address);
         goBack();
     }
 }

@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet'
 import ImagePicker from 'react-native-image-crop-picker'
+
 type Props = {};
 
 export default class UploadOneImg extends Component<Props> {
@@ -49,7 +50,7 @@ export default class UploadOneImg extends Component<Props> {
             imgView =
                 <Image
                     resizeMode='contain'
-                    style={{
+                    style={this.props.style || {
                         width: this.props.width || 100,
                         height: this.props.height || 100,
                     }}
@@ -72,7 +73,10 @@ export default class UploadOneImg extends Component<Props> {
                         }}>
                             {imgView}
                         </View>
-                        <Text style={styles.uploadTitle}>{this.props.title}</Text>
+                        {
+                            this.props.title && <Text style={styles.uploadTitle}>{this.props.title}</Text>
+                        }
+
                     </View>
                 </TouchableOpacity>
                 <ActionSheet

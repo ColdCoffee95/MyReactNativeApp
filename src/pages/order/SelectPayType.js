@@ -49,7 +49,7 @@ export default class SelectPayType extends Component<Props> {
         headerLeft:
             <TouchableOpacity onPress={() => navigation.state.params.confirmBack()}>
                 <View style={{paddingLeft: 15}}>
-                    <Icon name='angle-left' size={40} color={whiteColor}></Icon>
+                    <Icon name='angle-left' size={40} color='black'></Icon>
                 </View>
             </TouchableOpacity>
 

@@ -18,6 +18,8 @@ import {
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import UploadOneImg from '../components/common/UploadOneImg'
+import HttpUtils from "../utils/http";
 // import Loading from 'react-native-spinkit';
 
 type Props = {};
@@ -92,6 +94,11 @@ export default class Mine extends Component<Props> {
                     id: 7,
                     name: "实名认证",
                     img: require('../images/certification.png')
+                },
+                {
+                    id: 8,
+                    name: "优惠券",
+                    img: require('../images/coupon.png')
                 }
             ]
         }
@@ -134,6 +141,7 @@ export default class Mine extends Component<Props> {
                     onPress={() => this.jumpToTools(value.id)}
                     key={value.id}>
                     <View style={styles.toolItemView}>
+
                         <Image
                             style={styles.toolImg}
                             resizeMode='contain'
@@ -167,14 +175,17 @@ export default class Mine extends Component<Props> {
                     </View>
 
                     <View style={styles.userView}>
-
+                        <Text style={styles.memberName}>{this.state.userInfo.memberName}</Text>
                     </View>
                     <View style={styles.avatarView}>
-                        <Image
-                            style={styles.avatar}
-                            resizeMode='contain'
-                            source={this.state.userInfo.avatar ? {uri: this.state.userInfo.avatar} : {uri: 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}}
-                        />
+                        {
+                            this.state.userInfo.memberId && <UploadOneImg
+                                style={styles.avatar}
+                                onChange={img => this.updateAvatar(img)}
+                                img={this.state.userInfo.avatar || 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}>
+                            </UploadOneImg>
+                        }
+
                     </View>
                 </View>
                 <View style={styles.cellView}>
@@ -206,26 +217,31 @@ export default class Mine extends Component<Props> {
     async getUserInfo() {
         HttpUtils.get('/member/selectStoreMemberById', {}, data => {
             console.warn(data.data)
-            this.setState({userInfo: data.data, isLoading: false,isRefreshing:false});
+            this.setState({userInfo: data.data, isLoading: false, isRefreshing: false});
             this.props.navigation.setParams({
                 getUserInfo: this.getUserInfo.bind(this)
             });
         })
     }
 
-    uploadAvatar() {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true
-        }).then(image => {
-            console.log(image);
-        });
-    }
 
     _onRefresh() {
         this.setState({isRefreshing: true});
         this.getUserInfo();
+    }
+
+    async updateAvatar(img) {
+        let userInfo = await HttpUtils.getUserInfo();
+        let params = {
+            avatar: img,
+            memberId: userInfo.memberId
+        };
+        HttpUtils.post('/member/updateMemberAvatar', params, data => {
+            storage.save({
+                key: 'userInfo',
+                data: data.data.member
+            });
+        })
     }
 
     jumpToTools(id) {
@@ -243,21 +259,33 @@ export default class Mine extends Component<Props> {
                 this.props.navigation.navigate('Feedback');
                 break;
             case 5://大贸地址
-                this.props.navigation.navigate('ManageAddress');
+                this.props.navigation.navigate('ManageAddress', {
+                    goBack: () => {
+                    }
+                });
                 break;
             case 6://跨境地址
-                this.props.navigation.navigate('ManageCrossAddress');
+                this.props.navigation.navigate('ManageCrossAddress', {
+                    goBack: () => {
+                    }
+                });
                 break;
             case 7://实名认证
-                this.props.navigation.navigate('ManageCertification');
+                this.props.navigation.navigate('ManageCertification', {
+                    goBack: () => {
+                    }
+                });
+                break;
+            case 8://优惠券
+                this.props.navigation.navigate('CouponList');
                 break;
         }
     }
 
     jumpToOrder(id) {
-        if(id == 99){
+        if (id == 99) {
             this.props.navigation.navigate('AfterSaleOrders', {type: id});
-        }else{
+        } else {
             this.props.navigation.navigate('Order', {type: id});
         }
     }
@@ -289,11 +317,14 @@ const styles = StyleSheet.create({
         borderColor: activeColor,
         width: 50,
         height: 50,
-
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden'
     },
     avatar: {
         width: 50,
-        height: 50
+        height: 50,
+
     },
     userView: {
         position: 'absolute',
@@ -303,6 +334,10 @@ const styles = StyleSheet.create({
         height: 140,
         width: screenWidth - 20,
         backgroundColor: whiteColor
+    },
+    memberName: {
+        marginLeft: 90,
+        marginTop: 10
     },
     cellView: {
         width: screenWidth,

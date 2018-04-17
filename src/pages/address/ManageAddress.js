@@ -33,9 +33,18 @@ export default class ManageAddress extends Component<Props> {
     }
 
     componentDidMount() {
+        this.props.navigation.setParams({addressGoBack: this.addressGoBack.bind(this)});
         this.fetchData()
     }
+    static navigationOptions = ({navigation, screenProps}) => ({
+        headerLeft:
+            <TouchableOpacity onPress={() => navigation.state.params.addressGoBack()}>
+                <View style={{paddingLeft: 15}}>
+                    <Icon name='angle-left' size={40} color='black'></Icon>
+                </View>
+            </TouchableOpacity>
 
+    });
     render() {
         if (this.state.isLoading) {
             return <ActivityIndicator></ActivityIndicator>
@@ -100,7 +109,11 @@ export default class ManageAddress extends Component<Props> {
         }
 
     }
-
+    addressGoBack(){
+        const {navigate, goBack, state} = this.props.navigation;
+        state.params.goBack();
+        goBack();
+    }
     async fetchData() {
         let list = await this.getAddressList();
         let addressData = await getAddressData();

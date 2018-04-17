@@ -136,7 +136,7 @@ export default class Category extends Component<Props> {
     }
 
     clickCategory(parentId, id) {//点击分类
-        this.props.navigation.navigate('GoodsList', {id: parentId, secondId: id});
+        this.props.navigation.navigate('GoodsList', {id: parentId, secondIds: [id]});
     }
 
     getSecondCategories(catId) {//获取二级分类

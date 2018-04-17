@@ -11,6 +11,7 @@ import MainScreen from './src/pages/screens/MainScreen';
 import LoginScreen from './src/pages/screens/LoginScreen';
 import Register from './src/pages/user/Register';
 import ForgetPwd from './src/pages/user/ForgetPwd';
+import UpdatePwd from './src/pages/user/UpdatePwd';
 
 import GoodsList from './src/pages/goods/GoodsList';
 import GoodsDetail from './src/pages/goods/GoodsDetail';
@@ -27,6 +28,7 @@ import Feedback from './src/pages/user/Feedback';
 import Aboutus from './src/pages/user/Aboutus';
 import SecurityCheck from './src/pages/user/SecurityCheck';
 import ShopCertification from './src/pages/user/ShopCertification';
+import ShopCertificationDetail from './src/pages/user/ShopCertificationDetail';
 
 import ManageAddress from './src/pages/address/ManageAddress';
 import AddAddress from './src/pages/address/AddAddress';
@@ -49,6 +51,10 @@ import Order from './src/pages/order/Order'
 import OrderDetail from './src/pages/order/OrderDetail'
 import AfterSaleOrders from './src/pages/order/AfterSaleOrders'
 import AfterSaleDetail from './src/pages/order/AfterSaleDetail'
+import Comment from './src/pages/order/Comment'
+
+import CouponList from './src/pages/coupon/CouponList'
+import SelectCoupon from './src/pages/coupon/SelectCoupon'
 const styles = StyleSheet.create({
     headerStyles: {
         backgroundColor: whiteColor
@@ -82,6 +88,17 @@ export default SimpleApp = StackNavigator({
         screen: ForgetPwd,
         navigationOptions: {
             title: '忘记密码',
+            headerStyle: styles.headerStyles,
+            headerTitleStyle: styles.headerTitleStyle,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerRight: <View/>
+        }
+    },
+    UpdatePwd: {
+        screen: UpdatePwd,
+        navigationOptions: {
+            title: '修改密码',
             headerStyle: styles.headerStyles,
             headerTitleStyle: styles.headerTitleStyle,
             headerTintColor: 'black',
@@ -137,6 +154,17 @@ export default SimpleApp = StackNavigator({
         screen: ShopCertification,
         navigationOptions: {
             title: '店铺认证',
+            headerStyle: styles.headerStyles,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerRight: <View/>,
+            headerTitleStyle: styles.headerTitleStyle,
+        }
+    },
+    ShopCertificationDetail: {
+        screen: ShopCertificationDetail,
+        navigationOptions: {
+            title: '店铺信息',
             headerStyle: styles.headerStyles,
             headerTintColor: 'black',
             headerBackTitle: null,
@@ -275,7 +303,6 @@ export default SimpleApp = StackNavigator({
             headerStyle: styles.headerStyles,
             headerTintColor: 'black',
             headerBackTitle: null,
-            headerRight: <View/>,
             headerTitleStyle: styles.headerTitleStyle,
         },
     },
@@ -367,6 +394,16 @@ export default SimpleApp = StackNavigator({
             headerTitleStyle: styles.headerTitleStyle,
         },
     },
+    Comment: {
+        screen: Comment,
+        navigationOptions: {
+            title: '评价',
+            headerStyle: styles.headerStyles,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerTitleStyle: styles.headerTitleStyle,
+        },
+    },
     SelectPayType: {
         screen: SelectPayType,
         navigationOptions: {
@@ -426,6 +463,29 @@ export default SimpleApp = StackNavigator({
         screen: AfterSaleDetail,
         navigationOptions: {
             title: '售后详情',
+            headerStyle: styles.headerStyles,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerRight: <View/>,
+            headerTitleStyle: styles.headerTitleStyle,
+        },
+    },
+
+    CouponList: {
+        screen: CouponList,
+        navigationOptions: {
+            title: '优惠券',
+            headerStyle: styles.headerStyles,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerRight: <View/>,
+            headerTitleStyle: styles.headerTitleStyle,
+        },
+    },
+    SelectCoupon: {
+        screen: SelectCoupon,
+        navigationOptions: {
+            title: '选择优惠券',
             headerStyle: styles.headerStyles,
             headerTintColor: 'black',
             headerBackTitle: null,

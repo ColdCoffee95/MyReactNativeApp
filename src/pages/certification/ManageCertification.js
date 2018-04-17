@@ -10,6 +10,7 @@ import {
     Text,
     TouchableHighlight,
     ScrollView,
+    TouchableOpacity,
     Alert,
     View
 } from 'react-native';
@@ -30,9 +31,18 @@ export default class ManageCertification extends Component<Props> {
     }
 
     componentDidMount() {
+        this.props.navigation.setParams({certificationGoBack: this.certificationGoBack.bind(this)});
         this.fetchData()
     }
+    static navigationOptions = ({navigation, screenProps}) => ({
+        headerLeft:
+            <TouchableOpacity onPress={() => navigation.state.params.certificationGoBack()}>
+                <View style={{paddingLeft: 15}}>
+                    <Icon name='angle-left' size={40} color='black'></Icon>
+                </View>
+            </TouchableOpacity>
 
+    });
     render() {
         let certificationList = [];
         this.state.certificationList.map(value => {
@@ -100,7 +110,11 @@ export default class ManageCertification extends Component<Props> {
             this.fetchData();
         })
     }
-
+    certificationGoBack(){
+        const {navigate, goBack, state} = this.props.navigation;
+        state.params.goBack();
+        goBack();
+    }
     deleteCertification(id) {
         Alert.alert(null, '删除后将无法恢复，确认删除？',
             [

@@ -46,8 +46,8 @@ export default class GoodsList extends Component<Props> {
 
     componentDidMount() {
         this.state.firstCatId = this.props.navigation.state.params.id || '';
-        this.state.secondCatIds = this.props.navigation.state.params.secondId ?
-            [this.props.navigation.state.params.secondId] : []
+        this.state.secondCatIds = this.props.navigation.state.params.secondIds || [];
+        this.state.brandIds = this.props.navigation.state.params.brandIds || [];
         this.fetchData();
     }
 
@@ -78,7 +78,7 @@ export default class GoodsList extends Component<Props> {
                     }}
                 >
                     <Image
-                        style={{width: 100, height: 100}}
+                        style={{width: 200, height: 200}}
                         resizeMode='contain'
                         source={require('../../images/no-order.jpg')}
                     />

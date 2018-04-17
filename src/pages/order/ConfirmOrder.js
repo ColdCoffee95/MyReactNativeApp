@@ -34,13 +34,16 @@ export default class ConfirmOrder extends Component<Props> {
             address: {},
             cartList: [],
             couponId: '',
-            isLoading: true
+            coupon: {},
+            isLoading: true,
+            realCut: 0
         }
     }
 
     componentDidMount() {
         this.state.tradeType = this.props.navigation.state.params.tradeType;
         this.state.cartList = this.props.navigation.state.params.cartList;
+        console.warn(this.state.cartList)
         this.fetchData();
 
     }
@@ -52,10 +55,20 @@ export default class ConfirmOrder extends Component<Props> {
             let orderGoodsView = [];
             let totalNum = 0;
             let totalPrice = 0;
+
+            let cartIds = [];
+            this.state.cartList.map(value => cartIds.push(value.cartId));
             this.state.cartList.map(value => {
-                let emsPrice = value.emsPrice;
+                let emsPrice = value.emsPrice || 0;
                 totalNum += value.number;
                 totalPrice += value.number * value.putPrice + parseInt(emsPrice);
+                let sku = JSON.parse(value.goodsSku);
+                let skuStr = "";
+                for (let key in sku) {
+                    skuStr += `${key}:${sku[key]},`;
+                }
+                skuStr = skuStr.substr(0, skuStr.length - 1);
+                value.sku = skuStr;
                 orderGoodsView.push(
                     <View style={styles.goodsItemView}>
                         <View style={styles.goodsImgView}>
@@ -69,10 +82,10 @@ export default class ConfirmOrder extends Component<Props> {
                                   numberOfLines={2}>{value.goodsTitle}</Text>
                             <View>
                                 <Text style={styles.sku}>{value.sku}</Text>
-                                <Text style={styles.ems}>运费:{value.emsPrice}</Text>
+                                <Text style={styles.ems}>运费:{value.emsPrice || 0.00}</Text>
                             </View>
                             <View style={styles.priceNumberView}>
-                                <Text style={styles.priceText}>{value.putPrice}</Text>
+                                <Text style={styles.priceText}>¥{value.putPrice}</Text>
                                 <Text>×{value.number}</Text>
                             </View>
                         </View>
@@ -174,11 +187,17 @@ export default class ConfirmOrder extends Component<Props> {
                             </View>
                         </View>
                         <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
-                            this.jumpToSelectCoupon()
+                            this.jumpToSelectCoupon(cartIds)
                         }}>
                             <View style={styles.cellView}>
                                 <Text style={styles.leftCell}>优惠券</Text>
                                 <View style={styles.rightCell}>
+                                    {
+                                        this.state.realCut > 0 &&
+                                        <Text
+                                            style={{color: activeColor, marginRight: 10}}>-¥{this.state.realCut}</Text>
+                                    }
+
                                     <Icon name="angle-right" size={20} color="#999"/>
                                 </View>
                             </View>
@@ -188,7 +207,7 @@ export default class ConfirmOrder extends Component<Props> {
                 <Toast ref='toast' position='center'></Toast>
                 <View style={styles.bottomView}>
                     <View style={styles.bottomLeftView}>
-                        <Text style={{marginLeft: 5}}>合计：¥{totalPrice.toFixed(2)}</Text>
+                        <Text style={{marginLeft: 5}}>合计：¥{(totalPrice - this.state.realCut).toFixed(2)}</Text>
                     </View>
                     <View style={styles.bottomRightView}>
                         <ActiveButton
@@ -198,7 +217,6 @@ export default class ConfirmOrder extends Component<Props> {
                             clickBtn={() => {
                                 this.confirmOrder()
                             }}>
-
                         </ActiveButton>
                     </View>
                 </View>
@@ -211,14 +229,24 @@ export default class ConfirmOrder extends Component<Props> {
         if (this.state.tradeType !== 1) {//不是一般贸易
             let defaultCertification = await this.getDefaultCertification();
             let defaultCrossAddress = await this.getDefaultCrossAddress();
-            let addressData = await getAddressData();
-            let dealedList = await getTotalAddress(addressData, [defaultCrossAddress]);
-            this.setState({address: dealedList[0], certification: defaultCertification, isLoading: false});
+            if (defaultCrossAddress) {
+                let addressData = await getAddressData();
+                let dealedList = await getTotalAddress(addressData, [defaultCrossAddress]);
+                this.setState({address: dealedList[0], certification: defaultCertification, isLoading: false});
+            } else {
+                this.setState({address: {}, certification: defaultCertification, isLoading: false});
+            }
+
         } else {
             let defaultAddress = await this.getDefaultAddress();
-            let addressData = await getAddressData();
-            let dealedList = await getTotalAddress(addressData, [defaultAddress]);
-            this.setState({address: dealedList[0], isLoading: false});
+            if (defaultAddress) {
+                let addressData = await getAddressData();
+                let dealedList = await getTotalAddress(addressData, [defaultAddress]);
+                this.setState({address: dealedList[0], isLoading: false});
+            } else {
+                this.setState({address: {}, isLoading: false});
+            }
+
         }
     }
 
@@ -282,26 +310,44 @@ export default class ConfirmOrder extends Component<Props> {
     jumpToSelectAddress() {//跳转到选择地址页面
         if (this.state.tradeType !== 1) {//跨境贸易
             this.props.navigation.navigate('SelectCrossAddress', {
-                addressCallback: (address) => {
+                callback: (address) => {
                     this.setState({address: address});
                 }
             });
         } else {//一般贸易
             this.props.navigation.navigate('SelectAddress', {
-                addressCallback: (address) => {
+                callback: (address) => {
                     this.setState({address: address});
                 }
             });
         }
     }
 
-    jumpToSelectCoupon() {//跳转到选择优惠券页面
-
+    jumpToSelectCoupon(cartIds) {//跳转到选择优惠券页面
+        const {cartList} = this.state;
+        this.props.navigation.navigate('SelectCoupon', {
+            cartIds: cartIds,
+            callback: (coupon) => {
+                let params = {
+                    couponId: coupon.id,
+                    orderItemList: cartList
+                };
+                HttpUtils.post('/order/doComputeCouponPrice', params, data => {
+                    console.warn(data.data)
+                    if (data.data) {
+                        this.setState({realCut: data.data})
+                    }else{
+                        this.setState({realCut: 0})
+                    }
+                });
+                this.setState({coupon: coupon, couponId: coupon.id});
+            }
+        });
     }
 
     jumpToSelectCertification() {//跳转到选择实名认证页面
         this.props.navigation.navigate('SelectCertification', {
-            addressCallback: (certification) => {
+            callback: (certification) => {
                 this.setState({certification: certification});
             }
         });
@@ -309,27 +355,41 @@ export default class ConfirmOrder extends Component<Props> {
 
     getDefaultCertification() {//获取默认的实名认证信息
         return new Promise((resolve, reject) => {
-            HttpUtils.get('/idCard/selectDefaultsIdCard', {}, data => {
-                resolve(data.data)
-            })
+            try {
+                HttpUtils.get('/idCard/selectDefaultsIdCard', {}, data => {
+                    let defaultInfo = data.data || {};
+                    resolve(defaultInfo)
+                })
+            } catch (e) {
+                resolve({})
+            }
+
         })
     }
 
     getDefaultAddress() {//获取默认的地址信息
         return new Promise((resolve, reject) => {
-            HttpUtils.get('/shippingAddress/defaultShippingAddressByMemberId', {}, data => {
-                console.warn(data.data)
-                resolve(data.data)
-            })
+            try {
+                HttpUtils.get('/shippingAddress/defaultShippingAddressByMemberId', {}, data => {
+                    resolve(data.data)
+                })
+            } catch (e) {
+                resolve({})
+            }
+
         })
     }
 
     getDefaultCrossAddress() {//获取默认的跨境地址信息
         return new Promise((resolve, reject) => {
-            HttpUtils.get('/idCardAddress/selectDefaultsIdCardAddress', {}, data => {
-                console.warn(data.data)
-                resolve(data.data)
-            })
+            try {
+                HttpUtils.get('/idCardAddress/selectDefaultsIdCardAddress', {}, data => {
+                    resolve(data.data)
+                })
+            } catch (e) {
+                resolve({})
+            }
+
         })
     }
 
@@ -379,7 +439,8 @@ const styles = StyleSheet.create({
     },
     leftCell: {},
     rightCell: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     goodsItemView: {
         flexDirection: 'row',

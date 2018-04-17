@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
+
 type Props = {};
 export default class Order extends Component<Props> {
 
@@ -64,6 +65,7 @@ export default class Order extends Component<Props> {
         this.props.navigation.setParams({orderGoBack: this.orderGoBack.bind(this)});
         this.fetchData()
     }
+
     static navigationOptions = ({navigation, screenProps}) => ({
         headerLeft:
             <TouchableOpacity onPress={() => navigation.state.params.orderGoBack()}>
@@ -73,6 +75,7 @@ export default class Order extends Component<Props> {
             </TouchableOpacity>
 
     });
+
     render() {
         let orderList = null;
         if (this.state.isLoading) {
@@ -125,9 +128,11 @@ export default class Order extends Component<Props> {
         </View>
 
     }
-    orderGoBack(){
+
+    orderGoBack() {
         this.props.navigation.navigate('Mine');
     }
+
     _onEndReached() {
         if (this.state.allLoadCompleted || this.state.loadingMore) {
             return;
@@ -341,7 +346,10 @@ export default class Order extends Component<Props> {
     }
 
     comment(orderId) {
-        this.props.navigation.navigate('OrderComment', {orderId: orderId});
+        this.props.navigation.navigate('Comment', {
+            orderId: orderId,
+            goBack: () => this.fetchData()
+        });
     }
 }
 

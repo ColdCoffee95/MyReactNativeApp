@@ -184,7 +184,6 @@ export default class AfterSaleOrders extends Component<Props> {
                     allLoadCompleted: true,
                 });
             }
-            console.warn(arr[0].orderAftersalesStatus)
             this.setState({
                 orderList: arr,
                 isLoading: false,
@@ -234,6 +233,7 @@ const styles = StyleSheet.create({
     goodsInfoView: {
         justifyContent: 'space-between',
         width: screenWidth * 0.7,
+        height: screenWidth * 0.25,
         paddingLeft: 10,
         paddingRight: 10
     },

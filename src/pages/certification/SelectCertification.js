@@ -10,6 +10,7 @@ import {
     Text,
     TouchableHighlight,
     ScrollView,
+    TouchableOpacity,
     Alert,
     View
 } from 'react-native';
@@ -30,9 +31,18 @@ export default class SelectCertification extends Component<Props> {
     }
 
     componentDidMount() {
+        this.props.navigation.setParams({manage: this.jumpToManage.bind(this)});
         this.fetchData()
     }
-
+    static navigationOptions = ({navigation, screenProps}) => ({
+        headerRight:
+            (<TouchableOpacity style={{marginRight: 10}}
+                               onPress={() => navigation.state.params.manage()}>
+                <View>
+                    <Text style={{color: 'black'}}>管理</Text>
+                </View>
+            </TouchableOpacity>)
+    });
     render() {
         let certificationList = [];
         this.state.certificationList.map(value => {
@@ -56,14 +66,14 @@ export default class SelectCertification extends Component<Props> {
                     {certificationList}
                 </ScrollView>
                 <Toast ref='toast' position='center'></Toast>
-                <View style={styles.bottomBtnView}>
-                    <ActiveButton clickBtn={() => this.addAddress()} text='添加实名认证'
-                                  style={styles.activeButton}></ActiveButton>
-                </View>
             </View>
         );
     }
-
+    jumpToManage() {
+        this.props.navigation.navigate('ManageCertification', {
+            goBack: () => this.fetchData()
+        });
+    }
     async fetchData() {
         HttpUtils.get('/idCard/selectIdCardList', {}, data => {
             this.setState({certificationList: data.data});
@@ -72,7 +82,7 @@ export default class SelectCertification extends Component<Props> {
 
     selectCertification(certification) {
         const {navigate, goBack, state} = this.props.navigation;
-        state.params.addressCallback(certification);
+        state.params.callback(certification);
         goBack();
     }
 

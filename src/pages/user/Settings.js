@@ -14,6 +14,7 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import HttpUtils from "../../utils/http";
 
 type Props = {};
 
@@ -51,7 +52,8 @@ export default class Settings extends Component<Props> {
                     </View>
 
 
-                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {this.updatePwd()
+                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
+                        this.updatePwd()
                     }}>
                         <View style={styles.cellView}>
                             <Text style={styles.leftCell}>修改密码</Text>
@@ -60,8 +62,7 @@ export default class Settings extends Component<Props> {
                             </View>
                         </View>
                     </TouchableHighlight>
-                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
-                    }}>
+                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.shopCertificationDetail()}>
                         <View style={styles.cellView}>
                             <Text style={styles.leftCell}>资质信息</Text>
                             <View style={styles.rightCell}>
@@ -104,22 +105,35 @@ export default class Settings extends Component<Props> {
     aboutus() {//关于我们
         this.props.navigation.navigate('Aboutus');
     }
-    updatePwd(){//修改密码
-        this.props.navigation.navigate('Security');
+
+    updatePwd() {//修改密码
+        this.props.navigation.navigate('SecurityCheck');
     }
+
+    async shopCertificationDetail() {//店铺详情
+        let userInfo = await HttpUtils.getUserInfo();
+        let auth = userInfo.authentication;
+        if (auth === 0 || auth === -1) {
+            this.props.navigation.navigate('ShopCertification');
+        } else {
+            this.props.navigation.navigate('ShopCertificationDetail');
+        }
+
+    }
+
     logout() {
         Alert.alert(null, '是否确定退出登录？',
             [
                 {
                     text: "确定", onPress: () => {
-                    storage.remove({key: 'loginState'});
-                    storage.remove({key: 'userInfo'});
-                    jumpAndClear(this.props.navigation, 'Login')
-                }
+                        storage.remove({key: 'loginState'});
+                        storage.remove({key: 'userInfo'});
+                        jumpAndClear(this.props.navigation, 'Login')
+                    }
                 },
                 {
                     text: "取消", onPress: () => {
-                }
+                    }
                 },
             ],
             {cancelable: false}

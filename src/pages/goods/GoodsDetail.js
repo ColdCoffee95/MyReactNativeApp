@@ -691,7 +691,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: screenWidth,
         height: 40,
-        backgroundColor: '#000',
+        backgroundColor: whiteColor,
         bottom: 0,
         left: 0,
         right: 0,
