@@ -266,7 +266,7 @@ export default class ConfirmOrder extends Component<Props> {
                 params.orderDetail = {
                     address: address.totalAddress,
                     contacts: address.contacts,
-                    mobile: address.contacts,
+                    mobile: address.mobile,
                 };
                 break;
             case 2:
@@ -276,7 +276,7 @@ export default class ConfirmOrder extends Component<Props> {
                 }
                 params.orderDetail = {
                     address: address.totalAddress,
-                    mobile: address.contacts,
+                    mobile: address.mobile,
                     contacts: certification.contacts,
                     idCard: certification.idCard,
                     idCardBgImg: certification.idCardBgImg,
@@ -290,7 +290,7 @@ export default class ConfirmOrder extends Component<Props> {
                 }
                 params.orderDetail = {
                     address: address.totalAddress,
-                    mobile: address.contacts,
+                    mobile: address.mobile,
                     contacts: certification.contacts,
                     idCard: certification.idCard,
                     idCardBgImg: certification.idCardBgImg,

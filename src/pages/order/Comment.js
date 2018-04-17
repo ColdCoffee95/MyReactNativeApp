@@ -20,8 +20,10 @@ import {
 } from 'react-native';
 import UploadMultiImg from '../../components/common/UploadMultiImg'
 import ActiveButton from '../../components/common/ActiveButton'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import HttpUtils from "../../utils/http";
+import StarRating from 'react-native-star-rating'
 
 type Props = {};
 
@@ -94,6 +96,7 @@ export default class Feedback extends Component<Props> {
                             onPress={() => this.setState({userStar: 1})}
                             underlayColor='#fff'>
                             <View style={styles.singleTab}>
+                                <Icon name="emoticon-happy" size={30} color={userStar === 1 ?activeColor:'black'}/>
                                 <Text
                                     style={userStar === 1 ? styles.activeTab : styles.negativeTab}>好评</Text>
                             </View>
@@ -102,6 +105,7 @@ export default class Feedback extends Component<Props> {
                             onPress={() => this.setState({userStar: 2})}
                             underlayColor='#fff'>
                             <View style={styles.singleTab}>
+                                <Icon name='emoticon-neutral' size={30} color={userStar === 2 ?activeColor:'black'}></Icon>
                                 <Text
                                     style={userStar === 2 ? styles.activeTab : styles.negativeTab}>一般</Text>
                             </View>
@@ -110,6 +114,7 @@ export default class Feedback extends Component<Props> {
                             onPress={() => this.setState({userStar: 3})}
                             underlayColor='#fff'>
                             <View style={styles.singleTab}>
+                                <Icon name='emoticon-sad' size={30} color={userStar === 3 ?activeColor:'black'}></Icon>
                                 <Text
                                     style={userStar === 3 ? styles.activeTab : styles.negativeTab}>差评</Text>
                             </View>
@@ -127,7 +132,42 @@ export default class Feedback extends Component<Props> {
                             </TextInput>
                         </View>
                     </View>
-
+                    <View style={styles.cellView}>
+                        <Text style={styles.leftCell}>评分项</Text>
+                    </View>
+                    <View style={styles.starView}>
+                        <Text>商品质量</Text>
+                        <StarRating
+                            disabled={false}
+                            maxStars={5}
+                            starSize={30}
+                            fullStarColor={activeColor}
+                            rating={this.state.goodsStar}
+                            selectedStar={(rating) => this.setState({goodsStar: rating})}
+                        />
+                    </View>
+                    <View style={styles.starView}>
+                        <Text>配送速度</Text>
+                        <StarRating
+                            disabled={false}
+                            maxStars={5}
+                            starSize={30}
+                            fullStarColor={activeColor}
+                            rating={this.state.revNice}
+                            selectedStar={(rating) => this.setState({revNice: rating})}
+                        />
+                    </View>
+                    <View style={styles.starView}>
+                        <Text>服务态度</Text>
+                        <StarRating
+                            disabled={false}
+                            maxStars={5}
+                            starSize={30}
+                            fullStarColor={activeColor}
+                            rating={this.state.logNice}
+                            selectedStar={(rating) => this.setState({logNice: rating})}
+                        />
+                    </View>
                     <Toast ref='toast' position='center'></Toast>
                 </ScrollView>
             );
@@ -178,6 +218,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: whiteColor,
     },
+    starView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: screenWidth,
+        padding: 10,
+        borderBottomColor: borderColor,
+        borderBottomWidth: 1
+    },
     btnContainer: {
         alignItems: 'center',
         width: screenWidth,
@@ -191,6 +240,19 @@ const styles = StyleSheet.create({
         backgroundColor: whiteColor,
         borderBottomWidth: 1,
         borderBottomColor: borderColor
+    },
+    cellView: {
+        width: screenWidth,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: whiteColor,
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: borderColor
+    },
+    leftCell: {
+        justifyContent: 'center'
     },
     singleTab: {
         width: screenWidth / 3,
