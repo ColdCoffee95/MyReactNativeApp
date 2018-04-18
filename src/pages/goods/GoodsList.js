@@ -15,7 +15,7 @@ import {
     TextInput,
     FlatList,
     Image,
-    View
+    View,
 } from 'react-native';
 import Drawer from "react-native-drawer";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -45,11 +45,43 @@ export default class GoodsList extends Component<Props> {
     }
 
     componentDidMount() {
+        this.props.navigation.setParams({
+            changeKeyword: this.changeKeyword.bind(this),
+            search: this.search.bind(this)
+        });
         this.state.firstCatId = this.props.navigation.state.params.id || '';
         this.state.secondCatIds = this.props.navigation.state.params.secondIds || [];
         this.state.brandIds = this.props.navigation.state.params.brandIds || [];
+        this.state.keyword = this.props.navigation.state.params.keyword || '';
         this.fetchData();
     }
+
+    static navigationOptions = ({navigation, screenProps}) => ({
+        headerTitle: (
+            <View style={styles.searchView}>
+                <Icon name='search' size={14} color={borderColor}></Icon>
+                <TextInput
+                    style={styles.keyword}
+                    // autoFocus={true}
+                    placeholder="搜索"
+                    // onEndEditing={(text) => {
+                    //     navigation.setParams({keyword: text})
+                    // }}
+                    onChangeText={(text) => navigation.state.params.changeKeyword(text)}
+                    underlineColorAndroid='transparent'
+                />
+
+            </View>
+        ),
+        headerRight: (
+            <TouchableOpacity onPress={() => navigation.state.params.search()}>
+                <View style={styles.rightSearch}>
+                    <Text>搜索</Text>
+                </View>
+            </TouchableOpacity>
+        )
+
+    });
 
     render() {
         let goodsList = null;
@@ -235,6 +267,14 @@ export default class GoodsList extends Component<Props> {
 
     }
 
+    changeKeyword(text) {
+        this.state.keyword = text;
+    }
+
+    search() {
+        this.fetchData();
+    }
+
     changeTab(index) {
         if (this.state.type === index) {
             return;
@@ -383,5 +423,25 @@ const styles = StyleSheet.create({
     },
     goodsTrade: {
         color: '#c685ff'
+    },
+    searchView: {
+        borderColor: borderColor,
+        borderWidth: 1,
+        width: screenWidth * 0.65,
+        height: 30,
+        borderRadius: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 10,
+    },
+    keyword: {
+        width: screenWidth * 0.65 - 40,
+        height: 50,
+        paddingLeft: 10,
+        fontSize: 14
+    },
+    rightSearch: {
+        width: screenWidth * 0.15,
+        alignItems: 'center',
     }
 });

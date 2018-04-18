@@ -18,6 +18,7 @@ import {
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon1 from 'react-native-vector-icons/Foundation';
 import UploadOneImg from '../components/common/UploadOneImg'
 import HttpUtils from "../utils/http";
 // import Loading from 'react-native-spinkit';
@@ -176,6 +177,22 @@ export default class Mine extends Component<Props> {
 
                     <View style={styles.userView}>
                         <Text style={styles.memberName}>{this.state.userInfo.memberName}</Text>
+                        <View style={styles.collectView}>
+                            <TouchableOpacity onPress={() => this.toCollect()}>
+                                <View style={styles.childView}>
+                                    <Icon1 name='heart' size={30} color={activeColor}></Icon1>
+                                    <Text>收藏</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.toFootPrint()}>
+                                <View style={styles.childView}>
+                                    <Icon1 name='foot' size={30} color={activeColor}></Icon1>
+                                    <Text>足迹</Text>
+                                </View>
+                            </TouchableOpacity>
+
+
+                        </View>
                     </View>
                     <View style={styles.avatarView}>
                         {
@@ -228,6 +245,14 @@ export default class Mine extends Component<Props> {
     _onRefresh() {
         this.setState({isRefreshing: true});
         this.getUserInfo();
+    }
+
+    toCollect() {
+        this.props.navigation.navigate('Collect');
+    }
+
+    toFootPrint() {
+        this.props.navigation.navigate('FootPrint');
     }
 
     async updateAvatar(img) {
@@ -299,13 +324,22 @@ const styles = StyleSheet.create({
     mineHeader: {},
     mineHeaderActive: {
         width: screenWidth,
-        height: 100,
+        height: 90,
         backgroundColor: activeColor,
     },
     mineHeaderBackground: {
         width: screenWidth,
-        height: 100,
+        height: 90,
         backgroundColor: '#f2f2f2',
+    },
+    collectView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 0.3 * screenWidth,
+        marginTop: 20
+    },
+    childView: {
+        alignItems: 'center'
     },
     avatarView: {
         position: 'absolute',
@@ -328,16 +362,18 @@ const styles = StyleSheet.create({
     },
     userView: {
         position: 'absolute',
+        alignItems: 'center',
         top: 40,
         margin: 10,
         borderRadius: 5,
-        height: 140,
+        height: 120,
         width: screenWidth - 20,
         backgroundColor: whiteColor
     },
     memberName: {
         marginLeft: 90,
-        marginTop: 10
+        marginTop: 10,
+        alignSelf: 'flex-start'
     },
     cellView: {
         width: screenWidth,

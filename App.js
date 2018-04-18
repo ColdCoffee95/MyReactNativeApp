@@ -23,7 +23,10 @@ import MilkCurrency from './src/pages/activity/MilkCurrency';
 import NewSale from './src/pages/activity/NewSale';
 
 import Hotline from './src/pages/user/Hotline';
+import Agreement from './src/pages/user/Agreement';
 import Settings from './src/pages/user/Settings';
+import Collect from './src/pages/user/Collect';
+import FootPrint from './src/pages/user/FootPrint';
 import Feedback from './src/pages/user/Feedback';
 import Aboutus from './src/pages/user/Aboutus';
 import SecurityCheck from './src/pages/user/SecurityCheck';
@@ -45,12 +48,15 @@ import AddCertification from './src/pages/certification/AddCertification';
 import SelectCertification from './src/pages/certification/SelectCertification';
 
 import ConfirmOrder from './src/pages/order/ConfirmOrder'
+import ViewLogistics from './src/pages/order/ViewLogistics'
+import DeliveryDetail from './src/pages/order/DeliveryDetail'
 import SelectPayType from './src/pages/order/SelectPayType'
 import PaySuccess from './src/pages/order/PaySuccess'
 import Order from './src/pages/order/Order'
 import OrderDetail from './src/pages/order/OrderDetail'
 import AfterSaleOrders from './src/pages/order/AfterSaleOrders'
 import AfterSaleDetail from './src/pages/order/AfterSaleDetail'
+import ApplyAfterSale from './src/pages/order/ApplyAfterSale'
 import Comment from './src/pages/order/Comment'
 
 import CouponList from './src/pages/coupon/CouponList'
@@ -99,6 +105,39 @@ export default SimpleApp = StackNavigator({
         screen: UpdatePwd,
         navigationOptions: {
             title: '修改密码',
+            headerStyle: styles.headerStyles,
+            headerTitleStyle: styles.headerTitleStyle,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerRight: <View/>
+        }
+    },
+    Agreement: {
+        screen: Agreement,
+        navigationOptions: {
+            title: '店力集盒平台服务协议',
+            headerStyle: styles.headerStyles,
+            headerTitleStyle: styles.headerTitleStyle,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerRight: <View/>
+        }
+    },
+    Collect: {
+        screen: Collect,
+        navigationOptions: {
+            title: '我的收藏',
+            headerStyle: styles.headerStyles,
+            headerTitleStyle: styles.headerTitleStyle,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerRight: <View/>
+        }
+    },
+    FootPrint: {
+        screen: FootPrint,
+        navigationOptions: {
+            title: '我的足迹',
             headerStyle: styles.headerStyles,
             headerTitleStyle: styles.headerTitleStyle,
             headerTintColor: 'black',
@@ -313,7 +352,6 @@ export default SimpleApp = StackNavigator({
             headerStyle: styles.headerStyles,
             headerTintColor: 'black',
             headerBackTitle: null,
-            headerRight: <View/>,
             headerTitleStyle: styles.headerTitleStyle,
         },
     },
@@ -387,6 +425,28 @@ export default SimpleApp = StackNavigator({
         screen: ConfirmOrder,
         navigationOptions: {
             title: '确认订单',
+            headerStyle: styles.headerStyles,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerRight: <View/>,
+            headerTitleStyle: styles.headerTitleStyle,
+        },
+    },
+    ViewLogistics: {
+        screen: ViewLogistics,
+        navigationOptions: {
+            title: '查看物流',
+            headerStyle: styles.headerStyles,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerRight: <View/>,
+            headerTitleStyle: styles.headerTitleStyle,
+        },
+    },
+    DeliveryDetail: {
+        screen: DeliveryDetail,
+        navigationOptions: {
+            title: '物流详情',
             headerStyle: styles.headerStyles,
             headerTintColor: 'black',
             headerBackTitle: null,
@@ -470,7 +530,17 @@ export default SimpleApp = StackNavigator({
             headerTitleStyle: styles.headerTitleStyle,
         },
     },
-
+    ApplyAfterSale: {
+        screen: ApplyAfterSale,
+        navigationOptions: {
+            title: '申请售后',
+            headerStyle: styles.headerStyles,
+            headerTintColor: 'black',
+            headerBackTitle: null,
+            headerRight: <View/>,
+            headerTitleStyle: styles.headerTitleStyle,
+        },
+    },
     CouponList: {
         screen: CouponList,
         navigationOptions: {

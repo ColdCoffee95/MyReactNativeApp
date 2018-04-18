@@ -185,6 +185,8 @@ export default class Feedback extends Component<Props> {
             userMessage: userMessage,
             orderId: orderId
         };
+        console.warn(params);
+        return;
         HttpUtils.post('/reviews/revgoods', params, data => {
             this.refs.toast.show('评价成功!', 300, () => {
                 const {navigate, goBack, state} = this.props.navigation;
@@ -214,7 +216,6 @@ export default class Feedback extends Component<Props> {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: 'center',
         backgroundColor: whiteColor,
     },

@@ -1,21 +1,25 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Button,
     Image,
     Text,
     TextInput,
     ActivityIndicator,
+    TouchableOpacity,
+    Alert,
     View
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import CryptoJS from 'crypto-js'
+
 type Props = {};
 
 export default class LoginScreen extends Component<Props> {
     constructor(props) {
         super(props);
-        this.state = {loginId: '15957103422', pwd: 'a123456', havaToken: true}
+        this.state = {loginId: '15957103422', pwd: 'a123456', havaToken: true, agree: true}
     }
 
     componentDidMount() {
@@ -56,43 +60,72 @@ export default class LoginScreen extends Component<Props> {
                         style={styles.logo}
                     />
                     <Text style={styles.version}>
-                        {global.version}
+                        {version}
                     </Text>
-                    <TextInput
-                        style={styles.phone}
-                        // autoFocus={true}
-                        placeholder="请输入手机号"
-                        onChangeText={(text) => this.setState({loginId: text})}
-                        keyboardType={'numeric'}
-                        maxLength={11}
-                        underlineColorAndroid='transparent'
-                    />
-                    <TextInput
-                        style={styles.password}
-                        placeholder="请输入密码"
-                        secureTextEntry={true}
-                        onChangeText={(text) => this.setState({pwd: text})}
-                        underlineColorAndroid='transparent'
-                    />
-                    <Button
-                        onPress={() => this.login()}
-                        title="登录"
-                        color="#ff6a68"
-                    />
-                    <View style={styles.registerForgetView}>
-                        <Button
-                            onPress={() => this.props.navigation.navigate('Register')}
-                            title="申请入驻"
-                            color="#ff6a68"
-                        />
-                        <Button
-                            onPress={() => this.props.navigation.navigate('ForgetPwd')}
-                            title="忘记密码"
-                            color="#ff6a68"
-                        />
+                    <View style={styles.inputView}>
+                        <View style={styles.userNameView}>
+                            <Icon name='user' size={20} color={activeColor}></Icon>
+                            <TextInput
+                                style={styles.phone}
+                                // autoFocus={true}
+                                placeholder="请输入手机号"
+                                onChangeText={(text) => this.setState({loginId: text})}
+                                keyboardType={'numeric'}
+                                maxLength={11}
+                                underlineColorAndroid='transparent'
+                            />
+                        </View>
+                        <View style={styles.passwordView}>
+                            <Icon name='lock' size={20} color={activeColor}></Icon>
+                            <TextInput
+                                style={styles.password}
+                                placeholder="请输入密码"
+                                secureTextEntry={true}
+                                onChangeText={(text) => this.setState({pwd: text})}
+                                underlineColorAndroid='transparent'
+                            />
+                        </View>
                     </View>
-
-
+                    <View style={styles.agreeForgetView}>
+                        <View style={styles.agreeView}>
+                            <TouchableOpacity
+                                onPress={() => this.setState({agree: !this.state.agree})}>
+                                <View style={styles.defaultView}>
+                                    {
+                                        !this.state.agree ?
+                                            (<Icon2 name="checkbox-blank-circle-outline" size={12}
+                                                    color={activeColor}></Icon2>) :
+                                            (<Icon2 name="checkbox-marked-circle" size={12}
+                                                    color={activeColor}></Icon2>)
+                                    }
+                                </View>
+                            </TouchableOpacity>
+                            <Text style={{color: '#aeaeae', marginLeft: 5, fontSize: 10}}>我已经阅读并理解和同意</Text>
+                            <TouchableOpacity onPress={() => this.agreement()}>
+                                <View>
+                                    <Text style={{color: activeColor, fontSize: 10}}>《店力集盒平台服务协议》</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}>
+                            <View>
+                                <Text>忘记密码?</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity onPress={() => this.login()}>
+                        <View style={styles.loginBtn}>
+                            <Text style={styles.loginBtnText}>登录</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.register()}>
+                        <View style={styles.registerBtn}>
+                            <Text style={styles.registerBtnText}>申请入驻</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={styles.bottomView}>
+                        <Text style={{color: '#bebebe', fontSize: 12}}>Designed by MetChange</Text>
+                    </View>
                 </View>
             );
         } else {
@@ -100,7 +133,19 @@ export default class LoginScreen extends Component<Props> {
         }
     }
 
+    register() {
+        if (!this.state.agree) {
+            Alert.alert(null, '请先阅读并理解和同意平台协议再注册！');
+            return;
+        }
+        this.props.navigation.navigate('Register')
+    }
+
     login() {
+        if (!this.state.agree) {
+            Alert.alert(null, '请先阅读并理解和同意平台协议再登录！');
+            return;
+        }
         let params = {
             loginId: this.state.loginId,
             pwd: CryptoJS.MD5(this.state.pwd).toString()
@@ -124,6 +169,10 @@ export default class LoginScreen extends Component<Props> {
         })
     }
 
+    agreement() {
+        this.props.navigation.navigate('Agreement');
+    }
+
     toMain() {
         jumpAndClear(this.props.navigation, 'Main')
     }
@@ -132,7 +181,74 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: whiteColor,
+    },
+    bottomView: {
+        position: 'absolute',
+        bottom: 20,
+
+    },
+    agreeForgetView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+        width: screenWidth * 0.85,
+    },
+    agreeView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        fontSize: 10
+    },
+    registerBtn: {
+        width: screenWidth * 0.85,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: whiteColor,
+        borderWidth: 2,
+        borderColor: '#ececec',
+        borderRadius: 50,
+        marginTop: 10,
+    },
+    registerBtnText: {
+        fontSize: 16,
+        color: 'black'
+    },
+    loginBtn: {
+        width: screenWidth * 0.85,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: activeColor,
+        borderRadius: 50,
+        marginTop: 10,
+    },
+    loginBtnText: {
+        fontSize: 16,
+        color: whiteColor
+    },
+    userNameView: {
+        height: 50,
+        width: screenWidth * 0.85,
+        alignItems: 'center',
+        borderBottomColor: borderColor,
+        borderBottomWidth: 2,
+        flexDirection: 'row',
+        paddingLeft: 20
+    },
+    passwordView: {
+        height: 50,
+        width: screenWidth * 0.85,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 20
+    },
+    inputView: {
+        width: screenWidth * 0.85,
+        borderColor: borderColor,
+        borderWidth: 2,
+        borderRadius: 5,
+        marginTop: 10
     },
     version: {
         marginTop: 20
@@ -156,19 +272,13 @@ const styles = StyleSheet.create({
     },
     phone: {
         width: 200,
-        height: 40,
-        marginTop: 20,
-        borderWidth: 1,
+        height: 50,
         paddingLeft: 10,
-        borderColor: '#ededed'
+        fontSize: 14
     },
     password: {
         width: 200,
-        height: 40,
-        marginTop: 10,
-        marginBottom: 10,
-        borderWidth: 1,
+        height: 50,
         paddingLeft: 10,
-        borderColor: '#ededed'
     },
 });

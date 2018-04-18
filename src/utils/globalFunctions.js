@@ -93,3 +93,79 @@ global.dateFormat = function (timeStamp) {//1是需要时分秒，2只需要年�
     return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
 
 }
+global.getCollectArr = function () {
+    return new Promise((resolve, reject) => {
+        storage.load({key: 'collectGoods'}).then(res => {
+            resolve(res)
+        }).catch(e => {
+            if (e.name == 'NotFoundError') {
+                resolve([])
+            }
+        })
+    });
+}
+global.getFootPrintArr = function () {
+    return new Promise((resolve, reject) => {
+        storage.load({key: 'footPrintGoods'}).then(res => {
+            resolve(res)
+        }).catch(e => {
+            if (e.name == 'NotFoundError') {
+                resolve([])
+            }
+        })
+    });
+}
+global.addToCollect = async function (obj) {
+    let date = new Date();
+    obj.addTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDay();
+    let collectArr = await getCollectArr();
+    let collectGoods = collectArr.findIndex(value => value.id === obj.id);
+    let isExists = false;
+    if(collectGoods != -1){//已存在收藏
+        collectArr.splice(collectGoods, 1);
+    }else{
+        collectArr.unshift(obj);
+        isExists = true;
+    }
+    storage.save({
+        key: 'collectGoods',
+        data: collectArr
+    });
+    return new Promise((resolve,reject) => {
+        resolve(isExists)
+    })
+
+
+}
+global.isCollect = async function (id) {
+    let collectArr = await getCollectArr();
+    return new Promise((resolve,reject) => {
+        let collectGoods = collectArr.findIndex(value => value.id === id);
+        if(collectGoods != -1){//已存在收藏
+            resolve(true);
+        }
+        resolve(false);
+    })
+
+}
+global.addToFootPrint = async function (obj) {
+
+    let date = new Date();
+    obj.addTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDay();
+    let footPrintArr = await getFootPrintArr();
+    let footPrintGoods = footPrintArr.findIndex(value => value.id === obj.id);
+    if(footPrintGoods != -1){//已存在足迹
+        footPrintArr.splice(footPrintGoods, 1);
+        footPrintArr.unshift(obj);
+    }else{
+        footPrintArr.unshift(obj);
+        if (footPrintArr.length >= 11) {
+            footPrintArr.pop();
+        }
+    }
+    storage.save({
+        key: 'footPrintGoods',
+        data: footPrintArr
+    });
+
+}

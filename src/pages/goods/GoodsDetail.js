@@ -17,6 +17,7 @@ import ActiveButton from '../../components/common/ActiveButton';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon1 from 'react-native-vector-icons/Foundation';
 import Counter from '../../components/common/Counter';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import Toast, {DURATION} from 'react-native-easy-toast';
@@ -33,7 +34,8 @@ export default class GoodsDetail extends Component<Props> {
             popoverVisible: false,
             buyNum: 0,
             currentSku: {},
-            buyType: 1//1是加入进货单，2是立即抢购
+            buyType: 1,//1是加入进货单，2是立即抢购
+            goodsIsCollect: false
         }
     }
 
@@ -47,12 +49,12 @@ export default class GoodsDetail extends Component<Props> {
             <View style={styles.headerRightView}>
                 <TouchableOpacity style={{marginRight: 10}} onPress={() => navigation.state.params.collect()}>
                     <View>
-                        <Icon name='heart' size={20} color='black'></Icon>
+                        <Icon1 name='heart' size={30} color={navigation.state.params.goodsIsCollect ? activeColor : borderColor}></Icon1>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={{marginRight: 10}} onPress={() => navigation.state.params.toCart()}>
                     <View>
-                        <Icon name='shopping-cart' size={20} color='black'></Icon>
+                        <Icon1 name='shopping-cart' size={30} color='#444'></Icon1>
                     </View>
                 </TouchableOpacity>
             </View>)
@@ -273,8 +275,11 @@ export default class GoodsDetail extends Component<Props> {
         this.props.navigation.navigate('Cart', {type: this.state.goodsDetail.tradeType});
     }
 
-    collect() {//收藏
-        console.warn(this.state.goodsDetail.nowSku)
+    async collect() {//收藏
+        let goodsIsCollect = await addToCollect(this.state.goodsDetail.nowSku);
+        this.props.navigation.setParams({
+            goodsIsCollect: goodsIsCollect,
+        });
     }
 
     changeSpec(specName, specValue) {
@@ -398,49 +403,63 @@ export default class GoodsDetail extends Component<Props> {
         return color;
     }
 
-    fetchData(id) {
-        HttpUtils.post('/goods/allGoodsInfo', {skuId: id}, data => {
-            let detail = data.data;
-            detail.skus = JSON.parse(detail.skus);
-            detail.skus.map(value => {
-                value.sku = JSON.parse(value.sku);
-                if (value.id === id) {
-                    detail.nowSku = value
-                }
-            });
-            detail.spec = JSON.parse(detail.spec);
-            detail.goodsExtend.annex = JSON.parse(detail.goodsExtend.annex);
-
-            detail.goodsExtend.imgs = JSON.parse(detail.goodsExtend.imgs);
-            console.warn(detail);
-            console.warn(detail.goodsExtend.imgs);
-            detail.nowImgs = [];
-            detail.nowImgs.push({url: detail.nowSku.img});
-            detail.goodsExtend.imgs.map(value => {
-                detail.nowImgs.push({url: value.url})
-            });
-            detail.totalSkus = [];//所有可用sku
-            let specArr = [];
-            detail.skus.map((value, i) => {
-                detail.totalSkus.push(value.sku);
-                if (i == 0) {
-                    for (let j in detail.totalSkus[0]) {
-                        specArr.push({specName: j, specValue: []});
-                    }
-                }
-            });
-            specArr.map(value => {
-                detail.totalSkus.map(val => {
-                    if (value.specValue.indexOf(val[value.specName]) === -1) {
-                        value.specValue.push(val[value.specName]);
+    async fetchData(id) {
+        let detail = await this.getGoodsInfo(id);
+        let goodsIsCollect = await isCollect(id);
+        this.props.navigation.setParams({
+            goodsIsCollect: goodsIsCollect,
+        });
+        addToFootPrint(detail.nowSku);
+        this.setState({isLoading: false});
+    }
+    getGoodsInfo(id){
+        return new Promise((resolve,reject) => {
+            HttpUtils.post('/goods/allGoodsInfo', {skuId: id}, data => {
+                let detail = data.data;
+                detail.skus = JSON.parse(detail.skus);
+                detail.skus.map(value => {
+                    value.sku = JSON.parse(value.sku);
+                    if (value.id === id) {
+                        detail.nowSku = value
                     }
                 });
-            });
-            detail.spec = specArr;
-            this.state.goodsDetail = detail;
-            this.state.currentSku = JSON.stringify(detail.nowSku.sku);
-            console.warn('detail', this.state.goodsDetail)
-            this.setState({isLoading: false})
+                detail.spec = JSON.parse(detail.spec);
+                detail.goodsExtend.annex = JSON.parse(detail.goodsExtend.annex);
+
+                detail.goodsExtend.imgs = JSON.parse(detail.goodsExtend.imgs);
+                console.warn(detail);
+                console.warn(detail.goodsExtend.imgs);
+                detail.nowImgs = [];
+                detail.nowImgs.push({url: detail.nowSku.img});
+                detail.goodsExtend.imgs.map(value => {
+                    detail.nowImgs.push({url: value.url})
+                });
+                detail.totalSkus = [];//所有可用sku
+                let specArr = [];
+                detail.skus.map((value, i) => {
+                    detail.totalSkus.push(value.sku);
+                    if (i == 0) {
+                        for (let j in detail.totalSkus[0]) {
+                            specArr.push({specName: j, specValue: []});
+                        }
+                    }
+                });
+                specArr.map(value => {
+                    detail.totalSkus.map(val => {
+                        if (value.specValue.indexOf(val[value.specName]) === -1) {
+                            value.specValue.push(val[value.specName]);
+                        }
+                    });
+                });
+                detail.spec = specArr;
+                this.state.goodsDetail = detail;
+                this.state.currentSku = JSON.stringify(detail.nowSku.sku);
+
+
+                resolve(detail)
+
+
+            })
         })
     }
 
@@ -459,6 +478,11 @@ const styles = StyleSheet.create({
     },
     headerRightView: {
         flexDirection: 'row'
+    },
+    activeIcon: {},
+    inactiveIcon: {
+        borderWidth: 1,
+        borderColor: 'black'
     },
     loadingContainer: {
         flex: 1,

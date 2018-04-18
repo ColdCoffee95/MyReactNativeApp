@@ -70,6 +70,10 @@ global.orderStatusList = [
     {
         id: 6,
         name: "已关闭"
+    },
+    {
+        id: 7,
+        name: "退款中"
     }
 ];
 global.authList = [

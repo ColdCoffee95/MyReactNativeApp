@@ -280,7 +280,6 @@ export default class Order extends Component<Props> {
             orderStatus: this.state.orderType
         };
         HttpUtils.post('/order/viewOrderList', params, data => {
-            console.warn(data.data.isLastPage)
             if (data.data.isLastPage) {
                 this.setState({
                     allLoadCompleted: true,
@@ -454,8 +453,11 @@ const styles = StyleSheet.create({
         backgroundColor: whiteColor,
         marginRight: 10,
         alignItems: 'center',
-        padding: 10,
-        borderRadius: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 6,
+        paddingBottom: 6,
+        borderRadius: 6,
         borderWidth: 1,
         borderColor: borderColor
     },
@@ -463,8 +465,11 @@ const styles = StyleSheet.create({
         backgroundColor: whiteColor,
         marginRight: 10,
         alignItems: 'center',
-        padding: 10,
-        borderRadius: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 6,
+        paddingBottom: 6,
+        borderRadius: 6,
         borderWidth: 1,
         borderColor: activeColor
     }

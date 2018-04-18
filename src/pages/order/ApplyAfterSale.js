@@ -21,35 +21,35 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
-import selectPayTypeCountdown from '../../mobx/selectPayTypeCountdown'
+import UploadMultiImg from '../../components/common/UploadMultiImg';
+import Toast, {DURATION} from 'react-native-easy-toast';
 
 type Props = {};
-export default class OrderDetail extends Component<Props> {
+export default class ApplyAfterSale extends Component<Props> {
 
     constructor(props) {
         super(props);
         this.state = {
             isLoading: true,
-            orderAftersalesId: '',
-            orderInfo: {}
-
+            orderInfo: {},
+            comment: '',
+            orderAftersalesVoucherList: []
         }
     }
 
     componentDidMount() {
-        this.state.orderAftersalesId = this.props.navigation.state.params.id;
-        this.fetchData()
+        this.setState({orderInfo: this.props.navigation.state.params.orderInfo, isLoading: false});
     }
 
     render() {
         if (this.state.isLoading) {
             return <View style={styles.loadingContainer}>
-                <ActivityIndicator></ActivityIndicator>
+                <ActivityIndicator/>
             </View>
         } else {
-            let orderInfo = this.state.orderInfo;
+            const {orderInfo, orderTypes} = this.state;
             let goodsList = [];
-            orderInfo.order.orderItemList.map(value => {
+            orderInfo.orderItemList.map(value => {
                 goodsList.push(
                     <View style={styles.goodsView}>
                         <View style={styles.goodsImgView}>
@@ -62,6 +62,10 @@ export default class OrderDetail extends Component<Props> {
                         <View style={styles.goodsInfoView}>
                             <Text style={styles.goodsTitle}
                                   numberOfLines={2}>{value.goodsTitle}</Text>
+                            <View>
+                                <Text style={styles.sku}>{value.sku}</Text>
+                            </View>
+
                             <View style={styles.priceNumberView}>
                                 <Text style={styles.priceText}>¥{value.putPrice}</Text>
                                 <Text>×{value.number}</Text>
@@ -70,64 +74,60 @@ export default class OrderDetail extends Component<Props> {
                     </View>
                 )
             });
-            let typeName = afterTypes.find(value => orderInfo.orderAftersalesStatus == value.id).name;
-            let voucherImgs = [];
-            // imgs = [
-            //     {url: 'http://qiniumanagement.metchange.com/FivljDyn4-y37EtXgxolxcDzblJC'},
-            //     {url: 'http://qiniumanagement.metchange.com/FivljDyn4-y37EtXgxolxcDzblJC'},
-            //     {url: 'http://qiniumanagement.metchange.com/FivljDyn4-y37EtXgxolxcDzblJC'},
-            //     {url: 'http://qiniumanagement.metchange.com/FivljDyn4-y37EtXgxolxcDzblJC'},
-            //     {url: 'http://qiniumanagement.metchange.com/FivljDyn4-y37EtXgxolxcDzblJC'}
-            // ]
-
-            orderInfo.orderAftersalesVoucherList.map(value => {
-                voucherImgs.push(
-                    <View style={styles.imgWrapper}>
-                        <Image
-                            resizeMode='contain'
-                            style={styles.img}
-                            source={{uri: value.url}}
-                        />
-                    </View>
-                )
-            });
             return <View style={styles.container}>
-                <View style={styles.itemView}>
-                    <Text>退货商品</Text>
-                </View>
-                <View style={styles.goodsWrapper}>
-                    {goodsList}
-                </View>
-                <View style={styles.itemView}>
-                    <Text>申请原因:{orderInfo.comment}</Text>
-                </View>
-                {orderInfo.orderAftersalesVoucherList.length > 0 && <View style={styles.itemView}>
-                    <Text>凭证</Text>
-                    <View style={styles.imgView}>
-                        {voucherImgs}
+                <ScrollView contentContainerStyle={styles.scrollView}>
+                    <View style={styles.itemView}>
+                        <Text>退货商品</Text>
                     </View>
+                    <View style={styles.goodsWrapper}>
+                        {goodsList}
+                    </View>
+                    <View style={styles.itemView}>
+                        <Text>申请原因</Text>
+                    </View>
+                    <View style={styles.sugMessageView}>
+                        <TextInput
+                            style={styles.textInput}
+                            onChangeText={(text) => this.setState({comment: text})}
+                            maxLength={200}
+                            multiline={true}
+                            underlineColorAndroid='transparent'
+                            placeholder='请输入申请原因(200字以内)'>
+                        </TextInput>
+                    </View>
+                    <View style={styles.itemView}>
+                        <Text>上传凭证</Text>
 
-                </View>
-                }
+                    </View>
+                    <UploadMultiImg
+                        onChange={(imgs) => this.setState({orderAftersalesVoucherList: imgs})}>
+                    </UploadMultiImg>
+                </ScrollView>
 
-                <View style={styles.itemView}>
-                    <Text>售后状态:{typeName}</Text>
+                <View style={styles.bottomBtnView}>
+                    <ActiveButton clickBtn={() => this.submit()} text='提交' style={styles.activeButton}></ActiveButton>
                 </View>
+
+                <Toast ref='toast' position='center'></Toast>
             </View>
         }
 
     }
 
 
-    fetchData() {
+    submit() {
+        const {orderInfo, comment, orderAftersalesVoucherList} = this.state;
         let params = {
-            orderAftersalesId: this.state.orderAftersalesId
+            orderId: orderInfo.orderId,
+            goodsInfo: orderInfo.orderItemList,
+            comment: comment,
+            orderAftersalesVoucherList: orderAftersalesVoucherList
         };
-        HttpUtils.get('/order/selectOrderAftersalesById', params, data => {
-            console.warn(data.data)
-            this.setState({
-                orderInfo: data.data,
-                isLoading: false,
+        HttpUtils.post('/order/createOrderAftersales', params, data => {
+            this.refs.toast.show('申请成功，请等待处理', 500, () => {
+                const {navigate, goBack, state} = this.props.navigation;
+                state.params.goBack();
+                goBack();
             });
         })
     }
@@ -146,6 +146,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    scrollView: {
+        paddingBottom: 50
+    },
+    textInput: {
+        width: screenWidth * 0.9,
+        lineHeight: 20,
+        padding: 5,
+    },
     goodsWrapper: {
         backgroundColor: '#f8f8f8',
     },
@@ -157,6 +165,15 @@ const styles = StyleSheet.create({
         marginTop: 10,
         paddingTop: 10,
         paddingBottom: 10
+    },
+    sugMessageView: {
+        alignItems: 'center',
+        width: screenWidth - 20,
+        height: 100,
+        borderWidth: 1,
+        borderColor: '#e9e9e9',
+        marginLeft: 10,
+        marginRight: 10,
     },
     goodsImgView: {
         width: screenWidth * 0.25,
@@ -200,5 +217,15 @@ const styles = StyleSheet.create({
     },
     imgWrapper: {
         marginLeft: 10,
-    }
+    },
+    bottomBtnView: {
+        position: 'absolute',
+        bottom: 0
+    },
+    activeButton: {
+        backgroundColor: activeColor,
+        alignItems: 'center',
+        width: screenWidth,
+        padding: 10,
+    },
 });

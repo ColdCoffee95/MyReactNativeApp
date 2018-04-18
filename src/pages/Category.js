@@ -12,8 +12,11 @@ import {
     ScrollView,
     TouchableHighlight,
     View,
-    Text
+    Text,
+    TextInput,
+    TouchableOpacity
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type Props = {};
 export default class Category extends Component<Props> {
@@ -24,13 +27,45 @@ export default class Category extends Component<Props> {
             leftLoading: true,
             rightLoading: true,
             currentLeftId: '',//当前左边选中的id
+            keyword: ''
 
         }
     }
 
     componentDidMount() {
+        this.props.navigation.setParams({
+            changeKeyword: this.changeKeyword.bind(this),
+            search: this.search.bind(this)
+        });
         this.getFirstAllCategories()
     }
+
+    static navigationOptions = ({navigation, screenProps}) => ({
+        headerTitle: (
+            <View style={styles.searchView}>
+                <Icon name='search' size={14} color={borderColor}></Icon>
+                <TextInput
+                    style={styles.keyword}
+                    // autoFocus={true}
+                    placeholder="搜索"
+                    // onEndEditing={(text) => {
+                    //     navigation.setParams({keyword: text})
+                    // }}
+                    onChangeText={(text) => navigation.state.params.changeKeyword(text)}
+                    underlineColorAndroid='transparent'
+                />
+
+            </View>
+        ),
+        headerRight: (
+            <TouchableOpacity onPress={() => navigation.state.params.search()}>
+                <View style={styles.rightSearch}>
+                    <Text>搜索</Text>
+                </View>
+            </TouchableOpacity>
+        )
+
+    });
 
     render() {
         let catList = this.state.catList;
@@ -139,6 +174,16 @@ export default class Category extends Component<Props> {
         this.props.navigation.navigate('GoodsList', {id: parentId, secondIds: [id]});
     }
 
+    changeKeyword(text) {
+        this.state.keyword = text;
+    }
+
+    search() {
+        if (this.state.keyword) {
+            this.props.navigation.navigate('GoodsList', {keyword: this.state.keyword})
+        }
+    }
+
     getSecondCategories(catId) {//获取二级分类
         this.setState({
             currentLeftId: catId,
@@ -219,6 +264,26 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: '#b0b0b0',
         fontSize: 12
+    },
+    searchView: {
+        borderColor: borderColor,
+        borderWidth: 1,
+        width: screenWidth * 0.7,
+        height: 30,
+        borderRadius: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 10,
+    },
+    keyword: {
+        width: screenWidth * 0.7 - 40,
+        height: 50,
+        paddingLeft: 10,
+        fontSize: 14
+    },
+    rightSearch: {
+        width: screenWidth * 0.15,
+        alignItems: 'center',
     }
 
 });
