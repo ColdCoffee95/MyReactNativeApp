@@ -8,13 +8,12 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    ActivityIndicator,
     TouchableHighlight,
     Alert,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import HttpUtils from "../../utils/http";
+import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 
@@ -34,7 +33,7 @@ export default class Settings extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <ActivityIndicator/>;
+            return <LoadingView/>
         } else {
             return (
                 <View style={styles.container}>
@@ -157,7 +156,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: whiteColor,
-        padding: 15,
+        alignItems:'center',
+        padding: 12,
         borderBottomWidth: 1,
         borderBottomColor: borderColor
     },
@@ -166,7 +166,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: whiteColor,
-        padding: 15,
+        alignItems:'center',
+        padding: 12,
         marginTop: 10,
         borderBottomWidth: 1,
         borderBottomColor: borderColor

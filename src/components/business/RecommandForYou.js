@@ -8,13 +8,12 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    ActivityIndicator,
     TouchableHighlight,
     View,
     FlatList,
     Text,
 } from 'react-native';
-
+import LoadingView from '../../components/common/LoadingView';
 export default class RecommandForYou extends Component<Props> {
     constructor(props) {
         super(props);
@@ -37,11 +36,7 @@ export default class RecommandForYou extends Component<Props> {
     render() {
         let goodsList = null;
         if (this.state.isLoading) {
-            return <View style={styles.loadingContainer}>
-                <ActivityIndicator>
-
-                </ActivityIndicator>
-            </View>
+            return <LoadingView/>
         } else {
             goodsList = <FlatList
                 data={this.state.goodsList}
@@ -91,9 +86,7 @@ export default class RecommandForYou extends Component<Props> {
 
     _renderFooter() {
         if (this.state.loadingMore) {
-            return (<View>
-                <ActivityIndicator></ActivityIndicator>
-            </View>)
+            return (<LoadingView/>)
         } else if (this.state.allLoadCompleted) {
             return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
                 <Text>没有更多商品了</Text>

@@ -9,12 +9,12 @@ import {
     StyleSheet,
     Image,
     FlatList,
-    ActivityIndicator,
     TouchableHighlight,
     Text,
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class NewSale extends Component<Props> {
@@ -39,7 +39,7 @@ export default class NewSale extends Component<Props> {
     render() {
         let goodsList = null;
         if (this.state.isLoading) {
-            goodsList = <ActivityIndicator style={styles.loadingStyle}></ActivityIndicator>
+            goodsList = <LoadingView/>
         } else {
             goodsList = <FlatList
                 data={this.state.goodsList}
@@ -105,9 +105,7 @@ export default class NewSale extends Component<Props> {
 
     _renderFooter() {
         if (this.state.loadingMore) {
-            return (<View>
-                <ActivityIndicator></ActivityIndicator>
-            </View>)
+            return (<LoadingView/>)
         } else if (this.state.allLoadCompleted) {
             return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
                 <Text>没有更多商品了</Text>

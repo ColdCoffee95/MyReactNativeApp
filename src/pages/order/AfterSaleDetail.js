@@ -8,23 +8,12 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    TouchableHighlight,
-    ActivityIndicator,
-    Linking,
-    TextInput,
-    TouchableOpacity,
-    FlatList,
     Image,
-    Alert,
-    ScrollView,
     View
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import ActiveButton from '../../components/common/ActiveButton';
-import selectPayTypeCountdown from '../../mobx/selectPayTypeCountdown'
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
-export default class OrderDetail extends Component<Props> {
+export default class AfterSaleDetail extends Component<Props> {
 
     constructor(props) {
         super(props);
@@ -43,9 +32,7 @@ export default class OrderDetail extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <View style={styles.loadingContainer}>
-                <ActivityIndicator></ActivityIndicator>
-            </View>
+            return <LoadingView/>
         } else {
             let orderInfo = this.state.orderInfo;
             let goodsList = [];

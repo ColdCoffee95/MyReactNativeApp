@@ -8,11 +8,9 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     ScrollView,
-    ActivityIndicator,
     View,
     TextInput,
     TouchableOpacity,
-    Image,
     Text
 } from 'react-native';
 import HomeSwiper from '../components/business/HomeSwiper'
@@ -21,7 +19,7 @@ import HomeCategory from '../components/business/HomeCategory'
 import RecommandForYou from '../components/business/RecommandForYou'
 import IdentifyImg from '../components/business/IdentifyImg'
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import LoadingView from '../components/common/LoadingView';
 type Props = {};
 export default class Home extends Component<Props> {
     constructor(props) {
@@ -71,9 +69,7 @@ export default class Home extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <View style={styles.loadingContainer}>
-                <ActivityIndicator></ActivityIndicator>
-            </View>
+            return <LoadingView/>
         } else {
             return (
                 <View style={styles.container}>

@@ -7,16 +7,11 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    ActivityIndicator,
-    Button,
     Image,
-    ScrollView,
     Text,
-    TextInput,
     TouchableHighlight,
     RefreshControl,
     TouchableOpacity,
-    DeviceEventEmitter,
     View
 } from 'react-native';
 import {observer} from 'mobx-react';
@@ -29,7 +24,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActiveButton from '../../components/common/ActiveButton';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 import Toast, {DURATION} from 'react-native-easy-toast';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 @observer
 export default class Cart extends Component<Props> {
@@ -118,9 +113,7 @@ export default class Cart extends Component<Props> {
     }
 
     renderLoadingView() {//加载页面
-        return <View style={styles.loadingContainer}>
-            <ActivityIndicator></ActivityIndicator>
-        </View>;
+        return <LoadingView/>;
     }
 
     renderSuccessView() {//加载完成页面

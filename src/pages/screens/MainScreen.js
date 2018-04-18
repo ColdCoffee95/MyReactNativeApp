@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    View
 } from 'react-native';
 import {TabNavigator} from "react-navigation";
 
@@ -20,6 +19,7 @@ const mainPage = TabNavigator({
             title:'首页',
             tabBarLabel: '首页',
             headerLeft:null,
+            headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
                 <Image
                     source={
@@ -39,6 +39,7 @@ const mainPage = TabNavigator({
             title:'分类',
             tabBarLabel: '分类',
             headerLeft:null,
+            headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
                 <Image
                     source={
@@ -58,6 +59,7 @@ const mainPage = TabNavigator({
         navigationOptions: {
             title:'进货单',
             tabBarLabel: '进货单',
+            headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
                 <Image
                     source={
@@ -77,6 +79,7 @@ const mainPage = TabNavigator({
         navigationOptions: {
             tabBarLabel: '我的',
             header:null,
+            headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
                 <Image
                     source={

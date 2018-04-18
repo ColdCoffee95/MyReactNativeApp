@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 export default class Order extends Component<Props> {
 
@@ -79,7 +79,7 @@ export default class Order extends Component<Props> {
     render() {
         let orderList = null;
         if (this.state.isLoading) {
-            orderList = <ActivityIndicator style={styles.loadingStyle}></ActivityIndicator>
+            orderList = <LoadingView/>
         } else {
             orderList = <FlatList
                 data={this.state.orderList}

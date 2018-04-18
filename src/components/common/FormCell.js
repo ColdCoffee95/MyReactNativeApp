@@ -8,7 +8,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    TouchableHighlight,
     TextInput,
     View
 } from 'react-native';

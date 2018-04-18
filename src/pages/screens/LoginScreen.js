@@ -4,7 +4,6 @@ import {
     Image,
     Text,
     TextInput,
-    ActivityIndicator,
     TouchableOpacity,
     Alert,
     View
@@ -13,7 +12,7 @@ import SplashScreen from 'react-native-splash-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import CryptoJS from 'crypto-js'
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class LoginScreen extends Component<Props> {
@@ -62,30 +61,37 @@ export default class LoginScreen extends Component<Props> {
                     <Text style={styles.version}>
                         {version}
                     </Text>
-                    <View style={styles.inputView}>
-                        <View style={styles.userNameView}>
-                            <Icon name='user' size={20} color={activeColor}></Icon>
-                            <TextInput
-                                style={styles.phone}
-                                // autoFocus={true}
-                                placeholder="请输入手机号"
-                                onChangeText={(text) => this.setState({loginId: text})}
-                                keyboardType={'numeric'}
-                                maxLength={11}
-                                underlineColorAndroid='transparent'
-                            />
+
+                        <View style={styles.inputView}>
+
+                            <View style={styles.userNameView}>
+                                <Icon name='user' size={20} color={activeColor}></Icon>
+                                <TextInput
+                                    style={styles.phone}
+                                    // autoFocus={true}
+                                    placeholder="请输入手机号"
+                                    onChangeText={(text) => this.setState({loginId: text})}
+                                    keyboardType={'numeric'}
+                                    returnKeyType='done'
+                                    returnKeyLabel='确定'
+                                    maxLength={11}
+                                    underlineColorAndroid='transparent'
+                                />
+                            </View>
+                            <View style={styles.passwordView}>
+                                <Icon name='lock' size={20} color={activeColor}></Icon>
+                                <TextInput
+                                    style={styles.password}
+                                    placeholder="请输入密码"
+                                    returnKeyType='done'
+                                    returnKeyLabel='确定'
+                                    secureTextEntry={true}
+                                    onChangeText={(text) => this.setState({pwd: text})}
+                                    underlineColorAndroid='transparent'
+                                />
+                            </View>
                         </View>
-                        <View style={styles.passwordView}>
-                            <Icon name='lock' size={20} color={activeColor}></Icon>
-                            <TextInput
-                                style={styles.password}
-                                placeholder="请输入密码"
-                                secureTextEntry={true}
-                                onChangeText={(text) => this.setState({pwd: text})}
-                                underlineColorAndroid='transparent'
-                            />
-                        </View>
-                    </View>
+
                     <View style={styles.agreeForgetView}>
                         <View style={styles.agreeView}>
                             <TouchableOpacity
@@ -100,7 +106,7 @@ export default class LoginScreen extends Component<Props> {
                                     }
                                 </View>
                             </TouchableOpacity>
-                            <Text style={{color: '#aeaeae', marginLeft: 5, fontSize: 10}}>我已经阅读并理解和同意</Text>
+                            <Text style={{color: '#aeaeae', marginLeft: 2, fontSize: 10}}>我已经阅读并同意</Text>
                             <TouchableOpacity onPress={() => this.agreement()}>
                                 <View>
                                     <Text style={{color: activeColor, fontSize: 10}}>《店力集盒平台服务协议》</Text>
@@ -129,13 +135,13 @@ export default class LoginScreen extends Component<Props> {
                 </View>
             );
         } else {
-            return <ActivityIndicator/>
+            return <LoadingView/>
         }
     }
 
     register() {
         if (!this.state.agree) {
-            Alert.alert(null, '请先阅读并理解和同意平台协议再注册！');
+            Alert.alert(null, '请先阅读并同意平台协议再注册！');
             return;
         }
         this.props.navigation.navigate('Register')
@@ -143,7 +149,7 @@ export default class LoginScreen extends Component<Props> {
 
     login() {
         if (!this.state.agree) {
-            Alert.alert(null, '请先阅读并理解和同意平台协议再登录！');
+            Alert.alert(null, '请先阅读并同意平台协议再登录！');
             return;
         }
         let params = {
@@ -194,6 +200,22 @@ const styles = StyleSheet.create({
         marginTop: 10,
         width: screenWidth * 0.85,
     },
+    popupScrollView: {
+        width: screenWidth * 0.85,
+        borderColor: borderColor,
+        borderWidth: 2,
+        borderRadius: 5,
+        marginTop: 10,
+        backgroundColor:'blue',
+        height:50
+    },
+    inputView: {
+        width: screenWidth * 0.85,
+        borderColor: borderColor,
+        borderWidth: 2,
+        borderRadius: 5,
+        marginTop: 10
+    },
     agreeView: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -211,7 +233,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     registerBtnText: {
-        fontSize: 16,
+        fontSize: 14,
         color: 'black'
     },
     loginBtn: {
@@ -243,13 +265,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 20
     },
-    inputView: {
-        width: screenWidth * 0.85,
-        borderColor: borderColor,
-        borderWidth: 2,
-        borderRadius: 5,
-        marginTop: 10
-    },
+
     version: {
         marginTop: 20
     },

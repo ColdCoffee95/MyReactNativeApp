@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Swiper from 'react-native-swiper'
 type Props = {};
-export default class Home extends Component<Props> {
+export default class HomeSwiper extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {

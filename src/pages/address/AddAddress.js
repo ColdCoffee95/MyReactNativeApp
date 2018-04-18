@@ -9,15 +9,10 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    Linking,
-    TextInput,
-    ActivityIndicator,
     TouchableOpacity,
     View,
-    Picker
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
-import AddressPicker from '../../components/common/AddressPicker'
 import Address from '../../components/common/Address'
 import FormCell from '../../components/common/FormCell'
 import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';

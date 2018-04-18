@@ -9,9 +9,7 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    ActivityIndicator,
     TouchableOpacity,
-    Linking,
     TextInput,
     FlatList,
     Image,
@@ -20,7 +18,7 @@ import {
 import Drawer from "react-native-drawer";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GoodsSideMenu from '../../components/business/GoodsSideMenu'
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class GoodsList extends Component<Props> {
@@ -86,9 +84,7 @@ export default class GoodsList extends Component<Props> {
     render() {
         let goodsList = null;
         if (this.state.isLoading) {
-            goodsList = <View style={styles.loadingContainer}>
-                <ActivityIndicator></ActivityIndicator>
-            </View>
+            goodsList = <LoadingView/>
         } else {
             goodsList = <FlatList
                 data={this.state.goodsList}
@@ -180,9 +176,7 @@ export default class GoodsList extends Component<Props> {
 
     _renderFooter() {
         if (this.state.loadingMore) {
-            return (<View>
-                <ActivityIndicator></ActivityIndicator>
-            </View>)
+            return (<LoadingView/>)
         } else if (this.state.allLoadCompleted) {
             if (this.state.goodsList.length > 0) {
                 return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>

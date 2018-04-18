@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import ActiveButton from '../../components/common/ActiveButton';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class ManageCertification extends Component<Props> {
@@ -27,6 +27,7 @@ export default class ManageCertification extends Component<Props> {
         super(props);
         this.state = {
             certificationList: [],
+            isLoading: true
         }
     }
 
@@ -44,63 +45,68 @@ export default class ManageCertification extends Component<Props> {
 
     });
     render() {
-        let certificationList = [];
-        this.state.certificationList.map(value => {
-            certificationList.push(
-                <View style={styles.singleView}>
-                    <Text style={styles.contacts}>{value.contacts}</Text>
-                    <Text style={styles.idCard}>{value.idCard}</Text>
-                    <View style={styles.operate}>
-                        <TouchableHighlight
-                            onPress={() => this.setDefaultCertification(value.id)}
-                            underlayColor='#fff'>
-                            <View style={styles.defaultView}>
-                                {
-                                    value.defaults ?
-                                        (<Icon name="check-circle" size={16} color={activeColor}></Icon>) :
-                                        (<Icon2 name="checkbox-blank-circle-outline" size={16}></Icon2>)
-                                }
-
-
-                                <Text style={styles.defaultOperate}>默认实名信息</Text>
-                            </View>
-                        </TouchableHighlight>
-
-                        <View style={styles.editDeleteView}>
-                            {/*<View style={styles.editView}>*/}
-                            {/*<Icon name="edit" size={20}></Icon>*/}
-                            {/*<Text style={styles.editText}>编辑</Text>*/}
-                            {/*</View>*/}
+        if (this.state.isLoading) {
+            return <LoadingView/>
+        } else {
+            let certificationList = [];
+            this.state.certificationList.map(value => {
+                certificationList.push(
+                    <View style={styles.singleView}>
+                        <Text style={styles.contacts}>{value.contacts}</Text>
+                        <Text style={styles.idCard}>{value.idCard}</Text>
+                        <View style={styles.operate}>
                             <TouchableHighlight
-                                onPress={() => this.deleteCertification(value.id)}
+                                onPress={() => this.setDefaultCertification(value.id)}
                                 underlayColor='#fff'>
-                                <View style={styles.editView}>
-                                    <Icon name="trash" size={16}></Icon>
-                                    <Text style={styles.editText}>删除</Text>
+                                <View style={styles.defaultView}>
+                                    {
+                                        value.defaults ?
+                                            (<Icon name="check-circle" size={16} color={activeColor}></Icon>) :
+                                            (<Icon2 name="checkbox-blank-circle-outline" size={16}></Icon2>)
+                                    }
+
+
+                                    <Text style={styles.defaultOperate}>默认实名信息</Text>
                                 </View>
                             </TouchableHighlight>
+
+                            <View style={styles.editDeleteView}>
+                                {/*<View style={styles.editView}>*/}
+                                {/*<Icon name="edit" size={20}></Icon>*/}
+                                {/*<Text style={styles.editText}>编辑</Text>*/}
+                                {/*</View>*/}
+                                <TouchableHighlight
+                                    onPress={() => this.deleteCertification(value.id)}
+                                    underlayColor='#fff'>
+                                    <View style={styles.editView}>
+                                        <Icon name="trash" size={16}></Icon>
+                                        <Text style={styles.editText}>删除</Text>
+                                    </View>
+                                </TouchableHighlight>
+                            </View>
                         </View>
                     </View>
+                )
+            });
+            return (
+                <View style={styles.container}>
+                    <ScrollView contentContainerStyle={styles.scrollView}>
+                        {certificationList}
+                    </ScrollView>
+                    <Toast ref='toast' position='center'></Toast>
+                    <View style={styles.bottomBtnView}>
+                        <ActiveButton clickBtn={() => this.addCertification()} text='添加实名认证'
+                                      style={styles.activeButton}></ActiveButton>
+                    </View>
                 </View>
-            )
-        });
-        return (
-            <View style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollView}>
-                    {certificationList}
-                </ScrollView>
-                <Toast ref='toast' position='center'></Toast>
-                <View style={styles.bottomBtnView}>
-                    <ActiveButton clickBtn={() => this.addCertification()} text='添加实名认证'
-                                  style={styles.activeButton}></ActiveButton>
-                </View>
-            </View>
-        );
+            );
+        }
+
     }
 
     async fetchData() {
         HttpUtils.get('/idCard/selectIdCardList', {}, data => {
-            this.setState({certificationList: data.data});
+            this.setState({certificationList: data.data,isLoading:false});
         })
     }
 

@@ -7,22 +7,16 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Button,
     Image,
     Text,
     TextInput,
     TouchableOpacity,
-    Alert,
     View
 } from 'react-native';
 
 type Props = {};
-import CryptoJS from 'crypto-js'
-import FormCell from '../../components/common/FormCell'
 import ActiveButton from '../../components/common/ActiveButton'
-import TimerButton from '../../components/common/TimerButton'
 import Toast, {DURATION} from 'react-native-easy-toast';
-import HttpUtils from "../../utils/http";
 
 export default class SecurityCheck extends Component<Props> {
     constructor(props) {

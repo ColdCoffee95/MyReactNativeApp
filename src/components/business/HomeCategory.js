@@ -8,11 +8,11 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    ActivityIndicator,
     TouchableHighlight,
     View,
     Text
 } from 'react-native';
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 export default class HomeCategory extends Component<Props> {
     constructor(props) {
@@ -67,7 +67,7 @@ export default class HomeCategory extends Component<Props> {
                 {catImgList}
             </View>
         } else {
-            return <ActivityIndicator style={styles.loadingStyle}></ActivityIndicator>
+            return <LoadingView/>
         }
     }
 

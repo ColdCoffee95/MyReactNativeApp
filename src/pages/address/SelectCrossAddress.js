@@ -11,10 +11,9 @@ import {
     Text,
     TouchableHighlight,
     TouchableOpacity,
-    ActivityIndicator,
     View
 } from 'react-native';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class SelectCrossAddress extends Component<Props> {
@@ -44,7 +43,7 @@ export default class SelectCrossAddress extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <ActivityIndicator></ActivityIndicator>
+            return <LoadingView/>
         } else {
             let addressList = [];
             this.state.addressList.map(value => {

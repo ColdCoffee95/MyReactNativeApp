@@ -8,20 +8,8 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    TouchableHighlight,
-    ActivityIndicator,
-    Linking,
-    TextInput,
-    TouchableOpacity,
-    FlatList,
-    Image,
-    Alert,
     ScrollView,
-    View
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import ActiveButton from '../../components/common/ActiveButton';
-import Toast, {DURATION} from 'react-native-easy-toast';
 
 type Props = {};
 export default class Agreement extends Component<Props> {

@@ -8,20 +8,15 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    TouchableHighlight,
     ScrollView,
     TouchableOpacity,
-    ActivityIndicator,
-    Alert,
     Image,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import ActiveButton from '../../components/common/ActiveButton';
-import HttpUtils from "../../utils/http";
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class SelectCoupon extends Component<Props> {
@@ -59,14 +54,14 @@ export default class SelectCoupon extends Component<Props> {
                         <TouchableOpacity onPress={() => this.useCoupon(value)}>
                             <View style={styles.backImgView}>
                                 {
-                                    value.type === 'all' && couponType !== 4 && <Image
+                                    value.couponType === 'all' && couponType !== 4 && <Image
                                         resizeMode='contain'
                                         style={styles.backImg}
                                         source={require('../../images/commonCoupon.png')}
                                     />
                                 }
                                 {
-                                    value.type !== 'all' && couponType !== 4 && <Image
+                                    value.couponType !== 'all' && couponType !== 4 && <Image
                                         resizeMode='contain'
                                         style={styles.backImg}
                                         source={require('../../images/assignCoupon.png')}
@@ -96,16 +91,19 @@ export default class SelectCoupon extends Component<Props> {
                                         {
                                             value.amountRuleType === 'full-cut' &&
                                             <View style={styles.couponLeftLimit}>
-                                                <Text style={{
+                                                <Text numberOfLines={1} style={{
                                                     color: whiteColor,
-                                                    fontSize: 16
+                                                    fontSize: 14
                                                 }}>满{value.amount}可用</Text>
                                             </View>
                                         }
                                         {
                                             value.amountRuleType !== 'full-cut' &&
                                             <View style={styles.couponLeftLimit}>
-                                                <Text style={{color: whiteColor, fontSize: 16}}>不限金额</Text>
+                                                <Text numberOfLines={1} style={{
+                                                    color: whiteColor,
+                                                    fontSize: 14
+                                                }}>不限金额</Text>
                                             </View>
                                         }
                                     </View>
@@ -117,16 +115,16 @@ export default class SelectCoupon extends Component<Props> {
                                             {
                                                 couponType === 4 && <Text style={styles.cutTypeExpire}>{cutType}</Text>
                                             }
-                                            <Text>{value.couponName}</Text>
+                                            <Text style={styles.couponName}>{value.couponName}</Text>
                                         </View>
-                                        <Text style={{color: '#ababab'}}>{value.amountRuleName}</Text>
+                                        <Text style={{color: '#ababab',fontSize:12}}>{value.amountRuleName}</Text>
                                         {
-                                            value.dateRuleType === 'fixed-days' && <Text style={{color: '#ababab'}}>
+                                            value.dateRuleType === 'fixed-days' && <Text style={{color: '#ababab',fontSize:12}}>
                                                 有效时间：领取后{value.days}天内
                                             </Text>
                                         }
                                         {
-                                            value.dateRuleType === 'time-interval' && <Text style={{color: '#ababab'}}>
+                                            value.dateRuleType === 'time-interval' && <Text style={{color: '#ababab',fontSize:12}}>
                                                 有效时间：{dateFormat(value.startTime)}~{dateFormat(value.endTime)}
                                             </Text>
                                         }
@@ -137,12 +135,12 @@ export default class SelectCoupon extends Component<Props> {
 
 
                         {
-                            value.type === 'all' && <View style={styles.couponLimitView}>
+                            value.couponType === 'all' && <View style={styles.couponLimitView}>
                                 <Text>全分类商品适用</Text>
                             </View>
                         }
                         {
-                            value.type !== 'all' && <TouchableOpacity onPress={() => {
+                            value.couponType !== 'all' && <TouchableOpacity onPress={() => {
                                 value.toggle = !value.toggle;
 
                                 this.setState({couponList: couponList});
@@ -198,9 +196,7 @@ export default class SelectCoupon extends Component<Props> {
                     </TouchableOpacity>
                 </View>
                 {
-                    this.state.isLoading && <View style={styles.loadingContainer}>
-                        <ActivityIndicator/>
-                    </View>
+                    this.state.isLoading && <LoadingView/>
                 }
                 {
                     !this.state.isLoading && <ScrollView contentContainerStyle={styles.scrollView}>
@@ -284,6 +280,9 @@ const styles = StyleSheet.create({
     couponWrapper: {
         width: screenWidth * 0.9,
         marginTop: 10,
+    },
+    couponName:{
+        fontSize:12
     },
     cutType: {
         backgroundColor: activeColor,

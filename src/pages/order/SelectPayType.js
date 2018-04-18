@@ -9,7 +9,6 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    ActivityIndicator,
     TouchableOpacity,
     Image,
     Alert,
@@ -25,7 +24,7 @@ import {action, autorun} from 'mobx';
 import selectPayTypeCountdown from '../../mobx/selectPayTypeCountdown'
 import Alipay from 'react-native-yunpeng-alipay';
 import * as WeChat from 'react-native-wechat';
-
+import LoadingView from '../../components/common/LoadingView';
 WeChat.registerApp('wxb8f9e4f7b2576589');
 type Props = {};
 @observer
@@ -64,7 +63,7 @@ export default class SelectPayType extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <ActivityIndicator></ActivityIndicator>
+            return <LoadingView/>
         } else {
             let order = this.state.order;
             let goodsList = [];

@@ -8,20 +8,16 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    ActivityIndicator,
     Text,
     TouchableOpacity,
     View,
     ScrollView,
     RefreshControl
 } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Foundation';
 import UploadOneImg from '../components/common/UploadOneImg'
-import HttpUtils from "../utils/http";
-// import Loading from 'react-native-spinkit';
 
 type Props = {};
 export default class Mine extends Component<Props> {

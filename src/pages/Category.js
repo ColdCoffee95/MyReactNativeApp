@@ -8,7 +8,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    ActivityIndicator,
     ScrollView,
     TouchableHighlight,
     View,
@@ -17,7 +16,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import LoadingView from '../components/common/LoadingView';
 type Props = {};
 export default class Category extends Component<Props> {
     constructor(props) {
@@ -128,7 +127,7 @@ export default class Category extends Component<Props> {
                 <View>
                     {
                         this.leftLoading ? (
-                            <ActivityIndicator></ActivityIndicator>
+                            <LoadingView/>
                         ) : (
                             <ScrollView contentContainerStyle={styles.leftScrollView}>
                                 {leftArr}
@@ -140,7 +139,7 @@ export default class Category extends Component<Props> {
                 <View>
                     {
                         this.rightLoading ? (
-                            <ActivityIndicator></ActivityIndicator>
+                            <LoadingView/>
                         ) : (
                             <ScrollView contentContainerStyle={styles.rightScrollView}>
                                 <Text style={styles.rightTitle}>分类</Text>
@@ -213,7 +212,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         width: 80,
         backgroundColor: '#f2f2f2',
-        flex: 1
     },
     leftItem: {
         alignItems: 'center',

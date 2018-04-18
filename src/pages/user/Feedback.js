@@ -17,6 +17,7 @@ import {
 import UploadMultiImg from '../../components/common/UploadMultiImg'
 import ActiveButton from '../../components/common/ActiveButton'
 import Toast, {DURATION} from 'react-native-easy-toast';
+
 type Props = {};
 
 export default class Feedback extends Component<Props> {
@@ -201,7 +202,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        marginBottom: 10
     },
     activeProblemView: {
         backgroundColor: activeColor,

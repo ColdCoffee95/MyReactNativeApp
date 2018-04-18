@@ -7,9 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
-    TouchableHighlight,
-    ActivityIndicator,
     View,
     Picker
 } from 'react-native';

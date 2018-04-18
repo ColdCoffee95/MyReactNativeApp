@@ -9,10 +9,6 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    ActivityIndicator,
-    Linking,
-    TextInput,
-    FlatList,
     Image,
     ScrollView,
     View
@@ -20,7 +16,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
 import Toast, {DURATION} from 'react-native-easy-toast';
-import HttpUtils from "../../utils/http";
+import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 
@@ -50,7 +46,7 @@ export default class ConfirmOrder extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <ActivityIndicator></ActivityIndicator>
+            return <LoadingView/>
         } else {
             let orderGoodsView = [];
             let totalNum = 0;

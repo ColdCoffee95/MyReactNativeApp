@@ -9,12 +9,11 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    ActivityIndicator,
     FlatList,
     Image,
     View
 } from 'react-native';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 export default class AfterSaleOrders extends Component<Props> {
 
@@ -37,7 +36,7 @@ export default class AfterSaleOrders extends Component<Props> {
     render() {
         let orderList = null;
         if (this.state.isLoading) {
-            orderList = <ActivityIndicator style={styles.loadingStyle}></ActivityIndicator>
+            orderList = <LoadingView/>
         } else {
             orderList = <FlatList
                 data={this.state.orderList}
@@ -146,9 +145,7 @@ export default class AfterSaleOrders extends Component<Props> {
 
     _renderFooter() {
         if (this.state.loadingMore) {
-            return (<View>
-                <ActivityIndicator></ActivityIndicator>
-            </View>)
+            return (<LoadingView/>)
         } else if (this.state.allLoadCompleted) {
             if (this.state.orderList.length > 0) {
                 return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>

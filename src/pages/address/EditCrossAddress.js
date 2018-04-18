@@ -9,12 +9,8 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    Linking,
-    TextInput,
-    ActivityIndicator,
     TouchableOpacity,
     View,
-    Picker
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
 import Address from '../../components/common/Address'
@@ -23,7 +19,7 @@ import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 export default class EditCrossAddress extends Component<Props> {
 
@@ -51,7 +47,7 @@ export default class EditCrossAddress extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <ActivityIndicator></ActivityIndicator>
+            return <LoadingView/>
         } else {
             return (
                 <View style={styles.container}>

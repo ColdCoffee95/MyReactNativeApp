@@ -9,25 +9,20 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    Linking,
     TextInput,
     TouchableOpacity,
-    ActivityIndicator,
     ScrollView,
     View,
     Image,
-    Alert
 } from 'react-native';
 import UploadMultiImg from '../../components/common/UploadMultiImg'
-import ActiveButton from '../../components/common/ActiveButton'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
-import HttpUtils from "../../utils/http";
 import StarRating from 'react-native-star-rating'
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
-export default class Feedback extends Component<Props> {
+export default class Comment extends Component<Props> {
 
     constructor(props) {
         super(props);
@@ -63,7 +58,7 @@ export default class Feedback extends Component<Props> {
     render() {
         const {orderInfo, isLoading, userStar} = this.state;
         if (isLoading) {
-            return <ActivityIndicator/>
+            return <LoadingView/>
         } else {
             let goodsView = [];
             let goodsList = orderInfo.orderItemList;

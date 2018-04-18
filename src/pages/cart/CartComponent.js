@@ -49,7 +49,7 @@ export default class CartComponent extends Component {
                         <Text style={styles.cartGoodsTitle}
                               numberOfLines={2}>{this.itemData.goodsTitle}</Text>
                         <View style={styles.skuView}>
-                            <Text style={styles.cartSku}>{this.itemData.sku}</Text>
+                            <Text numberOfLines={2} style={styles.cartSku}>{this.itemData.sku}</Text>
                             <Text style={styles.cartEms}>运费:¥{this.itemData.emsPrice}</Text>
                         </View>
 
@@ -143,8 +143,6 @@ const styles = StyleSheet.create({
         color: activeColor
     },
     skuView:{
-      flexDirection:'row',
-        justifyContent: 'space-between'
     },
     cartSku: {
         color: '#ababab',

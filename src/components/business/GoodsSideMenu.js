@@ -7,8 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Image,
-    ActivityIndicator,
     TouchableHighlight,
     View,
     Text

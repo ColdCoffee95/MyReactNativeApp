@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet'
 import ImagePicker from 'react-native-image-crop-picker'
-
 type Props = {};
 
 export default class UploadOneImg extends Component<Props> {

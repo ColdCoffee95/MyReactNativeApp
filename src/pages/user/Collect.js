@@ -8,13 +8,12 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    ActivityIndicator,
     TouchableHighlight,
     View,
     FlatList,
     Text,
 } from 'react-native';
-
+import LoadingView from '../../components/common/LoadingView';
 export default class Collect extends Component<Props> {
     constructor(props) {
         super(props);
@@ -37,11 +36,7 @@ export default class Collect extends Component<Props> {
     render() {
         let goodsList = null;
         if (this.state.isLoading) {
-            return <View style={styles.loadingContainer}>
-                <ActivityIndicator>
-
-                </ActivityIndicator>
-            </View>
+            return <LoadingView/>
         } else {
             goodsList = <FlatList
                 data={this.state.goodsList}

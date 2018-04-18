@@ -5,7 +5,6 @@ import {
     View,
     Image,
     TouchableHighlight,
-    ActivityIndicator,
     TouchableOpacity,
     Text,
     Keyboard,
@@ -21,7 +20,7 @@ import Icon1 from 'react-native-vector-icons/Foundation';
 import Counter from '../../components/common/Counter';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import Toast, {DURATION} from 'react-native-easy-toast';
-import HttpUtils from "../../utils/http";
+import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 export default class GoodsDetail extends Component<Props> {
@@ -62,9 +61,7 @@ export default class GoodsDetail extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <View style={styles.loadingContainer}>
-                <ActivityIndicator></ActivityIndicator>
-            </View>
+            return <LoadingView/>
         } else {
             let detail = this.state.goodsDetail;
             let swiperList = [];
@@ -280,6 +277,13 @@ export default class GoodsDetail extends Component<Props> {
         this.props.navigation.setParams({
             goodsIsCollect: goodsIsCollect,
         });
+        if(goodsIsCollect){
+            this.refs.toast.show('收藏成功')
+        }else{
+            this.refs.toast.show('取消收藏成功')
+        }
+
+
     }
 
     changeSpec(specName, specValue) {

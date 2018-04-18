@@ -7,18 +7,15 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Button,
     Image,
     Text,
-    TextInput,
-    TouchableOpacity,
     ScrollView,
     View
 } from 'react-native';
 
 type Props = {};
 
-export default class ShopCertification extends Component<Props> {
+export default class ShopCertificationDetail extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {

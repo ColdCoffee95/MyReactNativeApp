@@ -8,12 +8,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    TouchableHighlight,
-    ActivityIndicator,
-    Linking,
-    TextInput,
-    TouchableOpacity,
-    FlatList,
     Image,
     Alert,
     ScrollView,
@@ -22,7 +16,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
 import Toast, {DURATION} from 'react-native-easy-toast';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 export default class OrderDetail extends Component<Props> {
 
@@ -72,9 +66,7 @@ export default class OrderDetail extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <View style={styles.loadingContainer}>
-                <ActivityIndicator></ActivityIndicator>
-            </View>
+            return <LoadingView/>
         } else {
             const {orderInfo, orderTypes} = this.state;
             let goodsList = [];

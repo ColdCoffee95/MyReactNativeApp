@@ -7,14 +7,9 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Button,
-    Image,
     Text,
-    TextInput,
-    TouchableOpacity,
     ScrollView,
     Picker,
-    Alert,
     TouchableHighlight,
     View
 } from 'react-native';
@@ -26,7 +21,6 @@ import FormCell from '../../components/common/FormCell'
 import ActiveButton from '../../components/common/ActiveButton'
 import Toast, {DURATION} from 'react-native-easy-toast';
 import UploadOneImg from '../../components/common/UploadOneImg';
-import HttpUtils from "../../utils/http";
 
 export default class ShopCertification extends Component<Props> {
     constructor(props) {

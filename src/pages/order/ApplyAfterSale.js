@@ -8,22 +8,15 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    TouchableHighlight,
-    ActivityIndicator,
-    Linking,
     TextInput,
-    TouchableOpacity,
-    FlatList,
     Image,
-    Alert,
     ScrollView,
     View
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
 import UploadMultiImg from '../../components/common/UploadMultiImg';
 import Toast, {DURATION} from 'react-native-easy-toast';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 export default class ApplyAfterSale extends Component<Props> {
 
@@ -43,9 +36,7 @@ export default class ApplyAfterSale extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <View style={styles.loadingContainer}>
-                <ActivityIndicator/>
-            </View>
+            return <LoadingView/>
         } else {
             const {orderInfo, orderTypes} = this.state;
             let goodsList = [];

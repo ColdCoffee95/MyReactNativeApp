@@ -7,14 +7,9 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
-    TouchableHighlight,
-    Linking,
-    TextInput,
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
-import AddressPicker from '../../components/common/AddressPicker'
 import FormCell from '../../components/common/FormCell'
 import UploadOneImg from '../../components/common/UploadOneImg'
 import Toast,{DURATION} from 'react-native-easy-toast';

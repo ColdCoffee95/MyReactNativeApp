@@ -11,7 +11,6 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native';
-import HttpUtils from "../../utils/http";
 
 type Props = {};
 export default class IdentifyImg extends Component<Props> {

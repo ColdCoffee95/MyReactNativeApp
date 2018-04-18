@@ -8,16 +8,11 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    TouchableHighlight,
-    ActivityIndicator,
-    TouchableOpacity,
     Image,
-    Alert,
-    ScrollView,
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 export default class PaySuccess extends Component<Props> {
 
@@ -36,7 +31,7 @@ export default class PaySuccess extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <ActivityIndicator></ActivityIndicator>
+            return <LoadingView/>
         } else {
             return <View style={styles.container}>
                 <View style={styles.imgView}>

@@ -11,14 +11,10 @@ import {
     TouchableHighlight,
     ScrollView,
     TouchableOpacity,
-    Alert,
     View
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
-import ActiveButton from '../../components/common/ActiveButton';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class SelectCertification extends Component<Props> {
@@ -27,6 +23,7 @@ export default class SelectCertification extends Component<Props> {
         super(props);
         this.state = {
             certificationList: [],
+            isLoading: true
         }
     }
 
@@ -44,30 +41,35 @@ export default class SelectCertification extends Component<Props> {
             </TouchableOpacity>)
     });
     render() {
-        let certificationList = [];
-        this.state.certificationList.map(value => {
-            certificationList.push(
-                <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.selectCertification(value)}>
-                    <View style={styles.singleView}>
-                        <View style={styles.topView}>
-                            {
-                                value.defaults && <Text style={{color: activeColor}}>[默认实名信息]</Text>
-                            }
-                            <Text>{value.contacts}</Text>
+        if (this.state.isLoading) {
+            return <LoadingView/>
+        } else {
+            let certificationList = [];
+            this.state.certificationList.map(value => {
+                certificationList.push(
+                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.selectCertification(value)}>
+                        <View style={styles.singleView}>
+                            <View style={styles.topView}>
+                                {
+                                    value.defaults && <Text style={{color: activeColor}}>[默认实名信息]</Text>
+                                }
+                                <Text>{value.contacts}</Text>
+                            </View>
+                            <Text style={{marginTop: 10}}>{value.idCard}</Text>
                         </View>
-                        <Text style={{marginTop: 10}}>{value.idCard}</Text>
-                    </View>
-                </TouchableHighlight>
-            )
-        });
-        return (
-            <View style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollView}>
-                    {certificationList}
-                </ScrollView>
-                <Toast ref='toast' position='center'></Toast>
-            </View>
-        );
+                    </TouchableHighlight>
+                )
+            });
+            return (
+                <View style={styles.container}>
+                    <ScrollView contentContainerStyle={styles.scrollView}>
+                        {certificationList}
+                    </ScrollView>
+                    <Toast ref='toast' position='center'></Toast>
+                </View>
+            );
+        }
+
     }
     jumpToManage() {
         this.props.navigation.navigate('ManageCertification', {
@@ -76,7 +78,7 @@ export default class SelectCertification extends Component<Props> {
     }
     async fetchData() {
         HttpUtils.get('/idCard/selectIdCardList', {}, data => {
-            this.setState({certificationList: data.data});
+            this.setState({certificationList: data.data,isLoading:false});
         })
     }
 

@@ -7,11 +7,8 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableHighlight,
     TextInput,
-    Alert,
-    KeyboardAvoidingView,
     View
 } from 'react-native';
 import {observer} from 'mobx-react/native';

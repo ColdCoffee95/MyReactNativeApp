@@ -10,7 +10,6 @@ import {
     Text,
     TouchableHighlight,
     ScrollView,
-    ActivityIndicator,
     TouchableOpacity,
     Alert,
     View
@@ -19,7 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import ActiveButton from '../../components/common/ActiveButton';
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class ManageCrossAddress extends Component<Props> {
@@ -47,7 +46,7 @@ export default class ManageCrossAddress extends Component<Props> {
     });
     render() {
         if (this.state.isLoading) {
-            return <ActivityIndicator></ActivityIndicator>
+            return <LoadingView/>
         } else {
             let addressList = [];
             this.state.addressList.map(value => {

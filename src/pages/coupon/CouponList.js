@@ -8,20 +8,14 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    TouchableHighlight,
     ScrollView,
     TouchableOpacity,
-    ActivityIndicator,
-    Alert,
     Image,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
-import ActiveButton from '../../components/common/ActiveButton';
-import HttpUtils from "../../utils/http";
-
+import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class CouponList extends Component<Props> {
@@ -83,9 +77,9 @@ export default class CouponList extends Component<Props> {
                                         {
                                             value.couponAmountRule.type === 'full-cut' &&
                                             <View style={styles.couponLeftLimit}>
-                                                <Text style={{
+                                                <Text numberOfLines={1} style={{
                                                     color: whiteColor,
-                                                    fontSize: 16
+                                                    fontSize: 14
                                                 }}>满{value.couponAmountRule.amount}可用</Text>
                                             </View>
                                         }
@@ -99,16 +93,16 @@ export default class CouponList extends Component<Props> {
                                     <View style={styles.couponInfoView}>
                                         <View style={styles.couponInfoTop}>
                                             <Text style={styles.cutType}>{cutType}</Text>
-                                            <Text>{value.name}</Text>
+                                            <Text style={styles.couponName}>{value.name}</Text>
                                         </View>
-                                        <Text style={{color: '#ababab'}}>{value.couponAmountRule.name}</Text>
+                                        <Text style={{color: '#ababab',fontSize:12}}>{value.couponAmountRule.name}</Text>
                                         {
-                                            value.dateRuleType === 'fixed-days' && <Text style={{color: '#ababab'}}>
+                                            value.dateRuleType === 'fixed-days' && <Text style={{color: '#ababab',fontSize:12}}>
                                                 有效时间：领取后{value.days}天内
                                             </Text>
                                         }
                                         {
-                                            value.dateRuleType === 'time-interval' && <Text style={{color: '#ababab'}}>
+                                            value.dateRuleType === 'time-interval' && <Text style={{color: '#ababab',fontSize:12}}>
                                                 有效时间：{dateFormat(value.startTime)}~{dateFormat(value.endTime)}
                                             </Text>
                                         }
@@ -207,9 +201,9 @@ export default class CouponList extends Component<Props> {
                                         {
                                             value.amountRuleType === 'full-cut' &&
                                             <View style={styles.couponLeftLimit}>
-                                                <Text style={{
+                                                <Text numberOfLines={1} style={{
                                                     color: whiteColor,
-                                                    fontSize: 16
+                                                    fontSize: 14
                                                 }}>满{value.amount}可用</Text>
                                             </View>
                                         }
@@ -228,16 +222,16 @@ export default class CouponList extends Component<Props> {
                                             {
                                                 couponType === 4 && <Text style={styles.cutTypeExpire}>{cutType}</Text>
                                             }
-                                            <Text>{value.couponName}</Text>
+                                            <Text style={styles.couponName}>{value.couponName}</Text>
                                         </View>
-                                        <Text style={{color: '#ababab'}}>{value.amountRuleName}</Text>
+                                        <Text style={{color: '#ababab',fontSize:12}}>{value.amountRuleName}</Text>
                                         {
-                                            value.dateRuleType === 'fixed-days' && <Text style={{color: '#ababab'}}>
+                                            value.dateRuleType === 'fixed-days' && <Text style={{color: '#ababab',fontSize:12}}>
                                                 有效时间：领取后{value.days}天内
                                             </Text>
                                         }
                                         {
-                                            value.dateRuleType === 'time-interval' && <Text style={{color: '#ababab'}}>
+                                            value.dateRuleType === 'time-interval' && <Text style={{color: '#ababab',fontSize:12}}>
                                                 有效时间：{dateFormat(value.startTime)}~{dateFormat(value.endTime)}
                                             </Text>
                                         }
@@ -343,9 +337,7 @@ export default class CouponList extends Component<Props> {
                     </TouchableOpacity>
                 </View>
                 {
-                    this.state.isLoading && <View style={styles.loadingContainer}>
-                        <ActivityIndicator/>
-                    </View>
+                    this.state.isLoading && <LoadingView/>
                 }
                 {
                     !this.state.isLoading && <ScrollView contentContainerStyle={styles.scrollView}>
@@ -445,7 +437,7 @@ const styles = StyleSheet.create({
     cutType: {
         backgroundColor: activeColor,
         color: whiteColor,
-        marginRight: 10,
+        marginRight: 4,
         padding: 4
     },
     cutTypeExpire: {
@@ -459,9 +451,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    couponName:{
+      fontSize:12
+    },
     couponInfoTop: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: 0.6 * screenWidth * 0.9,
+        overflow:'hidden'
     },
     loadingContainer: {
         flex: 1,
