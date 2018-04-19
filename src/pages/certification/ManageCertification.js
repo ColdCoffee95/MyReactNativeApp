@@ -11,6 +11,7 @@ import {
     TouchableHighlight,
     ScrollView,
     TouchableOpacity,
+    SafeAreaView,
     Alert,
     View
 } from 'react-native';
@@ -19,6 +20,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import ActiveButton from '../../components/common/ActiveButton';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 
 export default class ManageCertification extends Component<Props> {
@@ -35,6 +37,7 @@ export default class ManageCertification extends Component<Props> {
         this.props.navigation.setParams({certificationGoBack: this.certificationGoBack.bind(this)});
         this.fetchData()
     }
+
     static navigationOptions = ({navigation, screenProps}) => ({
         headerLeft:
             <TouchableOpacity onPress={() => navigation.state.params.certificationGoBack()}>
@@ -44,6 +47,7 @@ export default class ManageCertification extends Component<Props> {
             </TouchableOpacity>
 
     });
+
     render() {
         if (this.state.isLoading) {
             return <LoadingView/>
@@ -89,16 +93,18 @@ export default class ManageCertification extends Component<Props> {
                 )
             });
             return (
-                <View style={styles.container}>
-                    <ScrollView contentContainerStyle={styles.scrollView}>
-                        {certificationList}
-                    </ScrollView>
-                    <Toast ref='toast' position='center'></Toast>
-                    <View style={styles.bottomBtnView}>
-                        <ActiveButton clickBtn={() => this.addCertification()} text='添加实名认证'
-                                      style={styles.activeButton}></ActiveButton>
+                <SafeAreaView style={{flex: 1}}>
+                    <View style={styles.container}>
+                        <ScrollView contentContainerStyle={styles.scrollView}>
+                            {certificationList}
+                        </ScrollView>
+                        <Toast ref='toast' position='center'></Toast>
+                        <View style={styles.bottomBtnView}>
+                            <ActiveButton clickBtn={() => this.addCertification()} text='添加实名认证'
+                                          style={styles.activeButton}></ActiveButton>
+                        </View>
                     </View>
-                </View>
+                </SafeAreaView>
             );
         }
 
@@ -106,7 +112,7 @@ export default class ManageCertification extends Component<Props> {
 
     async fetchData() {
         HttpUtils.get('/idCard/selectIdCardList', {}, data => {
-            this.setState({certificationList: data.data,isLoading:false});
+            this.setState({certificationList: data.data, isLoading: false});
         })
     }
 
@@ -116,11 +122,13 @@ export default class ManageCertification extends Component<Props> {
             this.fetchData();
         })
     }
-    certificationGoBack(){
+
+    certificationGoBack() {
         const {navigate, goBack, state} = this.props.navigation;
         state.params.goBack();
         goBack();
     }
+
     deleteCertification(id) {
         Alert.alert(null, '删除后将无法恢复，确认删除？',
             [

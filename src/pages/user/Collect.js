@@ -11,9 +11,11 @@ import {
     TouchableHighlight,
     View,
     FlatList,
+    SafeAreaView,
     Text,
 } from 'react-native';
 import LoadingView from '../../components/common/LoadingView';
+
 export default class Collect extends Component<Props> {
     constructor(props) {
         super(props);
@@ -53,19 +55,23 @@ export default class Collect extends Component<Props> {
                     <Image
                         style={{width: 200, height: 200}}
                         resizeMode='contain'
-                        source={require('../../images/no-order.jpg')}
+                        source={require('../../images/noCollect.png')}
                     />
+                    <Text>您还没收藏任何商品，马上去逛一逛吧</Text>
                 </View>}
             />
-            return <View style={styles.container}>
+            return <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <View style={styles.container}>
 
-                <View style={styles.goodsListView}>
-                    {goodsList}
+                    <View style={styles.goodsListView}>
+                        {goodsList}
+                    </View>
                 </View>
-            </View>
+            </SafeAreaView>
         }
 
     }
+
     _renderItem = ({item}) => (
         <TouchableHighlight underlayColor='#f2f2f2' style={styles.goodsTouch} onPress={() => this.goodsDetail(item.id)}>
             <View style={styles.singleGoods}>
@@ -138,7 +144,7 @@ export default class Collect extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: whiteColor,
-        flex:1
+        flex: 1
     },
     activityTitle: {
         justifyContent: 'center',
@@ -183,7 +189,7 @@ const styles = StyleSheet.create({
         width: (screenWidth - 30) / 2,
         borderWidth: 1,
         borderColor: '#e3e3e3',
-        marginTop:10
+        marginTop: 10
     },
     goodsImgView: {
         justifyContent: 'center',

@@ -11,12 +11,14 @@ import {
     TextInput,
     Image,
     ScrollView,
+    SafeAreaView,
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton';
 import UploadMultiImg from '../../components/common/UploadMultiImg';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 export default class ApplyAfterSale extends Component<Props> {
 
@@ -65,42 +67,46 @@ export default class ApplyAfterSale extends Component<Props> {
                     </View>
                 )
             });
-            return <View style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollView}>
-                    <View style={styles.itemView}>
-                        <Text>退货商品</Text>
-                    </View>
-                    <View style={styles.goodsWrapper}>
-                        {goodsList}
-                    </View>
-                    <View style={styles.itemView}>
-                        <Text>申请原因</Text>
-                    </View>
-                    <View style={styles.sugMessageView}>
-                        <TextInput
-                            style={styles.textInput}
-                            onChangeText={(text) => this.setState({comment: text})}
-                            maxLength={200}
-                            multiline={true}
-                            underlineColorAndroid='transparent'
-                            placeholder='请输入申请原因(200字以内)'>
-                        </TextInput>
-                    </View>
-                    <View style={styles.itemView}>
-                        <Text>上传凭证</Text>
+            return <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <View style={styles.container}>
+                    <ScrollView contentContainerStyle={styles.scrollView}>
+                        <View style={styles.itemView}>
+                            <Text>退货商品</Text>
+                        </View>
+                        <View style={styles.goodsWrapper}>
+                            {goodsList}
+                        </View>
+                        <View style={styles.itemView}>
+                            <Text>申请原因</Text>
+                        </View>
+                        <View style={styles.sugMessageView}>
+                            <TextInput
+                                style={styles.textInput}
+                                onChangeText={(text) => this.setState({comment: text})}
+                                maxLength={200}
+                                returnKeyType='done'
+                                multiline={true}
+                                underlineColorAndroid='transparent'
+                                placeholder='请输入申请原因(200字以内)'>
+                            </TextInput>
+                        </View>
+                        <View style={styles.itemView}>
+                            <Text>上传凭证</Text>
 
-                    </View>
-                    <UploadMultiImg
-                        onChange={(imgs) => this.setState({orderAftersalesVoucherList: imgs})}>
-                    </UploadMultiImg>
-                </ScrollView>
+                        </View>
+                        <UploadMultiImg
+                            onChange={(imgs) => this.setState({orderAftersalesVoucherList: imgs})}>
+                        </UploadMultiImg>
+                    </ScrollView>
 
-                <View style={styles.bottomBtnView}>
-                    <ActiveButton clickBtn={() => this.submit()} text='提交' style={styles.activeButton}></ActiveButton>
+                    <View style={styles.bottomBtnView}>
+                        <ActiveButton clickBtn={() => this.submit()} text='提交'
+                                      style={styles.activeButton}></ActiveButton>
+                    </View>
+
+                    <Toast ref='toast' position='center'></Toast>
                 </View>
-
-                <Toast ref='toast' position='center'></Toast>
-            </View>
+            </SafeAreaView>
         }
 
     }
@@ -111,9 +117,13 @@ export default class ApplyAfterSale extends Component<Props> {
         let params = {
             orderId: orderInfo.orderId,
             goodsInfo: orderInfo.orderItemList,
-            comment: comment,
+            comment: comment.trim(),
             orderAftersalesVoucherList: orderAftersalesVoucherList
         };
+        if (!params.comment) {
+            this.refs.toast.show('请填写申请原因', 500);
+            return;
+        }
         HttpUtils.post('/order/createOrderAftersales', params, data => {
             this.refs.toast.show('申请成功，请等待处理', 500, () => {
                 const {navigate, goBack, state} = this.props.navigation;

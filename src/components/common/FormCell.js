@@ -36,6 +36,7 @@ export default class FormCell extends Component<Props> {
                         height: 40,
                         width: this.props.labelWidth ? (screenWidth - this.props.labelWidth - 20) : (screenWidth - 80)
                     }}
+                    returnKeyType={this.props.returnKeyType || 'done'}
                     autoFocus={this.props.autoFocus}
                     keyboardType={this.props.keyboardType}
                     maxLength={this.props.maxLength}

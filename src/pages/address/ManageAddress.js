@@ -11,6 +11,7 @@ import {
     TouchableHighlight,
     ScrollView,
     TouchableOpacity,
+    SafeAreaView,
     Alert,
     View
 } from 'react-native';
@@ -19,6 +20,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import ActiveButton from '../../components/common/ActiveButton';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 
 export default class ManageAddress extends Component<Props> {
@@ -35,6 +37,7 @@ export default class ManageAddress extends Component<Props> {
         this.props.navigation.setParams({addressGoBack: this.addressGoBack.bind(this)});
         this.fetchData()
     }
+
     static navigationOptions = ({navigation, screenProps}) => ({
         headerLeft:
             <TouchableOpacity onPress={() => navigation.state.params.addressGoBack()}>
@@ -44,6 +47,7 @@ export default class ManageAddress extends Component<Props> {
             </TouchableOpacity>
 
     });
+
     render() {
         if (this.state.isLoading) {
             return <LoadingView/>
@@ -91,28 +95,32 @@ export default class ManageAddress extends Component<Props> {
                 )
             });
             return (
-                <View style={styles.container}>
-                    <ScrollView contentContainerStyle={styles.scrollView}>
-                        {addressList}
-                    </ScrollView>
-                    <Toast ref='toast' position='center'></Toast>
-                    <View style={styles.bottomBtnView}>
-                        <ActiveButton
-                            clickBtn={() => this.addAddress()}
-                            text='添加大贸地址'
-                            style={styles.activeButton}>
-                        </ActiveButton>
+                <SafeAreaView style={{flex: 1}}>
+                    <View style={styles.container}>
+                        <ScrollView contentContainerStyle={styles.scrollView}>
+                            {addressList}
+                        </ScrollView>
+                        <Toast ref='toast' position='center'></Toast>
+                        <View style={styles.bottomBtnView}>
+                            <ActiveButton
+                                clickBtn={() => this.addAddress()}
+                                text='添加大贸地址'
+                                style={styles.activeButton}>
+                            </ActiveButton>
+                        </View>
                     </View>
-                </View>
+                </SafeAreaView>
             );
         }
 
     }
-    addressGoBack(){
+
+    addressGoBack() {
         const {navigate, goBack, state} = this.props.navigation;
         state.params.goBack();
         goBack();
     }
+
     async fetchData() {
         let list = await this.getAddressList();
         let addressData = await getAddressData();

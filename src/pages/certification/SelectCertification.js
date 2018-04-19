@@ -11,10 +11,12 @@ import {
     TouchableHighlight,
     ScrollView,
     TouchableOpacity,
+    SafeAreaView,
     View
 } from 'react-native';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 
 export default class SelectCertification extends Component<Props> {
@@ -31,6 +33,7 @@ export default class SelectCertification extends Component<Props> {
         this.props.navigation.setParams({manage: this.jumpToManage.bind(this)});
         this.fetchData()
     }
+
     static navigationOptions = ({navigation, screenProps}) => ({
         headerRight:
             (<TouchableOpacity style={{marginRight: 10}}
@@ -40,6 +43,7 @@ export default class SelectCertification extends Component<Props> {
                 </View>
             </TouchableOpacity>)
     });
+
     render() {
         if (this.state.isLoading) {
             return <LoadingView/>
@@ -61,24 +65,28 @@ export default class SelectCertification extends Component<Props> {
                 )
             });
             return (
-                <View style={styles.container}>
-                    <ScrollView contentContainerStyle={styles.scrollView}>
-                        {certificationList}
-                    </ScrollView>
-                    <Toast ref='toast' position='center'></Toast>
-                </View>
+                <SafeAreaView style={{flex: 1}}>
+                    <View style={styles.container}>
+                        <ScrollView contentContainerStyle={styles.scrollView}>
+                            {certificationList}
+                        </ScrollView>
+                        <Toast ref='toast' position='center'></Toast>
+                    </View>
+                </SafeAreaView>
             );
         }
 
     }
+
     jumpToManage() {
         this.props.navigation.navigate('ManageCertification', {
             goBack: () => this.fetchData()
         });
     }
+
     async fetchData() {
         HttpUtils.get('/idCard/selectIdCardList', {}, data => {
-            this.setState({certificationList: data.data,isLoading:false});
+            this.setState({certificationList: data.data, isLoading: false});
         })
     }
 

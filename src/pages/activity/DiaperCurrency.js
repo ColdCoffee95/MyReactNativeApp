@@ -10,11 +10,13 @@ import {
     Image,
     FlatList,
     TouchableHighlight,
+    SafeAreaView,
     Text,
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 
 export default class DiaperCurrency extends Component<Props> {
@@ -66,19 +68,22 @@ export default class DiaperCurrency extends Component<Props> {
                     }}
                 >
                     <Image
-                        style={{width: 100, height: 100}}
+                        style={{width: 200, height: 200}}
                         resizeMode='contain'
-                        source={require('../../images/no-order.jpg')}
+                        source={require('../../images/noGoods.png')}
                     />
+                    <Text>暂无此类商品</Text>
                 </View>}
             />
         }
         return (
-            <View style={styles.container}>
-                <View style={styles.goodsListView}>
-                    {goodsList}
+            <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <View style={styles.container}>
+                    <View style={styles.goodsListView}>
+                        {goodsList}
+                    </View>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 
@@ -216,7 +221,8 @@ const styles = StyleSheet.create({
     },
     goodsTitleView: {
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        height: 30
     },
     goodsTitle: {
         fontSize: 12

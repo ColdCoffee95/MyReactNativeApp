@@ -10,6 +10,7 @@ import {
     Text,
     TouchableHighlight,
     Linking,
+    SafeAreaView,
     View
 } from 'react-native';
 
@@ -24,15 +25,17 @@ export default class Hotline extends Component<Props> {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.text}>商品/商家投诉，请拨打店力集盒客服电话</Text>
-                <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.callPhone()}>
-                    <View style={styles.hotlineView}>
-                        <Text>{hotline}</Text>
-                    </View>
-                </TouchableHighlight>
+            <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <View style={styles.container}>
+                    <Text style={styles.text}>商品/商家投诉，请拨打店力集盒客服电话</Text>
+                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.callPhone()}>
+                        <View style={styles.hotlineView}>
+                            <Text>{hotline}</Text>
+                        </View>
+                    </TouchableHighlight>
 
-            </View>
+                </View>
+            </SafeAreaView>
         );
     }
 

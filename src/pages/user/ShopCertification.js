@@ -9,6 +9,7 @@ import {
     StyleSheet,
     Text,
     ScrollView,
+    SafeAreaView,
     Picker,
     TouchableHighlight,
     View
@@ -84,165 +85,167 @@ export default class ShopCertification extends Component<Props> {
             )
         });
         return (
-            <ScrollView contentContainerStyle={styles.container}>
-                <FormCell
-                    title='真实姓名'
-                    placeholder='请输入真实姓名'
-                    onChange={text => this.setState({memberName: text})}
-                    autoFocus={true}>
-                </FormCell>
-                <FormCell
-                    title='店铺名称'
-                    placeholder='请输入店铺名称'
-                    onChange={text => this.setState({name: text})}>
-                </FormCell>
-                <View style={styles.formCellView}>
-                    <Text style={{
-                        marginLeft: 10,
-                        width: 60
-                    }}>门店类型</Text>
-                    <TouchableHighlight onPress={() => this.showDoorPopup()} underlayColor='#fff' style={{
-                        marginLeft: 10,
-                        width: screenWidth - 80
-                    }}>
-                        <View style={{flexDirection: 'row', height: 40, alignItems: 'center'}}>
-                            {
-                                !this.state.type && <Text style={{color: '#c8c8c8'}}>请选择门店类型</Text>
-                            }
-                            {
-                                this.state.type &&
-                                <Text>{this.state.areaList.find(value => value.key == this.state.type).value}</Text>
-                            }
-                        </View>
-                    </TouchableHighlight>
-                </View>
-                {
-                    this.state.type === 'off-line' && <View style={styles.formCellView}>
+            <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <ScrollView contentContainerStyle={styles.container}>
+                    <FormCell
+                        title='真实姓名'
+                        placeholder='请输入真实姓名'
+                        onChange={text => this.setState({memberName: text})}
+                        autoFocus={true}>
+                    </FormCell>
+                    <FormCell
+                        title='店铺名称'
+                        placeholder='请输入店铺名称'
+                        onChange={text => this.setState({name: text})}>
+                    </FormCell>
+                    <View style={styles.formCellView}>
                         <Text style={{
                             marginLeft: 10,
                             width: 60
-                        }}>经营规模</Text>
-                        <TouchableHighlight onPress={() => this.showDoorStorePopup()} underlayColor='#fff' style={{
+                        }}>门店类型</Text>
+                        <TouchableHighlight onPress={() => this.showDoorPopup()} underlayColor='#fff' style={{
                             marginLeft: 10,
                             width: screenWidth - 80
                         }}>
                             <View style={{flexDirection: 'row', height: 40, alignItems: 'center'}}>
                                 {
-                                    !this.state.num && <Text style={{color: '#c8c8c8'}}>请选择经营规模</Text>
+                                    !this.state.type && <Text style={{color: '#c8c8c8'}}>请选择门店类型</Text>
                                 }
                                 {
-                                    this.state.num &&
-                                    <Text>{this.state.doorStoreList.find(value => value.key == this.state.num).value}</Text>
+                                    this.state.type &&
+                                    <Text>{this.state.areaList.find(value => value.key == this.state.type).value}</Text>
                                 }
                             </View>
                         </TouchableHighlight>
                     </View>
-                }
-                <View style={styles.formCellView}>
-                    <Text style={{
-                        marginLeft: 10,
-                        width: 60
-                    }}>省市区</Text>
-                    <TouchableHighlight onPress={() => this.showPopup()} underlayColor='#fff' style={{
-                        marginLeft: 10,
-                        width: screenWidth - 80
-                    }}>
-                        <View style={{flexDirection: 'row', height: 40, alignItems: 'center'}}>
-                            <Text>{this.state.provinceName}</Text>
-                            <Text style={{marginLeft: 10}}>{this.state.cityName}</Text>
-                            <Text style={{marginLeft: 10}}>{this.state.areaName}</Text>
+                    {
+                        this.state.type === 'off-line' && <View style={styles.formCellView}>
+                            <Text style={{
+                                marginLeft: 10,
+                                width: 60
+                            }}>经营规模</Text>
+                            <TouchableHighlight onPress={() => this.showDoorStorePopup()} underlayColor='#fff' style={{
+                                marginLeft: 10,
+                                width: screenWidth - 80
+                            }}>
+                                <View style={{flexDirection: 'row', height: 40, alignItems: 'center'}}>
+                                    {
+                                        !this.state.num && <Text style={{color: '#c8c8c8'}}>请选择经营规模</Text>
+                                    }
+                                    {
+                                        this.state.num &&
+                                        <Text>{this.state.doorStoreList.find(value => value.key == this.state.num).value}</Text>
+                                    }
+                                </View>
+                            </TouchableHighlight>
                         </View>
-                    </TouchableHighlight>
-                </View>
-                <FormCell
-                    title='详细地址'
-                    placeholder='请输入店铺详细地址'
-                    onChange={text => this.setState({address: text})}>
-                </FormCell>
-                <View style={styles.uploadWrapper}>
-                    <Text style={{
-                        marginLeft: 10,
-                        lineHeight: 40,
-                        height: 40,
-                    }}>上传图片</Text>
-                    <View style={styles.voucherView}>
-                        {voucherList}
+                    }
+                    <View style={styles.formCellView}>
+                        <Text style={{
+                            marginLeft: 10,
+                            width: 60
+                        }}>省市区</Text>
+                        <TouchableHighlight onPress={() => this.showPopup()} underlayColor='#fff' style={{
+                            marginLeft: 10,
+                            width: screenWidth - 80
+                        }}>
+                            <View style={{flexDirection: 'row', height: 40, alignItems: 'center'}}>
+                                <Text>{this.state.provinceName}</Text>
+                                <Text style={{marginLeft: 10}}>{this.state.cityName}</Text>
+                                <Text style={{marginLeft: 10}}>{this.state.areaName}</Text>
+                            </View>
+                        </TouchableHighlight>
                     </View>
-                </View>
+                    <FormCell
+                        title='详细地址'
+                        placeholder='请输入店铺详细地址'
+                        onChange={text => this.setState({address: text})}>
+                    </FormCell>
+                    <View style={styles.uploadWrapper}>
+                        <Text style={{
+                            marginLeft: 10,
+                            lineHeight: 40,
+                            height: 40,
+                        }}>上传图片</Text>
+                        <View style={styles.voucherView}>
+                            {voucherList}
+                        </View>
+                    </View>
 
-                <View style={styles.bottomBtnView}>
-                    <ActiveButton clickBtn={() => this.submit()} text='提交认证' style={styles.activeButton}>
+                    <View style={styles.bottomBtnView}>
+                        <ActiveButton clickBtn={() => this.submit()} text='提交认证' style={styles.activeButton}>
 
-                    </ActiveButton>
-                </View>
-                <PopupDialog
-                    ref={(popupDialog) => {
-                        this.doorTypeDialog = popupDialog;
-                    }}
-                    dialogAnimation={slideAnimation}
-                    dialogStyle={{
-                        borderRadius: 0,
-                        position: 'absolute',
-                        bottom: 0,
-                        width: screenWidth,
-                    }}>
-                    <View style={styles.dialogWrapper}>
-                        <Picker style={styles.pickerStyle}
-                                selectedValue={this.state.type}
-                                onValueChange={(type) => {
-                                    this.setState({type: type})
-                                }}>
-                            {doorTypes}
-                        </Picker>
+                        </ActiveButton>
                     </View>
-                </PopupDialog>
-                <PopupDialog
-                    ref={(popupDialog) => {
-                        this.doorStoreDialog = popupDialog;
-                    }}
-                    dialogAnimation={slideAnimation}
-                    dialogStyle={{
-                        borderRadius: 0,
-                        position: 'absolute',
-                        bottom: 0,
-                        width: screenWidth,
-                    }}>
-                    <View style={styles.dialogWrapper}>
-                        <Picker style={styles.pickerStyle}
-                                selectedValue={this.state.num}
-                                onValueChange={(num) => {
-                                    this.setState({num: num})
-                                }}>
-                            {doorStores}
-                        </Picker>
-                    </View>
-                </PopupDialog>
-                <PopupDialog
-                    ref={(popupDialog) => {
-                        this.popupDialog = popupDialog;
-                    }}
-                    dialogAnimation={slideAnimation}
-                    dialogStyle={{
-                        borderRadius: 0,
-                        position: 'absolute',
-                        bottom: 0,
-                        width: screenWidth,
-                    }}>
-                    <View style={styles.dialogWrapper}>
-                        <Address
-                            onChange={(address) => this.setState({
-                                provinceId: address.provinceId,
-                                cityId: address.cityId,
-                                areaId: address.areaId,
-                                provinceName: address.provinceName,
-                                cityName: address.cityName,
-                                areaName: address.areaName,
-                            })}
-                        ></Address>
-                    </View>
-                </PopupDialog>
-                <Toast ref='toast' position='center'/>
-            </ScrollView>
+                    <PopupDialog
+                        ref={(popupDialog) => {
+                            this.doorTypeDialog = popupDialog;
+                        }}
+                        dialogAnimation={slideAnimation}
+                        dialogStyle={{
+                            borderRadius: 0,
+                            position: 'absolute',
+                            bottom: 0,
+                            width: screenWidth,
+                        }}>
+                        <View style={styles.dialogWrapper}>
+                            <Picker style={styles.pickerStyle}
+                                    selectedValue={this.state.type}
+                                    onValueChange={(type) => {
+                                        this.setState({type: type})
+                                    }}>
+                                {doorTypes}
+                            </Picker>
+                        </View>
+                    </PopupDialog>
+                    <PopupDialog
+                        ref={(popupDialog) => {
+                            this.doorStoreDialog = popupDialog;
+                        }}
+                        dialogAnimation={slideAnimation}
+                        dialogStyle={{
+                            borderRadius: 0,
+                            position: 'absolute',
+                            bottom: 0,
+                            width: screenWidth,
+                        }}>
+                        <View style={styles.dialogWrapper}>
+                            <Picker style={styles.pickerStyle}
+                                    selectedValue={this.state.num}
+                                    onValueChange={(num) => {
+                                        this.setState({num: num})
+                                    }}>
+                                {doorStores}
+                            </Picker>
+                        </View>
+                    </PopupDialog>
+                    <PopupDialog
+                        ref={(popupDialog) => {
+                            this.popupDialog = popupDialog;
+                        }}
+                        dialogAnimation={slideAnimation}
+                        dialogStyle={{
+                            borderRadius: 0,
+                            position: 'absolute',
+                            bottom: 0,
+                            width: screenWidth,
+                        }}>
+                        <View style={styles.dialogWrapper}>
+                            <Address
+                                onChange={(address) => this.setState({
+                                    provinceId: address.provinceId,
+                                    cityId: address.cityId,
+                                    areaId: address.areaId,
+                                    provinceName: address.provinceName,
+                                    cityName: address.cityName,
+                                    areaName: address.areaName,
+                                })}
+                            ></Address>
+                        </View>
+                    </PopupDialog>
+                    <Toast ref='toast' position='center'/>
+                </ScrollView>
+            </SafeAreaView>
         );
     }
 
@@ -302,6 +305,16 @@ export default class ShopCertification extends Component<Props> {
 
     submit() {
         const {memberName, name, num, type, provinceId, cityId, areaId, address, storeVoucherList} = this.state;
+        if (!memberName || !name || !num || !address) {
+            this.refs.toast.show('请填写完整', 300);
+            return;
+        }
+        storeVoucherList.map(value => {
+            if (!value.url) {
+                this.refs.toast.show(`请上传${value.name}`, 300);
+                return;
+            }
+        });
         let params = {
             memberName: memberName, //真实姓名
             name: name, //店铺名称
@@ -317,12 +330,12 @@ export default class ShopCertification extends Component<Props> {
             params.memberId = this.props.navigation.state.params.memberId;
         }
         HttpUtils.post('/store/applyAuthenticationStore', params, data => {
-            this.refs.toast.show('店铺认证已提交，请等待审核', 500,()=>{
+            this.refs.toast.show('店铺认证已提交，请等待审核', 500, () => {
                 const {navigate, goBack, state} = this.props.navigation;
                 if (state.params && state.params.goBack) {
                     state.params.goBack();
                     goBack();
-                }else{
+                } else {
                     jumpAndClear(this.props.navigation, 'Login')
                 }
             });

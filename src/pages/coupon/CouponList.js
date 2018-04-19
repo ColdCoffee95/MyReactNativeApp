@@ -11,11 +11,13 @@ import {
     ScrollView,
     TouchableOpacity,
     Image,
+    SafeAreaView,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 
 export default class CouponList extends Component<Props> {
@@ -95,14 +97,19 @@ export default class CouponList extends Component<Props> {
                                             <Text style={styles.cutType}>{cutType}</Text>
                                             <Text style={styles.couponName}>{value.name}</Text>
                                         </View>
-                                        <Text style={{color: '#ababab',fontSize:12}}>{value.couponAmountRule.name}</Text>
+                                        <Text style={{
+                                            color: '#ababab',
+                                            fontSize: 12
+                                        }}>{value.couponAmountRule.name}</Text>
                                         {
-                                            value.dateRuleType === 'fixed-days' && <Text style={{color: '#ababab',fontSize:12}}>
+                                            value.dateRuleType === 'fixed-days' &&
+                                            <Text style={{color: '#ababab', fontSize: 12}}>
                                                 有效时间：领取后{value.days}天内
                                             </Text>
                                         }
                                         {
-                                            value.dateRuleType === 'time-interval' && <Text style={{color: '#ababab',fontSize:12}}>
+                                            value.dateRuleType === 'time-interval' &&
+                                            <Text style={{color: '#ababab', fontSize: 12}}>
                                                 有效时间：{dateFormat(value.startTime)}~{dateFormat(value.endTime)}
                                             </Text>
                                         }
@@ -224,14 +231,16 @@ export default class CouponList extends Component<Props> {
                                             }
                                             <Text style={styles.couponName}>{value.couponName}</Text>
                                         </View>
-                                        <Text style={{color: '#ababab',fontSize:12}}>{value.amountRuleName}</Text>
+                                        <Text style={{color: '#ababab', fontSize: 12}}>{value.amountRuleName}</Text>
                                         {
-                                            value.dateRuleType === 'fixed-days' && <Text style={{color: '#ababab',fontSize:12}}>
+                                            value.dateRuleType === 'fixed-days' &&
+                                            <Text style={{color: '#ababab', fontSize: 12}}>
                                                 有效时间：领取后{value.days}天内
                                             </Text>
                                         }
                                         {
-                                            value.dateRuleType === 'time-interval' && <Text style={{color: '#ababab',fontSize:12}}>
+                                            value.dateRuleType === 'time-interval' &&
+                                            <Text style={{color: '#ababab', fontSize: 12}}>
                                                 有效时间：{dateFormat(value.startTime)}~{dateFormat(value.endTime)}
                                             </Text>
                                         }
@@ -305,48 +314,50 @@ export default class CouponList extends Component<Props> {
 
         }
         return (
-            <View style={styles.container}>
-                <View style={styles.tabView}>
-                    <TouchableOpacity
-                        onPress={() => this.changeTab(1)}>
-                        <View style={styles.singleTab}>
-                            <Text
-                                style={this.state.couponType === 1 ? styles.activeTab : styles.negativeTab}>可领取</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => this.changeTab(2)}>
-                        <View style={styles.singleTab}>
-                            <Text
-                                style={this.state.couponType === 2 ? styles.activeTab : styles.negativeTab}>未使用({canUseNum})</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => this.changeTab(3)}>
-                        <View style={styles.singleTab}>
-                            <Text
-                                style={this.state.couponType === 3 ? styles.activeTab : styles.negativeTab}>已使用</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => this.changeTab(4)}>
-                        <View style={styles.singleTab}>
-                            <Text
-                                style={this.state.couponType === 4 ? styles.activeTab : styles.negativeTab}>已过期</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                {
-                    this.state.isLoading && <LoadingView/>
-                }
-                {
-                    !this.state.isLoading && <ScrollView contentContainerStyle={styles.scrollView}>
-                        {list}
-                    </ScrollView>
-                }
+            <SafeAreaView style={{flex: 1}}>
+                <View style={styles.container}>
+                    <View style={styles.tabView}>
+                        <TouchableOpacity
+                            onPress={() => this.changeTab(1)}>
+                            <View style={styles.singleTab}>
+                                <Text
+                                    style={this.state.couponType === 1 ? styles.activeTab : styles.negativeTab}>可领取</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.changeTab(2)}>
+                            <View style={styles.singleTab}>
+                                <Text
+                                    style={this.state.couponType === 2 ? styles.activeTab : styles.negativeTab}>未使用({canUseNum})</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.changeTab(3)}>
+                            <View style={styles.singleTab}>
+                                <Text
+                                    style={this.state.couponType === 3 ? styles.activeTab : styles.negativeTab}>已使用</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.changeTab(4)}>
+                            <View style={styles.singleTab}>
+                                <Text
+                                    style={this.state.couponType === 4 ? styles.activeTab : styles.negativeTab}>已过期</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    {
+                        this.state.isLoading && <LoadingView/>
+                    }
+                    {
+                        !this.state.isLoading && <ScrollView contentContainerStyle={styles.scrollView}>
+                            {list}
+                        </ScrollView>
+                    }
 
-                <Toast ref='toast' position='center'></Toast>
-            </View>
+                    <Toast ref='toast' position='center'></Toast>
+                </View>
+            </SafeAreaView>
         );
     }
 
@@ -451,14 +462,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    couponName:{
-      fontSize:12
+    couponName: {
+        fontSize: 12
     },
     couponInfoTop: {
         flexDirection: 'row',
         alignItems: 'center',
         width: 0.6 * screenWidth * 0.9,
-        overflow:'hidden'
+        overflow: 'hidden'
     },
     loadingContainer: {
         flex: 1,

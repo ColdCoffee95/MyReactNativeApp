@@ -5,6 +5,7 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
+    SafeAreaView,
     Alert,
     View
 } from 'react-native';
@@ -18,7 +19,7 @@ type Props = {};
 export default class LoginScreen extends Component<Props> {
     constructor(props) {
         super(props);
-        this.state = {loginId: '15957103422', pwd: 'a123456', havaToken: true, agree: true}
+        this.state = {loginId: '', pwd: '', havaToken: true, agree: true}
     }
 
     componentDidMount() {
@@ -53,14 +54,15 @@ export default class LoginScreen extends Component<Props> {
     render() {
         if (!this.state.havaToken) {
             return (
-                <View style={styles.container}>
-                    <Image
-                        source={require('../../images/logo.png')}
-                        style={styles.logo}
-                    />
-                    <Text style={styles.version}>
-                        {version}
-                    </Text>
+                <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                    <View style={styles.container}>
+                        <Image
+                            source={require('../../images/logo.png')}
+                            style={styles.logo}
+                        />
+                        <Text style={styles.version}>
+                            {version}
+                        </Text>
 
                         <View style={styles.inputView}>
 
@@ -92,47 +94,49 @@ export default class LoginScreen extends Component<Props> {
                             </View>
                         </View>
 
-                    <View style={styles.agreeForgetView}>
-                        <View style={styles.agreeView}>
-                            <TouchableOpacity
-                                onPress={() => this.setState({agree: !this.state.agree})}>
-                                <View style={styles.defaultView}>
-                                    {
-                                        !this.state.agree ?
-                                            (<Icon2 name="checkbox-blank-circle-outline" size={12}
-                                                    color={activeColor}></Icon2>) :
-                                            (<Icon2 name="checkbox-marked-circle" size={12}
-                                                    color={activeColor}></Icon2>)
-                                    }
-                                </View>
-                            </TouchableOpacity>
-                            <Text style={{color: '#aeaeae', marginLeft: 2, fontSize: 10}}>我已经阅读并同意</Text>
-                            <TouchableOpacity onPress={() => this.agreement()}>
+                        <View style={styles.agreeForgetView}>
+                            <View style={styles.agreeView}>
+                                <TouchableOpacity
+                                    onPress={() => this.setState({agree: !this.state.agree})}>
+                                    <View style={styles.defaultView}>
+                                        {
+                                            !this.state.agree ?
+                                                (<Icon2 name="checkbox-blank-circle-outline" size={12}
+                                                        color={activeColor}></Icon2>) :
+                                                (<Icon2 name="checkbox-marked-circle" size={12}
+                                                        color={activeColor}></Icon2>)
+                                        }
+                                    </View>
+                                </TouchableOpacity>
+                                <Text style={{color: '#aeaeae', marginLeft: 2, fontSize: 10}}>我已经阅读并同意</Text>
+                                <TouchableOpacity onPress={() => this.agreement()}>
+                                    <View>
+                                        <Text style={{color: activeColor, fontSize: 10}}>《店力集盒平台服务协议》</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}>
                                 <View>
-                                    <Text style={{color: activeColor, fontSize: 10}}>《店力集盒平台服务协议》</Text>
+                                    <Text>忘记密码?</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}>
-                            <View>
-                                <Text>忘记密码?</Text>
+                        <TouchableOpacity onPress={() => this.login()}>
+                            <View style={styles.loginBtn}>
+                                <Text style={styles.loginBtnText}>登录</Text>
                             </View>
                         </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity onPress={() => this.login()}>
-                        <View style={styles.loginBtn}>
-                            <Text style={styles.loginBtnText}>登录</Text>
+                        <TouchableOpacity onPress={() => this.register()}>
+                            <View style={styles.registerBtn}>
+                                <Text style={styles.registerBtnText}>申请入驻</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={styles.bottomView}>
+                            <Text style={{color: '#bebebe', fontSize: 12}}>Designed by MetChange</Text>
                         </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.register()}>
-                        <View style={styles.registerBtn}>
-                            <Text style={styles.registerBtnText}>申请入驻</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <View style={styles.bottomView}>
-                        <Text style={{color: '#bebebe', fontSize: 12}}>Designed by MetChange</Text>
                     </View>
-                </View>
+                </SafeAreaView>
+
             );
         } else {
             return <LoadingView/>
@@ -152,9 +156,15 @@ export default class LoginScreen extends Component<Props> {
             Alert.alert(null, '请先阅读并同意平台协议再登录！');
             return;
         }
+        let loginId = this.state.loginId.trim();
+        let pwd = this.state.pwd.trim();
+        if(!loginId || !pwd){
+            Alert.alert(null, '请输入完整！');
+            return;
+        }
         let params = {
-            loginId: this.state.loginId,
-            pwd: CryptoJS.MD5(this.state.pwd).toString()
+            loginId: loginId,
+            pwd: CryptoJS.MD5(pwd).toString()
         };
         HttpUtils.post('/login/doLogin', params, data => {
 

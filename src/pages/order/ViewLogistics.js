@@ -11,10 +11,12 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
-    View
+    View,
+    SafeAreaView
 } from 'react-native';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 export default class ViewLogistics extends Component<Props> {
 
@@ -60,12 +62,14 @@ export default class ViewLogistics extends Component<Props> {
                     </View>
                 )
             });
-            return <View style={styles.container}>
-                <ScrollView>
-                    {deliveryView}
-                </ScrollView>
-                <Toast ref='toast' position='center'></Toast>
-            </View>
+            return <SafeAreaView style={{flex: 1}}>
+                <View style={styles.container}>
+                    <ScrollView>
+                        {deliveryView}
+                    </ScrollView>
+                    <Toast ref='toast' position='center'></Toast>
+                </View>
+            </SafeAreaView>
         }
 
     }

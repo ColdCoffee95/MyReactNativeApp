@@ -11,12 +11,14 @@ import {
     Image,
     Alert,
     ScrollView,
+    SafeAreaView,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 export default class OrderDetail extends Component<Props> {
 
@@ -96,141 +98,143 @@ export default class OrderDetail extends Component<Props> {
                 )
             });
             let orderTypeName = orderStatusList.find(value => orderInfo.orderStatus === value.id).name;
-            return <View style={styles.container}>
-                <ScrollView>
-                    <View>
+            return <SafeAreaView style={{flex: 1}}>
+                <View style={styles.container}>
+                    <ScrollView>
+                        <View>
 
-                    </View>
-                    <View style={styles.topInfoView}>
-                        <View style={styles.topLeftView}>
-                            <Icon name='map-marker' size={20} color="#999"></Icon>
-                            <View style={styles.topRightView}>
-                                <View style={styles.topContacts}>
-                                    <Text style={{marginLeft: 10}}>收货人：{orderInfo.orderDetail.contacts}</Text>
-                                    <Text>{orderInfo.orderDetail.mobile}</Text>
+                        </View>
+                        <View style={styles.topInfoView}>
+                            <View style={styles.topLeftView}>
+                                <Icon name='map-marker' size={20} color="#999"></Icon>
+                                <View style={styles.topRightView}>
+                                    <View style={styles.topContacts}>
+                                        <Text style={{marginLeft: 10}}>收货人：{orderInfo.orderDetail.contacts}</Text>
+                                        <Text>{orderInfo.orderDetail.mobile}</Text>
+                                    </View>
+                                    <Text style={{
+                                        marginTop: 10,
+                                        marginLeft: 10
+                                    }}>收货地址：{orderInfo.orderDetail.address}</Text>
                                 </View>
-                                <Text style={{
-                                    marginTop: 10,
-                                    marginLeft: 10
-                                }}>收货地址：{orderInfo.orderDetail.address}</Text>
                             </View>
                         </View>
-                    </View>
-                    <View style={styles.orderWrapper}>
-                        {/*yMMddHHmmss*/}
-                        <View style={styles.orderTopView}>
-                            <Text>{dateFormat(orderInfo.createTime)}</Text>
-                            <Text>{orderTypeName}</Text>
+                        <View style={styles.orderWrapper}>
+                            {/*yMMddHHmmss*/}
+                            <View style={styles.orderTopView}>
+                                <Text>{dateFormat(orderInfo.createTime)}</Text>
+                                <Text>{orderTypeName}</Text>
+                            </View>
+                            <View style={styles.goodsWrapper}>
+                                {goodsList}
+                            </View>
+                            <View style={styles.paymentPrice}>
+                                <Text style={{marginRight: 10}}>订单总额：¥{orderInfo.totalPrice}</Text>
+                                <Text>运费：¥{orderInfo.transportationFee}</Text>
+                            </View>
+                            <View style={styles.paymentPrice}>
+                                <Text style={{color: activeColor}}>支付金额：¥{orderInfo.paymentPrice}</Text>
+                            </View>
                         </View>
-                        <View style={styles.goodsWrapper}>
-                            {goodsList}
+                        <View style={styles.orderInfoWrapper}>
+                            <Text>订单状态：{orderTypeName}</Text>
+                            <Text style={styles.orderInfoText}>订单编号：{orderInfo.orderNumber}</Text>
+                            <Text style={styles.orderInfoText}>下单时间：{dateFormat(orderInfo.createTime)}</Text>
+                            {
+                                orderInfo.updateTime &&
+                                <Text style={styles.orderInfoText}>发货时间：{dateFormat(orderInfo.updateTime)}</Text>
+                            }
+
                         </View>
-                        <View style={styles.paymentPrice}>
-                            <Text style={{marginRight: 10}}>订单总额：¥{orderInfo.totalPrice}</Text>
-                            <Text>运费：¥{orderInfo.transportationFee}</Text>
+                    </ScrollView>
+
+                    {
+                        orderInfo.orderStatus == 1 &&
+                        <View style={styles.btnView}>
+                            <ActiveButton clickBtn={() => this.jumpToPay(orderInfo.orderId)} text='去支付'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
+
+                            </ActiveButton>
+                            <ActiveButton clickBtn={() => this.cancelOrder(orderInfo.orderId)} text='取消订单'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
+
+                            </ActiveButton>
                         </View>
-                        <View style={styles.paymentPrice}>
-                            <Text style={{color: activeColor}}>支付金额：¥{orderInfo.paymentPrice}</Text>
+                    }
+                    {
+                        orderInfo.orderStatus == 2 &&
+                        <View style={styles.btnView}>
+                            <ActiveButton clickBtn={() => this.getDeliveryInfo(orderInfo.orderId)} text='查看物流'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
+
+                            </ActiveButton>
+                            <ActiveButton clickBtn={() => this.confirmReceipt(orderInfo.orderId)} text='确认收货'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
+
+                            </ActiveButton>
+                            <ActiveButton clickBtn={() => this.applyAfterSale(orderInfo)} text='申请退款'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
+
+                            </ActiveButton>
                         </View>
-                    </View>
-                    <View style={styles.orderInfoWrapper}>
-                        <Text>订单状态：{orderTypeName}</Text>
-                        <Text style={styles.orderInfoText}>订单编号：{orderInfo.orderNumber}</Text>
-                        <Text style={styles.orderInfoText}>下单时间：{dateFormat(orderInfo.createTime)}</Text>
-                        {
-                            orderInfo.updateTime &&
-                            <Text style={styles.orderInfoText}>发货时间：{dateFormat(orderInfo.updateTime)}</Text>
-                        }
+                    }
+                    {
+                        orderInfo.orderStatus == 3 &&
+                        <View style={styles.btnView}>
+                            <ActiveButton clickBtn={() => this.expediteDelivery(orderInfo.orderId)} text='催发货'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
 
-                    </View>
-                </ScrollView>
+                            </ActiveButton>
+                            <ActiveButton clickBtn={() => this.applyAfterSale(orderInfo)} text='申请退款'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
 
-                {
-                    orderInfo.orderStatus == 1 &&
-                    <View style={styles.btnView}>
-                        <ActiveButton clickBtn={() => this.jumpToPay(orderInfo.orderId)} text='去支付'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
+                            </ActiveButton>
+                        </View>
+                    }
+                    {
+                        orderInfo.orderStatus == 4 &&
+                        <View style={styles.btnView}>
+                            <ActiveButton clickBtn={() => this.getDeliveryInfo(orderInfo.orderId)} text='查看物流'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
 
-                        </ActiveButton>
-                        <ActiveButton clickBtn={() => this.cancelOrder(orderInfo.orderId)} text='取消订单'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
+                            </ActiveButton>
+                            <ActiveButton clickBtn={() => this.comment(orderInfo.orderId)} text='评价'
+                                          style={styles.activeButton} textStyle={{color: activeColor}}>
 
-                        </ActiveButton>
-                    </View>
-                }
-                {
-                    orderInfo.orderStatus == 2 &&
-                    <View style={styles.btnView}>
-                        <ActiveButton clickBtn={() => this.getDeliveryInfo(orderInfo.orderId)} text='查看物流'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
+                            </ActiveButton>
+                            <ActiveButton clickBtn={() => this.applyAfterSale(orderInfo)} text='申请售后'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
 
-                        </ActiveButton>
-                        <ActiveButton clickBtn={() => this.confirmReceipt(orderInfo.orderId)} text='确认收货'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
+                            </ActiveButton>
+                        </View>
+                    }
+                    {
+                        orderInfo.orderStatus == 5 &&
+                        <View style={styles.btnView}>
+                            <ActiveButton clickBtn={() => this.getDeliveryInfo(orderInfo.orderId)} text='查看物流'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
 
-                        </ActiveButton>
-                        <ActiveButton clickBtn={() => this.applyAfterSale(orderInfo)} text='申请退款'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
+                            </ActiveButton>
+                            <ActiveButton clickBtn={() => this.applyAfterSale(orderInfo)} text='申请售后'
+                                          textStyle={{color: 'black'}}
+                                          style={styles.commonButton}>
 
-                        </ActiveButton>
-                    </View>
-                }
-                {
-                    orderInfo.orderStatus == 3 &&
-                    <View style={styles.btnView}>
-                        <ActiveButton clickBtn={() => this.expediteDelivery(orderInfo.orderId)} text='催发货'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
-
-                        </ActiveButton>
-                        <ActiveButton clickBtn={() => this.applyAfterSale(orderInfo)} text='申请退款'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
-
-                        </ActiveButton>
-                    </View>
-                }
-                {
-                    orderInfo.orderStatus == 4 &&
-                    <View style={styles.btnView}>
-                        <ActiveButton clickBtn={() => this.getDeliveryInfo(orderInfo.orderId)} text='查看物流'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
-
-                        </ActiveButton>
-                        <ActiveButton clickBtn={() => this.comment(orderInfo.orderId)} text='评价'
-                                      style={styles.activeButton} textStyle={{color: activeColor}}>
-
-                        </ActiveButton>
-                        <ActiveButton clickBtn={() => this.applyAfterSale(orderInfo)} text='申请售后'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
-
-                        </ActiveButton>
-                    </View>
-                }
-                {
-                    orderInfo.orderStatus == 5 &&
-                    <View style={styles.btnView}>
-                        <ActiveButton clickBtn={() => this.getDeliveryInfo(orderInfo.orderId)} text='查看物流'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
-
-                        </ActiveButton>
-                        <ActiveButton clickBtn={() => this.applyAfterSale(orderInfo)} text='申请售后'
-                                      textStyle={{color: 'black'}}
-                                      style={styles.commonButton}>
-
-                        </ActiveButton>
-                    </View>
-                }
-                <Toast ref='toast' position='center'></Toast>
-            </View>
+                            </ActiveButton>
+                        </View>
+                    }
+                    <Toast ref='toast' position='center'></Toast>
+                </View>
+            </SafeAreaView>
         }
 
     }
@@ -305,7 +309,7 @@ export default class OrderDetail extends Component<Props> {
     }
 
     expediteDelivery() {
-        alert('操作成功,已提醒商家尽快发货')
+        Alert.alert(null, '操作成功,已提醒商家尽快发货')
     }
 
     comment(orderId) {

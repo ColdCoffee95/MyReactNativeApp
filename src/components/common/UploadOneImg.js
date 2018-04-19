@@ -11,6 +11,7 @@ import {
     Text,
     TouchableOpacity,
     ActivityIndicator,
+    Alert,
     View
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet'
@@ -132,7 +133,7 @@ export default class UploadOneImg extends Component<Props> {
                     this.props.onChange(url);
                 })
                 .catch((error) => {
-                    alert('上传失败，请稍后再试')
+                    Alert.alert(null,'上传失败，请稍后再试')
                 });
         })
     }

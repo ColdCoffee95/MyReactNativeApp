@@ -18,13 +18,19 @@ export default class ActiveButton extends Component<Props> {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            disable:props.disable || false
+        }
     }
 
     render() {
         return (
             <TouchableOpacity
-                onPress={() => this.props.clickBtn()}>
+                onPress={() => {
+                    if(!this.state.disable){
+                        this.props.clickBtn()
+                    }
+                }}>
                 <View style={this.props.style ? this.props.style : styles.submitView}>
                     <Text
                         style={this.props.textStyle ? this.props.textStyle : styles.submitText}>{this.props.text}</Text>

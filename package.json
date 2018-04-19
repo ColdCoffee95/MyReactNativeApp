@@ -33,7 +33,7 @@
     "react-native-vector-icons": "^4.5.0",
     "react-native-wechat": "^1.9.9",
     "react-native-yunpeng-alipay": "^2.0.0",
-    "react-navigation": "^1.5.0",
+    "react-navigation": "^1.5.11",
     "teaset": "^0.5.6"
   },
   "devDependencies": {

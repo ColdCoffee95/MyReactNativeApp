@@ -11,6 +11,7 @@ import {
     FlatList,
     TouchableHighlight,
     Text,
+    SafeAreaView,
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
@@ -68,19 +69,23 @@ export default class LimitedPurchase extends Component<Props> {
                     }}
                 >
                     <Image
-                        style={{width: 100, height: 100}}
+                        style={{width: 200, height: 200}}
                         resizeMode='contain'
-                        source={require('../../images/no-order.jpg')}
+                        source={require('../../images/noGoods.png')}
                     />
+                    <Text>暂无此类商品</Text>
                 </View>}
             />
         }
         return (
-            <View style ={styles.container}>
-                <View style={styles.goodsListView}>
-                    {goodsList}
+            <SafeAreaView style={{flex: 1,backgroundColor:whiteColor}}>
+                <View style ={styles.container}>
+                    <View style={styles.goodsListView}>
+                        {goodsList}
+                    </View>
                 </View>
-            </View>
+            </SafeAreaView>
+
         );
     }
 
@@ -130,8 +135,7 @@ export default class LimitedPurchase extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList:this.state.goodsList.concat(data.data.list)});
-            this.state.loadingMore = false;
+            this.setState({goodsList:this.state.goodsList.concat(data.data.list),loadingMore:false});
         })
     }
 

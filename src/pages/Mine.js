@@ -10,6 +10,7 @@ import {
     Image,
     Text,
     TouchableOpacity,
+    SafeAreaView,
     View,
     ScrollView,
     RefreshControl
@@ -151,77 +152,80 @@ export default class Mine extends Component<Props> {
             )
         });
         return (
-            <ScrollView contentContainerStyle={styles.container}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={this.state.isRefreshing}
-                                onRefresh={this._onRefresh.bind(this)}
-                                title="加载中..."
-                                progressBackgroundColor="#ffff00">
+            <SafeAreaView style={{flex: 1}}>
+                <ScrollView contentContainerStyle={styles.container}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.isRefreshing}
+                                    onRefresh={this._onRefresh.bind(this)}
+                                    title="加载中..."
+                                    progressBackgroundColor="#ffff00">
 
-                            </RefreshControl>
-                        }>
-                {/*<Loading isVisible={this.state.isVisible} size={50} type={'CircleFlip'} color={'orange'}/>*/}
+                                </RefreshControl>
+                            }>
+                    {/*<Loading isVisible={this.state.isVisible} size={50} type={'CircleFlip'} color={'orange'}/>*/}
 
-                <View style={styles.mineHeader}>
-                    <View style={styles.mineHeaderActive}>
+                    <View style={styles.mineHeader}>
+                        <View style={styles.mineHeaderActive}>
 
-                    </View>
-                    <View style={styles.mineHeaderBackground}>
+                        </View>
+                        <View style={styles.mineHeaderBackground}>
 
-                    </View>
+                        </View>
 
-                    <View style={styles.userView}>
-                        <Text style={styles.memberName}>{this.state.userInfo.memberName}</Text>
-                        <View style={styles.collectView}>
-                            <TouchableOpacity onPress={() => this.toCollect()}>
-                                <View style={styles.childView}>
-                                    <Icon1 name='heart' size={30} color={activeColor}></Icon1>
-                                    <Text>收藏</Text>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.toFootPrint()}>
-                                <View style={styles.childView}>
-                                    <Icon1 name='foot' size={30} color={activeColor}></Icon1>
-                                    <Text>足迹</Text>
-                                </View>
-                            </TouchableOpacity>
+                        <View style={styles.userView}>
+                            <Text style={styles.memberName}>{this.state.userInfo.memberName}</Text>
+                            <View style={styles.collectView}>
+                                <TouchableOpacity onPress={() => this.toCollect()}>
+                                    <View style={styles.childView}>
+                                        <Icon1 name='heart' size={30} color={activeColor}></Icon1>
+                                        <Text>收藏</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.toFootPrint()}>
+                                    <View style={styles.childView}>
+                                        <Icon1 name='foot' size={30} color={activeColor}></Icon1>
+                                        <Text>足迹</Text>
+                                    </View>
+                                </TouchableOpacity>
 
+
+                            </View>
+                        </View>
+                        <View style={styles.avatarView}>
+                            {
+                                this.state.userInfo.memberId && <UploadOneImg
+                                    style={styles.avatar}
+                                    onChange={img => this.updateAvatar(img)}
+                                    img={this.state.userInfo.avatar || 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}>
+                                </UploadOneImg>
+                            }
 
                         </View>
                     </View>
-                    <View style={styles.avatarView}>
-                        {
-                            this.state.userInfo.memberId && <UploadOneImg
-                                style={styles.avatar}
-                                onChange={img => this.updateAvatar(img)}
-                                img={this.state.userInfo.avatar || 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}>
-                            </UploadOneImg>
-                        }
+                    <View style={styles.cellView}>
+                        <Text style={styles.leftCell}>我的订单</Text>
+                        <TouchableOpacity onPress={() => this.jumpToOrder(-1)}>
+                            <View style={styles.rightCell}>
+                                <Text style={styles.rightCellText}>查看所有订单</Text>
+                                <Icon name="angle-right" size={20} color="#999"/>
+                            </View>
+                        </TouchableOpacity>
 
                     </View>
-                </View>
-                <View style={styles.cellView}>
-                    <Text style={styles.leftCell}>我的订单</Text>
-                    <TouchableOpacity onPress={() => this.jumpToOrder(-1)}>
-                        <View style={styles.rightCell}>
-                            <Text style={styles.rightCellText}>查看所有订单</Text>
-                            <Icon name="angle-right" size={20} color="#999"/>
-                        </View>
-                    </TouchableOpacity>
+                    <View style={styles.orderView}>
+                        {orderTypeList}
+                    </View>
+                    <View style={styles.cellView}>
+                        <Text style={styles.leftCell}>必备工具</Text>
+                    </View>
+                    <View style={styles.toolView}>
+                        {toolList}
+                    </View>
+                    <Toast ref='toast' position='center'></Toast>
+                </ScrollView>
+            </SafeAreaView>
 
-                </View>
-                <View style={styles.orderView}>
-                    {orderTypeList}
-                </View>
-                <View style={styles.cellView}>
-                    <Text style={styles.leftCell}>必备工具</Text>
-                </View>
-                <View style={styles.toolView}>
-                    {toolList}
-                </View>
-                <Toast ref='toast' position='center'></Toast>
-            </ScrollView>
         );
 
     }

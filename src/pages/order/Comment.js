@@ -12,6 +12,7 @@ import {
     TextInput,
     TouchableOpacity,
     ScrollView,
+    SafeAreaView,
     View,
     Image,
 } from 'react-native';
@@ -20,6 +21,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import StarRating from 'react-native-star-rating'
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 
 export default class Comment extends Component<Props> {
@@ -84,87 +86,93 @@ export default class Comment extends Component<Props> {
                 )
             })
             return (
-                <ScrollView contentContainerStyle={styles.container}>
-                    {goodsView}
-                    <View style={styles.tabView}>
-                        <TouchableHighlight
-                            onPress={() => this.setState({userStar: 1})}
-                            underlayColor='#fff'>
-                            <View style={styles.singleTab}>
-                                <Icon name="emoticon-happy" size={30} color={userStar === 1 ?activeColor:'black'}/>
-                                <Text
-                                    style={userStar === 1 ? styles.activeTab : styles.negativeTab}>好评</Text>
-                            </View>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            onPress={() => this.setState({userStar: 2})}
-                            underlayColor='#fff'>
-                            <View style={styles.singleTab}>
-                                <Icon name='emoticon-neutral' size={30} color={userStar === 2 ?activeColor:'black'}></Icon>
-                                <Text
-                                    style={userStar === 2 ? styles.activeTab : styles.negativeTab}>一般</Text>
-                            </View>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            onPress={() => this.setState({userStar: 3})}
-                            underlayColor='#fff'>
-                            <View style={styles.singleTab}>
-                                <Icon name='emoticon-sad' size={30} color={userStar === 3 ?activeColor:'black'}></Icon>
-                                <Text
-                                    style={userStar === 3 ? styles.activeTab : styles.negativeTab}>差评</Text>
-                            </View>
-                        </TouchableHighlight>
-                    </View>
-                    <View style={styles.firstContainer}>
-                        <View style={styles.sugMessageView}>
-                            <TextInput
-                                style={styles.textInput}
-                                onChangeText={(text) => this.setState({userMessage: text})}
-                                maxLength={140}
-                                multiline={true}
-                                underlineColorAndroid='transparent'
-                                placeholder='货物满足您的期待吗？说说你的使用心得，分享给想买的他们吧(140字以内)'>
-                            </TextInput>
+                <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                    <ScrollView contentContainerStyle={styles.container} keyboardDismissMode='on-drag'>
+                        {goodsView}
+                        <View style={styles.tabView}>
+                            <TouchableHighlight
+                                onPress={() => this.setState({userStar: 1})}
+                                underlayColor='#fff'>
+                                <View style={styles.singleTab}>
+                                    <Icon name="emoticon-happy" size={30}
+                                          color={userStar === 1 ? activeColor : 'black'}/>
+                                    <Text
+                                        style={userStar === 1 ? styles.activeTab : styles.negativeTab}>好评</Text>
+                                </View>
+                            </TouchableHighlight>
+                            <TouchableHighlight
+                                onPress={() => this.setState({userStar: 2})}
+                                underlayColor='#fff'>
+                                <View style={styles.singleTab}>
+                                    <Icon name='emoticon-neutral' size={30}
+                                          color={userStar === 2 ? activeColor : 'black'}></Icon>
+                                    <Text
+                                        style={userStar === 2 ? styles.activeTab : styles.negativeTab}>一般</Text>
+                                </View>
+                            </TouchableHighlight>
+                            <TouchableHighlight
+                                onPress={() => this.setState({userStar: 3})}
+                                underlayColor='#fff'>
+                                <View style={styles.singleTab}>
+                                    <Icon name='emoticon-sad' size={30}
+                                          color={userStar === 3 ? activeColor : 'black'}></Icon>
+                                    <Text
+                                        style={userStar === 3 ? styles.activeTab : styles.negativeTab}>差评</Text>
+                                </View>
+                            </TouchableHighlight>
                         </View>
-                    </View>
-                    <View style={styles.cellView}>
-                        <Text style={styles.leftCell}>评分项</Text>
-                    </View>
-                    <View style={styles.starView}>
-                        <Text>商品质量</Text>
-                        <StarRating
-                            disabled={false}
-                            maxStars={5}
-                            starSize={30}
-                            fullStarColor={activeColor}
-                            rating={this.state.goodsStar}
-                            selectedStar={(rating) => this.setState({goodsStar: rating})}
-                        />
-                    </View>
-                    <View style={styles.starView}>
-                        <Text>配送速度</Text>
-                        <StarRating
-                            disabled={false}
-                            maxStars={5}
-                            starSize={30}
-                            fullStarColor={activeColor}
-                            rating={this.state.revNice}
-                            selectedStar={(rating) => this.setState({revNice: rating})}
-                        />
-                    </View>
-                    <View style={styles.starView}>
-                        <Text>服务态度</Text>
-                        <StarRating
-                            disabled={false}
-                            maxStars={5}
-                            starSize={30}
-                            fullStarColor={activeColor}
-                            rating={this.state.logNice}
-                            selectedStar={(rating) => this.setState({logNice: rating})}
-                        />
-                    </View>
-                    <Toast ref='toast' position='center'></Toast>
-                </ScrollView>
+                        <View style={styles.firstContainer}>
+                            <View style={styles.sugMessageView}>
+                                <TextInput
+                                    style={styles.textInput}
+                                    onChangeText={(text) => this.setState({userMessage: text})}
+                                    maxLength={140}
+                                    returnKeyType='done'
+                                    multiline={true}
+                                    underlineColorAndroid='transparent'
+                                    placeholder='货物满足您的期待吗？说说你的使用心得，分享给想买的他们吧(140字以内)'>
+                                </TextInput>
+                            </View>
+                        </View>
+                        <View style={styles.cellView}>
+                            <Text style={styles.leftCell}>评分项</Text>
+                        </View>
+                        <View style={styles.starView}>
+                            <Text>商品质量</Text>
+                            <StarRating
+                                disabled={false}
+                                maxStars={5}
+                                starSize={30}
+                                fullStarColor={activeColor}
+                                rating={this.state.goodsStar}
+                                selectedStar={(rating) => this.setState({goodsStar: rating})}
+                            />
+                        </View>
+                        <View style={styles.starView}>
+                            <Text>配送速度</Text>
+                            <StarRating
+                                disabled={false}
+                                maxStars={5}
+                                starSize={30}
+                                fullStarColor={activeColor}
+                                rating={this.state.revNice}
+                                selectedStar={(rating) => this.setState({revNice: rating})}
+                            />
+                        </View>
+                        <View style={styles.starView}>
+                            <Text>服务态度</Text>
+                            <StarRating
+                                disabled={false}
+                                maxStars={5}
+                                starSize={30}
+                                fullStarColor={activeColor}
+                                rating={this.state.logNice}
+                                selectedStar={(rating) => this.setState({logNice: rating})}
+                            />
+                        </View>
+                        <Toast ref='toast' position='center'></Toast>
+                    </ScrollView>
+                </SafeAreaView>
             );
         }
 
@@ -177,11 +185,13 @@ export default class Comment extends Component<Props> {
             logNice: logNice,
             goodsStar: goodsStar,
             userStar: userStar,
-            userMessage: userMessage,
+            userMessage: userMessage.trim(),
             orderId: orderId
         };
-        console.warn(params);
-        return;
+        if (!params.userMessage) {
+            this.refs.toast.show('请说点什么吧', 500);
+            return;
+        }
         HttpUtils.post('/reviews/revgoods', params, data => {
             this.refs.toast.show('评价成功!', 300, () => {
                 const {navigate, goBack, state} = this.props.navigation;

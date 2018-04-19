@@ -10,11 +10,13 @@ import {
     Image,
     FlatList,
     TouchableHighlight,
+    SafeAreaView,
     Text,
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 
 export default class NewSale extends Component<Props> {
@@ -52,7 +54,7 @@ export default class NewSale extends Component<Props> {
                 ItemSeparatorComponent={() => <View
                     style={{backgroundColor: borderColor, height: 1}}
                 />}
-                ListHeaderComponent={()=><View>
+                ListHeaderComponent={() => <View>
                     <Image
                         resizeMode='contain'
                         style={styles.banner}
@@ -68,19 +70,22 @@ export default class NewSale extends Component<Props> {
                     }}
                 >
                     <Image
-                        style={{width: 100, height: 100}}
+                        style={{width: 200, height: 200}}
                         resizeMode='contain'
-                        source={require('../../images/no-order.jpg')}
+                        source={require('../../images/noGoods.png')}
                     />
+                    <Text>暂无此类商品</Text>
                 </View>}
             />
         }
         return (
-            <View style ={styles.container}>
-                <View style={styles.goodsListView}>
-                    {goodsList}
+            <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <View style={styles.container}>
+                    <View style={styles.goodsListView}>
+                        {goodsList}
+                    </View>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 
@@ -130,7 +135,7 @@ export default class NewSale extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList:this.state.goodsList.concat(data.data.list)});
+            this.setState({goodsList: this.state.goodsList.concat(data.data.list)});
             this.state.loadingMore = false;
         })
     }
@@ -156,7 +161,9 @@ export default class NewSale extends Component<Props> {
                         <Text style={styles.goodsTrade}>{item.tradeName}</Text>
                     </View>
                     <View>
-                        <ActiveButton text="立即抢购" style={styles.buyBtn} clickBtn={()=>{this.goodsDetail(item.id)}}/>
+                        <ActiveButton text="立即抢购" style={styles.buyBtn} clickBtn={() => {
+                            this.goodsDetail(item.id)
+                        }}/>
                     </View>
                 </View>
             </View>

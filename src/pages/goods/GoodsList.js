@@ -11,6 +11,7 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     TextInput,
+    SafeAreaView,
     FlatList,
     Image,
     View,
@@ -19,6 +20,7 @@ import Drawer from "react-native-drawer";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GoodsSideMenu from '../../components/business/GoodsSideMenu'
 import LoadingView from '../../components/common/LoadingView';
+import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 
 export default class GoodsList extends Component<Props> {
@@ -51,6 +53,7 @@ export default class GoodsList extends Component<Props> {
         this.state.secondCatIds = this.props.navigation.state.params.secondIds || [];
         this.state.brandIds = this.props.navigation.state.params.brandIds || [];
         this.state.keyword = this.props.navigation.state.params.keyword || '';
+        console.warn(this.state)
         this.fetchData();
     }
 
@@ -61,7 +64,9 @@ export default class GoodsList extends Component<Props> {
                 <TextInput
                     style={styles.keyword}
                     // autoFocus={true}
+                    defaultValue={navigation.state.params.keyword || ''}
                     placeholder="搜索"
+                    returnKeyType='done'
                     // onEndEditing={(text) => {
                     //     navigation.setParams({keyword: text})
                     // }}
@@ -108,68 +113,76 @@ export default class GoodsList extends Component<Props> {
                     <Image
                         style={{width: 200, height: 200}}
                         resizeMode='contain'
-                        source={require('../../images/no-order.jpg')}
+                        source={require('../../images/noGoods.png')}
                     />
+                    <Text>暂无此类商品，请重新搜索吧</Text>
                 </View>}
             />
         }
 
         return (
-            <Drawer
-                type="overlay"
-                ref={(ref) => this._drawer = ref}
-                content={<GoodsSideMenu
-                    firstId={this.props.navigation.state.params.id || ''}
-                    secondIds={this.props.navigation.state.params.secondId ?
-                        [this.props.navigation.state.params.secondId] : []}
-                    sureBtn={(obj) => this.sureBtn(obj)}/>}
-                openDrawerOffset={0.2}
-                panCloseMask={0.2}
-                side="right"
-                tapToClose={true}
-                styles={{
-                    mainOverlay: {
-                        backgroundColor: 'black',
-                        opacity: 0,
-                    },
-                }}
-                tweenHandler={(ratio) => ({
-                    mainOverlay: {
-                        opacity: ratio / 2,
-                    }
-                })}
-            >
-                <View style={styles.container}>
-                    <View style={styles.tabView}>
-                        <TouchableOpacity
-                            onPress={() => this.changeTab(1)}>
-                            <View style={styles.singleTab}>
-                                <Text style={this.state.type === 1 ? styles.activeTab : styles.negativeTab}>人气</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => this.changeTab(2)}>
-                            <View style={styles.singleTab}>
-                                <Text style={this.state.type === 2 ? styles.activeTab : styles.negativeTab}>销量</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => this.changeTab(3)}>
-                            <View style={styles.singleTab}>
-                                <Text style={this.state.type === 3 ? styles.activeTab : styles.negativeTab}>新品</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => this.changeTab(4)}>
-                            <View style={styles.singleTab}>
-                                <Text style={this.state.type === 4 ? styles.activeTab : styles.negativeTab}>筛选</Text>
-                                <Icon name="filter" size={16}></Icon>
-                            </View>
-                        </TouchableOpacity>
+            <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <Drawer
+                    type="overlay"
+                    ref={(ref) => this._drawer = ref}
+                    content={<GoodsSideMenu
+                        firstId={this.props.navigation.state.params.id || ''}
+                        secondIds={this.props.navigation.state.params.secondId ?
+                            [this.props.navigation.state.params.secondId] : []}
+                        sureBtn={(obj) => this.sureBtn(obj)}/>}
+                    openDrawerOffset={0.2}
+                    panCloseMask={0.2}
+                    side="right"
+                    tapToClose={true}
+                    styles={{
+                        mainOverlay: {
+                            backgroundColor: 'black',
+                            opacity: 0,
+                        },
+                    }}
+                    tweenHandler={(ratio) => ({
+                        mainOverlay: {
+                            opacity: ratio / 2,
+                        }
+                    })}
+                >
+                    <View style={styles.container}>
+                        <View style={styles.tabView}>
+                            <TouchableOpacity
+                                onPress={() => this.changeTab(1)}>
+                                <View style={styles.singleTab}>
+                                    <Text
+                                        style={this.state.type === 1 ? styles.activeTab : styles.negativeTab}>人气</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.changeTab(2)}>
+                                <View style={styles.singleTab}>
+                                    <Text
+                                        style={this.state.type === 2 ? styles.activeTab : styles.negativeTab}>销量</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.changeTab(3)}>
+                                <View style={styles.singleTab}>
+                                    <Text
+                                        style={this.state.type === 3 ? styles.activeTab : styles.negativeTab}>新品</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.changeTab(4)}>
+                                <View style={styles.singleTab}>
+                                    <Text
+                                        style={this.state.type === 4 ? styles.activeTab : styles.negativeTab}>筛选</Text>
+                                    <Icon name="filter" size={16}></Icon>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        {goodsList}
                     </View>
-                    {goodsList}
-                </View>
-            </Drawer>
+                </Drawer>
+                <Toast ref='toast' position='center'></Toast>
+            </SafeAreaView>
 
         );
     }
@@ -262,10 +275,14 @@ export default class GoodsList extends Component<Props> {
     }
 
     changeKeyword(text) {
-        this.state.keyword = text;
+        this.state.keyword = text.trim();
     }
 
     search() {
+        if(!this.state.keyword){
+            this.refs.toast.show('请输入关键字');
+            return;
+        }
         this.fetchData();
     }
 
@@ -301,7 +318,7 @@ export default class GoodsList extends Component<Props> {
             tradeType: this.state.tradeType
         };
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
-            console.warn('fetchData', data.data)
+            console.warn('fetchData', data.data.list)
             if (data.data.isLastPage) {
                 this.setState({
                     allLoadCompleted: true,
@@ -330,7 +347,7 @@ const styles = StyleSheet.create({
     openingContainer: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#ccc',
+        backgroundColor: whiteColor,
         opacity: 0.1
     },
     loadingContainer: {

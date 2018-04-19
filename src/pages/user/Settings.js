@@ -9,6 +9,7 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
+    SafeAreaView,
     Alert,
     View
 } from 'react-native';
@@ -36,60 +37,62 @@ export default class Settings extends Component<Props> {
             return <LoadingView/>
         } else {
             return (
-                <View style={styles.container}>
-                    <View style={styles.cellView}>
-                        <Text style={styles.leftCell}>账号</Text>
-                        <View style={styles.rightCell}>
-                            <Text style={styles.rightCellText}>{this.state.userInfo.loginId}</Text>
+                <SafeAreaView style={{flex: 1}}>
+                    <View style={styles.container}>
+                        <View style={styles.cellView}>
+                            <Text style={styles.leftCell}>账号</Text>
+                            <View style={styles.rightCell}>
+                                <Text style={styles.rightCellText}>{this.state.userInfo.loginId}</Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.cellView}>
-                        <Text style={styles.leftCell}>手机</Text>
-                        <View style={styles.rightCell}>
-                            <Text style={styles.rightCellText}>{this.state.userInfo.mobile}</Text>
+                        <View style={styles.cellView}>
+                            <Text style={styles.leftCell}>手机</Text>
+                            <View style={styles.rightCell}>
+                                <Text style={styles.rightCellText}>{this.state.userInfo.mobile}</Text>
+                            </View>
                         </View>
-                    </View>
 
 
-                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
-                        this.updatePwd()
-                    }}>
-                        <View style={styles.cellView}>
-                            <Text style={styles.leftCell}>修改密码</Text>
-                            <View style={styles.rightCell}>
-                                <Icon name="angle-right" size={20} color="#999"/>
+                        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
+                            this.updatePwd()
+                        }}>
+                            <View style={styles.cellView}>
+                                <Text style={styles.leftCell}>修改密码</Text>
+                                <View style={styles.rightCell}>
+                                    <Icon name="angle-right" size={20} color="#999"/>
+                                </View>
                             </View>
-                        </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.shopCertificationDetail()}>
-                        <View style={styles.cellView}>
-                            <Text style={styles.leftCell}>资质信息</Text>
-                            <View style={styles.rightCell}>
-                                <Text style={styles.rightCellText}>{this.getAuthInfo()}</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.shopCertificationDetail()}>
+                            <View style={styles.cellView}>
+                                <Text style={styles.leftCell}>资质信息</Text>
+                                <View style={styles.rightCell}>
+                                    <Text style={styles.rightCellText}>{this.getAuthInfo()}</Text>
+                                </View>
                             </View>
-                        </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
-                        this.aboutus()
-                    }}>
-                        <View style={styles.cellView2}>
-                            <Text style={styles.leftCell}>关于我们</Text>
-                            <View style={styles.rightCell}>
-                                <Icon name="angle-right" size={20} color="#999"/>
+                        </TouchableHighlight>
+                        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
+                            this.aboutus()
+                        }}>
+                            <View style={styles.cellView2}>
+                                <Text style={styles.leftCell}>关于我们</Text>
+                                <View style={styles.rightCell}>
+                                    <Icon name="angle-right" size={20} color="#999"/>
+                                </View>
                             </View>
-                        </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
-                        this.logout()
-                    }}>
-                        <View style={styles.cellView}>
-                            <Text style={styles.leftCell}>退出当前账号</Text>
-                            <View style={styles.rightCell}>
-                                <Icon name="angle-right" size={20} color="#999"/>
+                        </TouchableHighlight>
+                        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
+                            this.logout()
+                        }}>
+                            <View style={styles.cellView}>
+                                <Text style={styles.leftCell}>退出当前账号</Text>
+                                <View style={styles.rightCell}>
+                                    <Icon name="angle-right" size={20} color="#999"/>
+                                </View>
                             </View>
-                        </View>
-                    </TouchableHighlight>
-                </View>
+                        </TouchableHighlight>
+                    </View>
+                </SafeAreaView>
             );
         }
 
@@ -156,7 +159,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: whiteColor,
-        alignItems:'center',
+        alignItems: 'center',
         padding: 12,
         borderBottomWidth: 1,
         borderBottomColor: borderColor
@@ -166,7 +169,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: whiteColor,
-        alignItems:'center',
+        alignItems: 'center',
         padding: 12,
         marginTop: 10,
         borderBottomWidth: 1,

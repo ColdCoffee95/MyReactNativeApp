@@ -12,6 +12,7 @@ import {
     ActivityIndicator,
     TouchableOpacity,
     FlatList,
+    SafeAreaView,
     Image,
     Alert,
     View
@@ -19,6 +20,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
 import LoadingView from '../../components/common/LoadingView';
+import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 export default class Order extends Component<Props> {
 
@@ -102,8 +104,9 @@ export default class Order extends Component<Props> {
                     <Image
                         style={{width: 200, height: 200}}
                         resizeMode='contain'
-                        source={require('../../images/no-order.jpg')}
+                        source={require('../../images/noOrder.png')}
                     />
+                    <Text>当前无此类订单</Text>
                 </View>}
             />
         }
@@ -120,12 +123,15 @@ export default class Order extends Component<Props> {
                 </TouchableOpacity>
             )
         })
-        return <View style={styles.container}>
-            <View style={styles.tabView}>
-                {tabList}
+        return <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+            <View style={styles.container}>
+                <View style={styles.tabView}>
+                    {tabList}
+                </View>
+                {orderList}
             </View>
-            {orderList}
-        </View>
+            <Toast ref='toast' position='center'></Toast>
+        </SafeAreaView>
 
     }
 
@@ -341,7 +347,7 @@ export default class Order extends Component<Props> {
     }
 
     expediteDelivery() {
-        alert('操作成功,已提醒商家尽快发货')
+        Alert.alert(null, '操作成功,已提醒商家尽快发货')
     }
 
     comment(orderId) {

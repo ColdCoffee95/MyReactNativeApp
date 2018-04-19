@@ -11,9 +11,11 @@ import {
     Text,
     TouchableHighlight,
     TouchableOpacity,
+    SafeAreaView,
     View
 } from 'react-native';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 
 export default class SelectCrossAddress extends Component<Props> {
@@ -29,7 +31,7 @@ export default class SelectCrossAddress extends Component<Props> {
     static navigationOptions = ({navigation, screenProps}) => ({
         headerRight:
             (<TouchableOpacity style={{marginRight: 10}}
-                                 onPress={() => navigation.state.params.manage()}>
+                               onPress={() => navigation.state.params.manage()}>
                 <View>
                     <Text style={{color: 'black'}}>管理</Text>
                 </View>
@@ -65,11 +67,13 @@ export default class SelectCrossAddress extends Component<Props> {
                 )
             });
             return (
-                <View style={styles.container}>
-                    <ScrollView contentContainerStyle={styles.scrollView}>
-                        {addressList}
-                    </ScrollView>
-                </View>
+                <SafeAreaView style={{flex: 1}}>
+                    <View style={styles.container}>
+                        <ScrollView contentContainerStyle={styles.scrollView}>
+                            {addressList}
+                        </ScrollView>
+                    </View>
+                </SafeAreaView>
             );
         }
 

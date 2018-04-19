@@ -10,9 +10,11 @@ import {
     Text,
     Image,
     ScrollView,
+    SafeAreaView,
     View
 } from 'react-native';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 export default class DeliveryDetail extends Component<Props> {
 
@@ -56,23 +58,25 @@ export default class DeliveryDetail extends Component<Props> {
                     </View>
                 );
             });
-            return <ScrollView contentContainerStyle={styles.content}>
-                <View style={styles.itemView}>
-                    <View style={styles.leftImgView}>
-                        <Image
-                            resizeMode='contain'
-                            style={styles.leftImg}
-                            source={require('../../images/deliverylogo.png')}
-                        />
+            return <SafeAreaView style={{flex: 1}}>
+                <ScrollView contentContainerStyle={styles.content}>
+                    <View style={styles.itemView}>
+                        <View style={styles.leftImgView}>
+                            <Image
+                                resizeMode='contain'
+                                style={styles.leftImg}
+                                source={require('../../images/deliverylogo.png')}
+                            />
+                        </View>
+                        <View style={styles.deliveryInfoView}>
+                            <Text numberOfLines={2}>物流状态：{deliveryList[0].Context}</Text>
+                            <Text>承运来源：{deliveryInfo.companyName}</Text>
+                            <Text>运单编号：{deliveryInfo.number}</Text>
+                        </View>
                     </View>
-                    <View style={styles.deliveryInfoView}>
-                        <Text numberOfLines={2}>物流状态：{deliveryList[0].Context}</Text>
-                        <Text>承运来源：{deliveryInfo.companyName}</Text>
-                        <Text>运单编号：{deliveryInfo.number}</Text>
-                    </View>
-                </View>
-                {deliveryView}
-            </ScrollView>
+                    {deliveryView}
+                </ScrollView>
+            </SafeAreaView>
         }
 
     }

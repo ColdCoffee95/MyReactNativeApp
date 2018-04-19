@@ -9,6 +9,7 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
+    SafeAreaView,
     Image,
     ScrollView,
     View
@@ -52,8 +53,6 @@ export default class ConfirmOrder extends Component<Props> {
             let totalNum = 0;
             let totalPrice = 0;
 
-            let cartIds = [];
-            this.state.cartList.map(value => cartIds.push(value.cartId));
             this.state.cartList.map(value => {
                 let emsPrice = value.emsPrice || 0;
                 totalNum += value.number;
@@ -88,136 +87,145 @@ export default class ConfirmOrder extends Component<Props> {
                     </View>
                 )
             });
-            return <View style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollView}>
-                    <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
-                        this.jumpToSelectAddress()
-                    }}>
-                        <View style={styles.topInfoView}>
-                            <View style={styles.topLeftView}>
-                                <Icon name='map-marker' size={20} color="#999"></Icon>
-                                {
-                                    this.state.tradeType === 1 && Object.keys(this.state.address).length > 0 && <View>
-                                        <Text style={{marginLeft: 10}}>收货人：{this.state.address.contacts}</Text>
-                                        <Text style={{
-                                            marginTop: 10,
-                                            marginLeft: 10
-                                        }}>收货地址：{this.state.address.totalAddress}</Text>
-                                    </View>
-                                }
-                                {
-                                    this.state.tradeType === 1 && Object.keys(this.state.address).length === 0 && <View>
-                                        <Text style={{marginLeft: 10}}>请选择地址</Text>
-                                    </View>
-                                }
-                                {
-                                    this.state.tradeType !== 1 && Object.keys(this.state.address).length > 0 && <View>
-                                        <Text style={{marginLeft: 10}}>联系方式：{this.state.address.mobile}</Text>
-                                        <Text style={{
-                                            marginTop: 10,
-                                            marginLeft: 10
-                                        }}>收货地址：{this.state.address.totalAddress}</Text>
-                                    </View>
-                                }
-                                {
-                                    this.state.tradeType !== 1 && Object.keys(this.state.address).length === 0 && <View>
-                                        <Text style={{marginLeft: 10}}>请选择地址</Text>
-                                    </View>
-                                }
-                            </View>
-
-                            <View>
-                                <Icon name="angle-right" size={20} color="#999"/>
-                            </View>
-                        </View>
-                    </TouchableHighlight>
-                    {
-                        this.state.tradeType !== 1 && Object.keys(this.state.certification).length > 0 &&
+            return <SafeAreaView style={{flex: 1}}>
+                <View style={styles.container}>
+                    <ScrollView contentContainerStyle={styles.scrollView}>
                         <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
-                            this.jumpToSelectCertification()
+                            this.jumpToSelectAddress()
                         }}>
-                            <View style={styles.certificationView}>
-                                <View style={styles.certificationLeftView}>
-                                    <Icon name='map-marker' size={20} color={whiteColor}></Icon>
-                                    <View>
-                                        <Text
-                                            style={{marginLeft: 10}}>收货人：{this.state.certification.contacts} {this.state.certification.idCard}</Text>
-                                    </View>
-                                </View>
-
-                                <View>
-                                    <Icon name='angle-right' size={20} color="#999"></Icon>
-                                </View>
-                            </View>
-                        </TouchableHighlight>
-                    }
-                    {
-                        this.state.tradeType !== 1 && Object.keys(this.state.certification).length === 0 &&
-                        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
-                            this.jumpToSelectCertification()
-                        }}>
-                            <View style={styles.certificationView}>
-                                <View style={styles.certificationLeftView}>
-                                    <Icon name='map-marker' size={20} color={whiteColor}></Icon>
-                                    <View>
-                                        <Text
-                                            style={{marginLeft: 10}}>请选择实名认证</Text>
-                                    </View>
-                                </View>
-
-                                <View>
-                                    <Icon name='angle-right' size={20} color="#999"></Icon>
-                                </View>
-                            </View>
-                        </TouchableHighlight>
-                    }
-                    <View style={styles.orderGoodsView}>
-                        {orderGoodsView}
-                        <View style={styles.cellView}>
-                            <View style={styles.leftCell}>
-
-                            </View>
-                            <View style={styles.rightCell}>
-                                <Text>共{totalNum}件商品</Text>
-                                <Text>合计：¥{totalPrice.toFixed(2)}</Text>
-                            </View>
-                        </View>
-                        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
-                            this.jumpToSelectCoupon(cartIds)
-                        }}>
-                            <View style={styles.cellView}>
-                                <Text style={styles.leftCell}>优惠券</Text>
-                                <View style={styles.rightCell}>
+                            <View style={styles.topInfoView}>
+                                <View style={styles.topLeftView}>
+                                    <Icon name='map-marker' size={20} color="#999"></Icon>
                                     {
-                                        this.state.realCut > 0 &&
-                                        <Text
-                                            style={{color: activeColor, marginRight: 10}}>-¥{this.state.realCut}</Text>
+                                        this.state.tradeType === 1 && Object.keys(this.state.address).length > 0 &&
+                                        <View>
+                                            <Text style={{marginLeft: 10}}>收货人：{this.state.address.contacts}</Text>
+                                            <Text style={{
+                                                marginTop: 10,
+                                                marginLeft: 10
+                                            }}>收货地址：{this.state.address.totalAddress}</Text>
+                                        </View>
                                     }
+                                    {
+                                        this.state.tradeType === 1 && Object.keys(this.state.address).length === 0 &&
+                                        <View>
+                                            <Text style={{marginLeft: 10}}>请选择地址</Text>
+                                        </View>
+                                    }
+                                    {
+                                        this.state.tradeType !== 1 && Object.keys(this.state.address).length > 0 &&
+                                        <View>
+                                            <Text style={{marginLeft: 10}}>联系方式：{this.state.address.mobile}</Text>
+                                            <Text style={{
+                                                marginTop: 10,
+                                                marginLeft: 10
+                                            }}>收货地址：{this.state.address.totalAddress}</Text>
+                                        </View>
+                                    }
+                                    {
+                                        this.state.tradeType !== 1 && Object.keys(this.state.address).length === 0 &&
+                                        <View>
+                                            <Text style={{marginLeft: 10}}>请选择地址</Text>
+                                        </View>
+                                    }
+                                </View>
 
+                                <View>
                                     <Icon name="angle-right" size={20} color="#999"/>
                                 </View>
                             </View>
                         </TouchableHighlight>
-                    </View>
-                </ScrollView>
-                <Toast ref='toast' position='center'></Toast>
-                <View style={styles.bottomView}>
-                    <View style={styles.bottomLeftView}>
-                        <Text style={{marginLeft: 5}}>合计：¥{(totalPrice - this.state.realCut).toFixed(2)}</Text>
-                    </View>
-                    <View style={styles.bottomRightView}>
-                        <ActiveButton
-                            text={`提交订单`}
-                            style={styles.accountsBtn}
-                            textStyle={styles.accountsBtnText}
-                            clickBtn={() => {
-                                this.confirmOrder()
+                        {
+                            this.state.tradeType !== 1 && Object.keys(this.state.certification).length > 0 &&
+                            <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
+                                this.jumpToSelectCertification()
                             }}>
-                        </ActiveButton>
-                    </View>
-                </View>
+                                <View style={styles.certificationView}>
+                                    <View style={styles.certificationLeftView}>
+                                        <Icon name='map-marker' size={20} color={whiteColor}></Icon>
+                                        <View>
+                                            <Text
+                                                style={{marginLeft: 10}}>收货人：{this.state.certification.contacts} {this.state.certification.idCard}</Text>
+                                        </View>
+                                    </View>
 
-            </View>
+                                    <View>
+                                        <Icon name='angle-right' size={20} color="#999"></Icon>
+                                    </View>
+                                </View>
+                            </TouchableHighlight>
+                        }
+                        {
+                            this.state.tradeType !== 1 && Object.keys(this.state.certification).length === 0 &&
+                            <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
+                                this.jumpToSelectCertification()
+                            }}>
+                                <View style={styles.certificationView}>
+                                    <View style={styles.certificationLeftView}>
+                                        <Icon name='map-marker' size={20} color={whiteColor}></Icon>
+                                        <View>
+                                            <Text
+                                                style={{marginLeft: 10}}>请选择实名认证</Text>
+                                        </View>
+                                    </View>
+
+                                    <View>
+                                        <Icon name='angle-right' size={20} color="#999"></Icon>
+                                    </View>
+                                </View>
+                            </TouchableHighlight>
+                        }
+                        <View style={styles.orderGoodsView}>
+                            {orderGoodsView}
+                            <View style={styles.cellView}>
+                                <View style={styles.leftCell}>
+
+                                </View>
+                                <View style={styles.rightCell}>
+                                    <Text>共{totalNum}件商品</Text>
+                                    <Text>合计：¥{totalPrice.toFixed(2)}</Text>
+                                </View>
+                            </View>
+                            <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
+                                this.jumpToSelectCoupon()
+                            }}>
+                                <View style={styles.cellView}>
+                                    <Text style={styles.leftCell}>优惠券</Text>
+                                    <View style={styles.rightCell}>
+                                        {
+                                            this.state.realCut > 0 &&
+                                            <Text
+                                                style={{
+                                                    color: activeColor,
+                                                    marginRight: 10
+                                                }}>-¥{this.state.realCut}</Text>
+                                        }
+
+                                        <Icon name="angle-right" size={20} color="#999"/>
+                                    </View>
+                                </View>
+                            </TouchableHighlight>
+                        </View>
+                    </ScrollView>
+                    <Toast ref='toast' position='center'></Toast>
+                    <View style={styles.bottomView}>
+                        <View style={styles.bottomLeftView}>
+                            <Text style={{marginLeft: 5}}>合计：¥{(totalPrice - this.state.realCut).toFixed(2)}</Text>
+                        </View>
+                        <View style={styles.bottomRightView}>
+                            <ActiveButton
+                                text={`提交订单`}
+                                style={styles.accountsBtn}
+                                textStyle={styles.accountsBtnText}
+                                clickBtn={() => {
+                                    this.confirmOrder()
+                                }}>
+                            </ActiveButton>
+                        </View>
+                    </View>
+
+                </View>
+            </SafeAreaView>
         }
     }
 
@@ -319,10 +327,10 @@ export default class ConfirmOrder extends Component<Props> {
         }
     }
 
-    jumpToSelectCoupon(cartIds) {//跳转到选择优惠券页面
+    jumpToSelectCoupon() {//跳转到选择优惠券页面
         const {cartList} = this.state;
         this.props.navigation.navigate('SelectCoupon', {
-            cartIds: cartIds,
+            cartList: cartList,
             callback: (coupon) => {
                 let params = {
                     couponId: coupon.id,
@@ -332,7 +340,7 @@ export default class ConfirmOrder extends Component<Props> {
                     console.warn(data.data)
                     if (data.data) {
                         this.setState({realCut: data.data})
-                    }else{
+                    } else {
                         this.setState({realCut: 0})
                     }
                 });

@@ -10,6 +10,7 @@ import {
     Text,
     ScrollView,
     TouchableOpacity,
+    SafeAreaView,
     Image,
     View
 } from 'react-native';
@@ -17,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import ActiveButton from '../../components/common/ActiveButton';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 
 export default class SelectCoupon extends Component<Props> {
@@ -117,14 +119,16 @@ export default class SelectCoupon extends Component<Props> {
                                             }
                                             <Text style={styles.couponName}>{value.couponName}</Text>
                                         </View>
-                                        <Text style={{color: '#ababab',fontSize:12}}>{value.amountRuleName}</Text>
+                                        <Text style={{color: '#ababab', fontSize: 12}}>{value.amountRuleName}</Text>
                                         {
-                                            value.dateRuleType === 'fixed-days' && <Text style={{color: '#ababab',fontSize:12}}>
+                                            value.dateRuleType === 'fixed-days' &&
+                                            <Text style={{color: '#ababab', fontSize: 12}}>
                                                 有效时间：领取后{value.days}天内
                                             </Text>
                                         }
                                         {
-                                            value.dateRuleType === 'time-interval' && <Text style={{color: '#ababab',fontSize:12}}>
+                                            value.dateRuleType === 'time-interval' &&
+                                            <Text style={{color: '#ababab', fontSize: 12}}>
                                                 有效时间：{dateFormat(value.startTime)}~{dateFormat(value.endTime)}
                                             </Text>
                                         }
@@ -178,43 +182,45 @@ export default class SelectCoupon extends Component<Props> {
             listView = otherList;
         }
         return (
-            <View style={styles.container}>
-                <View style={styles.tabView}>
-                    <TouchableOpacity
-                        onPress={() => this.changeTab(1)}>
-                        <View style={styles.singleTab}>
-                            <Text
-                                style={this.state.couponType === 1 ? styles.activeTab : styles.negativeTab}>可用优惠券({ableSize})</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => this.changeTab(2)}>
-                        <View style={styles.singleTab}>
-                            <Text
-                                style={this.state.couponType === 2 ? styles.activeTab : styles.negativeTab}>不可用优惠券({disableSize})</Text>
-                        </View>
-                    </TouchableOpacity>
+            <SafeAreaView style={{flex: 1}}>
+                <View style={styles.container}>
+                    <View style={styles.tabView}>
+                        <TouchableOpacity
+                            onPress={() => this.changeTab(1)}>
+                            <View style={styles.singleTab}>
+                                <Text
+                                    style={this.state.couponType === 1 ? styles.activeTab : styles.negativeTab}>可用优惠券({ableSize})</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.changeTab(2)}>
+                            <View style={styles.singleTab}>
+                                <Text
+                                    style={this.state.couponType === 2 ? styles.activeTab : styles.negativeTab}>不可用优惠券({disableSize})</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    {
+                        this.state.isLoading && <LoadingView/>
+                    }
+                    {
+                        !this.state.isLoading && <ScrollView contentContainerStyle={styles.scrollView}>
+                            {listView}
+                        </ScrollView>
+                    }
+                    <View style={styles.bottomView}>
+                        <ActiveButton
+                            text='不使用优惠券'
+                            style={styles.accountsBtn}
+                            textStyle={styles.accountsBtnText}
+                            clickBtn={() => {
+                                this.notUse()
+                            }}>
+                        </ActiveButton>
+                    </View>
+                    <Toast ref='toast' position='center'></Toast>
                 </View>
-                {
-                    this.state.isLoading && <LoadingView/>
-                }
-                {
-                    !this.state.isLoading && <ScrollView contentContainerStyle={styles.scrollView}>
-                        {listView}
-                    </ScrollView>
-                }
-                <View style={styles.bottomView}>
-                    <ActiveButton
-                        text='不使用优惠券'
-                        style={styles.accountsBtn}
-                        textStyle={styles.accountsBtnText}
-                        clickBtn={() => {
-                            this.notUse()
-                        }}>
-                    </ActiveButton>
-                </View>
-                <Toast ref='toast' position='center'></Toast>
-            </View>
+            </SafeAreaView>
         );
     }
 
@@ -224,7 +230,8 @@ export default class SelectCoupon extends Component<Props> {
 
     getCouponList() {//获取可领取优惠券列表
         this.setState({isLoading: true});
-        HttpUtils.post('/memberCouponInfo/selectCanUseCouponList', {cartIds: this.props.navigation.state.params.cartIds}, data => {
+        console.warn(this.props.navigation.state.params.cartList)
+        HttpUtils.post('/memberCouponInfo/selectCanUseCouponListByGoodsList', {goodsList: this.props.navigation.state.params.cartList}, data => {
             let list = data.data;
             list.able.ableList.map(value => {
                 value.toggle = false;
@@ -281,8 +288,8 @@ const styles = StyleSheet.create({
         width: screenWidth * 0.9,
         marginTop: 10,
     },
-    couponName:{
-        fontSize:12
+    couponName: {
+        fontSize: 12
     },
     cutType: {
         backgroundColor: activeColor,

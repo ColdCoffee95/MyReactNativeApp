@@ -9,6 +9,7 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
+    Alert,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -184,7 +185,7 @@ export default class UploadMultiImg extends Component<Props> {
                     this.props.onChange(this.state.imgs);
                 })
                 .catch((error) => {
-                    alert('上传失败，请稍后再试')
+                    Alert.alert(null,'上传失败，请稍后再试')
                 });
         })
     }

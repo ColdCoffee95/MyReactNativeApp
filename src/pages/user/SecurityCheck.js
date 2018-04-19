@@ -9,6 +9,7 @@ import {
     StyleSheet,
     Image,
     Text,
+    SafeAreaView,
     TextInput,
     TouchableOpacity,
     View
@@ -41,89 +42,93 @@ export default class SecurityCheck extends Component<Props> {
     render() {
 
         return (
-            <View style={styles.container}>
-                <View style={styles.topMobilePhoneView}>
-                    <Text style={styles.viewPhone}>{this.state.viewPhone}</Text>
-                </View>
-                <View style={styles.formCellView}>
-                    <View style={styles.leftView}>
-                        <Text style={{
-                            marginLeft: 10,
-                            lineHeight: 40,
-                            height: 40,
-                            width: 80
-                        }}>图片验证码</Text>
-                        <TextInput
-                            style={{
-                                marginLeft: 10,
-                                height: 40,
-                                width: 150
-                            }}
-                            keyboardType='numeric'
-                            underlineColorAndroid='transparent'
-                            onChangeText={(text) => this.setState({imgCode: text})}
-                            placeholder='请输入图片验证码'>
-                        </TextInput>
+            <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <View style={styles.container}>
+                    <View style={styles.topMobilePhoneView}>
+                        <Text style={styles.viewPhone}>{this.state.viewPhone}</Text>
                     </View>
-                    <TouchableOpacity onPress={() => this.getCodeImg()}>
-                        <View style={styles.codeImgView}>
-                            {
-                                this.state.codeImg && <Image
-                                    resizeMode='contain'
-                                    source={{uri: this.state.codeImg}}
-                                    style={styles.codeImg}
-                                />
-                            }
-
+                    <View style={styles.formCellView}>
+                        <View style={styles.leftView}>
+                            <Text style={{
+                                marginLeft: 10,
+                                lineHeight: 40,
+                                height: 40,
+                                width: 80
+                            }}>图片验证码</Text>
+                            <TextInput
+                                style={{
+                                    marginLeft: 10,
+                                    height: 40,
+                                    width: 150
+                                }}
+                                returnKeyType='done'
+                                keyboardType='numeric'
+                                underlineColorAndroid='transparent'
+                                onChangeText={(text) => this.setState({imgCode: text})}
+                                placeholder='请输入图片验证码'>
+                            </TextInput>
                         </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.formCellView}>
-                    <View style={styles.leftView}>
-                        <Text style={{
-                            marginLeft: 10,
-                            lineHeight: 40,
-                            height: 40,
-                            width: 80
-                        }}>手机验证码</Text>
-                        <TextInput
-                            style={{
-                                marginLeft: 10,
-                                height: 40,
-                                width: 150
-                            }}
-                            keyboardType='numeric'
-                            underlineColorAndroid='transparent'
-                            onChangeText={(text) => this.setState({mobileCode: text})}
-                            placeholder='请输入手机验证码'>
-                        </TextInput>
+                        <TouchableOpacity onPress={() => this.getCodeImg()}>
+                            <View style={styles.codeImgView}>
+                                {
+                                    this.state.codeImg && <Image
+                                        resizeMode='contain'
+                                        source={{uri: this.state.codeImg}}
+                                        style={styles.codeImg}
+                                    />
+                                }
+
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity activeOpacity={this.state.counting ? 1 : 0.8}
-                                      onPress={() => this.buttonClick(this.state.enable)}>
-                        {
-                            this.state.timerTitle === '获取验证码' && <View style={styles.buttonStyle}>
-                                <Text
-                                    style={styles.textStyle}>获取验证码</Text>
-                            </View>
+                    <View style={styles.formCellView}>
+                        <View style={styles.leftView}>
+                            <Text style={{
+                                marginLeft: 10,
+                                lineHeight: 40,
+                                height: 40,
+                                width: 80
+                            }}>手机验证码</Text>
+                            <TextInput
+                                style={{
+                                    marginLeft: 10,
+                                    height: 40,
+                                    width: 150
+                                }}
+                                returnKeyType='done'
+                                keyboardType='numeric'
+                                underlineColorAndroid='transparent'
+                                onChangeText={(text) => this.setState({mobileCode: text})}
+                                placeholder='请输入手机验证码'>
+                            </TextInput>
+                        </View>
+                        <TouchableOpacity activeOpacity={this.state.counting ? 1 : 0.8}
+                                          onPress={() => this.buttonClick(this.state.enable)}>
+                            {
+                                this.state.timerTitle === '获取验证码' && <View style={styles.buttonStyle}>
+                                    <Text
+                                        style={styles.textStyle}>获取验证码</Text>
+                                </View>
 
-                        }
-                        {
-                            this.state.timerTitle !== '获取验证码' && <View style={styles.buttonStyleUnable}>
-                                <Text
-                                    style={styles.textStyleUnable}>{this.state.timerCount}秒后重试</Text>
-                            </View>
+                            }
+                            {
+                                this.state.timerTitle !== '获取验证码' && <View style={styles.buttonStyleUnable}>
+                                    <Text
+                                        style={styles.textStyleUnable}>{this.state.timerCount}秒后重试</Text>
+                                </View>
 
-                        }
-                    </TouchableOpacity>
+                            }
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.bottomBtnView}>
+                        <ActiveButton clickBtn={() => this.nextStep()} text='下一步' style={styles.activeButton}>
+
+                        </ActiveButton>
+                    </View>
+                    <Toast ref='toast' position='center'/>
                 </View>
-
-                <View style={styles.bottomBtnView}>
-                    <ActiveButton clickBtn={() => this.nextStep()} text='下一步' style={styles.activeButton}>
-
-                    </ActiveButton>
-                </View>
-                <Toast ref='toast' position='center'/>
-            </View>
+            </SafeAreaView>
         );
     }
 
@@ -146,15 +151,20 @@ export default class SecurityCheck extends Component<Props> {
         this.setState({codeImg: codeImg});
     }
 
-    nextStep() {
-        let {realPhone, mobileCode} = this.state;
-        if (!realPhone || !mobileCode) {
+    async nextStep() {
+        let {realPhone, mobileCode,imgCode} = this.state;
+        if (!realPhone || !mobileCode.trim() || !imgCode.trim()) {
             this.refs.toast.show('请填写完整', 500);
+            return;
+        }
+        let isImgCode = await this.checkImgCode();
+        if (!isImgCode) {
+            this.refs.toast.show('图片验证码输入不正确', 300);
             return;
         }
         let params = {
             mobile: realPhone,
-            code: mobileCode,
+            code: mobileCode.trim(),
             type: 2
         };
         HttpUtils.get('/message/isMobileCode', params, data => {
@@ -167,7 +177,7 @@ export default class SecurityCheck extends Component<Props> {
             this.refs.toast.show('请稍后再试', 300);
             return;
         }
-        if (!this.state.imgCode) {
+        if (!this.state.imgCode.trim()) {
             this.refs.toast.show('请输入图片验证码', 300);
             return;
         }

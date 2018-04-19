@@ -11,6 +11,7 @@ import {
     Text,
     TouchableHighlight,
     RefreshControl,
+    SafeAreaView,
     TouchableOpacity,
     View
 } from 'react-native';
@@ -25,6 +26,8 @@ import ActiveButton from '../../components/common/ActiveButton';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
+import RecommandForYou from '../../components/business/RecommandForYou';
+
 type Props = {};
 @observer
 export default class Cart extends Component<Props> {
@@ -48,7 +51,8 @@ export default class Cart extends Component<Props> {
         },
         headerRight: (navigation.state.params && navigation.state.params.cartList && navigation.state.params.cartList.length > 0 &&
             <View style={styles.headerRightView}>
-                <TouchableOpacity style={{marginRight: 10}} onPress={() => navigation.setParams({isEditing: !navigation.state.params.isEditing})}>
+                <TouchableOpacity style={{marginRight: 10}}
+                                  onPress={() => navigation.setParams({isEditing: !navigation.state.params.isEditing})}>
                     <View>
                         <Text>{navigation.state.params.isEditing ? '完成' : '编辑'}</Text>
                     </View>
@@ -61,54 +65,57 @@ export default class Cart extends Component<Props> {
         if (this.props.navigation.state.params) {
             this.state.tradeType = this.props.navigation.state.params.type || 1;
         }
+        console.warn('componentDidMount')
         this.fetchData();
     }
 
     render() {
         return (
-            <View style={styles.container}>
-                <Toast ref='toast' position='center'></Toast>
+            <SafeAreaView style={{flex: 1}}>
+                <View style={styles.container}>
+                    <Toast ref='toast' position='center'></Toast>
 
-                {/*<RefreshControl*/}
-                {/*refreshing={this.state.isRefreshing}*/}
-                {/*onRefresh={this._onRefresh.bind(this)}*/}
-                {/*title="加载中..."*/}
-                {/*progressBackgroundColor="#ffff00">*/}
+                    {/*<RefreshControl*/}
+                    {/*refreshing={this.state.isRefreshing}*/}
+                    {/*onRefresh={this._onRefresh.bind(this)}*/}
+                    {/*title="加载中..."*/}
+                    {/*progressBackgroundColor="#ffff00">*/}
 
-                {/*</RefreshControl>*/}
-                <View style={styles.tabView}>
-                    <TouchableHighlight
-                        onPress={() => this.changeTab(1)}
-                        underlayColor='#fff'>
-                        <View style={styles.singleTab}>
-                            <Text
-                                style={this.state.tradeType === 1 ? styles.activeTab : styles.negativeTab}>一般贸易</Text>
-                        </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                        onPress={() => this.changeTab(2)}
-                        underlayColor='#fff'>
-                        <View style={styles.singleTab}>
-                            <Text
-                                style={this.state.tradeType === 2 ? styles.activeTab : styles.negativeTab}>保税区发货</Text>
-                        </View>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                        onPress={() => this.changeTab(3)}
-                        underlayColor='#fff'>
-                        <View style={styles.singleTab}>
-                            <Text
-                                style={this.state.tradeType === 3 ? styles.activeTab : styles.negativeTab}>海外直邮</Text>
-                        </View>
-                    </TouchableHighlight>
+                    {/*</RefreshControl>*/}
+                    <View style={styles.tabView}>
+                        <TouchableHighlight
+                            onPress={() => this.changeTab(1)}
+                            underlayColor='#fff'>
+                            <View style={styles.singleTab}>
+                                <Text
+                                    style={this.state.tradeType === 1 ? styles.activeTab : styles.negativeTab}>一般贸易</Text>
+                            </View>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            onPress={() => this.changeTab(2)}
+                            underlayColor='#fff'>
+                            <View style={styles.singleTab}>
+                                <Text
+                                    style={this.state.tradeType === 2 ? styles.activeTab : styles.negativeTab}>保税区发货</Text>
+                            </View>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            onPress={() => this.changeTab(3)}
+                            underlayColor='#fff'>
+                            <View style={styles.singleTab}>
+                                <Text
+                                    style={this.state.tradeType === 3 ? styles.activeTab : styles.negativeTab}>海外直邮</Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                    {
+                        this.state.isLoading && this.renderLoadingView()
+                    }
+                    {
+                        !this.state.isLoading && this.renderSuccessView()
+                    }
                 </View>
-                {
-                    this.state.isLoading && this.renderLoadingView()
-                }
-                {
-                    !this.state.isLoading && this.renderSuccessView()
-                }
-            </View>
+            </SafeAreaView>
         );
     }
 
@@ -119,7 +126,6 @@ export default class Cart extends Component<Props> {
     renderSuccessView() {//加载完成页面
         let cartList = [];
         let data = this.data.itemData;
-        console.warn(data.data.length)
         if (data.data.length > 0) {
             cartList =
                 <View style={styles.swipeWrapper}>
@@ -133,7 +139,7 @@ export default class Cart extends Component<Props> {
                         closeOnRowBeginSwipe={true}
                         closeOnRowPress={true}
                         closeOnScroll={true}
-                        keyExtractor={(item) => item.goodsSkuId}
+                        keyExtractor={(item, index) => item.cartId}
                         renderHiddenItem={(rowData, rowMap) => (
                             <View style={styles.rowBack}>
                                 <TouchableOpacity
@@ -146,26 +152,44 @@ export default class Cart extends Component<Props> {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-
                         )}
                         renderItem={(data, rowMap) => (
-                            <CartComponent {...this.props} itemData={data.item} data={this.data}></CartComponent>
+                            <CartComponent
+                                {...this.props}
+                                itemData={data.item}
+                                data={this.data}>
+
+                            </CartComponent>
                         )}>
                     </SwipeListView>
 
                 </View>
+
+
         } else {
-            cartList = <View style={styles.noGoodsView}>
-                <Image
-                    style={styles.noGoodsImg}
-                    source={require('../../images/cart.png')}
-                    resizeMode='contain'
+            cartList =
+
+                <RecommandForYou
+                    {...this.props}
+                    header={
+                        <View style={styles.noGoodsWrapper}>
+                            <View style={styles.noGoodsView}>
+                                <Image
+                                    style={styles.noGoodsImg}
+                                    source={require('../../images/cart.png')}
+                                    resizeMode='contain'
+                                />
+                                <Text style={styles.cartTextTop}>进货单空空如也～</Text>
+                                <Text style={styles.cartTextNext}>最热门的商品正在等着您呢</Text>
+                                <ActiveButton clickBtn={() => this.backToHome()} text='逛一逛'
+                                              style={styles.activeButton}>
+                                </ActiveButton>
+                            </View>
+                        </View>
+                    }
                 />
-                <Text style={styles.cartTextTop}>进货单空空如也～</Text>
-                <Text style={styles.cartTextNext}>最热门的商品正在等着您呢</Text>
-                <ActiveButton clickBtn={() => this.backToHome()} text='逛一逛'
-                              style={styles.activeButton}></ActiveButton>
-            </View>
+
+
         }
         return <View style={styles.goodsWrapper}>
             {cartList}
@@ -239,7 +263,6 @@ export default class Cart extends Component<Props> {
     }
 
     fetchData() {
-        this.setState({isLoading: true});
         let params = {
             tradeType: this.state.tradeType
         };
@@ -267,11 +290,11 @@ export default class Cart extends Component<Props> {
             });
             this.data.replace({data: cartList});
             this.setState({isLoading: false, isRefreshing: false});
-            this.props.navigation.setParams({
-                isEditing: false,
-                cartList: cartList,
-                fetchData: this.fetchData.bind(this)
-            });
+            // this.props.navigation.setParams({
+            //     isEditing: false,
+            //     cartList: cartList,
+            //     fetchData: this.fetchData.bind(this)
+            // });
 
             console.warn(this.data)
         })
@@ -287,9 +310,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
+        backgroundColor: '#f2f2f2'
     },
-    goodsWrapper:{
-      flex:1
+    goodsWrapper: {
+        flex: 1
+    },
+    noGoodsWrapper: {
+        backgroundColor: '#f2f2f2',
+        paddingBottom: 10
     },
     loadingContainer: {
         flex: 1,
@@ -297,7 +325,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     swipeWrapper: {
-        paddingBottom:46
+        height: 200
     },
     cartTotalView: {
         position: 'absolute',
@@ -367,7 +395,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: whiteColor,
         width: screenWidth,
-        paddingBottom: 10
+        paddingBottom: 10,
     },
     noGoodsImg: {
         width: screenWidth * 0.6,

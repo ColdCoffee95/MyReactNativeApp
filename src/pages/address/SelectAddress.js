@@ -10,10 +10,12 @@ import {
     ScrollView,
     Text,
     TouchableHighlight,
+    SafeAreaView,
     TouchableOpacity,
     View
 } from 'react-native';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 
 export default class SelectAddress extends Component<Props> {
@@ -66,11 +68,13 @@ export default class SelectAddress extends Component<Props> {
                 )
             });
             return (
-                <View style={styles.container}>
-                    <ScrollView contentContainerStyle={styles.scrollView}>
-                        {addressList}
-                    </ScrollView>
-                </View>
+                <SafeAreaView style={{flex: 1}}>
+                    <View style={styles.container}>
+                        <ScrollView contentContainerStyle={styles.scrollView}>
+                            {addressList}
+                        </ScrollView>
+                    </View>
+                </SafeAreaView>
             );
         }
 

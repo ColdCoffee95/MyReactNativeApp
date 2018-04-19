@@ -9,9 +9,11 @@ import {
     StyleSheet,
     Text,
     Image,
+    SafeAreaView,
     View
 } from 'react-native';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 export default class AfterSaleDetail extends Component<Props> {
 
@@ -78,29 +80,31 @@ export default class AfterSaleDetail extends Component<Props> {
                     </View>
                 )
             });
-            return <View style={styles.container}>
-                <View style={styles.itemView}>
-                    <Text>退货商品</Text>
-                </View>
-                <View style={styles.goodsWrapper}>
-                    {goodsList}
-                </View>
-                <View style={styles.itemView}>
-                    <Text>申请原因:{orderInfo.comment}</Text>
-                </View>
-                {orderInfo.orderAftersalesVoucherList.length > 0 && <View style={styles.itemView}>
-                    <Text>凭证</Text>
-                    <View style={styles.imgView}>
-                        {voucherImgs}
+            return <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <View style={styles.container}>
+                    <View style={styles.itemView}>
+                        <Text>退货商品</Text>
                     </View>
+                    <View style={styles.goodsWrapper}>
+                        {goodsList}
+                    </View>
+                    <View style={styles.itemView}>
+                        <Text>申请原因:{orderInfo.comment}</Text>
+                    </View>
+                    {orderInfo.orderAftersalesVoucherList.length > 0 && <View style={styles.itemView}>
+                        <Text>凭证</Text>
+                        <View style={styles.imgView}>
+                            {voucherImgs}
+                        </View>
 
-                </View>
-                }
+                    </View>
+                    }
 
-                <View style={styles.itemView}>
-                    <Text>售后状态:{typeName}</Text>
+                    <View style={styles.itemView}>
+                        <Text>售后状态:{typeName}</Text>
+                    </View>
                 </View>
-            </View>
+            </SafeAreaView>
         }
 
     }

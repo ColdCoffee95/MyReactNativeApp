@@ -10,6 +10,7 @@ import {
     Image,
     ScrollView,
     TouchableHighlight,
+    SafeAreaView,
     View,
     Text,
     TextInput,
@@ -17,6 +18,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LoadingView from '../components/common/LoadingView';
+import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 export default class Category extends Component<Props> {
     constructor(props) {
@@ -47,6 +49,7 @@ export default class Category extends Component<Props> {
                     style={styles.keyword}
                     // autoFocus={true}
                     placeholder="搜索"
+                    returnKeyType='done'
                     // onEndEditing={(text) => {
                     //     navigation.setParams({keyword: text})
                     // }}
@@ -123,35 +126,38 @@ export default class Category extends Component<Props> {
         }
 
         return (
-            <View style={styles.container}>
-                <View>
-                    {
-                        this.leftLoading ? (
-                            <LoadingView/>
-                        ) : (
-                            <ScrollView contentContainerStyle={styles.leftScrollView}>
-                                {leftArr}
-                            </ScrollView>
-                        )
-                    }
+            <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <View style={styles.container}>
+                    <View>
+                        {
+                            this.leftLoading ? (
+                                <LoadingView/>
+                            ) : (
+                                <ScrollView contentContainerStyle={styles.leftScrollView}>
+                                    {leftArr}
+                                </ScrollView>
+                            )
+                        }
 
-                </View>
-                <View>
-                    {
-                        this.rightLoading ? (
-                            <LoadingView/>
-                        ) : (
-                            <ScrollView contentContainerStyle={styles.rightScrollView}>
-                                <Text style={styles.rightTitle}>分类</Text>
-                                <View style={styles.rightCatWrapper}>
-                                    {rightArr}
-                                </View>
-                            </ScrollView>
-                        )
-                    }
+                    </View>
+                    <View>
+                        {
+                            this.rightLoading ? (
+                                <LoadingView/>
+                            ) : (
+                                <ScrollView contentContainerStyle={styles.rightScrollView}>
+                                    <Text style={styles.rightTitle}>分类</Text>
+                                    <View style={styles.rightCatWrapper}>
+                                        {rightArr}
+                                    </View>
+                                </ScrollView>
+                            )
+                        }
 
+                    </View>
                 </View>
-            </View>
+                <Toast ref='toast' position='center'></Toast>
+            </SafeAreaView>
         );
     }
 
@@ -170,17 +176,23 @@ export default class Category extends Component<Props> {
     }
 
     clickCategory(parentId, id) {//点击分类
-        this.props.navigation.navigate('GoodsList', {id: parentId, secondIds: [id]});
+        let secondIds = [];
+        if (id) {
+            secondIds = [id];
+        }
+        this.props.navigation.navigate('GoodsList', {id: parentId, secondIds: secondIds});
     }
 
     changeKeyword(text) {
-        this.state.keyword = text;
+        this.state.keyword = text.trim();
     }
 
     search() {
-        if (this.state.keyword) {
-            this.props.navigation.navigate('GoodsList', {keyword: this.state.keyword})
+        if (!this.state.keyword) {
+            this.refs.toast.show('请输入关键字');
+            return;
         }
+        this.props.navigation.navigate('GoodsList', {keyword: this.state.keyword})
     }
 
     getSecondCategories(catId) {//获取二级分类
@@ -204,7 +216,7 @@ export default class Category extends Component<Props> {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: whiteColor,
         flexDirection: 'row',
         flex: 1
     },

@@ -1,6 +1,8 @@
 import {NavigationActions} from 'react-navigation'
 import HttpUtils from "./http";
-
+import {
+    Alert,
+} from 'react-native';
 global.jumpAndClear = function (navigation, route) {
     resetAction = NavigationActions.reset({
         index: 0,
@@ -28,7 +30,7 @@ global.getAddressData = function () {
                     });
                 } catch (e) {
                     resolve([]);
-                    alert('地址数据获取失败,请稍后再试')
+                    Alert.alert(null,'地址数据获取失败,请稍后再试')
                 }
             }
         })
@@ -48,7 +50,7 @@ global.getTotalAddress = async function (addressData, dataArr) {//数据数组
         } catch (e) {
             console.warn(e);
             resolve([]);
-            alert('地址解析出错,请稍后再试');
+            Alert.alert(null,'地址解析出错,请稍后再试');
         }
 
     })

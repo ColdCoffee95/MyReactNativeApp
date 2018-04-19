@@ -11,6 +11,7 @@ import {
     TouchableHighlight,
     ScrollView,
     TouchableOpacity,
+    SafeAreaView,
     Alert,
     View
 } from 'react-native';
@@ -91,19 +92,22 @@ export default class ManageCrossAddress extends Component<Props> {
                 )
             });
             return (
-                <View style={styles.container}>
-                    <ScrollView contentContainerStyle={styles.scrollView}>
-                        {addressList}
-                    </ScrollView>
-                    <Toast ref='toast' position='center'></Toast>
-                    <View style={styles.bottomBtnView}>
-                        <ActiveButton
-                            clickBtn={() => this.addAddress()}
-                            text='添加跨境地址'
-                            style={styles.activeButton}>
-                        </ActiveButton>
+                <SafeAreaView style={{flex: 1}}>
+                    <View style={styles.container}>
+                        <ScrollView contentContainerStyle={styles.scrollView}>
+                            {addressList}
+                        </ScrollView>
+                        <Toast ref='toast' position='center'></Toast>
+                        <View style={styles.bottomBtnView}>
+                            <ActiveButton
+                                clickBtn={() => this.addAddress()}
+                                text='添加跨境地址'
+                                style={styles.activeButton}>
+                            </ActiveButton>
+                        </View>
                     </View>
-                </View>
+                </SafeAreaView>
+
             );
         }
 

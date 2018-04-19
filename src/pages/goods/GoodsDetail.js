@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     Text,
+    SafeAreaView,
     Keyboard,
     Modal,
 } from 'react-native';
@@ -48,7 +49,8 @@ export default class GoodsDetail extends Component<Props> {
             <View style={styles.headerRightView}>
                 <TouchableOpacity style={{marginRight: 10}} onPress={() => navigation.state.params.collect()}>
                     <View>
-                        <Icon1 name='heart' size={30} color={navigation.state.params.goodsIsCollect ? activeColor : borderColor}></Icon1>
+                        <Icon1 name='heart' size={30}
+                               color={navigation.state.params.goodsIsCollect ? activeColor : borderColor}></Icon1>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={{marginRight: 10}} onPress={() => navigation.state.params.toCart()}>
@@ -158,106 +160,113 @@ export default class GoodsDetail extends Component<Props> {
             );
 
             return (
-                <View style={styles.container}>
-                    <ScrollView contentContainerStyle={styles.scrollView}>
-                        <Swiper style={styles.swiper} width={screenWidth} height={screenWidth}>
-                            {swiperList}
-                        </Swiper>
-                        <Modal visible={this.state.bigModalShow} transparent={true}>
-                            <ImageViewer
-                                imageUrls={detail.nowImgs}
-                                saveToLocalByLongPress={true}
-                                onClick={() => this.setState({bigModalShow: false})}
-                                enableImageZoom={false}/>
-                        </Modal>
-                        <View style={styles.goodsSimpleView}>
-                            <View>
-                                <Text style={styles.titleText}>{detail.nowSku.title}</Text>
-                            </View>
-                            <View style={styles.buyInfoView}>
-                                <View style={styles.tradeNameView}>
-                                    <Text style={{color: this.getColor(detail.tradeType)}}>{detail.tradeName}</Text>
-                                </View>
-                                <View style={styles.shu}>
-                                    <Text>|</Text>
-                                </View>
+                <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                    <View style={styles.container}>
+                        <ScrollView contentContainerStyle={styles.scrollView}>
+                            <Swiper style={styles.swiper} width={screenWidth} height={screenWidth}>
+                                {swiperList}
+                            </Swiper>
+                            <Modal visible={this.state.bigModalShow} transparent={true}>
+                                <ImageViewer
+                                    imageUrls={detail.nowImgs}
+                                    saveToLocalByLongPress={true}
+                                    onClick={() => this.setState({bigModalShow: false})}
+                                    enableImageZoom={false}/>
+                            </Modal>
+                            <View style={styles.goodsSimpleView}>
                                 <View>
-                                    <Text>起订量:{detail.nowSku.mustBuyNum ? detail.nowSku.mustBuyNum : 1}</Text>
+                                    <Text style={styles.titleText}>{detail.nowSku.title}</Text>
                                 </View>
-                            </View>
-                            <View style={styles.priceView}>
-                                <Text style={styles.priceLogo}>¥</Text>
-                                <Text style={styles.price}>{detail.nowSku.marketPrice}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.goodsExtendView}>
-                            {basicAttrView}
-                            {goodsContentView}
-                        </View>
-
-                    </ScrollView>
-                    <View style={styles.bottomView}>
-                        <ActiveButton
-                            style={styles.addToCartBtn}
-                            textStyle={styles.addToCartText}
-                            text="加入进货单"
-                            clickBtn={() => this.showPopup(1)}>
-                        </ActiveButton>
-                        <ActiveButton
-                            style={styles.buyNowBtn}
-                            textStyle={styles.buyNowText}
-                            text="立即抢购"
-                            clickBtn={() => this.showPopup(2)}>
-                        </ActiveButton>
-                    </View>
-
-                    <PopupDialog
-                        ref={(popupDialog) => {
-                            this.popupDialog = popupDialog;
-                        }}
-                        dialogStyle={{borderRadius: 0, height: screenHeight * 0.7, position: 'absolute', bottom: 65}}
-                        dialogAnimation={slideAnimation}
-                        onDismissed={() => Keyboard.dismiss()}
-                    >
-                        <View style={styles.dialogWrapper}>
-                            <View style={styles.popupHeader}>
-                                <View style={styles.popupPriceImg}>
-                                    <View style={styles.popupImgWrapper}>
-                                        <Image
-                                            resizeMode='contain'
-                                            style={styles.popupImg}
-                                            source={{uri: detail.nowSku.img + '?imageView2/1/w/80/h/80'}}/>
-
+                                <View style={styles.buyInfoView}>
+                                    <View style={styles.tradeNameView}>
+                                        <Text style={{color: this.getColor(detail.tradeType)}}>{detail.tradeName}</Text>
                                     </View>
-                                    <View style={styles.popupPrice}>
-                                        <Text style={styles.popupMarketPrice}>¥{detail.nowSku.marketPrice}</Text>
-                                        <Text>运费：¥{detail.nowSku.emsPrice}</Text>
+                                    <View style={styles.shu}>
+                                        <Text>|</Text>
+                                    </View>
+                                    <View>
+                                        <Text>起订量:{detail.nowSku.mustBuyNum ? detail.nowSku.mustBuyNum : 1}</Text>
                                     </View>
                                 </View>
-                                <TouchableHighlight underlayColor='#fff' onPress={() => this.closePopover()}>
-                                    <Icon size={16} name='times-circle'></Icon>
-                                </TouchableHighlight>
+                                <View style={styles.priceView}>
+                                    <Text style={styles.priceLogo}>¥</Text>
+                                    <Text style={styles.price}>{detail.nowSku.marketPrice}</Text>
+                                </View>
                             </View>
-                            <KeyboardAwareScrollView
-                                contentContainerStyle={styles.popupScrollView}
-                                keyboardDismissMode='on-drag'
-                                showsVerticalScrollIndicator={true}>
-                                {specView}
-                            </KeyboardAwareScrollView>
+                            <View style={styles.goodsExtendView}>
+                                {basicAttrView}
+                                {goodsContentView}
+                            </View>
+
+                        </ScrollView>
+                        <View style={styles.bottomView}>
                             <ActiveButton
-                                style={detail.nowSku.count > 0 ? styles.popupSureActive : styles.popupSureNegative}
-                                textStyle={styles.popupSureText}
-                                text="确定"
-                                clickBtn={() => this.sureAdd()}>
+                                style={styles.addToCartBtn}
+                                textStyle={styles.addToCartText}
+                                text="加入进货单"
+                                clickBtn={() => this.showPopup(1)}>
+                            </ActiveButton>
+                            <ActiveButton
+                                style={styles.buyNowBtn}
+                                textStyle={styles.buyNowText}
+                                text="立即抢购"
+                                clickBtn={() => this.showPopup(2)}>
                             </ActiveButton>
                         </View>
+                        <PopupDialog
+                            ref={(popupDialog) => {
+                                this.popupDialog = popupDialog;
+                            }}
+                            dialogStyle={{
+                                borderRadius: 0,
+                                height: screenHeight * 0.7,
+                                position: 'absolute',
+                                bottom: 65
+                            }}
+                            dialogAnimation={slideAnimation}
+                            onDismissed={() => Keyboard.dismiss()}
+                        >
+                            <View style={styles.dialogWrapper}>
+                                <View style={styles.popupHeader}>
+                                    <View style={styles.popupPriceImg}>
+                                        <View style={styles.popupImgWrapper}>
+                                            <Image
+                                                resizeMode='contain'
+                                                style={styles.popupImg}
+                                                source={{uri: detail.nowSku.img + '?imageView2/1/w/80/h/80'}}/>
 
-                    </PopupDialog>
+                                        </View>
+                                        <View style={styles.popupPrice}>
+                                            <Text
+                                                style={styles.popupMarketPrice}>¥{detail.nowSku.marketPrice}</Text>
+                                            <Text>运费：¥{detail.nowSku.emsPrice}</Text>
+                                        </View>
+                                    </View>
+                                    <TouchableHighlight underlayColor='#fff' onPress={() => this.closePopover()}>
+                                        <Icon size={16} name='times-circle'></Icon>
+                                    </TouchableHighlight>
+                                </View>
+                                <KeyboardAwareScrollView
+                                    contentContainerStyle={styles.popupScrollView}
+                                    keyboardDismissMode='on-drag'
+                                    showsVerticalScrollIndicator={true}>
+                                    {specView}
+                                </KeyboardAwareScrollView>
+                                <ActiveButton
+                                    style={detail.nowSku.count > 0 ? styles.popupSureActive : styles.popupSureNegative}
+                                    textStyle={styles.popupSureText}
+                                    text="确定"
+                                    clickBtn={() => this.sureAdd()}>
+                                </ActiveButton>
+                            </View>
 
-                    <Toast ref='toast' position='top'></Toast>
+                        </PopupDialog>
 
-                </View>
 
+                        <Toast ref='toast' position='top'></Toast>
+
+                    </View>
+                </SafeAreaView>
 
             );
         }
@@ -277,9 +286,9 @@ export default class GoodsDetail extends Component<Props> {
         this.props.navigation.setParams({
             goodsIsCollect: goodsIsCollect,
         });
-        if(goodsIsCollect){
+        if (goodsIsCollect) {
             this.refs.toast.show('收藏成功')
-        }else{
+        } else {
             this.refs.toast.show('取消收藏成功')
         }
 
@@ -379,11 +388,12 @@ export default class GoodsDetail extends Component<Props> {
             categoryId: detail.catId,
             categoryName: detail.catName
         };
-        HttpUtils.post('/shoppingCart/putGoodsInCart', params, data => {
-            this.closePopover();
-            params.cartId = data.data;
-            this.props.navigation.navigate('ConfirmOrder', {cartList: [params], tradeType: nowSku.tradeType});
-        })
+        this.props.navigation.navigate('ConfirmOrder', {cartList: [params], tradeType: nowSku.tradeType});
+        // HttpUtils.post('/shoppingCart/putGoodsInCart', params, data => {
+        //     this.closePopover();
+        //     params.cartId = data.data;
+        //     this.props.navigation.navigate('ConfirmOrder', {cartList: [params], tradeType: nowSku.tradeType});
+        // })
     }
 
     showPopup(type) {//显示popup
@@ -416,8 +426,9 @@ export default class GoodsDetail extends Component<Props> {
         addToFootPrint(detail.nowSku);
         this.setState({isLoading: false});
     }
-    getGoodsInfo(id){
-        return new Promise((resolve,reject) => {
+
+    getGoodsInfo(id) {
+        return new Promise((resolve, reject) => {
             HttpUtils.post('/goods/allGoodsInfo', {skuId: id}, data => {
                 let detail = data.data;
                 detail.skus = JSON.parse(detail.skus);
@@ -598,8 +609,7 @@ const styles = StyleSheet.create({
     popupBottomView: {
         position: 'absolute',
         width: screenWidth,
-        height: 40,
-        backgroundColor: '#000',
+        height: screenHeight * 0.7,
         bottom: 0,
         left: 0,
         right: 0,

@@ -10,6 +10,7 @@ import {
     Image,
     Text,
     ScrollView,
+    SafeAreaView,
     View
 } from 'react-native';
 
@@ -54,9 +55,11 @@ export default class ShopCertificationDetail extends Component<Props> {
             )
         });
         return (
-            <ScrollView contentContainerStyle={styles.container}>
-                {voucherList}
-            </ScrollView>
+            <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <ScrollView contentContainerStyle={styles.container}>
+                    {voucherList}
+                </ScrollView>
+            </SafeAreaView>
         );
     }
 

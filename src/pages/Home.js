@@ -11,6 +11,7 @@ import {
     View,
     TextInput,
     TouchableOpacity,
+    SafeAreaView,
     Text
 } from 'react-native';
 import HomeSwiper from '../components/business/HomeSwiper'
@@ -20,6 +21,7 @@ import RecommandForYou from '../components/business/RecommandForYou'
 import IdentifyImg from '../components/business/IdentifyImg'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LoadingView from '../components/common/LoadingView';
+import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 export default class Home extends Component<Props> {
     constructor(props) {
@@ -48,6 +50,7 @@ export default class Home extends Component<Props> {
                     style={styles.keyword}
                     // autoFocus={true}
                     placeholder="搜索"
+                    returnKeyType='done'
                     // onEndEditing={(text) => {
                     //     navigation.setParams({keyword: text})
                     // }}
@@ -72,34 +75,41 @@ export default class Home extends Component<Props> {
             return <LoadingView/>
         } else {
             return (
-                <View style={styles.container}>
-                    <RecommandForYou {...this.props} header={
-                        <ScrollView contentContainerStyle={styles.container}>
-                            <HomeSwiper {...this.props}></HomeSwiper>
-                            <PlatformPlate {...this.props}></PlatformPlate>
-                            <HomeCategory {...this.props}></HomeCategory>
-                        </ScrollView>
-                    }>
-                    </RecommandForYou>
-                    <IdentifyImg {...this.props}></IdentifyImg>
-                </View>
+                <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                    <View style={styles.container}>
+                        <RecommandForYou {...this.props} header={
+                            <ScrollView contentContainerStyle={styles.container}>
+                                <HomeSwiper {...this.props}></HomeSwiper>
+                                <PlatformPlate {...this.props}></PlatformPlate>
+                                <HomeCategory {...this.props}></HomeCategory>
+                            </ScrollView>
+                        }>
+                        </RecommandForYou>
+                        <IdentifyImg {...this.props}></IdentifyImg>
+                    </View>
+                    <Toast ref='toast' position='center'></Toast>
+                </SafeAreaView>
+
             );
         }
     }
 
     changeKeyword(text) {
-        this.state.keyword = text;
+        this.state.keyword = text.trim();
     }
 
     search() {
-        if (this.state.keyword) {
-            this.props.navigation.navigate('GoodsList', {keyword: this.state.keyword})
+        if (!this.state.keyword) {
+            this.refs.toast.show('请输入关键字');
+            return;
         }
+        this.props.navigation.navigate('GoodsList', {keyword: this.state.keyword})
     }
 }
 const styles = StyleSheet.create({
     container: {
         backgroundColor: whiteColor,
+        flex: 1
     },
     scrollView: {
         alignItems: 'center',

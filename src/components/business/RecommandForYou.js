@@ -56,9 +56,9 @@ export default class RecommandForYou extends Component<Props> {
                     }}
                 >
                     <Image
-                        style={{width: 100, height: 100}}
+                        style={{width: 200, height: 200}}
                         resizeMode='contain'
-                        source={require('../../images/no-order.jpg')}
+                        source={require('../../images/noGoods.png')}
                     />
                 </View>}
             />
@@ -117,7 +117,7 @@ export default class RecommandForYou extends Component<Props> {
         })
     }
 
-    _keyExtractor = (item, index) => item.id;
+    _keyExtractor = (item, index) => index;
     _renderItem = ({item}) => (
         <TouchableHighlight underlayColor='#f2f2f2' style={styles.goodsTouch} onPress={() => this.goodsDetail(item.id)}>
             <View style={styles.singleGoods}>

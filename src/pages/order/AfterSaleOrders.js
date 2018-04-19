@@ -9,11 +9,13 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
+    SafeAreaView,
     FlatList,
     Image,
     View
 } from 'react-native';
 import LoadingView from '../../components/common/LoadingView';
+
 type Props = {};
 export default class AfterSaleOrders extends Component<Props> {
 
@@ -65,9 +67,11 @@ export default class AfterSaleOrders extends Component<Props> {
             />
         }
 
-        return <View style={styles.container}>
-            {orderList}
-        </View>
+        return <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+            <View style={styles.container}>
+                {orderList}
+            </View>
+        </SafeAreaView>
 
     }
 
