@@ -12,17 +12,6 @@ import com.beefe.picker.PickerViewPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.dscj.autoheightwebview.AutoHeightWebViewPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.dscj.autoheightwebview.AutoHeightWebViewPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.react.rnspinkit.RNSpinkitPackage;
-import com.beefe.picker.PickerViewPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -51,18 +40,7 @@ public class MainApplication extends Application implements ReactApplication {
             new PickerViewPackage(),
             new PickerPackage(),
             new RNDeviceInfo(),
-            new AutoHeightWebViewPackage(),
-            new SplashScreenReactPackage(),
-            new SplashScreenReactPackage(),
-            new RNDeviceInfo(),
-            new RNDeviceInfo(),
-            new SplashScreenReactPackage(),
-            new AutoHeightWebViewPackage(),
-            new RNDeviceInfo(),
-            new VectorIconsPackage(),
-            new RNSpinkitPackage(),
-            new PickerPackage(),
-            new PickerViewPackage()
+            new AutoHeightWebViewPackage()
       );
     }
 

@@ -68,7 +68,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>用于上传用户信息以及公司信息</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>店力集盒要访问您的相册</string>
 	<key>NSPhotoLibraryUsageDescription</key>
