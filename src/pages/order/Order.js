@@ -12,6 +12,7 @@ import {
     ActivityIndicator,
     TouchableOpacity,
     FlatList,
+    BackAndroid,
     SafeAreaView,
     Image,
     Alert,
@@ -60,21 +61,33 @@ export default class Order extends Component<Props> {
         }
     }
 
+    componentWillUnmount() {
+        BackAndroid.removeEventListener('hardwareBackPress');
+    }
+
     componentDidMount() {
         if (this.props.navigation.state.params && this.props.navigation.state.params.type) {
             this.state.orderType = this.props.navigation.state.params.type;
         }
         this.props.navigation.setParams({orderGoBack: this.orderGoBack.bind(this)});
+        BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
         this.fetchData()
     }
-
+    onBackAndroid() {//安卓返回键
+        if (this.lastBackPressed && this.lastBackPressed + 500 >= Date.now()) {
+            //最近2秒内按过back键，可以退出应用。
+            return false;
+        }
+        this.lastBackPressed = Date.now();
+        this.refs.toast.show('再按一次退出应用', 500);
+        return true;
+    }
     static navigationOptions = ({navigation, screenProps}) => ({
-        headerLeft:
-            <TouchableOpacity onPress={() => navigation.state.params.orderGoBack()}>
-                <View style={{paddingLeft: 15}}>
-                    <Icon name='angle-left' size={40} color='black'></Icon>
-                </View>
-            </TouchableOpacity>
+        headerLeft: <TouchableOpacity onPress={() => navigation.state.params.orderGoBack()}>
+            <View style={{paddingLeft: 15}}>
+                <Icon name='angle-left' size={40} color='black'></Icon>
+            </View>
+        </TouchableOpacity>
 
     });
 
@@ -307,15 +320,15 @@ export default class Order extends Component<Props> {
             [
                 {
                     text: "确定", onPress: () => {
-                        HttpUtils.post('/order/manuallyCancelOrder', {orderId: orderId}, data => {
-                            this.refs.toast.show('操作成功!', 10);
-                            this.fetchData();
-                        })
-                    }
+                    HttpUtils.post('/order/manuallyCancelOrder', {orderId: orderId}, data => {
+                        this.refs.toast.show('操作成功!', 10);
+                        this.fetchData();
+                    })
+                }
                 },
                 {
                     text: "取消", onPress: () => {
-                    }
+                }
                 },
             ],
             {cancelable: false}
@@ -331,15 +344,15 @@ export default class Order extends Component<Props> {
             [
                 {
                     text: "确认", onPress: () => {
-                        HttpUtils.post('/order/confirmReceive', {orderId: orderId}, data => {
-                            this.refs.toast.show('操作成功!', 10);
-                            this.fetchData();
-                        })
-                    }
+                    HttpUtils.post('/order/confirmReceive', {orderId: orderId}, data => {
+                        this.refs.toast.show('操作成功!', 10);
+                        this.fetchData();
+                    })
+                }
                 },
                 {
                     text: "取消", onPress: () => {
-                    }
+                }
                 },
             ],
             {cancelable: false}

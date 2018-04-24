@@ -133,8 +133,7 @@ export default class DiaperCurrency extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList: this.state.goodsList.concat(data.data.list)});
-            this.state.loadingMore = false;
+            this.setState({goodsList: this.state.goodsList.concat(data.data.list),loadingMore:false});
         })
     }
 

@@ -61,7 +61,7 @@ export default class AfterSaleOrders extends Component<Props> {
                     <Image
                         style={{width: 200, height: 200}}
                         resizeMode='contain'
-                        source={require('../../images/no-order.jpg')}
+                        source={require('../../images/noOrder.png')}
                     />
                 </View>}
             />

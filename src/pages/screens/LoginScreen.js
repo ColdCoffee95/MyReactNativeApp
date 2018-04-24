@@ -190,7 +190,8 @@ export default class LoginScreen extends Component<Props> {
     }
 
     toMain() {
-        jumpAndClear(this.props.navigation, 'Main')
+        Actions.reset();
+        // jumpAndClear(this.props.navigation, 'Main')
     }
 }
 const styles = StyleSheet.create({

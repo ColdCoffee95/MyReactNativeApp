@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    View
+    View,
+    BackHandler
 } from 'react-native';
 import {StackNavigator, NavigationActions} from "react-navigation";
 import './src/utils/storage';

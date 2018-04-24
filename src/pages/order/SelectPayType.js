@@ -166,7 +166,7 @@ export default class SelectPayType extends Component<Props> {
                             <View style={styles.payTypeView}>
                                 <View style={styles.payTypeLeftView}>
                                     <Image
-                                        source={require('../../images/weixinpay.jpg')}
+                                        source={require('../../images/weixinpay.png')}
                                         resizeMode='contain'
                                         style={styles.weixinImg}
                                     />
@@ -205,12 +205,12 @@ export default class SelectPayType extends Component<Props> {
             [
                 {
                     text: "确认离开", onPress: () => {
-                        this.props.navigation.navigate('Order');
-                    }
+                    this.props.navigation.navigate('Order');
+                }
                 },
                 {
                     text: "继续支付", onPress: () => {
-                    }
+                }
                 },
             ],
             {cancelable: false}
@@ -350,8 +350,8 @@ export default class SelectPayType extends Component<Props> {
                     [
                         {
                             text: '确定', onPress: () => {
-                                this.props.navigation.navigate('OrderList', {type: -1})
-                            }
+                            this.props.navigation.navigate('OrderList', {type: -1})
+                        }
                         }
                     ],
                     {cancelable: false});
