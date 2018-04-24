@@ -42,13 +42,13 @@ export default class PaySuccess extends Component<Props> {
                             this.state.type === 'weixin' && <Image
                                 resizeMode='contain'
                                 style={styles.img}
-                                source={require('../../images/weixinSuccess.jpg')}/>
+                                source={require('../../images/weixinSuccess.png')}/>
                         }
                         {
                             this.state.type === 'alipay' && <Image
                                 resizeMode='contain'
                                 style={styles.img}
-                                source={require('../../images/aliSuccess.jpg')}/>
+                                source={require('../../images/aliSuccess.png')}/>
                         }
                         <Text style={styles.successText}>支付成功</Text>
                     </View>

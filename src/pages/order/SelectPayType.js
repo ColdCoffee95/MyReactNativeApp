@@ -166,7 +166,7 @@ export default class SelectPayType extends Component<Props> {
                             <View style={styles.payTypeView}>
                                 <View style={styles.payTypeLeftView}>
                                     <Image
-                                        source={require('../../images/weixinpay.jpg')}
+                                        source={require('../../images/weixinpay.png')}
                                         resizeMode='contain'
                                         style={styles.weixinImg}
                                     />

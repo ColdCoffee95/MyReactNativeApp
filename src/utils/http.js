@@ -1,27 +1,34 @@
 const successCode = 10000;
+const timeout = 15000;
 import {Alert} from 'react-native';
-const timeoutFetch = (original_fetch, timeout = 30000) => {
-    let timeoutBlock = () => {}
-    let timeout_promise = new Promise((resolve, reject) => {
-        timeoutBlock = () => {
-            // 请求超时处理
-            reject('timeout promise')
-        }
+function timeoutFetch(ms, promise) {//超时请求
+    return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+            Alert.alert('请求超时');
+            reject("请求超时")
+        }, ms);
+        promise.then(
+            (res) => {
+                clearTimeout(timer);
+                resolve(res)
+            },
+            (err) => {
+                clearTimeout(timer);
+                reject(err)
+            }
+        )
     })
+}
 
-    // Promise.race(iterable)方法返回一个promise
-    // 这个promise在iterable中的任意一个promise被解决或拒绝后，立刻以相同的解决值被解决或以相同的拒绝原因被拒绝。
-    let abortable_promise = Promise.race([
-        original_fetch,
-        timeout_promise
-    ])
+function checkStatus(response) {//检查状态
+    // console.log(response)
+    if (response.status >= 200 && response.status < 300) {
+        return response
+    }
 
-    setTimeout(() => {
-            timeoutBlock()
-        },
-        timeout)
-
-    return abortable_promise
+    let error = new Error(response.status);
+    error.response = response;
+    throw error;
 }
 export default class HttpUtils {
     static getLoginState() {
@@ -63,61 +70,66 @@ export default class HttpUtils {
         }
         let loginState = await this.getLoginState();
         let userInfo = await this.getUserInfo();
-        //fetch请求
-        fetch(serverUrl + url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'isValidate': userInfo.authentication == 1 ? 1 : 0,
-                'token': loginState.token || '',
-                'memberId': loginState.memberId || '',
-                'version': global.version,
-                'platform': global.platform
-            },
-        })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                switch (responseJSON.code) {
-                    case successCode:
-                        callback(responseJSON);
-                        break;
-                    default:
-                        Alert.alert(null, responseJSON.message)
-                }
+        return timeoutFetch(timeout, fetch(serverUrl + url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'isValidate': userInfo.authentication == 1 ? 1 : 0,
+                    'token': loginState.token || '',
+                    'memberId': loginState.memberId || '',
+                    'version': global.version,
+                    'platform': global.platform
+                },
             })
-            .catch((error) => {
-                console.error(error)
-            });
+                .then((response) => checkStatus(response))
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    switch (responseJSON.code) {
+                        case successCode:
+                            callback(responseJSON);
+                            break;
+                        default:
+                            Alert.alert(null, responseJSON.message)
+                    }
+                })
+                .catch((error) => {
+                    Alert.alert('网络错误！')
+                })
+        )
+
     }
 
     static async post(url, params, callback) {
         let loginState = await this.getLoginState();
         let userInfo = await this.getUserInfo();
-        fetch(serverUrl + url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'isValidate': userInfo.authentication == 1 ? 1 : 0,
-                'token': loginState.token || '',
-                'memberId': loginState.memberId || '',
-                'version': global.version,
-                'platform': global.platform
-            },
-            body: JSON.stringify(params)
-        })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                switch (responseJSON.code) {
-                    case successCode:
-                        callback(responseJSON);
-                        break;
-                    default:
-                        Alert.alert(null, responseJSON.message)
-                }
+        return timeoutFetch(timeout, fetch(serverUrl + url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'isValidate': userInfo.authentication == 1 ? 1 : 0,
+                    'token': loginState.token || '',
+                    'memberId': loginState.memberId || '',
+                    'version': global.version,
+                    'platform': global.platform
+                },
+                body: JSON.stringify(params)
             })
-            .catch((error) => {
-                console.error("error = " + error)
-            });
+                .then((response) => checkStatus(response))
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    switch (responseJSON.code) {
+                        case successCode:
+                            callback(responseJSON);
+                            break;
+                        default:
+                            Alert.alert(null, responseJSON.message)
+                    }
+                })
+                .catch((error) => {
+                    Alert.alert('网络错误！')
+                })
+        )
+
     }
 }

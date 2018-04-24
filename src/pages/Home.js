@@ -11,6 +11,7 @@ import {
     View,
     TextInput,
     TouchableOpacity,
+    BackHandler,
     SafeAreaView,
     Text
 } from 'react-native';
@@ -33,6 +34,9 @@ export default class Home extends Component<Props> {
     }
 
     componentDidMount() {
+        if (platform === 'Android') {
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
+        }
         setTimeout(() => {
             this.props.navigation.setParams({
                 changeKeyword: this.changeKeyword.bind(this),
@@ -40,6 +44,24 @@ export default class Home extends Component<Props> {
             });
             this.setState({isLoading: false})
         }, 5)
+    }
+
+    componentWillUnmount() {
+        console.warn('componentWillUnmount')
+        if (platform === 'Android') {
+            BackHandler.removeEventListener('hardwareBackPress');
+        }
+    }
+
+    onBackAndroid() {//安卓返回键
+        if (this.lastBackPressed && this.lastBackPressed + 500 >= Date.now()) {
+            //最近2秒内按过back键，可以退出应用。
+            BackHandler.exitApp();
+            return false;
+        }
+        this.lastBackPressed = Date.now();
+        this.refs.toast.show('再按一次退出应用', 500);
+        return true;
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -60,6 +82,7 @@ export default class Home extends Component<Props> {
 
             </View>
         ),
+        headerLeft: (<View/>),
         headerRight: (
             <TouchableOpacity onPress={() => navigation.state.params.search()}>
                 <View style={styles.rightSearch}>
@@ -103,6 +126,7 @@ export default class Home extends Component<Props> {
             this.refs.toast.show('请输入关键字');
             return;
         }
+
         this.props.navigation.navigate('GoodsList', {keyword: this.state.keyword})
     }
 }
@@ -122,7 +146,7 @@ const styles = StyleSheet.create({
     searchView: {
         borderColor: borderColor,
         borderWidth: 1,
-        width: screenWidth * 0.7,
+        width: screenWidth * 0.65,
         height: 30,
         borderRadius: 30,
         flexDirection: 'row',
@@ -130,13 +154,13 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     keyword: {
-        width: screenWidth * 0.7 - 40,
+        width: screenWidth * 0.65,
         height: 50,
         paddingLeft: 10,
         fontSize: 14
     },
     rightSearch: {
-        width: screenWidth * 0.15,
+        width: screenWidth * 0.2,
         alignItems: 'center',
     }
 });

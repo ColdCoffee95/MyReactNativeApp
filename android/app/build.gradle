@@ -98,12 +98,12 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.awesomeproject"
+        applicationId "com.metchange.dianlijihe"
         minSdkVersion 16
         vectorDrawables.useSupportLibrary = true
         targetSdkVersion 22
         versionCode 1
-        versionName "1.4.2"
+        versionName "1.5.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }

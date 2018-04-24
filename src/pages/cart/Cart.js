@@ -15,9 +15,9 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import {observer} from 'mobx-react';
-import {action, autorun} from 'mobx';
 
+import {action} from 'mobx';
+import {observer} from 'mobx-react';
 import CartGoods from '../../mobx/cartGoods'
 import CartComponent from './CartComponent'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -49,6 +49,7 @@ export default class Cart extends Component<Props> {
                 navigation.state.params.fetchData();
             }
         },
+
         headerRight: (navigation.state.params && navigation.state.params.cartList && navigation.state.params.cartList.length > 0 &&
             <View style={styles.headerRightView}>
                 <TouchableOpacity style={{marginRight: 10}}

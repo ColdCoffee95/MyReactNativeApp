@@ -36,7 +36,8 @@ export default class AddAddress extends Component<Props> {
             contacts: '',
             mobile: '',
             address: '',//详细地址
-            defaults: false
+            defaults: false,
+            language:'java'
         };
     }
 
@@ -44,6 +45,7 @@ export default class AddAddress extends Component<Props> {
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
                 <View style={styles.container}>
+
                     <FormCell
                         title='收货手机'
                         placeholder='请输入可联系到的手机号'
@@ -116,8 +118,8 @@ export default class AddAddress extends Component<Props> {
                                     provinceName: address.provinceName,
                                     cityName: address.cityName,
                                     areaName: address.areaName,
-                                })}
-                            ></Address>
+                                })}>
+                            </Address>
                         </View>
 
 

@@ -43,13 +43,7 @@ export default class Counter extends Component<Props> {
                 <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.cutValue()}>
                     <Icon name='minus-square' size={20}></Icon>
                 </TouchableHighlight>
-                {/*<Kaede*/}
-                {/*defaultValue={this.state.currentValue + ""}*/}
-                {/*onChangeText={(num) => this.judgeNum(num)}*/}
-                {/*style={styles.textInput}*/}
-                {/*>*/}
 
-                {/*</Kaede>*/}
                 <TextInput
                     ref={(textInput) => this.textInput = textInput}
                     defaultValue={this.state.currentValue + ""}
@@ -57,15 +51,16 @@ export default class Counter extends Component<Props> {
                     style={styles.textInput}
                     returnKeyType='done'
                     editable={!this.state.sellout}
+                    numberOfLines={1}
                     // blurOnSubmit={true}
+
                     onChangeText={(num) => this.judgeNum(num)}
                     onEndEditing={(event) => this._onEndEditing(event)}
+
                     // onBlur={(event) => this.judgeNum(event)}
                     underlineColorAndroid='transparent'>
 
                 </TextInput>
-
-
                 <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.addValue()}>
                     <Icon name='plus-square' size={20}></Icon>
                 </TouchableHighlight>
@@ -158,6 +153,8 @@ export default class Counter extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
+        alignItems:'center',
+        justifyContent:'center'
     },
     textInputView: {
         alignItems: 'center',
@@ -165,9 +162,9 @@ const styles = StyleSheet.create({
     },
     textInput: {
         width: 40,
-        height: 20,
+        lineHeight:20,
         alignItems: 'center',
         justifyContent: 'center',
-        textAlign: 'center'
+        textAlign:'center'
     }
 });

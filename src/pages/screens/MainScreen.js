@@ -10,7 +10,25 @@ import CategoryPage from '../Category';
 import CartPage from '../cart/Cart';
 import MinePage from '../Mine';
 
-
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    icon: {
+        width: 20,
+        height: 20
+    },
+    headerStyles: {
+        backgroundColor: whiteColor
+    },
+    headerTitleStyle: {
+        alignSelf: 'center',
+        textAlign: 'center',
+        flex: 1
+    }
+});
 const mainPage = TabNavigator({
     Home: {
         screen: HomePage,
@@ -18,7 +36,6 @@ const mainPage = TabNavigator({
             //默认参数
             title:'首页',
             tabBarLabel: '首页',
-            headerLeft:null,
             headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
                 <Image
@@ -38,7 +55,6 @@ const mainPage = TabNavigator({
         navigationOptions: {
             title:'分类',
             tabBarLabel: '分类',
-            headerLeft:null,
             headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
                 <Image
@@ -60,6 +76,9 @@ const mainPage = TabNavigator({
             title:'进货单',
             tabBarLabel: '进货单',
             headerBackTitle: null,
+            headerStyle: styles.headerStyles,
+            headerTintColor: 'black',
+            headerTitleStyle: styles.headerTitleStyle,
             tabBarIcon: ({tintColor}) => (
                 <Image
                     source={
@@ -68,9 +87,6 @@ const mainPage = TabNavigator({
                     style={[styles.icon, {tintColor: tintColor}]}// {tintColor: tintColor} 选中的图片和文字颜色
                 />
             ),
-            headerTitleStyle: {
-                alignSelf: 'center'
-            }
         }
     },
     Mine: {
@@ -105,27 +121,13 @@ const mainPage = TabNavigator({
             backgroundColor: '#fff', // TabBar 背景色
             height: 56,
             justifyContent:'center',
-            paddingTop:5,
-            paddingBottom:5
         },
         labelStyle: {
-            fontSize: 14, // 文字大小,
-            marginTop: 5,
+            fontSize: 12, // 文字大小,
+            marginTop:4
         },
-        iconStyle:{
-            height:0
-        }
+
     },
 });
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    icon: {
-        width: 20,
-        height: 20
-    }
-});
+
 module.exports = mainPage;

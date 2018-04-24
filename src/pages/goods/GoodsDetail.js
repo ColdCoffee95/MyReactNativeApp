@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     Text,
     SafeAreaView,
+    TextInput,
     Keyboard,
     Modal,
 } from 'react-native';
@@ -217,12 +218,14 @@ export default class GoodsDetail extends Component<Props> {
                             ref={(popupDialog) => {
                                 this.popupDialog = popupDialog;
                             }}
-                            dialogStyle={{
-                                borderRadius: 0,
-                                height: screenHeight * 0.7,
-                                position: 'absolute',
-                                bottom: 65
-                            }}
+                            position="right"
+                             dialogStyle={{
+                                 borderRadius: 0,
+                                 height: screenHeight * 0.7,
+                                 position: 'absolute',
+                                 bottom: 80,
+                                 zIndex:99
+                             }}
                             dialogAnimation={slideAnimation}
                             onDismissed={() => Keyboard.dismiss()}
                         >
@@ -539,7 +542,8 @@ const styles = StyleSheet.create({
         padding: 10,
         position: 'absolute',
         backgroundColor: whiteColor,
-        top: -30
+        top: -30,
+        zIndex:999
     },
     popupImg: {
         width: 60,

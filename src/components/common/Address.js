@@ -182,7 +182,8 @@ export default class Address extends Component<Props> {
 const styles = StyleSheet.create({
     pickerStyle: {
         width: screenWidth / 3,
-        backgroundColor: whiteColor
+        backgroundColor: whiteColor,
+        alignItems:'center',
     },
     addressSelectView: {
         width: screenWidth,
