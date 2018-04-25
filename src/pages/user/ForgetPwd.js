@@ -19,8 +19,7 @@ import CryptoJS from 'crypto-js'
 import FormCell from '../../components/common/FormCell'
 import ActiveButton from '../../components/common/ActiveButton'
 import Toast, {DURATION} from 'react-native-easy-toast';
-import HttpUtils from "../../utils/http";
-
+import {Actions} from 'react-native-router-flux'
 export default class ForgetPwd extends Component<Props> {
     constructor(props) {
         super(props);
@@ -133,7 +132,7 @@ export default class ForgetPwd extends Component<Props> {
         };
         HttpUtils.post('/member/updateMemberPwdByCode', params, data => {
             this.refs.toast.show('密码已修改成功！', 300, () => {
-                jumpAndClear(this.props.navigation, 'Login')
+                Actions.pop()
             });
 
         })

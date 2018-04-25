@@ -28,7 +28,7 @@ export default class AfterSaleDetail extends Component<Props> {
     }
 
     componentDidMount() {
-        this.state.orderAftersalesId = this.props.navigation.state.params.id;
+        this.state.orderAftersalesId = this.props.id;
         this.fetchData()
     }
 

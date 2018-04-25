@@ -254,14 +254,11 @@ export default class OrderDetail extends Component<Props> {
     }
 
     jumpToPay(orderId) {//去支付
-        this.props.navigation.navigate('SelectPayType', {orderId: orderId});
+        Actions.push('selectPayType', {orderId: orderId});
     }
 
     applyAfterSale(orderInfo) {//申请退货退款
-        this.props.navigation.navigate('ApplyAfterSale', {
-            orderInfo: orderInfo,
-            goBack: () => this.fetchData()
-        });
+        Actions.push('applyAfterSale', {orderInfo: orderInfo});
     }
 
     cancelOrder(orderId) {//取消订单
@@ -285,7 +282,7 @@ export default class OrderDetail extends Component<Props> {
     }
 
     getDeliveryInfo(orderId) {//查看物流
-        this.props.navigation.navigate('ViewLogistics', {orderId: orderId});
+        Actions.push('viewLogistics', {orderId: orderId});
     }
 
     confirmReceipt(orderId) {//确认收货
@@ -313,10 +310,7 @@ export default class OrderDetail extends Component<Props> {
     }
 
     comment(orderId) {
-        this.props.navigation.navigate('Comment', {
-            orderId: orderId,
-            goBack: () => this.fetchData()
-        });
+        Actions.push('comment', {orderId: orderId});
     }
 
 }

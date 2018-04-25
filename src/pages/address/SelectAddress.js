@@ -15,7 +15,7 @@ import {
     View
 } from 'react-native';
 import LoadingView from '../../components/common/LoadingView';
-
+import {Actions} from 'react-native-router-flux'
 type Props = {};
 
 export default class SelectAddress extends Component<Props> {
@@ -96,15 +96,13 @@ export default class SelectAddress extends Component<Props> {
     }
 
     jumpToManage() {
-        this.props.navigation.navigate('ManageAddress', {
-            goBack: () => this.fetchData()
-        });
+        Actions.push('manageAddress')
     }
 
     selectAddress(address) {
-        const {navigate, goBack, state} = this.props.navigation;
-        state.params.callback(address);
-        goBack();
+        Actions.pop({
+            callback: address
+        })
     }
 }
 

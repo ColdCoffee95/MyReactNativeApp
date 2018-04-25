@@ -20,7 +20,7 @@ import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import {Actions} from 'react-native-router-flux'
 type Props = {};
 export default class AddCrossAddress extends Component<Props> {
 
@@ -146,9 +146,9 @@ export default class AddCrossAddress extends Component<Props> {
         }
         HttpUtils.post('/idCardAddress/addIdCardAddress', params, data => {
             this.refs.toast.show('新增成功', 500, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                state.params.goBack();
-                goBack();
+                Actions.pop({
+                    refresh: {key: Math.random()}
+                })
             });
         });
     }

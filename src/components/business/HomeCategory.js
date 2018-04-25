@@ -41,8 +41,7 @@ export default class HomeCategory extends Component<Props> {
 
     async fetchData() {
         HttpUtils.get('/goodsCat/catList', {catId: -1}, data => {
-            this.setState({catList: data.data});
-            this.setState({isLoading: false});
+            this.setState({catList: data.data, isLoading: false});
         })
     }
 
@@ -71,8 +70,8 @@ export default class HomeCategory extends Component<Props> {
         }
     }
 
-    goodsList(id){
-        this.props.navigation.navigate('GoodsList', {id: id});
+    goodsList(id) {
+        Actions.push('goodsList', {id: id});
     }
 }
 

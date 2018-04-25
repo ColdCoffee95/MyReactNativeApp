@@ -244,7 +244,7 @@ export default class Cart extends Component<Props> {
             this.refs.toast.show("您还没有选择商品哦", 500);
             return;
         }
-        this.props.navigation.navigate('ConfirmOrder', {cartList: arr, tradeType: this.state.tradeType});
+        Actions.push('confirmOrder', {cartList: arr, tradeType: this.state.tradeType});
     }
 
     deleteGoods(id) {//删掉购物车中某个商品
@@ -260,7 +260,7 @@ export default class Cart extends Component<Props> {
     }
 
     backToHome() {
-        this.props.navigation.navigate('Home')
+        Actions.push('home');
     }
 
     fetchData() {

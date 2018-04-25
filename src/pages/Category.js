@@ -11,7 +11,6 @@ import {
     ScrollView,
     TouchableHighlight,
     SafeAreaView,
-    BackAndroid,
     View,
     Text,
     TextInput,
@@ -39,7 +38,6 @@ export default class Category extends Component<Props> {
             changeKeyword: this.changeKeyword.bind(this),
             search: this.search.bind(this)
         });
-        BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
         this.getFirstAllCategories()
     }
 
@@ -183,11 +181,7 @@ export default class Category extends Component<Props> {
         if (id) {
             secondIds = [id];
         }
-        this.props.navigation.navigate('GoodsList', {id: parentId, secondIds: secondIds});
-    }
-
-    onBackAndroid() {//安卓返回键
-        this.props.navigation.navigate('Home');
+        Actions.push('goodsList', {id: parentId, secondIds: secondIds});
     }
 
     changeKeyword(text) {
@@ -199,7 +193,7 @@ export default class Category extends Component<Props> {
             this.refs.toast.show('请输入关键字');
             return;
         }
-        this.props.navigation.navigate('GoodsList', {keyword: this.state.keyword})
+        Actions.push('goodsList', {keyword: this.state.keyword});
     }
 
     getSecondCategories(catId) {//获取二级分类

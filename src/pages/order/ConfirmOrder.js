@@ -38,9 +38,8 @@ export default class ConfirmOrder extends Component<Props> {
     }
 
     componentDidMount() {
-        this.state.tradeType = this.props.navigation.state.params.tradeType;
-        this.state.cartList = this.props.navigation.state.params.cartList;
-        console.warn(this.state.cartList)
+        this.state.tradeType = this.props.tradeType;
+        this.state.cartList = this.props.cartList;
         this.fetchData();
 
     }
@@ -307,31 +306,31 @@ export default class ConfirmOrder extends Component<Props> {
                 break;
         }
         HttpUtils.post('/order/createOrder', params, data => {
-            this.props.navigation.navigate('SelectPayType', {orderId: data.data});
+            Actions.push('selectPayType', {orderId: data.data});
         })
     }
 
     jumpToSelectAddress() {//跳转到选择地址页面
         if (this.state.tradeType !== 1) {//跨境贸易
-            this.props.navigation.navigate('SelectCrossAddress', {
+            Actions.push('selectCrossAddress', {
                 callback: (address) => {
                     this.setState({address: address});
                 }
             });
         } else {//一般贸易
-            this.props.navigation.navigate('SelectAddress', {
+            Actions.push('selectAddress', {
                 callback: (address) => {
                     this.setState({address: address});
                 }
             });
+
         }
     }
 
     jumpToSelectCoupon() {//跳转到选择优惠券页面
         const {cartList} = this.state;
-        this.props.navigation.navigate('SelectCoupon', {
-            cartList: cartList,
-            callback: (coupon) => {
+        Actions.push('selectCoupon', {
+            cartList: cartList, callback: (coupon) => {
                 let params = {
                     couponId: coupon.id,
                     orderItemList: cartList
@@ -350,11 +349,11 @@ export default class ConfirmOrder extends Component<Props> {
     }
 
     jumpToSelectCertification() {//跳转到选择实名认证页面
-        this.props.navigation.navigate('SelectCertification', {
+        Actions.push('selectCertification', {
             callback: (certification) => {
                 this.setState({certification: certification});
             }
-        });
+        })
     }
 
     getDefaultCertification() {//获取默认的实名认证信息

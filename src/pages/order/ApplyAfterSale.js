@@ -33,7 +33,7 @@ export default class ApplyAfterSale extends Component<Props> {
     }
 
     componentDidMount() {
-        this.setState({orderInfo: this.props.navigation.state.params.orderInfo, isLoading: false});
+        this.setState({orderInfo: this.props.orderInfo, isLoading: false});
     }
 
     render() {
@@ -126,9 +126,9 @@ export default class ApplyAfterSale extends Component<Props> {
         }
         HttpUtils.post('/order/createOrderAftersales', params, data => {
             this.refs.toast.show('申请成功，请等待处理', 500, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                state.params.goBack();
-                goBack();
+                Actions.pop({
+                    refresh: {key: Math.random()}
+                })
             });
         })
     }

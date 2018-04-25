@@ -105,7 +105,7 @@ export default class Collect extends Component<Props> {
     }
 
     goodsDetail(id) {
-        this.props.navigation.navigate('GoodsDetail', {id: id});
+        Actions.push('goodsDetail', {id: id})
     }
 
     fetchData() {

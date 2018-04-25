@@ -20,6 +20,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import ActiveButton from '../../components/common/ActiveButton';
 import LoadingView from '../../components/common/LoadingView';
+import {Actions} from 'react-native-router-flux'
 type Props = {};
 
 export default class ManageCrossAddress extends Component<Props> {
@@ -33,18 +34,19 @@ export default class ManageCrossAddress extends Component<Props> {
     }
 
     componentDidMount() {
-        this.props.navigation.setParams({addressGoBack: this.addressGoBack.bind(this)});
         this.fetchData()
+        // this.props.navigation.setParams({addressGoBack: this.addressGoBack.bind(this)});
     }
-    static navigationOptions = ({navigation, screenProps}) => ({
-        headerLeft:
-            <TouchableOpacity onPress={() => navigation.state.params.addressGoBack()}>
-                <View style={{paddingLeft: 15}}>
-                    <Icon name='angle-left' size={40} color='black'></Icon>
-                </View>
-            </TouchableOpacity>
 
-    });
+    // static navigationOptions = ({navigation, screenProps}) => ({
+    //     headerLeft: <TouchableOpacity onPress={() => navigation.state.params.addressGoBack()}>
+    //         <View style={{paddingLeft: 15}}>
+    //             <Icon name='angle-left' size={40} color='black'></Icon>
+    //         </View>
+    //     </TouchableOpacity>
+    //
+    // });
+
     render() {
         if (this.state.isLoading) {
             return <LoadingView/>
@@ -112,11 +114,16 @@ export default class ManageCrossAddress extends Component<Props> {
         }
 
     }
-    addressGoBack(){
-        const {navigate, goBack, state} = this.props.navigation;
-        state.params.goBack();
-        goBack();
+    componentWillReceiveProps(){
+        this.fetchData()
     }
+    addressGoBack() {
+        Actions.pop({
+            goBack: () => {
+            }
+        })
+    }
+
     async fetchData() {
         let list = await this.getAddressList();
         let addressData = await getAddressData();
@@ -135,10 +142,7 @@ export default class ManageCrossAddress extends Component<Props> {
     }
 
     editAddress(id) {
-        this.props.navigation.navigate('EditCrossAddress', {
-            goBack: () => this.fetchData(),
-            id: id
-        });
+        Actions.push('editCrossAddress', {id: id});
     }
 
     setDefaultAddress(id) {//设为默认
@@ -153,15 +157,16 @@ export default class ManageCrossAddress extends Component<Props> {
             [
                 {
                     text: "确定", onPress: () => {
-                        HttpUtils.get('/idCardAddress/deleteIdCardAddressById', {id: id}, data => {
-                            this.refs.toast.show('删除成功!', 10);
+                    HttpUtils.get('/idCardAddress/deleteIdCardAddressById', {id: id}, data => {
+                        this.refs.toast.show('删除成功!', 10,()=>{
                             this.fetchData();
-                        })
-                    }
+                        });
+                    })
+                }
                 },
                 {
                     text: "取消", onPress: () => {
-                    }
+                }
                 },
             ],
             {cancelable: false}
@@ -169,9 +174,7 @@ export default class ManageCrossAddress extends Component<Props> {
     }
 
     addAddress() {
-        this.props.navigation.navigate('AddCrossAddress', {
-            goBack: () => this.fetchData()
-        });
+        Actions.push('addCrossAddress')
     }
 }
 

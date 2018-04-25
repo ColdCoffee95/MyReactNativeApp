@@ -20,7 +20,7 @@ import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import {Actions} from 'react-native-router-flux'
 type Props = {};
 export default class AddAddress extends Component<Props> {
 
@@ -37,7 +37,7 @@ export default class AddAddress extends Component<Props> {
             mobile: '',
             address: '',//详细地址
             defaults: false,
-            language:'java'
+            language: 'java'
         };
     }
 
@@ -158,9 +158,9 @@ export default class AddAddress extends Component<Props> {
         }
         HttpUtils.post('/shippingAddress/addShippingAddress', params, data => {
             this.refs.toast.show('新增成功', 500, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                state.params.goBack();
-                goBack();
+                Actions.popTo('manageAddress',{
+                    reloads:true
+                })
             });
         });
     }

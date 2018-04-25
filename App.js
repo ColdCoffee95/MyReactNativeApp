@@ -10,9 +10,7 @@ import './src/utils/globalVariables';
 import './src/utils/globalFunctions';
 import MainScreen from './src/pages/screens/MainScreen';
 import LoginScreen from './src/pages/screens/LoginScreen';
-import Register from './src/pages/user/Register';
-import ForgetPwd from './src/pages/user/ForgetPwd';
-import UpdatePwd from './src/pages/user/UpdatePwd';
+
 
 import GoodsList from './src/pages/goods/GoodsList';
 import GoodsDetail from './src/pages/goods/GoodsDetail';
@@ -23,6 +21,9 @@ import LimitedPurchase from './src/pages/activity/LimitedPurchase';
 import MilkCurrency from './src/pages/activity/MilkCurrency';
 import NewSale from './src/pages/activity/NewSale';
 
+import Register from './src/pages/user/Register';
+import ForgetPwd from './src/pages/user/ForgetPwd';
+import UpdatePwd from './src/pages/user/UpdatePwd';
 import Hotline from './src/pages/user/Hotline';
 import Agreement from './src/pages/user/Agreement';
 import Settings from './src/pages/user/Settings';

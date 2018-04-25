@@ -248,11 +248,11 @@ export default class Mine extends Component<Props> {
     }
 
     toCollect() {
-        this.props.navigation.navigate('Collect');
+        Actions.push('collect');
     }
 
     toFootPrint() {
-        this.props.navigation.navigate('FootPrint');
+        Actions.push('footPrint');
     }
 
     async updateAvatar(img) {
@@ -272,46 +272,46 @@ export default class Mine extends Component<Props> {
     jumpToTools(id) {
         switch (id) {
             case 1://客服热线
-                this.props.navigation.navigate('Hotline');
+                Actions.push('hotline');
                 break;
             case 2://我的设置
-                this.props.navigation.navigate('Settings');
+                Actions.push('settings');
                 break;
             case 3://会员中心
                 this.refs.toast.show('此功能暂未开放，敬请期待!', 500);
                 break;
             case 4://意见反馈
-                this.props.navigation.navigate('Feedback');
+                Actions.push('feedback');
                 break;
             case 5://大贸地址
-                this.props.navigation.navigate('ManageAddress', {
+                Actions.push('manageAddress', {
                     goBack: () => {
                     }
                 });
                 break;
             case 6://跨境地址
-                this.props.navigation.navigate('ManageCrossAddress', {
+                Actions.push('manageCrossAddress', {
                     goBack: () => {
                     }
                 });
                 break;
             case 7://实名认证
-                this.props.navigation.navigate('ManageCertification', {
+                Actions.push('manageCertification', {
                     goBack: () => {
                     }
                 });
                 break;
             case 8://优惠券
-                this.props.navigation.navigate('CouponList');
+                Actions.push('couponList');
                 break;
         }
     }
 
     jumpToOrder(id) {
         if (id == 99) {
-            this.props.navigation.navigate('AfterSaleOrders', {type: id});
+            Actions.push('afterSaleOrders', {type: id});
         } else {
-            this.props.navigation.navigate('Order', {type: id});
+            Actions.push('order', {type: id});
         }
     }
 }

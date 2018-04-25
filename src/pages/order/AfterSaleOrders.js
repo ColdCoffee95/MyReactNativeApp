@@ -144,7 +144,7 @@ export default class AfterSaleOrders extends Component<Props> {
     };
 
     afterSaleDetail(id) {
-        this.props.navigation.navigate('AfterSaleDetail', {id: id});
+        Actions.push('afterSaleDetail', {id: id})
     }
 
     _renderFooter() {

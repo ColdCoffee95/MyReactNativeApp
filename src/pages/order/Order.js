@@ -12,7 +12,6 @@ import {
     ActivityIndicator,
     TouchableOpacity,
     FlatList,
-    BackAndroid,
     SafeAreaView,
     Image,
     Alert,
@@ -61,35 +60,23 @@ export default class Order extends Component<Props> {
         }
     }
 
-    componentWillUnmount() {
-        BackAndroid.removeEventListener('hardwareBackPress');
-    }
 
     componentDidMount() {
         if (this.props.navigation.state.params && this.props.navigation.state.params.type) {
             this.state.orderType = this.props.navigation.state.params.type;
         }
         this.props.navigation.setParams({orderGoBack: this.orderGoBack.bind(this)});
-        BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
         this.fetchData()
     }
-    onBackAndroid() {//安卓返回键
-        if (this.lastBackPressed && this.lastBackPressed + 500 >= Date.now()) {
-            //最近2秒内按过back键，可以退出应用。
-            return false;
-        }
-        this.lastBackPressed = Date.now();
-        this.refs.toast.show('再按一次退出应用', 500);
-        return true;
-    }
-    static navigationOptions = ({navigation, screenProps}) => ({
-        headerLeft: <TouchableOpacity onPress={() => navigation.state.params.orderGoBack()}>
-            <View style={{paddingLeft: 15}}>
-                <Icon name='angle-left' size={40} color='black'></Icon>
-            </View>
-        </TouchableOpacity>
 
-    });
+    // static navigationOptions = ({navigation, screenProps}) => ({
+    //     headerLeft: <TouchableOpacity onPress={() => navigation.state.params.orderGoBack()}>
+    //         <View style={{paddingLeft: 15}}>
+    //             <Icon name='angle-left' size={40} color='black'></Icon>
+    //         </View>
+    //     </TouchableOpacity>
+    //
+    // });
 
     render() {
         let orderList = null;
@@ -149,7 +136,7 @@ export default class Order extends Component<Props> {
     }
 
     orderGoBack() {
-        this.props.navigation.navigate('Mine');
+        Actions.popTo('mine')
     }
 
     _onEndReached() {
@@ -258,7 +245,7 @@ export default class Order extends Component<Props> {
     }
 
     orderDetail(id) {
-        this.props.navigation.navigate('OrderDetail', {id: id});
+        Actions.push('orderDetail', {id: id})
     }
 
     changeTab(index) {
@@ -312,7 +299,7 @@ export default class Order extends Component<Props> {
     }
 
     jumpToPay(orderId) {//去支付
-        this.props.navigation.navigate('SelectPayType', {orderId: orderId});
+        Actions.push('selectPayType', {orderId: orderId})
     }
 
     cancelOrder(orderId) {//取消订单
@@ -336,7 +323,7 @@ export default class Order extends Component<Props> {
     }
 
     getDeliveryInfo(orderId) {//查看物流
-        this.props.navigation.navigate('ViewLogistics', {orderId: orderId});
+        Actions.push('viewLogistics', {orderId: orderId})
     }
 
     confirmReceipt(orderId) {//确认收货
@@ -364,10 +351,7 @@ export default class Order extends Component<Props> {
     }
 
     comment(orderId) {
-        this.props.navigation.navigate('Comment', {
-            orderId: orderId,
-            goBack: () => this.fetchData()
-        });
+        Actions.push('comment', {orderId: orderId})
     }
 }
 

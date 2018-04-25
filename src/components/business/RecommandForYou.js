@@ -100,7 +100,6 @@ export default class RecommandForYou extends Component<Props> {
         if (this.state.allLoadCompleted || this.state.loadingMore) {
             return;
         }
-        console.warn('reaching')
         this.state.loadingMore = true;
         this.state.pageNo += 1;
         let params = {
@@ -151,7 +150,7 @@ export default class RecommandForYou extends Component<Props> {
     }
 
     goodsDetail(id) {
-        this.props.navigation.navigate('GoodsDetail', {id: id});
+        Actions.push('goodsDetail', {id: id});
     }
 
     async fetchData() {

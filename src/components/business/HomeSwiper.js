@@ -76,7 +76,7 @@ export default class HomeSwiper extends Component<Props> {
 
     }
     toGoodsDetail(id){
-        this.props.navigation.navigate('GoodsDetail', {id: id});
+        Actions.push('goodsDetail', {id: id});
     }}
 
 

@@ -21,7 +21,7 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoadingView from '../../components/common/LoadingView';
-
+import {Actions} from 'react-native-router-flux'
 type Props = {};
 export default class EditAddress extends Component<Props> {
 
@@ -189,9 +189,9 @@ export default class EditAddress extends Component<Props> {
         }
         HttpUtils.post('/shippingAddress/updateShippingAddressById', params, data => {
             this.refs.toast.show('修改成功', 500, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                state.params.goBack();
-                goBack();
+                Actions.pop({
+                    refresh: Math.random()
+                })
             });
         });
     }

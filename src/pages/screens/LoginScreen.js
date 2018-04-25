@@ -13,6 +13,7 @@ import SplashScreen from 'react-native-splash-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import CryptoJS from 'crypto-js'
+import {Actions} from 'react-native-router-flux'
 import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
@@ -115,7 +116,7 @@ export default class LoginScreen extends Component<Props> {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}>
+                            <TouchableOpacity onPress={() => this.forgetPwd()}>
                                 <View>
                                     <Text>忘记密码?</Text>
                                 </View>
@@ -148,7 +149,7 @@ export default class LoginScreen extends Component<Props> {
             Alert.alert(null, '请先阅读并同意平台协议再注册！');
             return;
         }
-        this.props.navigation.navigate('Register')
+        Actions.push('register');
     }
 
     login() {
@@ -158,7 +159,7 @@ export default class LoginScreen extends Component<Props> {
         }
         let loginId = this.state.loginId.trim();
         let pwd = this.state.pwd.trim();
-        if(!loginId || !pwd){
+        if (!loginId || !pwd) {
             Alert.alert(null, '请输入完整！');
             return;
         }
@@ -186,12 +187,15 @@ export default class LoginScreen extends Component<Props> {
     }
 
     agreement() {
-        this.props.navigation.navigate('Agreement');
+        Actions.push('agreement');
+    }
+
+    forgetPwd() {
+        Actions.push('forgetPwd');
     }
 
     toMain() {
-        Actions.reset();
-        // jumpAndClear(this.props.navigation, 'Main')
+        Actions.reset('tabs');
     }
 }
 const styles = StyleSheet.create({
@@ -217,8 +221,8 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 5,
         marginTop: 10,
-        backgroundColor:'blue',
-        height:50
+        backgroundColor: 'blue',
+        height: 50
     },
     inputView: {
         width: screenWidth * 0.85,

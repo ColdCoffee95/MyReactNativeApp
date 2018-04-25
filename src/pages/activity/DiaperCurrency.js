@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
 import LoadingView from '../../components/common/LoadingView';
-
+import {Actions} from 'react-native-router-flux'
 type Props = {};
 
 export default class DiaperCurrency extends Component<Props> {
@@ -178,7 +178,7 @@ export default class DiaperCurrency extends Component<Props> {
     }
 
     goodsDetail(id) {
-        this.props.navigation.navigate('GoodsDetail', {id: id});
+        Actions.push('goodsDetail', {id: id})
     }
 }
 

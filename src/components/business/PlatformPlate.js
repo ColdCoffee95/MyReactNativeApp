@@ -63,23 +63,23 @@ export default class PlatformPlate extends Component<Props> {
     }
 
     milkCurrency() {
-        this.props.navigation.navigate('MilkCurrency');
+        Actions.push('milkCurrency');
     }
 
     diaperCurrency() {
-        this.props.navigation.navigate('DiaperCurrency');
+        Actions.push('diaperCurrency');
     }
 
     limitedPurchase() {
-        this.props.navigation.navigate('LimitedPurchase');
+        Actions.push('limitedPurchase');
     }
 
     brandSelection() {
-        this.props.navigation.navigate('BrandSelection');
+        Actions.push('brandSelection');
     }
 
     newSale() {
-        this.props.navigation.navigate('NewSale');
+        Actions.push('newSale');
     }
 }
 

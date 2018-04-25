@@ -34,7 +34,7 @@ export default class Comment extends Component<Props> {
             goodsStar: 0,//商品质量1-5
             userStar: 1,//用户评级123好一般差
             userMessage: '',
-            orderId: props.navigation.state.params.orderId,
+            orderId: props.orderId,
             isLoading: true,
             orderInfo: {}
         };
@@ -194,9 +194,9 @@ export default class Comment extends Component<Props> {
         }
         HttpUtils.post('/reviews/revgoods', params, data => {
             this.refs.toast.show('评价成功!', 300, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                state.params.goBack();
-                goBack();
+                Actions.pop({
+                    refresh: {key: Math.random()}
+                })
             });
         })
     }

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         flex: 1
     }
 });
-const mainPage = TabNavigator({
+export default mainPage = TabNavigator({
     Home: {
         screen: HomePage,
         navigationOptions: {
@@ -129,5 +129,3 @@ const mainPage = TabNavigator({
 
     },
 });
-
-module.exports = mainPage;

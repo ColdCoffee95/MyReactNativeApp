@@ -23,6 +23,7 @@ import IdentifyImg from '../components/business/IdentifyImg'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LoadingView from '../components/common/LoadingView';
 import Toast, {DURATION} from 'react-native-easy-toast';
+import {Actions} from 'react-native-router-flux'
 type Props = {};
 export default class Home extends Component<Props> {
     constructor(props) {
@@ -126,8 +127,7 @@ export default class Home extends Component<Props> {
             this.refs.toast.show('请输入关键字');
             return;
         }
-
-        this.props.navigation.navigate('GoodsList', {keyword: this.state.keyword})
+        Actions.push('goodsList', {keyword: this.state.keyword});
     }
 }
 const styles = StyleSheet.create({

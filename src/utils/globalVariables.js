@@ -1,7 +1,7 @@
 import {Dimensions} from "react-native";
 import HttpUtils from "./http";
 import DeviceInfo from 'react-native-device-info'
-import Actions from 'react-native-router-flux'
+import {Actions} from 'react-native-router-flux'
 global.cutTypes = [
     {
         name: '满减',
@@ -102,9 +102,9 @@ global.screenWidth = Dimensions.get('window').width;
 global.screenHeight = Dimensions.get('window').height;
 global.HttpUtils = HttpUtils;
 global.hotline = '0571-28218551';
+global.Actions = Actions;
 // global.serverUrl = 'http://192.168.41.78:9010/api';
 global.serverUrl = 'http://api.metchange.com/api';
-global.Actions = Actions;
 global.imgDomain = 'http://dianlijiheoss.metchange.com/';
 global.version = DeviceInfo.getVersion();
 global.platform = DeviceInfo.getSystemName();

@@ -20,7 +20,7 @@ import CryptoJS from 'crypto-js'
 import FormCell from '../../components/common/FormCell'
 import ActiveButton from '../../components/common/ActiveButton'
 import Toast, {DURATION} from 'react-native-easy-toast';
-
+import {Actions} from 'react-native-router-flux'
 export default class Register extends Component<Props> {
     constructor(props) {
         super(props);
@@ -135,16 +135,16 @@ export default class Register extends Component<Props> {
                 [
                     {
                         text: "去认证", onPress: () => {
-                            this.props.navigation.navigate('ShopCertification', {
-                                memberId: data.data.memberId,
-                                type: 1
-                            });
-                        }
+                        Actions.push('shopCertification', {
+                            memberId: data.data.memberId,
+                            type: 1
+                        })
+                    }
                     },
                     {
                         text: "去登录", onPress: () => {
-                            jumpAndClear(this.props.navigation, 'Login')
-                        }
+                        Actions.reset('login')
+                    }
                     },
                 ],
                 {cancelable: false}
