@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
+    View
 } from 'react-native';
 import {TabNavigator} from "react-navigation";
 
@@ -23,6 +24,7 @@ const styles = StyleSheet.create({
     headerStyles: {
         backgroundColor: whiteColor
     },
+
     headerTitleStyle: {
         alignSelf: 'center',
         textAlign: 'center',
@@ -76,7 +78,8 @@ const mainPage = TabNavigator({
             title:'进货单',
             tabBarLabel: '进货单',
             headerBackTitle: null,
-            headerStyle: styles.headerStyles,
+            headerLeft:<View/>,
+            headerStyle: styles.headerTitle,
             headerTintColor: 'black',
             headerTitleStyle: styles.headerTitleStyle,
             tabBarIcon: ({tintColor}) => (

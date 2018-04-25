@@ -291,11 +291,11 @@ export default class Cart extends Component<Props> {
             });
             this.data.replace({data: cartList});
             this.setState({isLoading: false, isRefreshing: false});
-            // this.props.navigation.setParams({
-            //     isEditing: false,
-            //     cartList: cartList,
-            //     fetchData: this.fetchData.bind(this)
-            // });
+            this.props.navigation.setParams({
+                isEditing: false,
+                cartList: cartList,
+                fetchData: this.fetchData.bind(this)
+            });
 
             console.warn(this.data)
         })

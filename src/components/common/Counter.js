@@ -41,28 +41,27 @@ export default class Counter extends Component<Props> {
         return (
             <View style={styles.container}>
                 <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.cutValue()}>
-                    <Icon name='minus-square' size={20}></Icon>
+                    <Icon name='minus-square' size={20} color='#333'>
+                    </Icon>
                 </TouchableHighlight>
 
                 <TextInput
                     ref={(textInput) => this.textInput = textInput}
-                    defaultValue={this.state.currentValue + ""}
+                    defaultValue={this.props.currentValue + ""}
+                    value={this.state.currentValue + ""}
                     keyboardType='numeric'
                     style={styles.textInput}
                     returnKeyType='done'
                     editable={!this.state.sellout}
                     numberOfLines={1}
-                    // blurOnSubmit={true}
-
-                    onChangeText={(num) => this.judgeNum(num)}
-                    onEndEditing={(event) => this._onEndEditing(event)}
-
-                    // onBlur={(event) => this.judgeNum(event)}
+                    onChangeText={(num) => this.setState({currentValue: num})}
+                    onBlur={(event) => this.judgeNum(event)}
                     underlineColorAndroid='transparent'>
 
                 </TextInput>
                 <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.addValue()}>
-                    <Icon name='plus-square' size={20}></Icon>
+                    <Icon name='plus-square' size={20} color='#333'>
+                    </Icon>
                 </TouchableHighlight>
             </View>
         );
@@ -74,8 +73,10 @@ export default class Counter extends Component<Props> {
     }
 
     _onEndEditing(event) {
+        console.warn('_onEndEditing')
         let num = event.nativeEvent.text;
         if (!num) {
+            this.textInput.clear();
             this.changeNumber(this.state.min);
             return;
         } else {
@@ -100,8 +101,13 @@ export default class Counter extends Component<Props> {
 
     }
 
-    judgeNum(num) {
-        if (!num) return;
+    judgeNum(event) {
+        console.warn('judgeNum')
+        let num = event.nativeEvent.text;
+        if (!num) {
+            this.changeNumber(this.state.min);
+            return;
+        }
         num = parseInt(num);
         if (num > this.state.max) {
             this.props.toast.show('购买量不能超过库存', 300);
@@ -153,18 +159,24 @@ export default class Counter extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        alignItems:'center',
-        justifyContent:'center'
+        alignItems: 'center',
+        justifyContent: 'center',
+
     },
     textInputView: {
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+
     },
     textInput: {
         width: 40,
-        lineHeight:20,
+        lineHeight: 20,
+        height: 20,
+        fontSize: 14,
+        margin: 0,
+        padding: 0,
         alignItems: 'center',
         justifyContent: 'center',
-        textAlign:'center'
+        textAlign: 'center',
     }
 });

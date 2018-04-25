@@ -1,4 +1,4 @@
-package com.awesomeproject;
+package com.metchange.dianlijihe;
 
 import android.app.Application;
 
@@ -8,7 +8,6 @@ import com.theweflex.react.WeChatPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
-import com.beefe.picker.PickerViewPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.dscj.autoheightwebview.AutoHeightWebViewPackage;
@@ -37,7 +36,6 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new SplashScreenReactPackage(),
             new RNSpinkitPackage(),
-            new PickerViewPackage(),
             new PickerPackage(),
             new RNDeviceInfo(),
             new AutoHeightWebViewPackage()

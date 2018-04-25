@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
         flex: 1
     }
 });
+
 export default SimpleApp = StackNavigator({
     Login: {
         screen: LoginScreen,

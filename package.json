@@ -20,9 +20,7 @@
     "react-native-image-crop-picker": "^0.20.0",
     "react-native-image-zoom-viewer": "^2.1.0",
     "react-native-keyboard-aware-scrollview": "^2.0.0",
-    "react-native-picker": "^4.3.5",
     "react-native-popup-dialog": "^0.11.46",
-    "react-native-router-flux": "^4.0.0-beta.28",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-spinkit": "^1.0.1",
     "react-native-splash-screen": "^3.0.6",
@@ -30,12 +28,10 @@
     "react-native-storage": "^0.2.2",
     "react-native-swipe-list-view": "^1.0.7",
     "react-native-swiper": "^1.5.13",
-    "react-native-textinput-effects": "^0.4.2",
     "react-native-vector-icons": "^4.5.0",
     "react-native-wechat": "^1.9.9",
     "react-native-yunpeng-alipay": "^2.0.0",
-    "react-navigation": "^1.5.11",
-    "teaset": "^0.5.6"
+    "react-navigation": "^1.5.11"
   },
   "devDependencies": {
     "babel-jest": "22.4.1",

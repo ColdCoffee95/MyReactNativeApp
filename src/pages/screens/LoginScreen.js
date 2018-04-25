@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     SafeAreaView,
     Alert,
+    BackHandler,
     View
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
@@ -14,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import CryptoJS from 'crypto-js'
 import LoadingView from '../../components/common/LoadingView';
+import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 
 export default class LoginScreen extends Component<Props> {
@@ -24,9 +26,38 @@ export default class LoginScreen extends Component<Props> {
 
     componentDidMount() {
         SplashScreen.hide();
+
         this.checkToken();
     }
-
+    backButtonPress(){
+        const nav = this.props.navigation;
+        console.warn('nav',nav)
+        const routerName = nav.state.routeName;
+        if (routers.length > 1) {
+            const top = routers[routers.length - 1];
+            if (top.ignoreBack || top.component.ignoreBack){
+                // 路由或组件上决定这个界面忽略back键
+                return true;
+            }
+            const handleBack = top.handleBack || top.component.handleBack;
+            if (handleBack) {
+                // 路由或组件上决定这个界面自行处理back键
+                return handleBack();
+            }
+            // 默认行为： 退出当前界面。
+            nav.pop();
+            return true;
+        }
+        return false;
+        if (this.lastBackPressed && this.lastBackPressed + 500 >= Date.now()) {
+            //最近2秒内按过back键，可以退出应用。
+            BackHandler.exitApp();
+            return false;
+        }
+        this.lastBackPressed = Date.now();
+        this.refs.toast.show('再按一次退出应用', 500);
+        return true;
+    }
     async checkToken() {
         let loginState = await HttpUtils.getLoginState();
         let params = {memberId: loginState.memberId, token: loginState.token};
@@ -134,6 +165,7 @@ export default class LoginScreen extends Component<Props> {
                         <View style={styles.bottomView}>
                             <Text style={{color: '#bebebe', fontSize: 12}}>Designed by MetChange</Text>
                         </View>
+                        <Toast ref='toast' position='center'></Toast>
                     </View>
                 </SafeAreaView>
 
@@ -190,8 +222,7 @@ export default class LoginScreen extends Component<Props> {
     }
 
     toMain() {
-        Actions.reset();
-        // jumpAndClear(this.props.navigation, 'Main')
+        jumpAndClear(this.props.navigation, 'Main')
     }
 }
 const styles = StyleSheet.create({

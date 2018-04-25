@@ -57,16 +57,17 @@ export default class CartComponent extends Component {
                             <Text style={styles.priceText}>¥{this.itemData.putPrice}</Text>
                             {
                                 this.props.navigation.state.params && this.props.navigation.state.params.isEditing &&
-                                <Counter
-                                    onChangeNum={(num) => this.changeNumber(this.itemData.goodsSkuId,num)}
-                                    value={this.itemData.number}
-                                    max={this.itemData.count}
-                                    min={this.itemData.mustBuyNum || 1}
-                                    steps={this.itemData.mustBuyNum || 1}
-                                    sellout={this.itemData.count === 0 || this.itemData.count < this.itemData.mustBuyNum}
-                                    toast={this.refs.toast}>
-
-                                </Counter>
+                                <View style={styles.counterView}>
+                                    <Counter
+                                        onChangeNum={(num) => this.changeNumber(this.itemData.goodsSkuId,num)}
+                                        value={this.itemData.number}
+                                        max={this.itemData.count}
+                                        min={this.itemData.mustBuyNum || 1}
+                                        steps={this.itemData.mustBuyNum || 1}
+                                        sellout={this.itemData.count === 0 || this.itemData.count < this.itemData.mustBuyNum}
+                                        toast={this.refs.toast}>
+                                    </Counter>
+                                </View>
                             }
                             {
                                 this.props.navigation.state.params && !this.props.navigation.state.params.isEditing &&
@@ -112,6 +113,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: borderColor
     },
+    counterView:{
+        alignItems:'center',
+        justifyContent:'center',
+    },
     cartGoodsImg: {
         width: screenWidth * 0.25,
         height: screenWidth * 0.25
@@ -137,7 +142,8 @@ const styles = StyleSheet.create({
     },
     priceNumberView: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems:'center',
     },
     priceText: {
         color: activeColor

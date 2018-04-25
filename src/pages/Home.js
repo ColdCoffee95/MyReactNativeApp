@@ -34,9 +34,9 @@ export default class Home extends Component<Props> {
     }
 
     componentDidMount() {
-        if (platform === 'Android') {
-            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
-        }
+        // if (platform === 'Android') {
+        //     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
+        // }
         setTimeout(() => {
             this.props.navigation.setParams({
                 changeKeyword: this.changeKeyword.bind(this),
@@ -46,23 +46,23 @@ export default class Home extends Component<Props> {
         }, 5)
     }
 
-    componentWillUnmount() {
-        console.warn('componentWillUnmount')
-        if (platform === 'Android') {
-            BackHandler.removeEventListener('hardwareBackPress');
-        }
-    }
+    // componentWillUnmount() {
+    //     console.warn('componentWillUnmount')
+    //     if (platform === 'Android') {
+    //         BackHandler.removeEventListener('hardwareBackPress');
+    //     }
+    // }
 
-    onBackAndroid() {//安卓返回键
-        if (this.lastBackPressed && this.lastBackPressed + 500 >= Date.now()) {
-            //最近2秒内按过back键，可以退出应用。
-            BackHandler.exitApp();
-            return false;
-        }
-        this.lastBackPressed = Date.now();
-        this.refs.toast.show('再按一次退出应用', 500);
-        return true;
-    }
+    // onBackAndroid() {//安卓返回键
+    //     if (this.lastBackPressed && this.lastBackPressed + 500 >= Date.now()) {
+    //         //最近2秒内按过back键，可以退出应用。
+    //         BackHandler.exitApp();
+    //         return false;
+    //     }
+    //     this.lastBackPressed = Date.now();
+    //     this.refs.toast.show('再按一次退出应用', 500);
+    //     return true;
+    // }
 
     static navigationOptions = ({navigation, screenProps}) => ({
         headerTitle: (
