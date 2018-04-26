@@ -25,7 +25,7 @@ export default class LoginScreen extends Component<Props> {
     }
 
     componentDidMount() {
-        SplashScreen.hide();
+        // SplashScreen.hide();
 
         this.checkToken();
     }

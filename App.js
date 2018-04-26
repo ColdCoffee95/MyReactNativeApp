@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
         flex: 1
     }
 });
-
 export default SimpleApp = StackNavigator({
     Login: {
         screen: LoginScreen,
@@ -565,6 +564,8 @@ export default SimpleApp = StackNavigator({
             headerTitleStyle: styles.headerTitleStyle,
         },
     },
+},{
+    initialRouteName: 'Login',
 });
 //主要是这一步
 const navigateOnce = (getStateForAction) => (action, state) => {

@@ -11,7 +11,6 @@ import {
     ScrollView,
     TouchableHighlight,
     SafeAreaView,
-    BackAndroid,
     View,
     Text,
     TextInput,
@@ -39,7 +38,6 @@ export default class Category extends Component<Props> {
             changeKeyword: this.changeKeyword.bind(this),
             search: this.search.bind(this)
         });
-        BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
         this.getFirstAllCategories()
     }
 
@@ -186,9 +184,7 @@ export default class Category extends Component<Props> {
         this.props.navigation.navigate('GoodsList', {id: parentId, secondIds: secondIds});
     }
 
-    onBackAndroid() {//安卓返回键
-        this.props.navigation.navigate('Home');
-    }
+
 
     changeKeyword(text) {
         this.state.keyword = text.trim();

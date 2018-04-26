@@ -58,7 +58,9 @@ export default class Cart extends Component<Props> {
                     <Text>{navigation.state.params.isEditing ? '完成' : '编辑'}</Text>
                 </View>
             </TouchableOpacity>
-        </View>)
+        </View>) || (!navigation.state.params || !navigation.state.params.cartList || navigation.state.params.cartList.length == 0 &&
+        <View/>)
+
     });
 
 

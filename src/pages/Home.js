@@ -11,7 +11,6 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    BackHandler,
     SafeAreaView,
     Text
 } from 'react-native';
@@ -22,7 +21,6 @@ import RecommandForYou from '../components/business/RecommandForYou'
 import IdentifyImg from '../components/business/IdentifyImg'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LoadingView from '../components/common/LoadingView';
-import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 export default class Home extends Component<Props> {
     constructor(props) {
@@ -34,9 +32,7 @@ export default class Home extends Component<Props> {
     }
 
     componentDidMount() {
-        // if (platform === 'Android') {
-        //     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid.bind(this));
-        // }
+        console.warn('nav',this.props.navigation)
         setTimeout(() => {
             this.props.navigation.setParams({
                 changeKeyword: this.changeKeyword.bind(this),
@@ -45,24 +41,6 @@ export default class Home extends Component<Props> {
             this.setState({isLoading: false})
         }, 5)
     }
-
-    // componentWillUnmount() {
-    //     console.warn('componentWillUnmount')
-    //     if (platform === 'Android') {
-    //         BackHandler.removeEventListener('hardwareBackPress');
-    //     }
-    // }
-
-    // onBackAndroid() {//安卓返回键
-    //     if (this.lastBackPressed && this.lastBackPressed + 500 >= Date.now()) {
-    //         //最近2秒内按过back键，可以退出应用。
-    //         BackHandler.exitApp();
-    //         return false;
-    //     }
-    //     this.lastBackPressed = Date.now();
-    //     this.refs.toast.show('再按一次退出应用', 500);
-    //     return true;
-    // }
 
     static navigationOptions = ({navigation, screenProps}) => ({
         headerTitle: (
@@ -110,7 +88,6 @@ export default class Home extends Component<Props> {
                         </RecommandForYou>
                         <IdentifyImg {...this.props}></IdentifyImg>
                     </View>
-                    <Toast ref='toast' position='center'></Toast>
                 </SafeAreaView>
 
             );
@@ -123,7 +100,7 @@ export default class Home extends Component<Props> {
 
     search() {
         if (!this.state.keyword) {
-            this.refs.toast.show('请输入关键字');
+            ToastUtil.show('请输入关键字')
             return;
         }
 
