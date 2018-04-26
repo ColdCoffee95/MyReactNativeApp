@@ -14,7 +14,6 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 
@@ -34,7 +33,7 @@ export default class Settings extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             return (
                 <SafeAreaView style={{flex: 1}}>

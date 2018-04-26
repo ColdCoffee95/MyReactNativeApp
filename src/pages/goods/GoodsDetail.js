@@ -21,7 +21,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Foundation';
 import Counter from '../../components/common/Counter';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 export default class GoodsDetail extends Component<Props> {
@@ -35,7 +34,8 @@ export default class GoodsDetail extends Component<Props> {
             buyNum: 0,
             currentSku: {},
             buyType: 1,//1是加入进货单，2是立即抢购
-            goodsIsCollect: false
+            goodsIsCollect: false,
+
         }
     }
 
@@ -63,7 +63,7 @@ export default class GoodsDetail extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             let detail = this.state.goodsDetail;
             let swiperList = [];
@@ -212,6 +212,8 @@ export default class GoodsDetail extends Component<Props> {
                                 clickBtn={() => this.showPopup(2)}>
                             </ActiveButton>
                         </View>
+
+
                         <PopupDialog
                             ref={(popupDialog) => {
                                 this.popupDialog = popupDialog;
@@ -222,7 +224,7 @@ export default class GoodsDetail extends Component<Props> {
                                 height: screenHeight * 0.7,
                                 position: 'absolute',
                                 bottom: 80,
-                                zIndex:99
+                                zIndex: 99
                             }}
                             dialogAnimation={slideAnimation}
                             onDismissed={() => Keyboard.dismiss()}
@@ -260,7 +262,6 @@ export default class GoodsDetail extends Component<Props> {
                                     clickBtn={() => this.sureAdd()}>
                                 </ActiveButton>
                             </View>
-
                         </PopupDialog>
                     </View>
                 </SafeAreaView>
@@ -394,9 +395,10 @@ export default class GoodsDetail extends Component<Props> {
     }
 
     showPopup(type) {//显示popup
-        this.popupDialog.show(() => {
-            this.state.buyType = type;
-        });
+        this.setState({popoverVisible: true, buyType: type});
+        // this.popupDialog.show(() => {
+        //     this.state.buyType = type;
+        // });
     }
 
     closePopover() {
@@ -537,7 +539,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         backgroundColor: whiteColor,
         top: -30,
-        zIndex:999
+        zIndex: 999
     },
     popupImg: {
         width: 60,

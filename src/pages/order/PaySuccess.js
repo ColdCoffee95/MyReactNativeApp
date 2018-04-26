@@ -13,7 +13,6 @@ import {
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 export default class PaySuccess extends Component<Props> {
@@ -33,7 +32,7 @@ export default class PaySuccess extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             return <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
                 <View style={styles.container}>

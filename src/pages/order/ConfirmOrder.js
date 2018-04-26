@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 
@@ -46,7 +45,7 @@ export default class ConfirmOrder extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             let orderGoodsView = [];
             let totalNum = 0;

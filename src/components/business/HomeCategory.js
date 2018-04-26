@@ -12,14 +12,12 @@ import {
     View,
     Text
 } from 'react-native';
-import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 export default class HomeCategory extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
             catList: [],
-            isLoading: true
         }
     }
 
@@ -47,31 +45,28 @@ export default class HomeCategory extends Component<Props> {
     }
 
     showPage() {
-        if (!this.state.isLoading) {
-            let catImgList = [];
-            this.state.catList.map(value => {
-                catImgList.push(
-                    <TouchableHighlight underlayColor='#f2f2f2' key={value.id} onPress={() => this.goodsList(value.id)}>
-                        <View style={styles.imgWrapper}>
-                            <Image
-                                style={styles.catImg}
-                                resizeMode='contain'
-                                source={{uri: value.img + '?imageView2/1/w/100/h/100'}}
-                            />
-                            <Text style={styles.catName}>{value.name}</Text>
-                        </View>
-                    </TouchableHighlight>
-                );
-            });
-            return <View style={styles.catWrapper}>
-                {catImgList}
-            </View>
-        } else {
-            return <LoadingView/>
-        }
+        let catImgList = [];
+        this.state.catList.map(value => {
+            catImgList.push(
+                <TouchableHighlight underlayColor='#f2f2f2' key={value.id} onPress={() => this.goodsList(value.id)}>
+                    <View style={styles.imgWrapper}>
+                        <Image
+                            style={styles.catImg}
+                            resizeMode='contain'
+                            source={{uri: value.img + '?imageView2/1/w/100/h/100'}}
+                        />
+                        <Text style={styles.catName}>{value.name}</Text>
+                    </View>
+                </TouchableHighlight>
+            );
+        });
+        return <View style={styles.catWrapper}>
+            {catImgList}
+        </View>
+
     }
 
-    goodsList(id){
+    goodsList(id) {
         this.props.navigation.navigate('GoodsList', {id: id});
     }
 }

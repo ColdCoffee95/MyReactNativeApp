@@ -14,7 +14,6 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 
@@ -45,7 +44,7 @@ export default class SelectAddress extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             let addressList = [];
             this.state.addressList.map(value => {

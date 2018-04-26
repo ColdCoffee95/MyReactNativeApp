@@ -13,7 +13,6 @@ import {
     SafeAreaView,
     View
 } from 'react-native';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 export default class DeliveryDetail extends Component<Props> {
@@ -35,7 +34,7 @@ export default class DeliveryDetail extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             let deliveryView = [];
             const {deliveryList, deliveryInfo} = this.state;

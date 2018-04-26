@@ -14,7 +14,6 @@ import {
     SafeAreaView,
     View
 } from 'react-native';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 
@@ -45,7 +44,7 @@ export default class SelectCertification extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             let certificationList = [];
             this.state.certificationList.map(value => {

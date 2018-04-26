@@ -15,7 +15,6 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 
@@ -345,9 +344,6 @@ export default class CouponList extends Component<Props> {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    {
-                        this.state.isLoading && <LoadingView/>
-                    }
                     {
                         !this.state.isLoading && <ScrollView contentContainerStyle={styles.scrollView}>
                             {list}

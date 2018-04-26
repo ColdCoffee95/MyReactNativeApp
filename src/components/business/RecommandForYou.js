@@ -13,7 +13,6 @@ import {
     FlatList,
     Text,
 } from 'react-native';
-import LoadingView from '../../components/common/LoadingView';
 export default class RecommandForYou extends Component<Props> {
     constructor(props) {
         super(props);
@@ -34,41 +33,42 @@ export default class RecommandForYou extends Component<Props> {
     }
 
     render() {
-        let goodsList = null;
-        if (this.state.isLoading) {
-            return <LoadingView/>
-        } else {
-            goodsList = <FlatList
-                data={this.state.goodsList}
-                extraData={this.state}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
-                onEndReached={this._onEndReached.bind(this)}
-                onEndReachedThreshold={0.2}
-                numColumns={2}
-                ListHeaderComponent={() => this._renderHeader()}
-                ListFooterComponent={this._renderFooter.bind(this)}
-                ListEmptyComponent={() => <View
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 50
-                    }}
-                >
-                    <Image
-                        style={{width: 200, height: 200}}
-                        resizeMode='contain'
-                        source={require('../../images/noGoods.png')}
-                    />
-                </View>}
-            />
+        let goodsList = <FlatList
+            data={this.state.goodsList}
+            extraData={this.state}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+            onEndReached={this._onEndReached.bind(this)}
+            onEndReachedThreshold={0.2}
+            numColumns={2}
+            ListHeaderComponent={() => this._renderHeader()}
+            ListFooterComponent={this._renderFooter.bind(this)}
+            ListEmptyComponent={() => <View
+                style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 50
+                }}
+            >
+                <Image
+                    style={{width: 200, height: 200}}
+                    resizeMode='contain'
+                    source={require('../../images/noGoods.png')}
+                />
+            </View>}
+        />;
+        if (!this.state.isLoading && !this.state.loadingMore) {
             return <View style={styles.container}>
-
                 <View style={styles.goodsListView}>
-                    {goodsList}
+                    {
+                        !this.state.isLoading && !this.state.loadingMore && goodsList
+                    }
                 </View>
             </View>
+        } else {
+            return <View/>
         }
+
 
     }
 
@@ -86,7 +86,7 @@ export default class RecommandForYou extends Component<Props> {
 
     _renderFooter() {
         if (this.state.loadingMore) {
-            return (<LoadingView/>)
+            return (<View/>)
         } else if (this.state.allLoadCompleted) {
             return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
                 <Text>没有更多商品了</Text>
@@ -112,8 +112,7 @@ export default class RecommandForYou extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList: this.state.goodsList.concat(data.data.list)});
-            this.state.loadingMore = false;
+            this.setState({goodsList: this.state.goodsList.concat(data.data.list),loadingMore:false});
         })
     }
 

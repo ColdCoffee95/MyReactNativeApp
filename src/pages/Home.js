@@ -20,25 +20,21 @@ import HomeCategory from '../components/business/HomeCategory'
 import RecommandForYou from '../components/business/RecommandForYou'
 import IdentifyImg from '../components/business/IdentifyImg'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import LoadingView from '../components/common/LoadingView';
 type Props = {};
 export default class Home extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: true,
             keyword: ''
         }
     }
 
     componentDidMount() {
-        console.warn('nav',this.props.navigation)
         setTimeout(() => {
             this.props.navigation.setParams({
                 changeKeyword: this.changeKeyword.bind(this),
                 search: this.search.bind(this)
             });
-            this.setState({isLoading: false})
         }, 5)
     }
 
@@ -72,26 +68,21 @@ export default class Home extends Component<Props> {
     });
 
     render() {
-        if (this.state.isLoading) {
-            return <LoadingView/>
-        } else {
-            return (
-                <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
-                    <View style={styles.container}>
-                        <RecommandForYou {...this.props} header={
-                            <ScrollView contentContainerStyle={styles.container}>
-                                <HomeSwiper {...this.props}></HomeSwiper>
-                                <PlatformPlate {...this.props}></PlatformPlate>
-                                <HomeCategory {...this.props}></HomeCategory>
-                            </ScrollView>
-                        }>
-                        </RecommandForYou>
-                        <IdentifyImg {...this.props}></IdentifyImg>
-                    </View>
-                </SafeAreaView>
-
-            );
-        }
+        return (
+            <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                <View style={styles.container}>
+                    <RecommandForYou {...this.props} header={
+                        <ScrollView contentContainerStyle={styles.container}>
+                            <HomeSwiper {...this.props}></HomeSwiper>
+                            <PlatformPlate {...this.props}></PlatformPlate>
+                            <HomeCategory {...this.props}></HomeCategory>
+                        </ScrollView>
+                    }>
+                    </RecommandForYou>
+                    <IdentifyImg {...this.props}></IdentifyImg>
+                </View>
+            </SafeAreaView>
+        );
     }
 
     changeKeyword(text) {

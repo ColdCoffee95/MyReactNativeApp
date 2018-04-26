@@ -19,7 +19,6 @@ import {
 import Drawer from "react-native-drawer";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GoodsSideMenu from '../../components/business/GoodsSideMenu'
-import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class GoodsList extends Component<Props> {
@@ -88,7 +87,7 @@ export default class GoodsList extends Component<Props> {
     render() {
         let goodsList = null;
         if (this.state.isLoading) {
-            goodsList = <LoadingView/>
+            goodsList = <View/>
         } else {
             goodsList = <FlatList
                 data={this.state.goodsList}
@@ -177,7 +176,9 @@ export default class GoodsList extends Component<Props> {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        {goodsList}
+                        {
+                            !this.state.isLoading && !this.state.loadingMore && goodsList
+                        }
                     </View>
                 </Drawer>
             </SafeAreaView>
@@ -187,7 +188,7 @@ export default class GoodsList extends Component<Props> {
 
     _renderFooter() {
         if (this.state.loadingMore) {
-            return (<LoadingView/>)
+            return (<View/>)
         } else if (this.state.allLoadCompleted) {
             if (this.state.goodsList.length > 0) {
                 return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
@@ -221,8 +222,7 @@ export default class GoodsList extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList: this.state.goodsList.concat(data.data.list)});
-            this.state.loadingMore = false;
+            this.setState({goodsList: this.state.goodsList.concat(data.data.list),loadingMore:false});
         })
     }
 
@@ -277,7 +277,7 @@ export default class GoodsList extends Component<Props> {
     }
 
     search() {
-        if(!this.state.keyword){
+        if (!this.state.keyword) {
             ToastUtil.show('请输入关键字');
             return;
         }

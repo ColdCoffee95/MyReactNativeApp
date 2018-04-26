@@ -14,7 +14,6 @@ import {
     Image,
     View
 } from 'react-native';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 export default class AfterSaleOrders extends Component<Props> {
@@ -38,7 +37,7 @@ export default class AfterSaleOrders extends Component<Props> {
     render() {
         let orderList = null;
         if (this.state.isLoading) {
-            orderList = <LoadingView/>
+            orderList = <View/>
         } else {
             orderList = <FlatList
                 data={this.state.orderList}
@@ -63,13 +62,16 @@ export default class AfterSaleOrders extends Component<Props> {
                         resizeMode='contain'
                         source={require('../../images/noOrder.png')}
                     />
+                    <Text>当前无此类订单</Text>
                 </View>}
             />
         }
 
         return <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
             <View style={styles.container}>
-                {orderList}
+                {
+                    !this.state.isLoading && !this.state.loadingMore && orderList
+                }
             </View>
         </SafeAreaView>
 
@@ -96,8 +98,7 @@ export default class AfterSaleOrders extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({orderList: this.state.orderList.concat(arr)});
-            this.state.loadingMore = false;
+            this.setState({orderList: this.state.orderList.concat(arr),loadingMore:false});
         })
     }
 
@@ -149,7 +150,7 @@ export default class AfterSaleOrders extends Component<Props> {
 
     _renderFooter() {
         if (this.state.loadingMore) {
-            return (<LoadingView/>)
+            return (<View/>)
         } else if (this.state.allLoadCompleted) {
             if (this.state.orderList.length > 0) {
                 return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>

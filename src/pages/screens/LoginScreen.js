@@ -14,7 +14,6 @@ import SplashScreen from 'react-native-splash-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import CryptoJS from 'crypto-js'
-import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class LoginScreen extends Component<Props> {
@@ -168,7 +167,7 @@ export default class LoginScreen extends Component<Props> {
 
             );
         } else {
-            return <LoadingView/>
+            return <View/>
         }
     }
 

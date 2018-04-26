@@ -2,18 +2,21 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     SafeAreaView,
-    BackHandler
+    BackHandler,
+    ActivityIndicator
 } from 'react-native';
 import {observable, action} from 'mobx';
 import {Provider, observer, inject} from 'mobx-react';
 import Toast, {DURATION} from 'react-native-easy-toast';
+import Loading from '../mobx/loading'
+import LoadingView from '../components/common/LoadingView'
 import NavigationStore from 'react-navigation-mobx-helpers';
 import SplashScreen from 'react-native-splash-screen';
 import {addNavigationHelpers, NavigationActions, createNavigationContainer} from "react-navigation";
-console.disableYellowBox = true;
 import Route from '../../App';
 const RootNavigator = Route;
 const rootNavigation = new NavigationStore(RootNavigator);
+// console.disableYellowBox = true;
 export default class Root extends Component {
     render() {
         return <Provider rootNavigation={rootNavigation}>
@@ -25,7 +28,10 @@ export default class Root extends Component {
 @observer
 class App extends React.Component {
     componentDidMount() {
-        SplashScreen.hide();
+        setTimeout(() => {
+            SplashScreen.hide();
+        }, 2000);
+
         if (platform === 'Android') {
             this.backAndroidHandler = this.backHandle.bind(this);
             BackHandler.addEventListener('hardwareBackPress', this.backAndroidHandler);
@@ -43,20 +49,9 @@ class App extends React.Component {
     backHandle() {
         const nav = this.props.rootNavigation;
         const routers = nav.state.routes;
-        console.warn('nav', nav)
-
         if (routers.length > 1) {
-            const lastRoute = routers[routers.length - 1];
             nav.pop();
             return true;
-            // if (lastRoute.routeName == 'Order') {//在订单页面
-            //     console.warn('yess')
-            //     NavigationActions.navigate({routeName:'Mine'})
-            //     return true;
-            // } else {
-            //
-            // }
-
         } else {
             if (this.lastBackPressed && this.lastBackPressed + 500 >= Date.now()) {
                 //最近2秒内按过back键，可以退出应用。
@@ -67,7 +62,6 @@ class App extends React.Component {
             ToastUtil.show('再按一次退出应用');
             return true;
         }
-
     }
 
     render() {
@@ -79,6 +73,9 @@ class App extends React.Component {
                 />
                 <Toast ref='toast' position='center'>
                 </Toast>
+                {
+                    Loading.loading && <LoadingView/>
+                }
             </SafeAreaView>
 
         );
@@ -86,6 +83,6 @@ class App extends React.Component {
 }
 const styles = StyleSheet.create({
     rootContainer: {
-        flex: 1
+        flex: 1,
     }
 });

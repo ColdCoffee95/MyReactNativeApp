@@ -15,7 +15,6 @@ import {
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
-import LoadingView from '../../components/common/LoadingView';
 type Props = {};
 
 export default class LimitedPurchase extends Component<Props> {
@@ -38,55 +37,53 @@ export default class LimitedPurchase extends Component<Props> {
     }
 
     render() {
-        let goodsList = null;
-        if (this.state.isLoading) {
-            goodsList = <LoadingView/>
-        } else {
-            goodsList = <FlatList
-                data={this.state.goodsList}
-                extraData={this.state}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
-                onEndReached={this._onEndReached.bind(this)}
-                onEndReachedThreshold={0.2}
-                refreshing={true}
-                ItemSeparatorComponent={() => <View
-                    style={{backgroundColor: borderColor, height: 1}}
-                />}
-                ListHeaderComponent={()=><View>
-                    <Image
-                        resizeMode='contain'
-                        style={styles.banner}
-                        source={require('../../images/limitedPurchase.png')}
-                    />
-                </View>}
-                ListFooterComponent={this._renderFooter.bind(this)}
-                ListEmptyComponent={() => <View
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: 50
-                    }}
-                >
-                    <Image
-                        style={{width: 200, height: 200}}
-                        resizeMode='contain'
-                        source={require('../../images/noGoods.png')}
-                    />
-                    <Text>暂无此类商品</Text>
-                </View>}
-            />
-        }
-        return (
-            <SafeAreaView style={{flex: 1,backgroundColor:whiteColor}}>
-                <View style ={styles.container}>
-                    <View style={styles.goodsListView}>
-                        {goodsList}
+        let goodsList = <FlatList
+            data={this.state.goodsList}
+            extraData={this.state}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+            onEndReached={this._onEndReached.bind(this)}
+            onEndReachedThreshold={0.2}
+            refreshing={true}
+            ItemSeparatorComponent={() => <View
+                style={{backgroundColor: borderColor, height: 1}}
+            />}
+            ListHeaderComponent={() => <View>
+                <Image
+                    resizeMode='contain'
+                    style={styles.banner}
+                    source={require('../../images/limitedPurchase.png')}
+                />
+            </View>}
+            ListFooterComponent={this._renderFooter.bind(this)}
+            ListEmptyComponent={() => <View
+                style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 50
+                }}
+            >
+                <Image
+                    style={{width: 200, height: 200}}
+                    resizeMode='contain'
+                    source={require('../../images/noGoods.png')}
+                />
+                <Text>暂无此类商品</Text>
+            </View>}
+        />
+        if (!this.state.isLoading && !this.state.loadingMore) {
+            return (
+                <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
+                    <View style={styles.container}>
+                        <View style={styles.goodsListView}>
+                            {goodsList}
+                        </View>
                     </View>
-                </View>
-            </SafeAreaView>
-
-        );
+                </SafeAreaView>
+            );
+        } else {
+            return <View/>
+        }
     }
 
     fetchData() {
@@ -110,7 +107,7 @@ export default class LimitedPurchase extends Component<Props> {
 
     _renderFooter() {
         if (this.state.loadingMore) {
-            return (<LoadingView/>)
+            return (<View/>)
         } else if (this.state.allLoadCompleted) {
             return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
                 <Text>没有更多商品了</Text>
@@ -135,7 +132,7 @@ export default class LimitedPurchase extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList:this.state.goodsList.concat(data.data.list),loadingMore:false});
+            this.setState({goodsList: this.state.goodsList.concat(data.data.list), loadingMore: false});
         })
     }
 
@@ -160,7 +157,9 @@ export default class LimitedPurchase extends Component<Props> {
                         <Text style={styles.goodsTrade}>{item.tradeName}</Text>
                     </View>
                     <View>
-                        <ActiveButton text="立即抢购" style={styles.buyBtn} clickBtn={()=>{this.goodsDetail(item.id)}}/>
+                        <ActiveButton text="立即抢购" style={styles.buyBtn} clickBtn={() => {
+                            this.goodsDetail(item.id)
+                        }}/>
                     </View>
                 </View>
             </View>

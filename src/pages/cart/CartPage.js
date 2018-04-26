@@ -14,7 +14,6 @@ import {
     Text
 } from 'react-native';
 import RecommandForYou from '../../components/business/RecommandForYou'
-import LoadingView from '../../components/common/LoadingView';
 import Cart from '../../pages/cart/Cart';
 
 type Props = {};

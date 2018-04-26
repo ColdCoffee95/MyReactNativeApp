@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 export default class OrderDetail extends Component<Props> {
@@ -67,7 +66,7 @@ export default class OrderDetail extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             const {orderInfo, orderTypes} = this.state;
             let goodsList = [];

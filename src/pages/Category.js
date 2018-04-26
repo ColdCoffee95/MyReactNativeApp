@@ -17,7 +17,6 @@ import {
     TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import LoadingView from '../components/common/LoadingView';
 type Props = {};
 export default class Category extends Component<Props> {
     constructor(props) {
@@ -86,7 +85,6 @@ export default class Category extends Component<Props> {
         });
         let rightArr = [];
         let leftIndex = this.state.catList.findIndex(n => n.id === this.state.currentLeftId);
-
         if (!this.state.rightLoading) {
             rightArr.push(
                 <TouchableHighlight
@@ -129,31 +127,17 @@ export default class Category extends Component<Props> {
             <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
                 <View style={styles.container}>
                     <View>
-                        {
-                            this.leftLoading ? (
-                                <LoadingView/>
-                            ) : (
-                                <ScrollView contentContainerStyle={styles.leftScrollView}>
-                                    {leftArr}
-                                </ScrollView>
-                            )
-                        }
-
+                        <ScrollView contentContainerStyle={styles.leftScrollView}>
+                            {leftArr}
+                        </ScrollView>
                     </View>
                     <View>
-                        {
-                            this.rightLoading ? (
-                                <LoadingView/>
-                            ) : (
-                                <ScrollView contentContainerStyle={styles.rightScrollView}>
-                                    <Text style={styles.rightTitle}>分类</Text>
-                                    <View style={styles.rightCatWrapper}>
-                                        {rightArr}
-                                    </View>
-                                </ScrollView>
-                            )
-                        }
-
+                        <ScrollView contentContainerStyle={styles.rightScrollView}>
+                            <Text style={styles.rightTitle}>分类</Text>
+                            <View style={styles.rightCatWrapper}>
+                                {rightArr}
+                            </View>
+                        </ScrollView>
                     </View>
                 </View>
             </SafeAreaView>
@@ -181,7 +165,6 @@ export default class Category extends Component<Props> {
         }
         this.props.navigation.navigate('GoodsList', {id: parentId, secondIds: secondIds});
     }
-
 
 
     changeKeyword(text) {

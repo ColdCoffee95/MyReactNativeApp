@@ -18,7 +18,6 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActiveButton from '../../components/common/ActiveButton';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 
@@ -49,7 +48,7 @@ export default class ManageAddress extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             let addressList = [];
             this.state.addressList.map(value => {

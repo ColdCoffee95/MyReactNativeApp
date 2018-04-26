@@ -24,7 +24,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActiveButton from '../../components/common/ActiveButton';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
-import LoadingView from '../../components/common/LoadingView';
+import Toast, {DURATION} from 'react-native-easy-toast';
 import RecommandForYou from '../../components/business/RecommandForYou';
 
 type Props = {};
@@ -110,20 +110,12 @@ export default class Cart extends Component<Props> {
                         </TouchableHighlight>
                     </View>
                     {
-                        this.state.isLoading && this.renderLoadingView()
-                    }
-                    {
                         !this.state.isLoading && this.renderSuccessView()
                     }
                 </View>
             </SafeAreaView>
         );
     }
-
-    renderLoadingView() {//加载页面
-        return <LoadingView/>;
-    }
-
     renderSuccessView() {//加载完成页面
         let cartList = [];
         let data = this.data.itemData;

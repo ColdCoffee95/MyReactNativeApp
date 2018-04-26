@@ -19,7 +19,6 @@ import {
 import UploadMultiImg from '../../components/common/UploadMultiImg'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StarRating from 'react-native-star-rating'
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 
@@ -59,7 +58,7 @@ export default class Comment extends Component<Props> {
     render() {
         const {orderInfo, isLoading, userStar} = this.state;
         if (isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             let goodsView = [];
             let goodsList = orderInfo.orderItemList;

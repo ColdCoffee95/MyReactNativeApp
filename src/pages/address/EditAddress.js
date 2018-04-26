@@ -19,7 +19,6 @@ import FormCell from '../../components/common/FormCell'
 import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 export default class EditAddress extends Component<Props> {
@@ -49,7 +48,7 @@ export default class EditAddress extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             return (
                 <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>

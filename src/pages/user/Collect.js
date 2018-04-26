@@ -14,7 +14,6 @@ import {
     SafeAreaView,
     Text,
 } from 'react-native';
-import LoadingView from '../../components/common/LoadingView';
 
 export default class Collect extends Component<Props> {
     constructor(props) {
@@ -38,7 +37,7 @@ export default class Collect extends Component<Props> {
     render() {
         let goodsList = null;
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             goodsList = <FlatList
                 data={this.state.goodsList}

@@ -1,6 +1,7 @@
 const successCode = 10000;
 const timeout = 15000;
 import {Alert} from 'react-native';
+import Loading from '../mobx/loading'
 function timeoutFetch(ms, promise) {//超时请求
     return new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
@@ -25,7 +26,6 @@ function checkStatus(response) {//检查状态
     if (response.status >= 200 && response.status < 300) {
         return response
     }
-
     let error = new Error(response.status);
     error.response = response;
     throw error;
@@ -58,6 +58,7 @@ export default class HttpUtils {
     }
 
     static async get(url, params, callback) {
+        Loading.changeLoading(true);
         if (params) {
             let paramsArray = [];
             //拼接参数
@@ -84,15 +85,20 @@ export default class HttpUtils {
                 .then((response) => checkStatus(response))
                 .then((response) => response.json())
                 .then((responseJSON) => {
+                    setTimeout(() => {
+                        Loading.changeLoading(false);
+                    }, 500);
                     switch (responseJSON.code) {
                         case successCode:
                             callback(responseJSON);
                             break;
                         default:
-                            Alert.alert(null, responseJSON.message)
+                            Alert.alert(null, responseJSON.message);
+                            break;
                     }
                 })
                 .catch((error) => {
+                    Loading.changeLoading(false);
                     Alert.alert('网络错误！')
                 })
         )
@@ -100,6 +106,7 @@ export default class HttpUtils {
     }
 
     static async post(url, params, callback) {
+        Loading.changeLoading(true);
         let loginState = await this.getLoginState();
         let userInfo = await this.getUserInfo();
         return timeoutFetch(timeout, fetch(serverUrl + url, {
@@ -118,6 +125,9 @@ export default class HttpUtils {
                 .then((response) => checkStatus(response))
                 .then((response) => response.json())
                 .then((responseJSON) => {
+                    setTimeout(() => {
+                        Loading.changeLoading(false);
+                    }, 500);
                     switch (responseJSON.code) {
                         case successCode:
                             callback(responseJSON);
@@ -127,6 +137,7 @@ export default class HttpUtils {
                     }
                 })
                 .catch((error) => {
+                    Loading.changeLoading(false);
                     Alert.alert('网络错误！')
                 })
         )

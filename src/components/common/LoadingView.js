@@ -10,7 +10,7 @@ import {
     ActivityIndicator,
     View
 } from 'react-native';
-
+import Spinkit from 'react-native-spinkit'
 type Props = {};
 
 export default class LoadingView extends Component<Props> {
@@ -23,7 +23,8 @@ export default class LoadingView extends Component<Props> {
     render() {
         return (
             <View style={styles.loadingContainer}>
-                <ActivityIndicator/>
+                <Spinkit size={30} type='ThreeBounce' color={activeColor}/>
+                {/*<ActivityIndicator size="large" color={activeColor}/>*/}
             </View>
         );
     }
@@ -31,8 +32,10 @@ export default class LoadingView extends Component<Props> {
 
 const styles = StyleSheet.create({
     loadingContainer: {
-        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        position: 'absolute',
+        width: screenWidth,
+        height: screenHeight
     },
 });
