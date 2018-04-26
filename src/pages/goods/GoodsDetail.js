@@ -395,10 +395,10 @@ export default class GoodsDetail extends Component<Props> {
     }
 
     showPopup(type) {//显示popup
-        this.setState({popoverVisible: true, buyType: type});
-        // this.popupDialog.show(() => {
-        //     this.state.buyType = type;
-        // });
+        // this.setState({popoverVisible: true, buyType: type});
+        this.popupDialog.show(() => {
+            this.state.buyType = type;
+        });
     }
 
     closePopover() {
