@@ -14,7 +14,6 @@ import {
     SafeAreaView,
     View
 } from 'react-native';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
@@ -70,7 +69,6 @@ export default class SelectCertification extends Component<Props> {
                         <ScrollView contentContainerStyle={styles.scrollView}>
                             {certificationList}
                         </ScrollView>
-                        <Toast ref='toast' position='center'></Toast>
                     </View>
                 </SafeAreaView>
             );

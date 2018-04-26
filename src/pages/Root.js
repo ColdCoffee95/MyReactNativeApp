@@ -5,34 +5,27 @@ import {
     BackHandler
 } from 'react-native';
 import {observable, action} from 'mobx';
-import {Provider, observer} from 'mobx-react';
+import {Provider, observer, inject} from 'mobx-react';
 import Toast, {DURATION} from 'react-native-easy-toast';
+import NavigationStore from 'react-navigation-mobx-helpers';
 import SplashScreen from 'react-native-splash-screen';
-import nav from '../mobx/navStore';
-import {addNavigationHelpers, NavigationActions,createNavigationContainer} from "react-navigation";
-// console.disableYellowBox = true;
-import App from '../../App';
-@observer
+import {addNavigationHelpers, NavigationActions, createNavigationContainer} from "react-navigation";
+console.disableYellowBox = true;
+import Route from '../../App';
+const RootNavigator = Route;
+const rootNavigation = new NavigationStore(RootNavigator);
 export default class Root extends Component {
-    @observable.ref navigationState = App.router.getStateForAction(
-        NavigationActions.init(),
-        null
-    );
-
-    @action
-    dispatchNavigation = (action, stackNavState = true) => {
-        const previousNavState = stackNavState ? this.navigationState : null
-        this.navigationState = App.router.getStateForAction(action, previousNavState)
-        return this.navigationState
+    render() {
+        return <Provider rootNavigation={rootNavigation}>
+            <App/>
+        </Provider>
     }
-
-    constructor(props) {
-        super(props);
-    }
-
+}
+@inject('rootNavigation')
+@observer
+class App extends React.Component {
     componentDidMount() {
         SplashScreen.hide();
-        console.warn('rootmount')
         if (platform === 'Android') {
             this.backAndroidHandler = this.backHandle.bind(this);
             BackHandler.addEventListener('hardwareBackPress', this.backAndroidHandler);
@@ -48,35 +41,47 @@ export default class Root extends Component {
     }
 
     backHandle() {
+        const nav = this.props.rootNavigation;
+        const routers = nav.state.routes;
+        console.warn('nav', nav)
 
-        console.warn('navigation', this.navigator.getCurrentRoutes())
-        if (this.lastBackPressed && this.lastBackPressed + 500 >= Date.now()) {
-            //最近2秒内按过back键，可以退出应用。
-            BackHandler.exitApp();
-            return false;
+        if (routers.length > 1) {
+            const lastRoute = routers[routers.length - 1];
+            nav.pop();
+            return true;
+            // if (lastRoute.routeName == 'Order') {//在订单页面
+            //     console.warn('yess')
+            //     NavigationActions.navigate({routeName:'Mine'})
+            //     return true;
+            // } else {
+            //
+            // }
+
+        } else {
+            if (this.lastBackPressed && this.lastBackPressed + 500 >= Date.now()) {
+                //最近2秒内按过back键，可以退出应用。
+                BackHandler.exitApp();
+                return false;
+            }
+            this.lastBackPressed = Date.now();
+            ToastUtil.show('再按一次退出应用');
+            return true;
         }
-        this.lastBackPressed = Date.now();
-        this.refs.toast.show('再按一次退出应用', 500);
-        return true;
+
     }
 
     render() {
-        console.warn('dispatch', this.dispatchNavigation)
-        console.warn('state', this.navigationState)
-        return <Provider dispatchNavigation={this.dispatchNavigation}
-                         navigationState={this.navigationState}>
+        const {state, dispatch, addListener} = this.props.rootNavigation;
+        return (
             <SafeAreaView style={styles.rootContainer}>
-                <App
-                     navigation={addNavigationHelpers({
-                         dispatch: this.dispatchNavigation,
-                         state: this.navigationState,
-                         addListener
-                     })}
+                <RootNavigator
+                    navigation={addNavigationHelpers({state, dispatch, addListener})}
                 />
                 <Toast ref='toast' position='center'>
                 </Toast>
             </SafeAreaView>
-        </Provider>
+
+        );
     }
 }
 const styles = StyleSheet.create({

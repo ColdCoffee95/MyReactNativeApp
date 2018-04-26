@@ -100,10 +100,9 @@ export default class Home extends Component<Props> {
 
     search() {
         if (!this.state.keyword) {
-            ToastUtil.show('请输入关键字')
+            ToastUtil.show('请输入关键字');
             return;
         }
-
         this.props.navigation.navigate('GoodsList', {keyword: this.state.keyword})
     }
 }

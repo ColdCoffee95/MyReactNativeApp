@@ -20,7 +20,6 @@ import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 import Address from '../../components/common/Address'
 import FormCell from '../../components/common/FormCell'
 import ActiveButton from '../../components/common/ActiveButton'
-import Toast, {DURATION} from 'react-native-easy-toast';
 import UploadOneImg from '../../components/common/UploadOneImg';
 
 export default class ShopCertification extends Component<Props> {
@@ -243,7 +242,6 @@ export default class ShopCertification extends Component<Props> {
                             ></Address>
                         </View>
                     </PopupDialog>
-                    <Toast ref='toast' position='center'/>
                 </ScrollView>
             </SafeAreaView>
         );
@@ -306,12 +304,12 @@ export default class ShopCertification extends Component<Props> {
     submit() {
         const {memberName, name, num, type, provinceId, cityId, areaId, address, storeVoucherList} = this.state;
         if (!memberName || !name || !num || !address) {
-            this.refs.toast.show('请填写完整', 300);
+            ToastUtil.show('请填写完整');
             return;
         }
         storeVoucherList.map(value => {
             if (!value.url) {
-                this.refs.toast.show(`请上传${value.name}`, 300);
+                ToastUtil.show(`请上传${value.name}`);
                 return;
             }
         });
@@ -330,15 +328,14 @@ export default class ShopCertification extends Component<Props> {
             params.memberId = this.props.navigation.state.params.memberId;
         }
         HttpUtils.post('/store/applyAuthenticationStore', params, data => {
-            this.refs.toast.show('店铺认证已提交，请等待审核', 500, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                if (state.params && state.params.goBack) {
-                    state.params.goBack();
-                    goBack();
-                } else {
-                    jumpAndClear(this.props.navigation, 'Login')
-                }
-            });
+            ToastUtil.show('店铺认证已提交，请等待审核');
+            const {navigate, goBack, state} = this.props.navigation;
+            if (state.params && state.params.goBack) {
+                state.params.goBack();
+                goBack();
+            } else {
+                jumpAndClear(this.props.navigation, 'Login')
+            }
 
         })
     }

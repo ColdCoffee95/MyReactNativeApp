@@ -17,7 +17,6 @@ import ActiveButton from '../../components/common/ActiveButton'
 import Address from '../../components/common/Address'
 import FormCell from '../../components/common/FormCell'
 import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -37,7 +36,7 @@ export default class AddAddress extends Component<Props> {
             mobile: '',
             address: '',//详细地址
             defaults: false,
-            language:'java'
+            language: 'java'
         };
     }
 
@@ -121,11 +120,7 @@ export default class AddAddress extends Component<Props> {
                                 })}>
                             </Address>
                         </View>
-
-
                     </PopupDialog>
-
-                    <Toast ref='toast' position='center'></Toast>
                 </View>
             </SafeAreaView>
         );
@@ -153,15 +148,14 @@ export default class AddAddress extends Component<Props> {
             defaults: this.state.defaults
         };
         if (!params.contacts || !params.mobile || !params.address) {
-            this.refs.toast.show('请填写完整', 500);
+            ToastUtil.show('请填写完整');
             return;
         }
         HttpUtils.post('/shippingAddress/addShippingAddress', params, data => {
-            this.refs.toast.show('新增成功', 500, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                state.params.goBack();
-                goBack();
-            });
+            ToastUtil.show('新增成功');
+            const {navigate, goBack, state} = this.props.navigation;
+            state.params.goBack();
+            goBack();
         });
     }
 }

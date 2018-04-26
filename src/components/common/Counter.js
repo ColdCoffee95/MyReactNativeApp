@@ -83,17 +83,17 @@ export default class Counter extends Component<Props> {
             num = parseInt(num);
         }
         if (num % this.state.steps !== 0) {
-            this.props.toast.show('只能输入起订量的倍数', 300);
+            ToastUtil.show('只能输入起订量的倍数');
             this.changeNumber(this.state.min);
             return;
         }
         if (num > this.state.max) {
-            this.props.toast.show('购买量不能超过库存', 300);
+            ToastUtil.show('购买量不能超过库存');
             this.changeNumber(this.state.min);
             return;
         }
         if (num < this.state.min) {
-            this.props.toast.show('购买量不能少于起订量', 300);
+            ToastUtil.show('购买量不能少于起订量');
             this.setState({currentValue: this.state.min});
             this.changeNumber(this.state.min);
             return;
@@ -110,12 +110,12 @@ export default class Counter extends Component<Props> {
         }
         num = parseInt(num);
         if (num > this.state.max) {
-            this.props.toast.show('购买量不能超过库存', 300);
+            ToastUtil.show('购买量不能超过库存');
             this.changeNumber(this.state.min);
             return;
         }
         if (num < this.state.min) {
-            this.props.toast.show('购买量不能少于起订量', 300);
+            ToastUtil.show('购买量不能少于起订量');
             this.changeNumber(this.state.min);
             return;
         }
@@ -130,11 +130,11 @@ export default class Counter extends Component<Props> {
     addValue() {
         let num = parseInt(this.state.currentValue);
         if (this.state.sellout) {
-            this.props.toast.show('该商品已售罄', 300);
+            ToastUtil.show('该商品已售罄');
             return;
         }
         if (num + this.state.steps > this.state.max) {
-            this.props.toast.show('购买量不能超过库存上限', 300);
+            ToastUtil.show('购买量不能超过库存上限');
             return;
         }
         let value = num + this.state.steps;
@@ -144,11 +144,11 @@ export default class Counter extends Component<Props> {
     cutValue() {
         let num = parseInt(this.state.currentValue);
         if (this.state.sellout) {
-            this.props.toast.show('该商品已售罄', 300);
+            ToastUtil.show('该商品已售罄');
             return;
         }
         if (num - this.state.steps < this.state.min) {
-            this.props.toast.show('购买量不能少于起订量', 300);
+            ToastUtil.show('购买量不能少于起订量');
             return;
         }
         let value = num - this.state.steps;

@@ -15,7 +15,6 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
@@ -355,7 +354,6 @@ export default class CouponList extends Component<Props> {
                         </ScrollView>
                     }
 
-                    <Toast ref='toast' position='center'></Toast>
                 </View>
             </SafeAreaView>
         );
@@ -397,9 +395,8 @@ export default class CouponList extends Component<Props> {
 
     receiveCoupon(id) {
         HttpUtils.get('/memberCouponInfo/doReceiveCouponById', {couponId: id}, data => {
-            this.refs.toast.show('领取成功', 10, () => {
-                this.fetchData()
-            })
+            ToastUtil.show('领取成功');
+            this.fetchData()
         })
     }
 

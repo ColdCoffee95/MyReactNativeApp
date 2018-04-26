@@ -18,7 +18,6 @@ import {
 } from 'react-native';
 import UploadMultiImg from '../../components/common/UploadMultiImg'
 import ActiveButton from '../../components/common/ActiveButton'
-import Toast, {DURATION} from 'react-native-easy-toast';
 
 type Props = {};
 
@@ -129,7 +128,7 @@ export default class Feedback extends Component<Props> {
                             </TouchableHighlight>
                         </View>
                     }
-                    <Toast ref='toast' position='center'></Toast>
+
                 </ScrollView>
             </SafeAreaView>
         );
@@ -151,13 +150,12 @@ export default class Feedback extends Component<Props> {
             userPhone: userInfo.mobile
         };
         if (!params.sugMessage) {
-            this.refs.toast.show('请说点什么吧', 500);
+            ToastUtil.show('请说点什么吧');
             return;
         }
         HttpUtils.post('/suggest/setSug', params, data => {
-            this.refs.toast.show('提交成功，请等待处理', 500, () => {
-                this.props.navigation.goBack();
-            });
+            ToastUtil.show('提交成功，请等待处理');
+            this.props.navigation.goBack();
         })
     }
 

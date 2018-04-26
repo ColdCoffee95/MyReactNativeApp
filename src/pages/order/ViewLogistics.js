@@ -14,7 +14,6 @@ import {
     View,
     SafeAreaView
 } from 'react-native';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
@@ -67,7 +66,6 @@ export default class ViewLogistics extends Component<Props> {
                     <ScrollView>
                         {deliveryView}
                     </ScrollView>
-                    <Toast ref='toast' position='center'></Toast>
                 </View>
             </SafeAreaView>
         }

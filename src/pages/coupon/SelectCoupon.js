@@ -15,7 +15,6 @@ import {
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import ActiveButton from '../../components/common/ActiveButton';
 import LoadingView from '../../components/common/LoadingView';
 
@@ -218,7 +217,6 @@ export default class SelectCoupon extends Component<Props> {
                             }}>
                         </ActiveButton>
                     </View>
-                    <Toast ref='toast' position='center'></Toast>
                 </View>
             </SafeAreaView>
         );
@@ -266,7 +264,7 @@ export default class SelectCoupon extends Component<Props> {
             state.params.callback(coupon);
             goBack();
         } else {
-            this.refs.toast.show('该优惠券不符合使用条件');
+            ToastUtil.show('该优惠券不符合使用条件');
         }
     }
 

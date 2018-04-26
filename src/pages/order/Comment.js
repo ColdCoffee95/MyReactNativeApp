@@ -18,7 +18,6 @@ import {
 } from 'react-native';
 import UploadMultiImg from '../../components/common/UploadMultiImg'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import StarRating from 'react-native-star-rating'
 import LoadingView from '../../components/common/LoadingView';
 
@@ -170,7 +169,6 @@ export default class Comment extends Component<Props> {
                                 selectedStar={(rating) => this.setState({logNice: rating})}
                             />
                         </View>
-                        <Toast ref='toast' position='center'></Toast>
                     </ScrollView>
                 </SafeAreaView>
             );
@@ -189,15 +187,14 @@ export default class Comment extends Component<Props> {
             orderId: orderId
         };
         if (!params.userMessage) {
-            this.refs.toast.show('请说点什么吧', 500);
+            ToastUtil.show('请说点什么吧');
             return;
         }
         HttpUtils.post('/reviews/revgoods', params, data => {
-            this.refs.toast.show('评价成功!', 300, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                state.params.goBack();
-                goBack();
-            });
+            ToastUtil.show('评价成功');
+            const {navigate, goBack, state} = this.props.navigation;
+            state.params.goBack();
+            goBack();
         })
     }
 

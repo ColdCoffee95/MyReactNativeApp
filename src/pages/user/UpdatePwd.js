@@ -15,7 +15,6 @@ type Props = {};
 import CryptoJS from 'crypto-js'
 import FormCell from '../../components/common/FormCell'
 import ActiveButton from '../../components/common/ActiveButton'
-import Toast, {DURATION} from 'react-native-easy-toast';
 
 export default class UpdatePwd extends Component<Props> {
     constructor(props) {
@@ -54,7 +53,6 @@ export default class UpdatePwd extends Component<Props> {
 
                         </ActiveButton>
                     </View>
-                    <Toast ref='toast' position='center'/>
                 </View>
             </SafeAreaView>
         );
@@ -63,15 +61,15 @@ export default class UpdatePwd extends Component<Props> {
     updatePwd() {
         let {oldPwd, newPwd, newPwdAgain} = this.state;
         if (!oldPwd.trim() || !newPwd.trim() || !newPwdAgain.trim()) {
-            this.refs.toast.show('请填写完整', 500);
+            ToastUtil.show('请填写完整');
             return;
         }
         if (newPwd !== newPwdAgain) {
-            this.refs.toast.show('两次新密码输入不一致', 500);
+            ToastUtil.show('两次新密码输入不一致');
             return;
         }
         if (!validPwd(newPwd)) {
-            this.refs.toast.show('密码必须是6-20位不含空格,且必须包含英文或数字', 500);
+            ToastUtil.show('密码必须是6-20位不含空格,且必须包含英文或数字');
             return;
         }
         let params = {
@@ -79,9 +77,8 @@ export default class UpdatePwd extends Component<Props> {
             newPwd: CryptoJS.MD5(newPwd.trim()).toString(),
         };
         HttpUtils.post('/member/updateMemberPwd', params, data => {
-            this.refs.toast.show('修改成功！', 300, () => {
-                this.props.navigation.navigate('Mine')
-            });
+            ToastUtil.show('修改成功');
+            this.props.navigation.navigate('Mine')
         })
     }
 }

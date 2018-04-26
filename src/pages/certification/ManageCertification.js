@@ -17,7 +17,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import ActiveButton from '../../components/common/ActiveButton';
 import LoadingView from '../../components/common/LoadingView';
 
@@ -98,7 +97,6 @@ export default class ManageCertification extends Component<Props> {
                         <ScrollView contentContainerStyle={styles.scrollView}>
                             {certificationList}
                         </ScrollView>
-                        <Toast ref='toast' position='center'></Toast>
                         <View style={styles.bottomBtnView}>
                             <ActiveButton clickBtn={() => this.addCertification()} text='添加实名认证'
                                           style={styles.activeButton}></ActiveButton>
@@ -118,7 +116,7 @@ export default class ManageCertification extends Component<Props> {
 
     setDefaultCertification(id) {//设为默认
         HttpUtils.get('/idCard/setIdCardDefaultsById', {id: id}, data => {
-            this.refs.toast.show('设置成功!', 10);
+            ToastUtil.show('设置成功');
             this.fetchData();
         })
     }
@@ -135,7 +133,7 @@ export default class ManageCertification extends Component<Props> {
                 {
                     text: "确定", onPress: () => {
                         HttpUtils.get('/idCard/deleteIdCardById', {id: id}, data => {
-                            this.refs.toast.show('删除成功!', 10);
+                            ToastUtil.show('删除成功');
                             this.fetchData();
                         })
                     }

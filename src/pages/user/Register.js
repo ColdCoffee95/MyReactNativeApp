@@ -19,7 +19,6 @@ type Props = {};
 import CryptoJS from 'crypto-js'
 import FormCell from '../../components/common/FormCell'
 import ActiveButton from '../../components/common/ActiveButton'
-import Toast, {DURATION} from 'react-native-easy-toast';
 
 export default class Register extends Component<Props> {
     constructor(props) {
@@ -105,7 +104,6 @@ export default class Register extends Component<Props> {
 
                         </ActiveButton>
                     </View>
-                    <Toast ref='toast' position='center'/>
                 </View>
             </SafeAreaView>
         );
@@ -114,15 +112,15 @@ export default class Register extends Component<Props> {
     register() {
         let {mobile, pwd, pwdAgain, code} = this.state;
         if (!mobile.trim() || !pwd.trim() || !pwdAgain.trim() || !code.trim()) {
-            this.refs.toast.show('请填写完整', 500);
+            ToastUtil.show('请填写完整');
             return;
         }
         if (pwd !== pwdAgain) {
-            this.refs.toast.show('两次密码输入不一致', 500);
+            ToastUtil.show('两次密码输入不一致');
             return;
         }
         if (!validPwd(pwd)) {
-            this.refs.toast.show('密码必须是6-20位不含空格,且必须包含英文或数字', 500);
+            ToastUtil.show('密码必须是6-20位不含空格,且必须包含英文或数字');
             return;
         }
         let params = {
@@ -167,12 +165,12 @@ export default class Register extends Component<Props> {
 
     async buttonClick(enable) {
         if (!enable) {
-            this.refs.toast.show('请稍后再试', 300);
+            ToastUtil.show('请稍后再试');
             return;
         }
         let mobileAble = await this.checkMobile();
         if (!mobileAble) {
-            this.refs.toast.show('该手机号已被使用', 300);
+            ToastUtil.show('该手机号已被使用');
             return;
         }
         this.getMessageCode();
@@ -194,7 +192,7 @@ export default class Register extends Component<Props> {
             type: 1
         };
         HttpUtils.post('/message/getMobileMessage', params, data => {
-            this.refs.toast.show('发送成功');
+            ToastUtil.show('发送成功');
         })
     }
 }

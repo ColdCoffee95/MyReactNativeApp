@@ -4,6 +4,7 @@ import {
     View,
     BackHandler
 } from 'react-native';
+import {Provider, observer,inject} from 'mobx-react';
 import {StackNavigator, NavigationActions} from "react-navigation";
 import './src/utils/storage';
 import './src/utils/globalVariables';

@@ -13,7 +13,6 @@ import {
 import ActiveButton from '../../components/common/ActiveButton'
 import FormCell from '../../components/common/FormCell'
 import UploadOneImg from '../../components/common/UploadOneImg'
-import Toast, {DURATION} from 'react-native-easy-toast';
 
 type Props = {};
 export default class AddCertification extends Component<Props> {
@@ -68,7 +67,6 @@ export default class AddCertification extends Component<Props> {
                     <View style={styles.bottomBtnView}>
                         <ActiveButton clickBtn={() => this.save()} text='保存' style={styles.activeButton}></ActiveButton>
                     </View>
-                    <Toast ref='toast' position='center'></Toast>
                 </View>
             </SafeAreaView>
         );
@@ -82,15 +80,14 @@ export default class AddCertification extends Component<Props> {
             idCardBgImg: this.state.idCardBgImg
         };
         if (!params.contacts || !params.idCard) {
-            this.refs.toast.show('请填写完整', 500);
+            ToastUtil.show('请填写完整');
             return;
         }
         HttpUtils.post('/idCard/addIdCard', params, data => {
-            this.refs.toast.show('新增成功', 500, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                state.params.goBack();
-                goBack();
-            });
+            ToastUtil.show('新增成功');
+            const {navigate, goBack, state} = this.props.navigation;
+            state.params.goBack();
+            goBack();
         });
     }
 }

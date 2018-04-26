@@ -20,7 +20,6 @@ import Drawer from "react-native-drawer";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GoodsSideMenu from '../../components/business/GoodsSideMenu'
 import LoadingView from '../../components/common/LoadingView';
-import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 
 export default class GoodsList extends Component<Props> {
@@ -181,7 +180,6 @@ export default class GoodsList extends Component<Props> {
                         {goodsList}
                     </View>
                 </Drawer>
-                <Toast ref='toast' position='center'></Toast>
             </SafeAreaView>
 
         );
@@ -280,7 +278,7 @@ export default class GoodsList extends Component<Props> {
 
     search() {
         if(!this.state.keyword){
-            this.refs.toast.show('请输入关键字');
+            ToastUtil.show('请输入关键字');
             return;
         }
         this.fetchData();

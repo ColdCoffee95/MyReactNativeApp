@@ -20,7 +20,6 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
 import LoadingView from '../../components/common/LoadingView';
-import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 export default class Order extends Component<Props> {
 
@@ -128,7 +127,6 @@ export default class Order extends Component<Props> {
                 </View>
                 {orderList}
             </View>
-            <Toast ref='toast' position='center'></Toast>
         </SafeAreaView>
 
     }
@@ -306,7 +304,7 @@ export default class Order extends Component<Props> {
                 {
                     text: "确定", onPress: () => {
                     HttpUtils.post('/order/manuallyCancelOrder', {orderId: orderId}, data => {
-                        this.refs.toast.show('操作成功!', 10);
+                        ToastUtil.show('操作成功');
                         this.fetchData();
                     })
                 }
@@ -330,7 +328,7 @@ export default class Order extends Component<Props> {
                 {
                     text: "确认", onPress: () => {
                     HttpUtils.post('/order/confirmReceive', {orderId: orderId}, data => {
-                        this.refs.toast.show('操作成功!', 10);
+                        ToastUtil.show('操作成功');
                         this.fetchData();
                     })
                 }

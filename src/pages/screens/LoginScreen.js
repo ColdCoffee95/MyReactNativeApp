@@ -15,7 +15,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import CryptoJS from 'crypto-js'
 import LoadingView from '../../components/common/LoadingView';
-import Toast, {DURATION} from 'react-native-easy-toast';
 type Props = {};
 
 export default class LoginScreen extends Component<Props> {
@@ -25,7 +24,6 @@ export default class LoginScreen extends Component<Props> {
     }
 
     componentDidMount() {
-        // SplashScreen.hide();
 
         this.checkToken();
     }
@@ -55,7 +53,7 @@ export default class LoginScreen extends Component<Props> {
             return false;
         }
         this.lastBackPressed = Date.now();
-        this.refs.toast.show('再按一次退出应用', 500);
+        ToastUtil.show('再按一次退出应用');
         return true;
     }
     async checkToken() {
@@ -165,7 +163,6 @@ export default class LoginScreen extends Component<Props> {
                         <View style={styles.bottomView}>
                             <Text style={{color: '#bebebe', fontSize: 12}}>Designed by MetChange</Text>
                         </View>
-                        <Toast ref='toast' position='center'></Toast>
                     </View>
                 </SafeAreaView>
 

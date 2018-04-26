@@ -17,7 +17,6 @@ import {
 
 type Props = {};
 import ActiveButton from '../../components/common/ActiveButton'
-import Toast, {DURATION} from 'react-native-easy-toast';
 
 export default class SecurityCheck extends Component<Props> {
     constructor(props) {
@@ -126,7 +125,6 @@ export default class SecurityCheck extends Component<Props> {
 
                         </ActiveButton>
                     </View>
-                    <Toast ref='toast' position='center'/>
                 </View>
             </SafeAreaView>
         );
@@ -154,12 +152,12 @@ export default class SecurityCheck extends Component<Props> {
     async nextStep() {
         let {realPhone, mobileCode,imgCode} = this.state;
         if (!realPhone || !mobileCode.trim() || !imgCode.trim()) {
-            this.refs.toast.show('请填写完整', 500);
+            ToastUtil.show('请填写完整');
             return;
         }
         let isImgCode = await this.checkImgCode();
         if (!isImgCode) {
-            this.refs.toast.show('图片验证码输入不正确', 300);
+            ToastUtil.show('图片验证码输入不正确');
             return;
         }
         let params = {
@@ -174,16 +172,16 @@ export default class SecurityCheck extends Component<Props> {
 
     async buttonClick(enable) {
         if (!enable) {
-            this.refs.toast.show('请稍后再试', 300);
+            ToastUtil.show('请稍后再试');
             return;
         }
         if (!this.state.imgCode.trim()) {
-            this.refs.toast.show('请输入图片验证码', 300);
+            ToastUtil.show('请输入图片验证码');
             return;
         }
         let isImgCode = await this.checkImgCode();
         if (!isImgCode) {
-            this.refs.toast.show('图片验证码输入不正确', 300);
+            ToastUtil.show('图片验证码输入不正确');
             return;
         }
         this.getMessageCode();
@@ -218,7 +216,7 @@ export default class SecurityCheck extends Component<Props> {
             type: 2//2是安全校验
         };
         HttpUtils.post('/message/getMobileMessage', params, data => {
-            this.refs.toast.show('发送成功');
+            ToastUtil.show('发送成功');
         })
     }
 }

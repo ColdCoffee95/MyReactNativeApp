@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton';
 import UploadMultiImg from '../../components/common/UploadMultiImg';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
@@ -103,8 +102,6 @@ export default class ApplyAfterSale extends Component<Props> {
                         <ActiveButton clickBtn={() => this.submit()} text='提交'
                                       style={styles.activeButton}></ActiveButton>
                     </View>
-
-                    <Toast ref='toast' position='center'></Toast>
                 </View>
             </SafeAreaView>
         }
@@ -121,15 +118,14 @@ export default class ApplyAfterSale extends Component<Props> {
             orderAftersalesVoucherList: orderAftersalesVoucherList
         };
         if (!params.comment) {
-            this.refs.toast.show('请填写申请原因', 500);
+            ToastUtil.show('请填写申请原因');
             return;
         }
         HttpUtils.post('/order/createOrderAftersales', params, data => {
-            this.refs.toast.show('申请成功，请等待处理', 500, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                state.params.goBack();
-                goBack();
-            });
+            ToastUtil.show('申请成功，请等待处理');
+            const {navigate, goBack, state} = this.props.navigation;
+            state.params.goBack();
+            goBack();
         })
     }
 

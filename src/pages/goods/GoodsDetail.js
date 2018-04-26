@@ -21,7 +21,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Foundation';
 import Counter from '../../components/common/Counter';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
@@ -152,8 +151,7 @@ export default class GoodsDetail extends Component<Props> {
                             max={detail.nowSku.count}
                             min={detail.nowSku.mustBuyNum || 1}
                             steps={detail.nowSku.mustBuyNum || 1}
-                            sellout={detail.nowSku.count === 0 || detail.nowSku.count < detail.nowSku.mustBuyNum}
-                            toast={this.refs.toast}>
+                            sellout={detail.nowSku.count === 0 || detail.nowSku.count < detail.nowSku.mustBuyNum}>
 
                         </Counter>
                     </View>
@@ -264,10 +262,6 @@ export default class GoodsDetail extends Component<Props> {
                             </View>
 
                         </PopupDialog>
-
-
-                        <Toast ref='toast' position='top'></Toast>
-
                     </View>
                 </SafeAreaView>
 
@@ -290,9 +284,9 @@ export default class GoodsDetail extends Component<Props> {
             goodsIsCollect: goodsIsCollect,
         });
         if (goodsIsCollect) {
-            this.refs.toast.show('收藏成功')
+            ToastUtil.show('收藏成功');
         } else {
-            this.refs.toast.show('取消收藏成功')
+            ToastUtil.show('取消收藏成功');
         }
 
 
@@ -334,14 +328,14 @@ export default class GoodsDetail extends Component<Props> {
     async addToCart() {//添加到进货单
         let validationState = await this.getValidationState();
         if (validationState != 1) {
-            this.refs.toast.show('审核通过前不允许下单！', 500);
+            ToastUtil.show('审核通过前不允许下单！');
             return;
         }
 
         let detail = this.state.goodsDetail;
         let nowSku = detail.nowSku;
         if (nowSku.count === 0) {
-            this.refs.toast.show('该商品库存不足，无法下单！', 500);
+            ToastUtil.show('该商品库存不足，无法下单！');
             return;
         }
         let params = {
@@ -359,7 +353,7 @@ export default class GoodsDetail extends Component<Props> {
             categoryName: detail.catName
         };
         HttpUtils.post('/shoppingCart/putGoodsInCart', params, data => {
-            this.refs.toast.show('加入进货单成功', 500);
+            ToastUtil.show('加入进货单成功');
             this.closePopover();
         })
     }
@@ -367,14 +361,14 @@ export default class GoodsDetail extends Component<Props> {
     async currentBuy() {//立即抢购
         let validationState = await this.getValidationState();
         if (validationState != 1) {
-            this.refs.toast.show('审核通过前不允许下单！', 500);
+            ToastUtil.show('审核通过前不允许下单！');
             return;
         }
 
         let detail = this.state.goodsDetail;
         let nowSku = detail.nowSku;
         if (nowSku.count === 0) {
-            this.refs.toast.show('该商品库存不足，无法下单！', 500);
+            ToastUtil.show('该商品库存不足，无法下单！');
             return;
         }
         let params = {

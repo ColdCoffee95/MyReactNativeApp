@@ -15,7 +15,6 @@ import {
     ScrollView,
     RefreshControl
 } from 'react-native';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Foundation';
 import UploadOneImg from '../components/common/UploadOneImg'
@@ -222,7 +221,6 @@ export default class Mine extends Component<Props> {
                     <View style={styles.toolView}>
                         {toolList}
                     </View>
-                    <Toast ref='toast' position='center'></Toast>
                 </ScrollView>
             </SafeAreaView>
 
@@ -278,7 +276,7 @@ export default class Mine extends Component<Props> {
                 this.props.navigation.navigate('Settings');
                 break;
             case 3://会员中心
-                this.refs.toast.show('此功能暂未开放，敬请期待!', 500);
+                ToastUtil.show('此功能暂未开放，敬请期待!');
                 break;
             case 4://意见反馈
                 this.props.navigation.navigate('Feedback');

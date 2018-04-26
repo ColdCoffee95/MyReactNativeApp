@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
@@ -207,7 +206,6 @@ export default class ConfirmOrder extends Component<Props> {
                             </TouchableHighlight>
                         </View>
                     </ScrollView>
-                    <Toast ref='toast' position='center'></Toast>
                     <View style={styles.bottomView}>
                         <View style={styles.bottomLeftView}>
                             <Text style={{marginLeft: 5}}>合计：¥{(totalPrice - this.state.realCut).toFixed(2)}</Text>
@@ -262,7 +260,7 @@ export default class ConfirmOrder extends Component<Props> {
             orderItemList: cartList
         };
         if (Object.keys(address).length === 0) {
-            this.refs.toast.show('请选择地址', 300);
+            ToastUtil.show('请选择地址');
             return;
         }
         switch (tradeType) {
@@ -275,7 +273,7 @@ export default class ConfirmOrder extends Component<Props> {
                 break;
             case 2:
                 if (Object.keys(certification).length === 0) {
-                    this.refs.toast.show('请选择实名认证', 300);
+                    ToastUtil.show('请选择实名认证');
                     return;
                 }
                 params.orderDetail = {
@@ -289,7 +287,7 @@ export default class ConfirmOrder extends Component<Props> {
                 break;
             case 3:
                 if (Object.keys(certification).length === 0) {
-                    this.refs.toast.show('请选择实名认证', 300);
+                    ToastUtil.show('请选择实名认证');
                     return;
                 }
                 params.orderDetail = {
@@ -301,7 +299,7 @@ export default class ConfirmOrder extends Component<Props> {
                     idCardImg: certification.idCardImg,
                 };
                 if (!params.orderDetail.idCardImg || !params.orderDetail.idCardBgImg) {
-                    this.refs.toast.show('海外直邮的实名认证信息必须包含身份证正反面', 300);
+                    ToastUtil.show('海外直邮的实名认证信息必须包含身份证正反面');
                     return;
                 }
                 break;

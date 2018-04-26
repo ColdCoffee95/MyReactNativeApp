@@ -17,7 +17,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import ActiveButton from '../../components/common/ActiveButton';
 import LoadingView from '../../components/common/LoadingView';
 
@@ -100,7 +99,6 @@ export default class ManageAddress extends Component<Props> {
                         <ScrollView contentContainerStyle={styles.scrollView}>
                             {addressList}
                         </ScrollView>
-                        <Toast ref='toast' position='center'></Toast>
                         <View style={styles.bottomBtnView}>
                             <ActiveButton
                                 clickBtn={() => this.addAddress()}
@@ -147,7 +145,7 @@ export default class ManageAddress extends Component<Props> {
 
     setDefaultAddress(id) {//设为默认
         HttpUtils.get('/shippingAddress/defaultShippingAddressById', {id: id}, data => {
-            this.refs.toast.show('设置成功!', 10);
+            ToastUtil.show('设置成功');
             this.fetchData();
         })
     }
@@ -158,7 +156,7 @@ export default class ManageAddress extends Component<Props> {
                 {
                     text: "确定", onPress: () => {
                         HttpUtils.get('/shippingAddress/deleteShippingAddressById', {id: id}, data => {
-                            this.refs.toast.show('删除成功!', 10);
+                            ToastUtil.show('删除成功');
                             this.fetchData();
                         })
                     }

@@ -11,7 +11,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import {observer} from 'mobx-react/native';
 import {action, autorun, observe} from 'mobx';
-import Toast, {DURATION} from 'react-native-easy-toast';
 
 @observer
 export default class CartComponent extends Component {
@@ -64,8 +63,7 @@ export default class CartComponent extends Component {
                                         max={this.itemData.count}
                                         min={this.itemData.mustBuyNum || 1}
                                         steps={this.itemData.mustBuyNum || 1}
-                                        sellout={this.itemData.count === 0 || this.itemData.count < this.itemData.mustBuyNum}
-                                        toast={this.refs.toast}>
+                                        sellout={this.itemData.count === 0 || this.itemData.count < this.itemData.mustBuyNum}>
                                     </Counter>
                                 </View>
                             }
@@ -77,7 +75,6 @@ export default class CartComponent extends Component {
                     </View>
                 </View>
             </TouchableHighlight>
-            <Toast ref='toast' position='center'></Toast>
         </View>
     }
 

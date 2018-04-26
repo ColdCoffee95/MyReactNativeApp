@@ -24,7 +24,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActiveButton from '../../components/common/ActiveButton';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import LoadingView from '../../components/common/LoadingView';
 import RecommandForYou from '../../components/business/RecommandForYou';
 
@@ -76,7 +75,6 @@ export default class Cart extends Component<Props> {
         return (
             <SafeAreaView style={{flex: 1}}>
                 <View style={styles.container}>
-                    <Toast ref='toast' position='center'></Toast>
 
                     {/*<RefreshControl*/}
                     {/*refreshing={this.state.isRefreshing}*/}
@@ -243,7 +241,7 @@ export default class Cart extends Component<Props> {
             arr.push(value)
         });
         if (arr.length === 0) {
-            this.refs.toast.show("您还没有选择商品哦", 500);
+            ToastUtil.show('您还没有选择商品哦');
             return;
         }
         this.props.navigation.navigate('ConfirmOrder', {cartList: arr, tradeType: this.state.tradeType});

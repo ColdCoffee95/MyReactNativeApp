@@ -17,7 +17,6 @@ import ActiveButton from '../../components/common/ActiveButton'
 import Address from '../../components/common/Address'
 import FormCell from '../../components/common/FormCell'
 import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoadingView from '../../components/common/LoadingView';
@@ -137,7 +136,6 @@ export default class EditAddress extends Component<Props> {
 
 
                         </PopupDialog>
-                        <Toast ref='toast' position='center'></Toast>
                     </View>
                 </SafeAreaView>
             );
@@ -184,15 +182,14 @@ export default class EditAddress extends Component<Props> {
             id: this.state.id
         };
         if (!params.contacts || !params.mobile || !params.address) {
-            this.refs.toast.show('请填写完整', 500);
+            ToastUtil.show('请填写完整');
             return;
         }
         HttpUtils.post('/shippingAddress/updateShippingAddressById', params, data => {
-            this.refs.toast.show('修改成功', 500, () => {
-                const {navigate, goBack, state} = this.props.navigation;
-                state.params.goBack();
-                goBack();
-            });
+            ToastUtil.show('修改成功');
+            const {navigate, goBack, state} = this.props.navigation;
+            state.params.goBack();
+            goBack();
         });
     }
 }
