@@ -21,22 +21,22 @@ export default class Counter extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
-            currentValue: props.value || 1,
+            currentValue: props.sellout ? 0 : (props.value || 1),
             steps: props.steps || 1,
             min: props.min || 1,
             max: props.max || 99999,
             sellout: props.sellout || false
         }
     }
-
+    componentDidMount(){
+        this.changeNumber(this.state.currentValue);
+    }
     componentWillReceiveProps(props) {
-        this.setState({
-            currentValue: props.sellout ? 0 : (props.value || 1),
-            steps: props.steps || 1,
-            min: props.min || 1,
-            max: props.max || 99999,
-            sellout: props.sellout || false
-        })
+        this.state.currentValue=props.sellout ? 0 : (props.value || 1);
+        this.state.steps=props.steps || 1;
+        this.state.min=props.min || 1;
+        this.state.max=props.max || 99999;
+        this.state.sellout=props.sellout || false;
         if (props.value != this.state.currentValue) {
             this.changeNumber(props.value);
         }

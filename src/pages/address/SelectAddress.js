@@ -14,6 +14,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import LoadingView from '../../components/common/LoadingView';
 
 type Props = {};
 

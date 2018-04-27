@@ -11,19 +11,21 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 import Loading from '../mobx/loading'
 import LoadingView from '../components/common/LoadingView'
 import NavigationStore from 'react-navigation-mobx-helpers';
+import codePush from 'react-native-code-push';
 import SplashScreen from 'react-native-splash-screen';
 import {addNavigationHelpers, NavigationActions, createNavigationContainer} from "react-navigation";
 import Route from '../../App';
 const RootNavigator = Route;
 const rootNavigation = new NavigationStore(RootNavigator);
-console.disableYellowBox = true;
-export default class Root extends Component {
+// console.disableYellowBox = true;
+class Root extends Component {
     render() {
         return <Provider rootNavigation={rootNavigation}>
             <App/>
         </Provider>
     }
 }
+
 @inject('rootNavigation')
 @observer
 class App extends React.Component {
@@ -37,6 +39,8 @@ class App extends React.Component {
             BackHandler.addEventListener('hardwareBackPress', this.backAndroidHandler);
         }
         global.ToastUtil = this.refs.toast;
+        console.warn(codePush);
+
     }
 
     componentWillUnmount() {
@@ -86,3 +90,4 @@ const styles = StyleSheet.create({
         flex: 1,
     }
 });
+export default Root;

@@ -44,6 +44,8 @@ export default class IdentifyImg extends Component<Props> {
     async getUserAuth() {
         let userInfo = await HttpUtils.getUserInfo();
         this.setState({authentication: userInfo.authentication});
+        console.warn(userInfo)
+
     }
 
     toIdentify() {

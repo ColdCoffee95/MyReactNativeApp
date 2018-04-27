@@ -84,7 +84,6 @@ export default class ShopCertificationDetail extends Component<Props> {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: 'center',
         backgroundColor: whiteColor,
     },

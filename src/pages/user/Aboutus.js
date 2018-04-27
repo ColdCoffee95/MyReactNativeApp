@@ -45,7 +45,6 @@ export default class Aboutus extends Component<Props> {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: 'center',
         backgroundColor: whiteColor,
         paddingTop: 20,

@@ -8,6 +8,7 @@
  */
 
 #import "AppDelegate.h"
+#import <CodePush/CodePush.h>
 #import "SplashScreen.h"
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -27,7 +28,12 @@
 {
   NSURL *jsCodeLocation;
 
-  //jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  //
+    #ifdef DEBUG
+        jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+    #else
+        jsCodeLocation = [CodePush bundleURL];
+    #endif
   
   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"index.ios" withExtension:@"jsbundle"];
   

@@ -99,6 +99,10 @@ export default class Settings extends Component<Props> {
 
     fetchData() {
         HttpUtils.get('/member/selectStoreMemberById', {}, data => {
+            storage.save({
+                key: 'userInfo',
+                data: data.data
+            });
             this.setState({userInfo: data.data, isLoading: false});
         })
     }
@@ -112,7 +116,7 @@ export default class Settings extends Component<Props> {
     }
 
     async shopCertificationDetail() {//店铺详情
-        let userInfo = await HttpUtils.getUserInfo();
+        let userInfo = this.state.userInfo;
         let auth = userInfo.authentication;
         if (auth === 0 || auth === -1) {
             this.props.navigation.navigate('ShopCertification');
@@ -142,7 +146,7 @@ export default class Settings extends Component<Props> {
     }
 
     getAuthInfo() {
-        let value = authList.find(n => n.id == this.state.userInfo.authentication)
+        let value = authList.find(n => n.id == this.state.userInfo.authentication);
         return value.name;
     }
 }
