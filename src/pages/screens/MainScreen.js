@@ -18,7 +18,6 @@ const mainPage = TabNavigator({
             //默认参数
             title:'首页',
             tabBarLabel: '首页',
-            headerLeft:null,
             headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
                 <Image
@@ -38,7 +37,6 @@ const mainPage = TabNavigator({
         navigationOptions: {
             title:'分类',
             tabBarLabel: '分类',
-            headerLeft:null,
             headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
                 <Image
@@ -105,16 +103,13 @@ const mainPage = TabNavigator({
             backgroundColor: '#fff', // TabBar 背景色
             height: 56,
             justifyContent:'center',
-            paddingTop:5,
-            paddingBottom:5
+            paddingBottom:4
         },
         labelStyle: {
-            fontSize: 14, // 文字大小,
-            marginTop: 5,
+            fontSize: 12, // 文字大小,
+            marginTop: 4,
         },
-        iconStyle:{
-            height:0
-        }
+
     },
 });
 const styles = StyleSheet.create({

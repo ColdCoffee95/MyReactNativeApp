@@ -136,6 +136,7 @@ export default class Order extends Component<Props> {
     }
 
     orderGoBack() {
+        jumpAndClear(this.props.navigation,'Main');
         this.props.navigation.navigate('Mine');
     }
 

@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     searchView: {
         borderColor: borderColor,
         borderWidth: 1,
-        width: screenWidth * 0.7,
+        width: screenWidth * 0.65,
         height: 30,
         borderRadius: 30,
         flexDirection: 'row',
@@ -286,13 +286,13 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     keyword: {
-        width: screenWidth * 0.7 - 40,
+        width: screenWidth * 0.65,
         height: 50,
         paddingLeft: 10,
         fontSize: 14
     },
     rightSearch: {
-        width: screenWidth * 0.15,
+        width: screenWidth * 0.2,
         alignItems: 'center',
     }
 
