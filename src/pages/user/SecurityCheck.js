@@ -70,7 +70,7 @@ export default class SecurityCheck extends Component<Props> {
                         <TouchableOpacity onPress={() => this.getCodeImg()}>
                             <View style={styles.codeImgView}>
                                 {
-                                    this.state.codeImg && <Image
+                                    !!this.state.codeImg && <Image
                                         resizeMode='contain'
                                         source={{uri: this.state.codeImg}}
                                         style={styles.codeImg}

@@ -168,6 +168,10 @@ export default class Register extends Component<Props> {
             ToastUtil.show('请稍后再试');
             return;
         }
+        if (this.state.mobile.length !== 11) {
+            ToastUtil.show('请输入正确的手机号');
+            return;
+        }
         let mobileAble = await this.checkMobile();
         if (!mobileAble) {
             ToastUtil.show('该手机号已被使用');

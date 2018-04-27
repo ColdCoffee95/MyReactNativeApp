@@ -154,6 +154,8 @@ export default class GoodsDetail extends Component<Props> {
                             sellout={detail.nowSku.count === 0 || detail.nowSku.count < detail.nowSku.mustBuyNum}>
 
                         </Counter>
+
+
                     </View>
                 </View>
             );
@@ -304,6 +306,7 @@ export default class GoodsDetail extends Component<Props> {
                 this.fetchData(value.id);
             }
         });
+
     }
 
     sureAdd() {//点击确定
@@ -509,25 +512,22 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     numView: {
-        marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     specView: {
-        marginTop: 10,
+        marginBottom: 10,
     },
     counterView: {},
     popupScrollView: {
         paddingLeft: 10,
         paddingRight: 10,
-        paddingBottom: 10,
     },
     popupHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 10,
-        height: 70,
     },
     popupPriceImg: {
         flexDirection: 'row',
@@ -536,10 +536,11 @@ const styles = StyleSheet.create({
         borderColor: borderColor,
         borderWidth: 1,
         padding: 10,
-        position: 'absolute',
         backgroundColor: whiteColor,
-        top: -30,
-        zIndex: 999
+        width: 80,
+        height: 80,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     popupImg: {
         width: 60,
@@ -549,8 +550,7 @@ const styles = StyleSheet.create({
         color: activeColor
     },
     popupPrice: {
-        position: 'absolute',
-        left: 100
+        marginLeft: 10
     },
     popupSureActive: {
         width: screenWidth,

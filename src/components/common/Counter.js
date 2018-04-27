@@ -29,12 +29,17 @@ export default class Counter extends Component<Props> {
         }
     }
 
-    componentDidMount() {
-        if (this.props.sellout) {
-            this.state.currentValue = 0;
-            this.state.sellout = true;
+    componentWillReceiveProps(props) {
+        this.setState({
+            currentValue: props.sellout ? 0 : (props.value || 1),
+            steps: props.steps || 1,
+            min: props.min || 1,
+            max: props.max || 99999,
+            sellout: props.sellout || false
+        })
+        if (props.value != this.state.currentValue) {
+            this.changeNumber(props.value);
         }
-        this.changeNumber(this.state.currentValue);
     }
 
     render() {
@@ -55,7 +60,7 @@ export default class Counter extends Component<Props> {
                     editable={!this.state.sellout}
                     numberOfLines={1}
                     onChangeText={(num) => this.setState({currentValue: num})}
-                    onBlur={(event) => this.judgeNum(event)}
+                    onBlur={() => this.judgeNum()}
                     underlineColorAndroid='transparent'>
 
                 </TextInput>
@@ -72,38 +77,8 @@ export default class Counter extends Component<Props> {
         this.props.onChangeNum(num);
     }
 
-    _onEndEditing(event) {
-        console.warn('_onEndEditing')
-        let num = event.nativeEvent.text;
-        if (!num) {
-            this.textInput.clear();
-            this.changeNumber(this.state.min);
-            return;
-        } else {
-            num = parseInt(num);
-        }
-        if (num % this.state.steps !== 0) {
-            ToastUtil.show('只能输入起订量的倍数');
-            this.changeNumber(this.state.min);
-            return;
-        }
-        if (num > this.state.max) {
-            ToastUtil.show('购买量不能超过库存');
-            this.changeNumber(this.state.min);
-            return;
-        }
-        if (num < this.state.min) {
-            ToastUtil.show('购买量不能少于起订量');
-            this.setState({currentValue: this.state.min});
-            this.changeNumber(this.state.min);
-            return;
-        }
-
-    }
-
-    judgeNum(event) {
-        console.warn('judgeNum')
-        let num = event.nativeEvent.text;
+    judgeNum() {
+        let num = this.state.currentValue;
         if (!num) {
             this.changeNumber(this.state.min);
             return;
@@ -111,7 +86,8 @@ export default class Counter extends Component<Props> {
         num = parseInt(num);
         if (num > this.state.max) {
             ToastUtil.show('购买量不能超过库存');
-            this.changeNumber(this.state.min);
+            let maxBuy = parseInt(this.state.max / this.state.steps) * this.state.steps;
+            this.changeNumber(maxBuy);
             return;
         }
         if (num < this.state.min) {
@@ -119,11 +95,11 @@ export default class Counter extends Component<Props> {
             this.changeNumber(this.state.min);
             return;
         }
-        // if (num % this.state.steps !== 0) {
-        //     this.props.toast.show('只能输入起订量的倍数', 300);
-        //     this.changeNumber(this.state.min);
-        //     return;
-        // }
+        if (num % this.state.steps !== 0) {
+            ToastUtil.show(`只能输入起订量的倍数,该商品起订量为${this.state.steps}`);
+            this.changeNumber(this.state.min);
+            return;
+        }
         this.changeNumber(num);
     }
 

@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         position: 'absolute',
         width: screenWidth,
-        height: screenHeight
+        height: screenHeight,
+        zIndex: 9999
     },
 });

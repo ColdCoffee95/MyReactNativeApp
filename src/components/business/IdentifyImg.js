@@ -26,9 +26,9 @@ export default class IdentifyImg extends Component<Props> {
     }
 
     render() {
-        if (this.state.authentication === 0) {
+        if (this.state.authentication == 0) {
             return <TouchableOpacity onPress={() => this.toIdentify()} style={styles.identifyImgView}>
-                <View style={styles.identifyImgView}>
+                <View>
                     <Image
                         source={require('../../images/identify.png')}
                         resizeMode='contain'
@@ -74,11 +74,13 @@ const styles = StyleSheet.create({
     identifyImgView: {
         position: 'absolute',
         right: 30,
-        bottom: 60
+        bottom: 60,
+        width:80,
+        height:80,
     },
     identifyImg: {
-        width: 100,
-        height: 100
+        width: 80,
+        height: 80
     }
 
 });

@@ -16,7 +16,7 @@ import {addNavigationHelpers, NavigationActions, createNavigationContainer} from
 import Route from '../../App';
 const RootNavigator = Route;
 const rootNavigation = new NavigationStore(RootNavigator);
-// console.disableYellowBox = true;
+console.disableYellowBox = true;
 export default class Root extends Component {
     render() {
         return <Provider rootNavigation={rootNavigation}>

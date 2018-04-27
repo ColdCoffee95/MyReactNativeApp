@@ -79,8 +79,10 @@ export default class Home extends Component<Props> {
                         </ScrollView>
                     }>
                     </RecommandForYou>
-                    <IdentifyImg {...this.props}></IdentifyImg>
+                    <IdentifyImg {...this.props}>
+                    </IdentifyImg>
                 </View>
+
             </SafeAreaView>
         );
     }

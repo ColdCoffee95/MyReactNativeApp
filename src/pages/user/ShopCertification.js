@@ -26,6 +26,7 @@ export default class ShopCertification extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
+            address: '',
             memberName: '',
             name: '',
             pwd: '',
@@ -107,13 +108,7 @@ export default class ShopCertification extends Component<Props> {
                             width: screenWidth - 80
                         }}>
                             <View style={{flexDirection: 'row', height: 40, alignItems: 'center'}}>
-                                {
-                                    !this.state.type && <Text style={{color: '#c8c8c8'}}>请选择门店类型</Text>
-                                }
-                                {
-                                    this.state.type &&
-                                    <Text>{this.state.areaList.find(value => value.key == this.state.type).value}</Text>
-                                }
+                                <Text>{this.state.areaList.find(value => value.key == this.state.type) ? this.state.areaList.find(value => value.key == this.state.type).value : '请选择门店类型'}</Text>
                             </View>
                         </TouchableHighlight>
                     </View>
@@ -128,13 +123,7 @@ export default class ShopCertification extends Component<Props> {
                                 width: screenWidth - 80
                             }}>
                                 <View style={{flexDirection: 'row', height: 40, alignItems: 'center'}}>
-                                    {
-                                        !this.state.num && <Text style={{color: '#c8c8c8'}}>请选择经营规模</Text>
-                                    }
-                                    {
-                                        this.state.num &&
-                                        <Text>{this.state.doorStoreList.find(value => value.key == this.state.num).value}</Text>
-                                    }
+                                    <Text>{this.state.doorStoreList.find(value => value.key == this.state.num) ? this.state.doorStoreList.find(value => value.key == this.state.num).value : '请选择经营规模'}</Text>
                                 </View>
                             </TouchableHighlight>
                         </View>
@@ -172,7 +161,7 @@ export default class ShopCertification extends Component<Props> {
                     </View>
 
                     <View style={styles.bottomBtnView}>
-                        <ActiveButton clickBtn={() => this.submit()} text='提交认证' style={styles.activeButton}>
+                        <ActiveButton clickBtn={() => this.submit()} text='提交认证'>
 
                         </ActiveButton>
                     </View>
@@ -238,8 +227,8 @@ export default class ShopCertification extends Component<Props> {
                                     provinceName: address.provinceName,
                                     cityName: address.cityName,
                                     areaName: address.areaName,
-                                })}
-                            ></Address>
+                                })}>
+                            </Address>
                         </View>
                     </PopupDialog>
                 </ScrollView>
@@ -266,6 +255,7 @@ export default class ShopCertification extends Component<Props> {
                 arr.push({key: value.value, value: value.name});
             });
             this.setState({doorStoreList: arr})
+            console.warn('doorStoreList', arr)
         })
     }
 
@@ -307,12 +297,16 @@ export default class ShopCertification extends Component<Props> {
             ToastUtil.show('请填写完整');
             return;
         }
+        let imgAllComplete = true;
         storeVoucherList.map(value => {
             if (!value.url) {
                 ToastUtil.show(`请上传${value.name}`);
-                return;
+                imgAllComplete = false;
             }
         });
+        if (!imgAllComplete) {
+            return;
+        }
         let params = {
             memberName: memberName, //真实姓名
             name: name, //店铺名称
@@ -346,9 +340,9 @@ const slideAnimation = new SlideAnimation({
 });
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: 'center',
         backgroundColor: whiteColor,
+        paddingBottom: 20
     },
     version: {
         marginTop: 20

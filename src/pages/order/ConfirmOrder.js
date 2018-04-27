@@ -207,7 +207,8 @@ export default class ConfirmOrder extends Component<Props> {
                     </ScrollView>
                     <View style={styles.bottomView}>
                         <View style={styles.bottomLeftView}>
-                            <Text style={{marginLeft: 5}}>合计：¥{(totalPrice - this.state.realCut).toFixed(2)}</Text>
+                            <Text
+                                style={{marginLeft: 5}}>合计：¥{totalPrice - this.state.realCut > 0 ? (totalPrice - this.state.realCut).toFixed(2) : 0.01}</Text>
                         </View>
                         <View style={styles.bottomRightView}>
                             <ActiveButton

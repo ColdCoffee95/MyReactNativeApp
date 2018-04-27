@@ -99,8 +99,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: whiteColor,
         marginBottom: 10,
-        paddingTop: 15,
-        paddingBottom: 15
+        height:screenWidth * 0.25 + 20
     },
     cartGoodsImgView: {
         width: screenWidth * 0.25,

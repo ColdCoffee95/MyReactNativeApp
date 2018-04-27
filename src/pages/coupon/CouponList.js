@@ -144,7 +144,7 @@ export default class CouponList extends Component<Props> {
                                         {
                                             value.toggle && <View style={styles.limitBottomView}>
                                                 {
-                                                    value.brandRuleName && <Text>品牌：{value.brandRuleName}</Text>
+                                                    !!value.brandRuleName && <Text>品牌：{value.brandRuleName}</Text>
                                                 }
                                                 {
                                                     value.couponCategoryRule &&
@@ -290,10 +290,10 @@ export default class CouponList extends Component<Props> {
                                         {
                                             value.toggle && <View style={styles.limitBottomView}>
                                                 {
-                                                    value.brandRuleName && <Text>品牌：{value.brandRuleName}</Text>
+                                                    !!value.brandRuleName && <Text>品牌：{value.brandRuleName}</Text>
                                                 }
                                                 {
-                                                    value.couponCategoryNames &&
+                                                    !!value.couponCategoryNames &&
                                                     <Text>分类：{value.couponCategoryNames}</Text>
                                                 }
                                             </View>

@@ -318,7 +318,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     swipeWrapper: {
-        height: 200
     },
     cartTotalView: {
         position: 'absolute',

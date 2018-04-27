@@ -60,7 +60,7 @@ export default class UploadMultiImg extends Component<Props> {
                             borderColor: borderColor,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            position:'relative'
+                            position: 'relative'
                         }}>
 
                             <Image
@@ -135,6 +135,9 @@ export default class UploadMultiImg extends Component<Props> {
             ImagePicker.openCamera({
                 width: 300,
                 height: 400,
+                mediaType: 'photo',
+                multiple: true,
+                maxFiles: this.state.maxUploadNum
             }).then(image => {
                 this.imageUpload(image)
             })
@@ -142,6 +145,9 @@ export default class UploadMultiImg extends Component<Props> {
             ImagePicker.openPicker({
                 width: 300,
                 height: 400,
+                mediaType: 'photo',
+                multiple: true,
+                maxFiles: this.state.maxUploadNum
             }).then(image => {
                 this.imageUpload(image)
             });
@@ -185,7 +191,7 @@ export default class UploadMultiImg extends Component<Props> {
                     this.props.onChange(this.state.imgs);
                 })
                 .catch((error) => {
-                    Alert.alert(null,'上传失败，请稍后再试')
+                    Alert.alert(null, '上传失败，请稍后再试')
                 });
         })
     }
@@ -203,8 +209,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: -5,
         top: -5,
-        backgroundColor:whiteColor,
-        borderRadius:30
+        backgroundColor: whiteColor,
+        borderRadius: 30
     },
     uploadWrapper: {
         flexDirection: 'row',

@@ -96,6 +96,7 @@ export default class UploadOneImg extends Component<Props> {
             ImagePicker.openCamera({
                 width: 300,
                 height: 400,
+                mediaType:'photo'
             }).then(image => {
                 this.imageUpload(image)
             })
@@ -103,6 +104,7 @@ export default class UploadOneImg extends Component<Props> {
             ImagePicker.openPicker({
                 width: 300,
                 height: 400,
+                mediaType:'photo'
             }).then(image => {
                 this.imageUpload(image)
             });
