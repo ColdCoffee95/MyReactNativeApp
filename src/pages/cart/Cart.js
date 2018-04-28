@@ -38,7 +38,8 @@ export default class Cart extends Component<Props> {
             isRefreshing: false,
             isLoading: true,
         };
-        this.data = new CartGoods()
+        this.data = CartGoods;
+        // this.data = new CartGoods()
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -116,6 +117,7 @@ export default class Cart extends Component<Props> {
             </SafeAreaView>
         );
     }
+
     renderSuccessView() {//加载完成页面
         let cartList = [];
         let data = this.data.itemData;
@@ -256,6 +258,7 @@ export default class Cart extends Component<Props> {
     }
 
     fetchData() {
+        this.state.isLoading = true;
         let params = {
             tradeType: this.state.tradeType
         };
@@ -318,13 +321,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     swipeWrapper: {
-        paddingBottom:46
+        paddingBottom: 46
     },
     cartTotalView: {
         position: 'absolute',
         bottom: 0,
         width: screenWidth,
         height: 46,
+        zIndex: 999,
         backgroundColor: whiteColor,
         flexDirection: 'row',
         justifyContent: 'space-between',

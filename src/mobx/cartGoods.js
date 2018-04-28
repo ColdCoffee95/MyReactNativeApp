@@ -1,6 +1,6 @@
 import {observable, action, computed, autorun} from 'mobx';
 
-export default class cartGoods {
+class cartGoods {
     @observable
     itemData = {};
 
@@ -59,3 +59,4 @@ export default class cartGoods {
         item.itemSelect = item.itemSelect === 1 ? 0 : 1;
     };
 }
+export default new cartGoods();

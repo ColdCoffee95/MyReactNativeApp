@@ -74,7 +74,7 @@ export default class UploadOneImg extends Component<Props> {
                             {imgView}
                         </View>
                         {
-                            this.props.title && <Text style={styles.uploadTitle}>{this.props.title}</Text>
+                            !!this.props.title && <Text style={styles.uploadTitle}>{this.props.title}</Text>
                         }
 
                     </View>

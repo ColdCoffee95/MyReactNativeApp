@@ -25,13 +25,13 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected String getJSBundleFile() {
-        return CodePush.getJSBundleFile();
+            return CodePush.getJSBundleFile();
         }
     
-    @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
-    }
+        @Override
+        public boolean getUseDeveloperSupport() {
+          return BuildConfig.DEBUG;
+        }
 
     @Override
     protected List<ReactPackage> getPackages() {
@@ -41,11 +41,11 @@ public class MainApplication extends Application implements ReactApplication {
             new WeChatPackage(),
             new VectorIconsPackage(),
             new SplashScreenReactPackage(),
-            new CodePush("deployment-key-here", MainApplication.this, BuildConfig.DEBUG),
             new RNSpinkitPackage(),
             new PickerPackage(),
             new RNDeviceInfo(),
-            new AutoHeightWebViewPackage()
+            new AutoHeightWebViewPackage(),
+            new CodePush("CvX2nTlPfbmW-oPWq2ECIw3oNfaF19ccb09f-4b96-4bd9-8aea-386962cba91f", MainApplication.this, BuildConfig.DEBUG)
       );
     }
 

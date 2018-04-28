@@ -98,7 +98,7 @@ export default class GoodsDetail extends Component<Props> {
             }
 
             let goodsContentView = <View></View>;
-            if (detail.goodsExtend && detail.goodsExtend.content) {
+            if (detail.goodsExtend && !!detail.goodsExtend.content) {
                 let htmlContent = `<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>${detail.goodsExtend.content}</body></html>`;
                 goodsContentView = <View>
                     <Text style={styles.goodsDescText}>商品描述</Text>

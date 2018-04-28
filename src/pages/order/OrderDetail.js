@@ -139,7 +139,7 @@ export default class OrderDetail extends Component<Props> {
                             <Text style={styles.orderInfoText}>订单编号：{orderInfo.orderNumber}</Text>
                             <Text style={styles.orderInfoText}>下单时间：{dateFormat(orderInfo.createTime)}</Text>
                             {
-                                orderInfo.updateTime &&
+                                !!orderInfo.updateTime &&
                                 <Text style={styles.orderInfoText}>发货时间：{dateFormat(orderInfo.updateTime)}</Text>
                             }
 

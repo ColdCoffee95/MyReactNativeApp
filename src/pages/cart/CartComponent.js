@@ -56,16 +56,18 @@ export default class CartComponent extends Component {
                             <Text style={styles.priceText}>¥{this.itemData.putPrice}</Text>
                             {
                                 this.props.navigation.state.params && this.props.navigation.state.params.isEditing &&
-                                <View style={styles.counterView}>
-                                    <Counter
-                                        onChangeNum={(num) => this.changeNumber(this.itemData.goodsSkuId,num)}
-                                        value={this.itemData.number}
-                                        max={this.itemData.count}
-                                        min={this.itemData.mustBuyNum || 1}
-                                        steps={this.itemData.mustBuyNum || 1}
-                                        sellout={this.itemData.count === 0 || this.itemData.count < this.itemData.mustBuyNum}>
-                                    </Counter>
-                                </View>
+                                <TouchableHighlight style={styles.counterView}>
+                                    <View style={styles.counterView}>
+                                        <Counter
+                                            onChangeNum={(num) => this.changeNumber(this.itemData.goodsSkuId, num)}
+                                            value={this.itemData.number}
+                                            max={this.itemData.count}
+                                            min={this.itemData.mustBuyNum || 1}
+                                            steps={this.itemData.mustBuyNum || 1}
+                                            sellout={this.itemData.count === 0 || this.itemData.count < this.itemData.mustBuyNum}>
+                                        </Counter>
+                                    </View>
+                                </TouchableHighlight>
                             }
                             {
                                 this.props.navigation.state.params && !this.props.navigation.state.params.isEditing &&
@@ -81,9 +83,10 @@ export default class CartComponent extends Component {
     toGoodsDetail(id) {
         this.props.navigation.navigate('GoodsDetail', {id: id});
     }
+
     @action
-    changeNumber = (id,number)=>{
-        this.props.data.changeNumber(id,number);
+    changeNumber = (id, number) => {
+        this.props.data.changeNumber(id, number);
     };
 
     @action
@@ -99,7 +102,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: whiteColor,
         marginBottom: 10,
-        height:screenWidth * 0.25 + 20
+        height: screenWidth * 0.25 + 20
     },
     cartGoodsImgView: {
         width: screenWidth * 0.25,
@@ -109,9 +112,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: borderColor
     },
-    counterView:{
-        alignItems:'center',
-        justifyContent:'center',
+    counterView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding:5,
     },
     cartGoodsImg: {
         width: screenWidth * 0.25,
@@ -120,7 +124,8 @@ const styles = StyleSheet.create({
     iconTouch: {
         flex: 0.1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        height: screenWidth * 0.25 + 20
     },
     goodsTouch: {
         flex: 0.9
@@ -134,24 +139,22 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10
     },
-    cartGoodsTitle: {
-    },
+    cartGoodsTitle: {},
     priceNumberView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems:'center',
+        alignItems: 'center',
     },
     priceText: {
         color: activeColor
     },
-    skuView:{
-    },
+    skuView: {},
     cartSku: {
         color: '#ababab',
-        fontSize:12
+        fontSize: 12
     },
     cartEms: {
         color: '#ababab',
-        fontSize:12
+        fontSize: 12
     }
 });

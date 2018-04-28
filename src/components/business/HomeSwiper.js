@@ -23,16 +23,16 @@ export default class HomeSwiper extends Component<Props> {
                     id: "53b7f0f7ae384d5bb7d89e2339190721"
                 },
                 {
-                    url: "http://dianlijiheoss.metchange.com/home-banner2.png?imageView2/1/w/750/h/521",
-                    id: "10b6994dfbaa422fa6001fbcc4628b08"
+                    url: "http://dianlijiheoss.metchange.com/329969137658857470.png?imageView2/1/w/750/h/521",
+                    id: "e2e9ba48263f4cf3a46eccf834272e7d"
                 },
                 {
                     url: "http://dianlijiheoss.metchange.com/home-banner3.png?imageView2/1/w/750/h/521",
                     id: "33bcefde673849ee85f6f231d2bb17af"
                 },
                 {
-                    url: "http://dianlijiheoss.metchange.com/home-banner4.png?imageView2/1/w/750/h/521",
-                    id: "485af5e8df0b40b287d61326e05ebe87"
+                    url: "http://dianlijiheoss.metchange.com/3452133720124317.png?imageView2/1/w/750/h/521",
+                    id: "572cfff0eda3442dbaa877e4e2569423"
                 }
             ],
             wrapperHeight : screenWidth*521/750,
@@ -44,7 +44,7 @@ export default class HomeSwiper extends Component<Props> {
             this.setState({
                 visibleSwiper: true
             });
-        }, 1);
+        }, 100);
     }
     render() {
         if (this.state.visibleSwiper) {
