@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: whiteColor,
         marginBottom: 10,
-        height: screenWidth * 0.25 + 20
+        height: screenWidth * 0.3 + 20
     },
     cartGoodsImgView: {
         width: screenWidth * 0.25,
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     counterView: {
         alignItems: 'center',
         justifyContent: 'center',
-        padding:5,
     },
     cartGoodsImg: {
         width: screenWidth * 0.25,
@@ -125,13 +124,14 @@ const styles = StyleSheet.create({
         flex: 0.1,
         justifyContent: 'center',
         alignItems: 'center',
-        height: screenWidth * 0.25 + 20
+        height: screenWidth * 0.3 + 20
     },
     goodsTouch: {
         flex: 0.9
     },
     cartGoodsView: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems:'center'
     },
     cartGoodsInfoView: {
         justifyContent: 'space-between',
@@ -148,7 +148,9 @@ const styles = StyleSheet.create({
     priceText: {
         color: activeColor
     },
-    skuView: {},
+    skuView: {
+
+    },
     cartSku: {
         color: '#ababab',
         fontSize: 12

@@ -8,15 +8,13 @@ import {
     TouchableOpacity,
     Text,
     SafeAreaView,
-    TextInput,
-    Keyboard,
     Modal,
 } from 'react-native';
 import AutoHeightWebview from 'react-native-autoheight-webview';
 import Swiper from 'react-native-swiper';
 import ActiveButton from '../../components/common/ActiveButton';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
+import ModalBox from 'react-native-modalbox';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Foundation';
 import Counter from '../../components/common/Counter';
@@ -27,6 +25,7 @@ export default class GoodsDetail extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
+            isOpen: false,
             goodsDetail: {},
             isLoading: true,
             bigModalShow: false,
@@ -214,23 +213,12 @@ export default class GoodsDetail extends Component<Props> {
                                 clickBtn={() => this.showPopup(2)}>
                             </ActiveButton>
                         </View>
-
-
-                        <PopupDialog
-                            ref={(popupDialog) => {
-                                this.popupDialog = popupDialog;
-                            }}
-                            position="right"
-                            dialogStyle={{
-                                borderRadius: 0,
-                                height: screenHeight * 0.7,
-                                position: 'absolute',
-                                bottom: 80,
-                                zIndex: 99
-                            }}
-                            dialogAnimation={slideAnimation}
-                            onDismissed={() => Keyboard.dismiss()}
-                        >
+                        <ModalBox
+                            isOpen={this.state.isOpen}
+                            onClosed={() => this.setState({isOpen: false})}
+                            style={styles.modalBox}
+                            position="bottom"
+                            coverScreen={true}>
                             <View style={styles.dialogWrapper}>
                                 <View style={styles.popupHeader}>
                                     <View style={styles.popupPriceImg}>
@@ -264,7 +252,7 @@ export default class GoodsDetail extends Component<Props> {
                                     clickBtn={() => this.sureAdd()}>
                                 </ActiveButton>
                             </View>
-                        </PopupDialog>
+                        </ModalBox>
                     </View>
                 </SafeAreaView>
 
@@ -390,23 +378,14 @@ export default class GoodsDetail extends Component<Props> {
             categoryName: detail.catName
         };
         this.props.navigation.navigate('ConfirmOrder', {cartList: [params], tradeType: nowSku.tradeType});
-        // HttpUtils.post('/shoppingCart/putGoodsInCart', params, data => {
-        //     this.closePopover();
-        //     params.cartId = data.data;
-        //     this.props.navigation.navigate('ConfirmOrder', {cartList: [params], tradeType: nowSku.tradeType});
-        // })
     }
 
     showPopup(type) {//显示popup
-        // this.setState({popoverVisible: true, buyType: type});
-        this.popupDialog.show(() => {
-            this.state.buyType = type;
-        });
+        this.setState({isOpen: true, buyType: type})
     }
 
     closePopover() {
-        this.popupDialog.dismiss(() => {
-        });
+        this.setState({isOpen: false})
     }
 
     getColor(type) {
@@ -479,13 +458,7 @@ export default class GoodsDetail extends Component<Props> {
             })
         })
     }
-
-
 }
-const slideAnimation = new SlideAnimation({
-    slideFrom: 'bottom',
-});
-
 
 const styles = StyleSheet.create({
     container: {
@@ -683,6 +656,10 @@ const styles = StyleSheet.create({
     },
     goodsExtendView: {
         marginTop: 15
+    },
+    modalBox: {
+        width: screenWidth,
+        height: screenHeight * 0.7
     },
     goodsDescText: {
         color: '#444',
