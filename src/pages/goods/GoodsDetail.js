@@ -74,7 +74,7 @@ export default class GoodsDetail extends Component<Props> {
                             <Image
                                 style={styles.banner}
                                 resizeMode='contain'
-                                source={{uri: value.url + '?imageView2/1/w/200/h/200'}}
+                                source={{uri: value.url + '?imageMogr2/thumbnail/500x500'}}
                             />
                         </View>
                     </TouchableHighlight>
@@ -99,12 +99,12 @@ export default class GoodsDetail extends Component<Props> {
 
             let goodsContentView = <View></View>;
             if (detail.goodsExtend && !!detail.goodsExtend.content) {
-                let htmlContent = `<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>${detail.goodsExtend.content}</body></html>`;
+                let htmlContent = `<html><head><meta charset="utf-8"></head><body>${detail.goodsExtend.content}</body></html>`;
                 goodsContentView = <View>
                     <Text style={styles.goodsDescText}>商品描述</Text>
                     <View style={styles.goodsDescHtmlView}>
                         <AutoHeightWebview
-                            source={{html: htmlContent}}
+                            source={{html: htmlContent, baseUrl: ''}}
                             customStyle={`
                                           img {
                                             width:100%;
@@ -146,7 +146,7 @@ export default class GoodsDetail extends Component<Props> {
                     <Text>数量(库存剩余：{detail.nowSku.count})</Text>
                     <View style={styles.counterView}>
                         <Counter
-                            onChangeNum={(num) => this.setState({buyNum: num})}
+                            onChangeNum={(num) => this.state.buyNum = num}
                             value={detail.nowSku.mustBuyNum || 1}
                             max={detail.nowSku.count}
                             min={detail.nowSku.mustBuyNum || 1}

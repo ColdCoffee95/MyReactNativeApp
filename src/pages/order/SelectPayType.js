@@ -43,16 +43,15 @@ export default class SelectPayType extends Component<Props> {
             interval: null,
             currentAppState: AppState.currentState
         };
-        this.data = new selectPayTypeCountdown()
+        this.data = selectPayTypeCountdown;
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
-        headerLeft:
-            <TouchableOpacity onPress={() => navigation.state.params.confirmBack()}>
-                <View style={{paddingLeft: 15}}>
-                    <Icon name='angle-left' size={40} color='black'></Icon>
-                </View>
-            </TouchableOpacity>
+        headerLeft: <TouchableOpacity onPress={() => navigation.state.params.confirmBack()}>
+            <View style={{paddingLeft: 15}}>
+                <Icon name='angle-left' size={40} color='black'></Icon>
+            </View>
+        </TouchableOpacity>
 
     });
 
@@ -76,7 +75,7 @@ export default class SelectPayType extends Component<Props> {
                     <View style={styles.goodsItemView}>
                         <View style={styles.goodsImgView}>
                             <Image
-                                source={{uri: value.goodsImg + '?imageView2/1/w/200/h/200'}}
+                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/200x200'}}
                                 resizeMode='contain'
                                 style={styles.goodsImg}/>
                         </View>
@@ -224,7 +223,20 @@ export default class SelectPayType extends Component<Props> {
             }
             let order = data.data;
             this.data.replace(order.payRemainingTime);
-            this.start();
+            if (order.payRemainingTime > 0) {
+                this.start();
+            } else {
+                Alert.alert(null, '订单支付超时，请重新下单',
+                    [
+                        {
+                            text: '确定', onPress: () => {
+                            this.props.navigation.navigate('OrderList', {type: -1})
+                        }
+                        }
+                    ],
+                    {cancelable: false});
+            }
+
             let goodsList = order.orderItemList;
             goodsList.map(value => {
                 let sku = JSON.parse(value.goodsSku);
@@ -342,15 +354,15 @@ export default class SelectPayType extends Component<Props> {
         if (this.state.interval) {
             clearInterval(this.state.interval)
         }
-        this.state.interval = setInterval(() => {
+        let interval = setInterval(() => {
             this.data.time--;
             if (this.data.time <= 0) {
-                clearInterval(this.state.interval)
+                clearInterval(interval)
                 Alert.alert(null, '订单支付超时，请重新下单',
                     [
                         {
                             text: '确定', onPress: () => {
-                            this.props.navigation.navigate('OrderList', {type: -1})
+                            this.props.navigation.navigate('Order', {type: -1})
                         }
                         }
                     ],

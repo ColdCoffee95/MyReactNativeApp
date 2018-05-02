@@ -243,7 +243,7 @@ export default class GoodsList extends Component<Props> {
                     <Image
                         style={styles.goodsImg}
                         resizeMode='contain'
-                        source={{uri: item.img + '?imageView2/1/w/200/h/200'}}
+                        source={{uri: item.img + '?imageMogr2/thumbnail/200x200'}}
                     />
                     {sellout}
                 </View>

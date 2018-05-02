@@ -28,18 +28,18 @@ export default class Counter extends Component<Props> {
             sellout: props.sellout || false
         }
     }
-    componentDidMount(){
+
+    componentDidMount() {
         this.changeNumber(this.state.currentValue);
     }
+
     componentWillReceiveProps(props) {
-        this.state.currentValue=props.sellout ? 0 : (props.value || 1);
-        this.state.steps=props.steps || 1;
-        this.state.min=props.min || 1;
-        this.state.max=props.max || 99999;
-        this.state.sellout=props.sellout || false;
-        if (props.value != this.state.currentValue) {
-            this.changeNumber(props.value);
-        }
+        this.state.currentValue = props.sellout ? 0 : (props.value || 1);
+        this.state.steps = props.steps || 1;
+        this.state.min = props.min || 1;
+        this.state.max = props.max || 99999;
+        this.state.sellout = props.sellout || false;
+        this.changeNumber(this.state.currentValue);
     }
 
     render() {

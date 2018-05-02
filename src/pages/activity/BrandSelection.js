@@ -108,13 +108,13 @@ export default class BrandSelection extends Component<Props> {
 
     _renderFooter() {
         if (this.state.loadingMore) {
-            return (<View/>)
+            return <View/>
         } else if (this.state.allLoadCompleted) {
             return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
                 <Text>没有更多商品了</Text>
             </View>)
         } else {
-            return (<View></View>)
+            return <View/>
         }
     }
 
@@ -122,9 +122,7 @@ export default class BrandSelection extends Component<Props> {
         if (this.state.allLoadCompleted || this.state.loadingMore) {
             return;
         }
-        this.setState({
-            loadingMore: true
-        });
+        this.state.loadingMore = true;
         this.state.pageNo += 1;
         let params = {
             pageSize: this.state.pageSize,
@@ -133,9 +131,7 @@ export default class BrandSelection extends Component<Props> {
         };
         HttpUtils.post('/goods/selectActivityGoodsList', params, data => {
             if (data.data.isLastPage) {
-                this.setState({
-                    allLoadCompleted: true,
-                });
+                this.state.allLoadCompleted = true;
             }
             this.setState({
                 goodsList: this.state.goodsList.concat(data.data.list),
@@ -152,7 +148,7 @@ export default class BrandSelection extends Component<Props> {
                     <Image
                         style={styles.goodsImg}
                         resizeMode='contain'
-                        source={{uri: item.img + '?imageView2/1/w/200/h/200'}}
+                        source={{uri: item.img + '?imageMogr2/thumbnail/200x200'}}
                     />
                 </View>
                 <View style={styles.goodsInfoView}>

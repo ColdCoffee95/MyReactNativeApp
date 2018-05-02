@@ -3,7 +3,7 @@ import {
     StyleSheet,
     SafeAreaView,
     BackHandler,
-    ActivityIndicator
+    AppState
 } from 'react-native';
 import {observable, action} from 'mobx';
 import {Provider, observer, inject} from 'mobx-react';
@@ -39,7 +39,9 @@ class App extends React.Component {
             BackHandler.addEventListener('hardwareBackPress', this.backAndroidHandler);
         }
         global.ToastUtil = this.refs.toast;
-
+        AppState.addEventListener("change", (newState) => {
+            newState === "active" && codePush.sync();
+        });
     }
 
     componentWillUnmount() {

@@ -127,7 +127,7 @@ export default class UploadOneImg extends Component<Props> {
             })
                 .then((response) => response.json())
                 .then((responseData) => {
-                    let url = `${imgDomain}${responseData.key}?imageView2/1/w/${this.props.width || 100}/h/${this.props.height || 100}`
+                    let url = `${imgDomain}${responseData.key}?imageMogr2/thumbnail/${this.props.width || 100}x${this.props.height || 100}`
                     this.setState({
                         img: {uri: url},
                         imageUploading: false

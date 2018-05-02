@@ -39,7 +39,7 @@ export default class CartComponent extends Component {
                 <View style={styles.cartGoodsView}>
                     <View style={styles.cartGoodsImgView}>
                         <Image
-                            source={{uri: this.itemData.goodsImg + '?imageView2/1/w/200/h/200'}}
+                            source={{uri: this.itemData.goodsImg + '?imageMogr2/thumbnail/200x200'}}
                             resizeMode='contain'
                             style={styles.cartGoodsImg}
                         />

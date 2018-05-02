@@ -1,6 +1,6 @@
 import {observable, action, computed, autorun} from 'mobx';
 
-export default class selectPayTypeCountdown {
+class selectPayTypeCountdown {
     @observable
     time = {};
 
@@ -23,6 +23,5 @@ export default class selectPayTypeCountdown {
     get seconds() {
         return this.time % 60;
     }
-
-
 }
+export default new selectPayTypeCountdown();

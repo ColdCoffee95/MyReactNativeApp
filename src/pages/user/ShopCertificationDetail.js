@@ -37,7 +37,7 @@ export default class ShopCertificationDetail extends Component<Props> {
                 if (i.type == value.value) {
                     img.push(
                         <Image
-                            source={{uri: i.url}}
+                            source={{uri: i.url + '?imageMogr2/thumbnail/200x200'}}
                             style={styles.image}
                             resizeMode='contain'
                         />
