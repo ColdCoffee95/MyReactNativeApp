@@ -183,7 +183,6 @@ const styles = StyleSheet.create({
     pickerStyle: {
         width: screenWidth / 3,
         backgroundColor: whiteColor,
-        alignItems:'center',
     },
     addressSelectView: {
         width: screenWidth,

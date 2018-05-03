@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TextInput,
     TouchableOpacity,
     SafeAreaView,
@@ -18,7 +17,7 @@ type Props = {};
 import CryptoJS from 'crypto-js'
 import FormCell from '../../components/common/FormCell'
 import ActiveButton from '../../components/common/ActiveButton'
-import HttpUtils from "../../utils/http";
+import Text from '../../components/common/MyText';
 
 export default class ForgetPwd extends Component<Props> {
     constructor(props) {

@@ -8,14 +8,12 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     ScrollView,
-    Text,
     TouchableHighlight,
     SafeAreaView,
     TouchableOpacity,
     View
 } from 'react-native';
-import LoadingView from '../../components/common/LoadingView';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class SelectAddress extends Component<Props> {

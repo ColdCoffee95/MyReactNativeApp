@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {
     StyleSheet,
-    Text,
     View,
     Image,
     TouchableHighlight,
@@ -11,7 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import {observer} from 'mobx-react/native';
 import {action, autorun, observe} from 'mobx';
-
+import Text from '../../components/common/MyText';
 @observer
 export default class CartComponent extends Component {
     constructor(props) {

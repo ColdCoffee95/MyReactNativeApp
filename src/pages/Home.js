@@ -11,8 +11,7 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    SafeAreaView,
-    Text
+    SafeAreaView
 } from 'react-native';
 import HomeSwiper from '../components/business/HomeSwiper'
 import PlatformPlate from '../components/business/PlatformPlate'
@@ -20,6 +19,8 @@ import HomeCategory from '../components/business/HomeCategory'
 import RecommandForYou from '../components/business/RecommandForYou'
 import IdentifyImg from '../components/business/IdentifyImg'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Text from '../components/common/MyText';
+
 type Props = {};
 export default class Home extends Component<Props> {
     constructor(props) {
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     keyword: {
-        width: screenWidth * 0.65,
+        width: screenWidth * 0.65 - 40,
         height: 50,
         paddingLeft: 10,
         fontSize: 14

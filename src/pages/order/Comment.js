@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableHighlight,
     TextInput,
     TouchableOpacity,
@@ -19,7 +18,7 @@ import {
 import UploadMultiImg from '../../components/common/UploadMultiImg'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StarRating from 'react-native-star-rating'
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class Comment extends Component<Props> {

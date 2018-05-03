@@ -11,10 +11,9 @@ import {
     TouchableHighlight,
     View,
     FlatList,
-    SafeAreaView,
-    Text,
+    SafeAreaView
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 export default class FootPrint extends Component<Props> {
     constructor(props) {
         super(props);

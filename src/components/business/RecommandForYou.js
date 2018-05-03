@@ -10,9 +10,9 @@ import {
     Image,
     TouchableHighlight,
     View,
-    FlatList,
-    Text,
+    FlatList
 } from 'react-native';
+import Text from '../common/MyText';
 export default class RecommandForYou extends Component<Props> {
     constructor(props) {
         super(props);

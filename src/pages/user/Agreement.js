@@ -7,11 +7,10 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     ScrollView,
     SafeAreaView
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 export default class Agreement extends Component<Props> {
 

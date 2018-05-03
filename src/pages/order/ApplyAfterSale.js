@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TextInput,
     Image,
     ScrollView,
@@ -16,7 +15,7 @@ import {
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton';
 import UploadMultiImg from '../../components/common/UploadMultiImg';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 export default class ApplyAfterSale extends Component<Props> {
 

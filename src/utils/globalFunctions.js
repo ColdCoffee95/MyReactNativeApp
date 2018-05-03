@@ -1,8 +1,10 @@
+import React, { Component } from 'react'
 import {NavigationActions} from 'react-navigation'
 import HttpUtils from "./http";
 import {
     Alert,
 } from 'react-native';
+
 global.jumpAndClear = function (navigation, route) {
     resetAction = NavigationActions.reset({
         index: 0,

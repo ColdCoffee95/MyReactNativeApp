@@ -7,14 +7,13 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TextInput,
     TouchableOpacity,
     SafeAreaView,
     Alert,
     View
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 import CryptoJS from 'crypto-js'
 import FormCell from '../../components/common/FormCell'

@@ -1,6 +1,6 @@
 import {observable, action, computed} from 'mobx';
 
-export default class cartGoods {
+class address {
     @observable addressData = [];
     @observable provinceId = '';
     @observable cityId = '';
@@ -64,3 +64,4 @@ export default class cartGoods {
     }
 
 }
+export default new address()

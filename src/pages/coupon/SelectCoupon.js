@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     ScrollView,
     TouchableOpacity,
     SafeAreaView,
@@ -16,7 +15,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class SelectCoupon extends Component<Props> {

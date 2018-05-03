@@ -415,7 +415,7 @@ export default SimpleApp = StackNavigator({
     NewSale: {
         screen: NewSale,
         navigationOptions: {
-            title: '新品特卖',
+            title: '夏季特卖',
             headerStyle: styles.headerStyles,
             headerTintColor: 'black',
             headerBackTitle: null,

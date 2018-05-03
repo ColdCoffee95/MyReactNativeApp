@@ -8,7 +8,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    Text,
     TouchableHighlight,
     RefreshControl,
     SafeAreaView,
@@ -24,9 +23,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActiveButton from '../../components/common/ActiveButton';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
-import Toast, {DURATION} from 'react-native-easy-toast';
 import RecommandForYou from '../../components/business/RecommandForYou';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 @observer
 export default class Cart extends Component<Props> {

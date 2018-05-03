@@ -9,9 +9,9 @@ import {
     StyleSheet,
     Image,
     TouchableHighlight,
-    View,
-    Text
+    View
 } from 'react-native';
+import Text from '../common/MyText';
 type Props = {};
 export default class HomeCategory extends Component<Props> {
     constructor(props) {

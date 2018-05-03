@@ -12,10 +12,10 @@ import {
     TouchableHighlight,
     SafeAreaView,
     View,
-    Text,
     TextInput,
     TouchableOpacity
 } from 'react-native';
+import Text from '../components/common/MyText';
 import Icon from 'react-native-vector-icons/FontAwesome';
 type Props = {};
 export default class Category extends Component<Props> {
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     keyword: {
-        width: screenWidth * 0.65,
+        width: screenWidth * 0.65 - 40,
         height: 50,
         paddingLeft: 10,
         fontSize: 14

@@ -7,13 +7,12 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableHighlight,
     Linking,
     SafeAreaView,
     View
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class Hotline extends Component<Props> {

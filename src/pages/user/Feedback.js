@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableHighlight,
     Linking,
     TextInput,
@@ -18,7 +17,7 @@ import {
 } from 'react-native';
 import UploadMultiImg from '../../components/common/UploadMultiImg'
 import ActiveButton from '../../components/common/ActiveButton'
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class Feedback extends Component<Props> {

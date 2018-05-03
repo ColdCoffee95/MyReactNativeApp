@@ -36,7 +36,7 @@ const mainPage = TabNavigator({
         screen: HomePage,
         navigationOptions: {
             //默认参数
-            title:'首页',
+            title: '首页',
             tabBarLabel: '首页',
             headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
@@ -55,7 +55,7 @@ const mainPage = TabNavigator({
     Category: {
         screen: CategoryPage,
         navigationOptions: {
-            title:'分类',
+            title: '分类',
             tabBarLabel: '分类',
             headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
@@ -75,10 +75,10 @@ const mainPage = TabNavigator({
         screen: CartPage,
 
         navigationOptions: {
-            title:'进货单',
+            title: '进货单',
             tabBarLabel: '进货单',
             headerBackTitle: null,
-            headerLeft:<View/>,
+            headerLeft: <View/>,
             headerStyle: styles.headerTitle,
             headerTintColor: 'black',
             headerTitleStyle: styles.headerTitleStyle,
@@ -97,7 +97,7 @@ const mainPage = TabNavigator({
         //以下参数也可放置在MinePage.js页面
         navigationOptions: {
             tabBarLabel: '我的',
-            header:null,
+            header: null,
             headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
                 <Image
@@ -123,11 +123,12 @@ const mainPage = TabNavigator({
         style: {
             backgroundColor: '#fff', // TabBar 背景色
             height: 56,
-            justifyContent:'center',
+            justifyContent: 'center',
+            paddingBottom: 4
         },
         labelStyle: {
             fontSize: 12, // 文字大小,
-            marginTop:4
+            marginTop: 4
         },
 
     },

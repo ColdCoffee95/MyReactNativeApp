@@ -11,11 +11,10 @@ import {
     FlatList,
     TouchableHighlight,
     SafeAreaView,
-    Text,
     View,
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class MilkCurrency extends Component<Props> {

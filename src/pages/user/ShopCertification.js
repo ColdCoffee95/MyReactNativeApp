@@ -7,14 +7,13 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     ScrollView,
     SafeAreaView,
     Picker,
     TouchableHighlight,
     View
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 import Address from '../../components/common/Address'

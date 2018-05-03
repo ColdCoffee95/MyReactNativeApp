@@ -7,14 +7,13 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableHighlight,
     ScrollView,
     TouchableOpacity,
     SafeAreaView,
     View
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class SelectCertification extends Component<Props> {

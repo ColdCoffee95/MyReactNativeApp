@@ -8,13 +8,12 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     ScrollView,
-    Text,
     TouchableHighlight,
     TouchableOpacity,
     SafeAreaView,
     View
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class SelectCrossAddress extends Component<Props> {

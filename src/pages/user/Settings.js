@@ -7,14 +7,13 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableHighlight,
     SafeAreaView,
     Alert,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class Settings extends Component<Props> {

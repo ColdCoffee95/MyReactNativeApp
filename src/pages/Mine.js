@@ -8,7 +8,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    Text,
     TouchableOpacity,
     SafeAreaView,
     View,
@@ -18,7 +17,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Foundation';
 import UploadOneImg from '../components/common/UploadOneImg'
-
+import Text from '../components/common/MyText';
 type Props = {};
 export default class Mine extends Component<Props> {
 

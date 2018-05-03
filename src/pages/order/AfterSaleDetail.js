@@ -7,12 +7,11 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     Image,
     SafeAreaView,
     View
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 export default class AfterSaleDetail extends Component<Props> {
 

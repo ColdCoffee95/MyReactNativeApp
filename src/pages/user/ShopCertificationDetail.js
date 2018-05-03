@@ -8,12 +8,11 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    Text,
     ScrollView,
     SafeAreaView,
     View
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class ShopCertificationDetail extends Component<Props> {

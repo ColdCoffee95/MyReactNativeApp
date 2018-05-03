@@ -8,11 +8,10 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     TouchableHighlight,
-    View,
-    Text
+    View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
-
+import Text from '../common/MyText';
 type Props = {};
 export default class GoodsSideMenu extends Component<Props> {
     constructor(props) {

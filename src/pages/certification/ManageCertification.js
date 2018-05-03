@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableHighlight,
     ScrollView,
     TouchableOpacity,
@@ -18,7 +17,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActiveButton from '../../components/common/ActiveButton';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class ManageCertification extends Component<Props> {

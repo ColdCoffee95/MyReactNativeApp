@@ -6,7 +6,6 @@ import {
     Image,
     TouchableHighlight,
     TouchableOpacity,
-    Text,
     SafeAreaView,
     Modal,
 } from 'react-native';
@@ -18,6 +17,7 @@ import ModalBox from 'react-native-modalbox';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Foundation';
 import Counter from '../../components/common/Counter';
+import Text from '../../components/common/MyText';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 
 type Props = {};
@@ -218,7 +218,8 @@ export default class GoodsDetail extends Component<Props> {
                             onClosed={() => this.setState({isOpen: false})}
                             style={styles.modalBox}
                             position="bottom"
-                            coverScreen={true}>
+                            swipeToClose={false}
+                            >
                             <View style={styles.dialogWrapper}>
                                 <View style={styles.popupHeader}>
                                     <View style={styles.popupPriceImg}>
@@ -253,6 +254,7 @@ export default class GoodsDetail extends Component<Props> {
                                 </ActiveButton>
                             </View>
                         </ModalBox>
+
                     </View>
                 </SafeAreaView>
 
@@ -659,7 +661,7 @@ const styles = StyleSheet.create({
     },
     modalBox: {
         width: screenWidth,
-        height: screenHeight * 0.7
+        height: screenHeight * 0.7,
     },
     goodsDescText: {
         color: '#444',

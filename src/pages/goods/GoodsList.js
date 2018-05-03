@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableHighlight,
     TouchableOpacity,
     TextInput,
@@ -19,6 +18,7 @@ import {
 import Drawer from "react-native-drawer";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GoodsSideMenu from '../../components/business/GoodsSideMenu'
+import Text from '../../components/common/MyText';
 type Props = {};
 
 export default class GoodsList extends Component<Props> {
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     keyword: {
-        width: screenWidth * 0.65,
+        width: screenWidth * 0.65 - 40,
         height: 50,
         paddingLeft: 10,
         fontSize: 14

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    SafeAreaView,
+    View,
     BackHandler,
     AppState
 } from 'react-native';
@@ -17,7 +17,7 @@ import {addNavigationHelpers, NavigationActions, createNavigationContainer} from
 import Route from '../../App';
 const RootNavigator = Route;
 const rootNavigation = new NavigationStore(RootNavigator);
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 class Root extends Component {
     render() {
         return <Provider rootNavigation={rootNavigation}>
@@ -71,7 +71,7 @@ class App extends React.Component {
     render() {
         const {state, dispatch, addListener} = this.props.rootNavigation;
         return (
-            <SafeAreaView style={styles.rootContainer}>
+            <View style={styles.rootContainer}>
                 <RootNavigator
                     navigation={addNavigationHelpers({state, dispatch, addListener})}
                 />
@@ -80,7 +80,7 @@ class App extends React.Component {
                 {
                     Loading.loading && <LoadingView/>
                 }
-            </SafeAreaView>
+            </View>
 
         );
     }

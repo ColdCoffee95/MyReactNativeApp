@@ -10,11 +10,12 @@ import {
     Image,
     FlatList,
     TouchableHighlight,
-    Text,
     SafeAreaView,
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
+import Text from '../../components/common/MyText';
+
 type Props = {};
 
 export default class LimitedPurchase extends Component<Props> {

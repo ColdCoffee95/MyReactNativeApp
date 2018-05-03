@@ -8,7 +8,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    Text,
     TouchableOpacity,
     ActivityIndicator,
     Alert,
@@ -16,6 +15,7 @@ import {
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet'
 import ImagePicker from 'react-native-image-crop-picker'
+import Text from './MyText';
 type Props = {};
 
 export default class UploadOneImg extends Component<Props> {

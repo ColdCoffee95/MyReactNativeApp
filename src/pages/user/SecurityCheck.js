@@ -8,13 +8,12 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Image,
-    Text,
     SafeAreaView,
     TextInput,
     TouchableOpacity,
     View
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 import ActiveButton from '../../components/common/ActiveButton'
 

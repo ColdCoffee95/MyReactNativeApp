@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableHighlight,
     TouchableOpacity,
     SafeAreaView,
@@ -19,7 +18,7 @@ import FormCell from '../../components/common/FormCell'
 import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 export default class AddCrossAddress extends Component<Props> {
 

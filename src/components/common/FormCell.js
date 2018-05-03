@@ -7,11 +7,10 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TextInput,
     View
 } from 'react-native';
-
+import Text from './MyText';
 type Props = {};
 
 export default class FormCell extends Component<Props> {

@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableHighlight,
     TouchableOpacity,
     Image,
@@ -26,7 +25,7 @@ import selectPayTypeCountdown from '../../mobx/selectPayTypeCountdown'
 import Alipay from 'react-native-yunpeng-alipay';
 import * as WeChat from 'react-native-wechat';
 import LoadingView from '../../components/common/LoadingView';
-
+import Text from '../../components/common/MyText';
 WeChat.registerApp('wxb8f9e4f7b2576589');
 type Props = {};
 @observer

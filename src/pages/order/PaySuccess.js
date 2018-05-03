@@ -7,13 +7,12 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     Image,
     SafeAreaView,
     View
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 export default class PaySuccess extends Component<Props> {
 

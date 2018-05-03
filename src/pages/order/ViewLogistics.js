@@ -7,14 +7,13 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableOpacity,
     Image,
     ScrollView,
     View,
     SafeAreaView
 } from 'react-native';
-
+import Text from '../../components/common/MyText';
 type Props = {};
 export default class ViewLogistics extends Component<Props> {
 

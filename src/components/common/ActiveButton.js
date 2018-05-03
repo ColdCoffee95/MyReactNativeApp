@@ -7,11 +7,10 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    Text,
     TouchableOpacity,
     View
 } from 'react-native';
-
+import Text from './MyText';
 type Props = {};
 
 export default class ActiveButton extends Component<Props> {
