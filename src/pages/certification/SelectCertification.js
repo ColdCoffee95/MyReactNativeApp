@@ -14,6 +14,7 @@ import {
     View
 } from 'react-native';
 import Text from '../../components/common/MyText';
+
 type Props = {};
 
 export default class SelectCertification extends Component<Props> {
@@ -34,7 +35,7 @@ export default class SelectCertification extends Component<Props> {
     static navigationOptions = ({navigation, screenProps}) => ({
         headerRight:
             (<TouchableOpacity style={{marginRight: 10}}
-                               onPress={() => navigation.state.params.manage()}>
+                               onPress={() => navigation.state.params && navigation.state.params.manage && navigation.state.params.manage()}>
                 <View>
                     <Text style={{color: 'black'}}>管理</Text>
                 </View>

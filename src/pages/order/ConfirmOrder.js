@@ -17,6 +17,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
 import Text from '../../components/common/MyText';
+import HttpUtils from "../../utils/http";
 
 type Props = {};
 
@@ -44,7 +45,8 @@ export default class ConfirmOrder extends Component<Props> {
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
-        headerLeft: <TouchableOpacity onPress={() => navigation.state.params.confirmBack()}>
+        headerLeft:
+        <TouchableOpacity onPress={() => navigation.state.params && navigation.state.params.confirmBack && navigation.state.params.confirmBack()}>
             <View style={{paddingLeft: 15}}>
                 <Icon name='angle-left' size={40} color='black'></Icon>
             </View>
@@ -74,7 +76,7 @@ export default class ConfirmOrder extends Component<Props> {
                     <View style={styles.goodsItemView}>
                         <View style={styles.goodsImgView}>
                             <Image
-                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/200x200'}}
+                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/400x400'}}
                                 resizeMode='contain'
                                 style={styles.goodsImg}/>
                         </View>
@@ -266,7 +268,43 @@ export default class ConfirmOrder extends Component<Props> {
         }
     }
 
-    confirmOrder() {//提交订单
+    checkIfCertificationExist(certification) {
+        return new Promise((resolve, reject) => {
+            HttpUtils.get('/idCard/selectIdCardById', {id: certification.id}, data => {
+                if (data.data) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
+            })
+        })
+    }
+
+    checkIfAddressExist(address) {
+        return new Promise((resolve, reject) => {
+            HttpUtils.get('/shippingAddress/selectShippingAddressById', {id: address.id}, data => {
+                if (data.data) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
+            })
+        })
+    }
+
+    checkIfCrossAddressExist(address) {
+        return new Promise((resolve, reject) => {
+            HttpUtils.get('/idCardAddress/selectIdCardAddressById', {id: address.id}, data => {
+                if (data.data) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
+            })
+        })
+    }
+
+    async confirmOrder() {//提交订单
         const {couponId, cartList, tradeType, address, certification} = this.state;
 
         let params = {
@@ -277,8 +315,17 @@ export default class ConfirmOrder extends Component<Props> {
             ToastUtil.show('请选择地址');
             return;
         }
+        console.warn('address',address)
+        console.warn('certification',certification)
+        let addressExist = false;
+        let certificationExist = false;
         switch (tradeType) {
             case 1:
+                addressExist = await this.checkIfAddressExist(address);
+                if (!addressExist) {
+                    ToastUtil.show('该地址信息不存在，请重新选择');
+                    return;
+                }
                 params.orderDetail = {
                     address: address.totalAddress,
                     contacts: address.contacts,
@@ -286,8 +333,18 @@ export default class ConfirmOrder extends Component<Props> {
                 };
                 break;
             case 2:
+                addressExist = await this.checkIfCrossAddressExist(address);
+                if (!addressExist) {
+                    ToastUtil.show('该地址信息不存在，请重新选择');
+                    return;
+                }
                 if (Object.keys(certification).length === 0) {
                     ToastUtil.show('请选择实名认证');
+                    return;
+                }
+                certificationExist = await this.checkIfCertificationExist(certification);
+                if (!certificationExist) {
+                    ToastUtil.show('该实名认证信息不存在，请重新选择');
                     return;
                 }
                 params.orderDetail = {
@@ -300,8 +357,18 @@ export default class ConfirmOrder extends Component<Props> {
                 };
                 break;
             case 3:
+                addressExist = await this.checkIfCrossAddressExist(address);
+                if (!addressExist) {
+                    ToastUtil.show('该地址信息不存在，请重新选择');
+                    return;
+                }
                 if (Object.keys(certification).length === 0) {
                     ToastUtil.show('请选择实名认证');
+                    return;
+                }
+                certificationExist = await this.checkIfCertificationExist(certification);
+                if (!certificationExist) {
+                    ToastUtil.show('该实名认证信息不存在，请重新选择');
                     return;
                 }
                 params.orderDetail = {

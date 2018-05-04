@@ -9,7 +9,6 @@ import {
     StyleSheet,
     ScrollView,
     View,
-    TextInput,
     TouchableOpacity,
     SafeAreaView
 } from 'react-native';
@@ -19,6 +18,7 @@ import HomeCategory from '../components/business/HomeCategory'
 import RecommandForYou from '../components/business/RecommandForYou'
 import IdentifyImg from '../components/business/IdentifyImg'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import TextInput from '../components/common/MyTextInput';
 import Text from '../components/common/MyText';
 
 type Props = {};
@@ -59,7 +59,9 @@ export default class Home extends Component<Props> {
         ),
         headerLeft: (<View/>),
         headerRight: (
-            <TouchableOpacity onPress={() => navigation.state.params.search()}>
+
+            <TouchableOpacity
+                onPress={() => navigation.state.params && navigation.state.params.search && navigation.state.params.search()}>
                 <View style={styles.rightSearch}>
                     <Text>搜索</Text>
                 </View>

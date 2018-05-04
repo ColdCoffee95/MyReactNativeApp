@@ -79,14 +79,13 @@ export default class PaySuccess extends Component<Props> {
 
     backToOrder() {
         const resetAction = NavigationActions.reset({
-            index: 0,
-            key: null,
+            index: 1,
             actions: [
-                NavigationActions.navigate({routeName: 'Mine',key:null})
+                NavigationActions.navigate({routeName: 'Main'}),
+                NavigationActions.navigate({routeName: 'Order'})
             ],
         });
         this.props.navigation.dispatch(resetAction);
-        // jumpAndClear(this.props.navigation, 'Order');
     }
 
     backToHome() {

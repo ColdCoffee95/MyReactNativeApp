@@ -9,6 +9,7 @@ import {observable, action} from 'mobx';
 import {Provider, observer, inject} from 'mobx-react';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Loading from '../mobx/loading'
+import appState from '../mobx/appState'
 import LoadingView from '../components/common/LoadingView'
 import NavigationStore from 'react-navigation-mobx-helpers';
 import codePush from 'react-native-code-push';
@@ -40,6 +41,7 @@ class App extends React.Component {
         }
         global.ToastUtil = this.refs.toast;
         AppState.addEventListener("change", (newState) => {
+            appState.changeStatus(newState);
             newState === "active" && codePush.sync();
         });
     }

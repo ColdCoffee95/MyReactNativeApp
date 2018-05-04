@@ -9,7 +9,6 @@ import {
     StyleSheet,
     TouchableHighlight,
     TouchableOpacity,
-    TextInput,
     SafeAreaView,
     FlatList,
     Image,
@@ -19,6 +18,8 @@ import Drawer from "react-native-drawer";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GoodsSideMenu from '../../components/business/GoodsSideMenu'
 import Text from '../../components/common/MyText';
+import TextInput from '../../components/common/MyTextInput';
+
 type Props = {};
 
 export default class GoodsList extends Component<Props> {
@@ -51,12 +52,12 @@ export default class GoodsList extends Component<Props> {
         this.state.secondCatIds = this.props.navigation.state.params.secondIds || [];
         this.state.brandIds = this.props.navigation.state.params.brandIds || [];
         this.state.keyword = this.props.navigation.state.params.keyword || '';
-        console.warn(this.state)
         this.fetchData();
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
         headerTitle: (
+
             <View style={styles.searchView}>
                 <Icon name='search' size={14} color={borderColor}></Icon>
                 <TextInput
@@ -71,11 +72,12 @@ export default class GoodsList extends Component<Props> {
                     onChangeText={(text) => navigation.state.params.changeKeyword(text)}
                     underlineColorAndroid='transparent'
                 />
-
             </View>
         ),
         headerRight: (
-            <TouchableOpacity onPress={() => navigation.state.params.search()}>
+
+            <TouchableOpacity
+                onPress={() => navigation.state.params && navigation.state.params.search && navigation.state.params.search()}>
                 <View style={styles.rightSearch}>
                     <Text>搜索</Text>
                 </View>
@@ -222,7 +224,7 @@ export default class GoodsList extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList: this.state.goodsList.concat(data.data.list),loadingMore:false});
+            this.setState({goodsList: this.state.goodsList.concat(data.data.list), loadingMore: false});
         })
     }
 
@@ -243,7 +245,7 @@ export default class GoodsList extends Component<Props> {
                     <Image
                         style={styles.goodsImg}
                         resizeMode='contain'
-                        source={{uri: item.img + '?imageMogr2/thumbnail/200x200'}}
+                        source={{uri: item.img + '?imageMogr2/thumbnail/400x400'}}
                     />
                     {sellout}
                 </View>

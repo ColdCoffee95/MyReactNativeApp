@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActiveButton from '../../components/common/ActiveButton';
 import Text from '../../components/common/MyText';
+
 type Props = {};
 
 export default class ManageAddress extends Component<Props> {
@@ -37,7 +38,8 @@ export default class ManageAddress extends Component<Props> {
 
     static navigationOptions = ({navigation, screenProps}) => ({
         headerLeft:
-            <TouchableOpacity onPress={() => navigation.state.params.addressGoBack()}>
+            <TouchableOpacity
+                onPress={() => navigation.state.params && navigation.state.params.addressGoBack && navigation.state.params.addressGoBack()}>
                 <View style={{paddingLeft: 15}}>
                     <Icon name='angle-left' size={40} color='black'></Icon>
                 </View>

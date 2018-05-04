@@ -9,7 +9,6 @@ import {
     StyleSheet,
     TouchableHighlight,
     Linking,
-    TextInput,
     View,
     SafeAreaView,
     ScrollView,
@@ -18,6 +17,7 @@ import {
 import UploadMultiImg from '../../components/common/UploadMultiImg'
 import ActiveButton from '../../components/common/ActiveButton'
 import Text from '../../components/common/MyText';
+import TextInput from '../../components/common/MyTextInput';
 type Props = {};
 
 export default class Feedback extends Component<Props> {

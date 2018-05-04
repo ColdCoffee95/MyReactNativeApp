@@ -8,7 +8,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     TouchableHighlight,
-    TextInput,
     TouchableOpacity,
     ScrollView,
     SafeAreaView,
@@ -19,6 +18,8 @@ import UploadMultiImg from '../../components/common/UploadMultiImg'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StarRating from 'react-native-star-rating'
 import Text from '../../components/common/MyText';
+import TextInput from '../../components/common/MyTextInput';
+
 type Props = {};
 
 export default class Comment extends Component<Props> {
@@ -41,7 +42,7 @@ export default class Comment extends Component<Props> {
 
         headerRight: <View style={styles.headerRightView}>
             <TouchableOpacity style={{marginRight: 10}}
-                              onPress={() => navigation.state.params.submit()}>
+                              onPress={() => navigation.state.params && navigation.state.params.submit && navigation.state.params.submit()}>
                 <View>
                     <Text style={{color: 'black'}}>发布</Text>
                 </View>
@@ -66,7 +67,7 @@ export default class Comment extends Component<Props> {
                     <View style={styles.goodsView}>
                         <View style={styles.goodsImgView}>
                             <Image
-                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/200x200'}}
+                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/400x400'}}
                                 resizeMode='contain'
                                 style={styles.goodsImg}
                             />

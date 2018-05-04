@@ -110,7 +110,7 @@ export default class AfterSaleOrders extends Component<Props> {
                 <View style={styles.goodsView}>
                     <View style={styles.goodsImgView}>
                         <Image
-                            source={{uri: value.goodsImg + '?imageMogr2/thumbnail/200x200'}}
+                            source={{uri: value.goodsImg + '?imageMogr2/thumbnail/400x400'}}
                             resizeMode='contain'
                             style={styles.goodsImg}
                         />

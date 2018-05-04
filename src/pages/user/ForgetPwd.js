@@ -7,12 +7,11 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    TextInput,
     TouchableOpacity,
     SafeAreaView,
     View
 } from 'react-native';
-
+import TextInput from '../../components/common/MyTextInput';
 type Props = {};
 import CryptoJS from 'crypto-js'
 import FormCell from '../../components/common/FormCell'
@@ -154,7 +153,7 @@ export default class ForgetPwd extends Component<Props> {
         const messageCount = setInterval(() => {
             this.state.timerCount--;
             this.setState({timerCount: this.state.timerCount});
-            if (this.state.timerCount === 0) {
+            if (this.state.timerCount <= 0) {
                 clearInterval(messageCount);
                 this.setState({enable: true, timerTitle: "获取验证码"});
             }

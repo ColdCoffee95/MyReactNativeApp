@@ -47,13 +47,15 @@ export default class GoodsDetail extends Component<Props> {
     static navigationOptions = ({navigation, screenProps}) => ({
         headerRight: (
             <View style={styles.headerRightView}>
-                <TouchableOpacity style={{marginRight: 10}} onPress={() => navigation.state.params.collect()}>
+                <TouchableOpacity style={{marginRight: 10}}
+                                  onPress={() => navigation.state.params && navigation.state.params.collect && navigation.state.params.collect()}>
                     <View>
                         <Icon1 name='heart' size={30}
                                color={navigation.state.params.goodsIsCollect ? activeColor : borderColor}></Icon1>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={{marginRight: 10}} onPress={() => navigation.state.params.toCart()}>
+                <TouchableOpacity style={{marginRight: 10}}
+                                  onPress={() => navigation.state.params && navigation.state.params.toCart && navigation.state.params.toCart()}>
                     <View>
                         <Icon1 name='shopping-cart' size={30} color='#444'></Icon1>
                     </View>
@@ -74,7 +76,7 @@ export default class GoodsDetail extends Component<Props> {
                             <Image
                                 style={styles.banner}
                                 resizeMode='contain'
-                                source={{uri: value.url + '?imageMogr2/thumbnail/500x500'}}
+                                source={{uri: value.url + '?imageMogr2/thumbnail/600x600'}}
                             />
                         </View>
                     </TouchableHighlight>
@@ -182,7 +184,7 @@ export default class GoodsDetail extends Component<Props> {
                                     <View style={styles.buyInfoChild}>
                                         <View>
                                             <Text
-                                                style={styles.buyInfoText}>建议零售价:{detail.nowSku.retailPrice ? `¥${detail.nowSku.retailPrice}` : '暂无'}</Text>
+                                                style={styles.buyInfoText}>建议零售价:{detail.nowSku.retailPrice && detail.nowSku.retailPrice > 0? `¥${detail.nowSku.retailPrice}` : '暂无'}</Text>
                                         </View>
                                         <View style={styles.shu}>
                                             <Text style={styles.buyInfoText}>|</Text>

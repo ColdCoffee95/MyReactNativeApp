@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActiveButton from '../../components/common/ActiveButton';
 import Text from '../../components/common/MyText';
+
 type Props = {};
 
 export default class ManageCrossAddress extends Component<Props> {
@@ -34,15 +35,20 @@ export default class ManageCrossAddress extends Component<Props> {
         this.props.navigation.setParams({addressGoBack: this.addressGoBack.bind(this)});
         this.fetchData()
     }
+
     static navigationOptions = ({navigation, screenProps}) => ({
         headerLeft:
-            <TouchableOpacity onPress={() => navigation.state.params.addressGoBack()}>
+
+            <TouchableOpacity onPress={() => {
+                navigation.state.params && navigation.state.params.addressGoBack && navigation.state.params.addressGoBack()
+            }}>
                 <View style={{paddingLeft: 15}}>
                     <Icon name='angle-left' size={40} color='black'></Icon>
                 </View>
             </TouchableOpacity>
 
     });
+
     render() {
         if (this.state.isLoading) {
             return <View/>
@@ -109,11 +115,13 @@ export default class ManageCrossAddress extends Component<Props> {
         }
 
     }
-    addressGoBack(){
+
+    addressGoBack() {
         const {navigate, goBack, state} = this.props.navigation;
         state.params.goBack();
         goBack();
     }
+
     async fetchData() {
         let list = await this.getAddressList();
         let addressData = await getAddressData();

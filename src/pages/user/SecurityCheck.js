@@ -9,14 +9,14 @@ import {
     StyleSheet,
     Image,
     SafeAreaView,
-    TextInput,
     TouchableOpacity,
     View
 } from 'react-native';
 import Text from '../../components/common/MyText';
-type Props = {};
-import ActiveButton from '../../components/common/ActiveButton'
+import TextInput from '../../components/common/MyTextInput';
+import ActiveButton from '../../components/common/ActiveButton';
 
+type Props = {};
 export default class SecurityCheck extends Component<Props> {
     constructor(props) {
         super(props);
@@ -205,7 +205,7 @@ export default class SecurityCheck extends Component<Props> {
         const messageCount = setInterval(() => {
             this.state.timerCount--;
             this.setState({timerCount: this.state.timerCount});
-            if (this.state.timerCount === 0) {
+            if (this.state.timerCount <= 0) {
                 clearInterval(messageCount);
                 this.setState({enable: true, timerTitle: "获取验证码"});
             }

@@ -36,7 +36,7 @@ export default class ShopCertificationDetail extends Component<Props> {
                 if (i.type == value.value) {
                     img.push(
                         <Image
-                            source={{uri: i.url + '?imageMogr2/thumbnail/200x200'}}
+                            source={{uri: i.url}}
                             style={styles.image}
                             resizeMode='contain'
                         />
@@ -75,6 +75,8 @@ export default class ShopCertificationDetail extends Component<Props> {
 
     getStoreVouchers() {//获取上传图片类型
         HttpUtils.get('/store/selectStoreVouchers', {}, data => {
+            console.warn(data)
+
             this.setState({imgList: data.data})
         })
     }

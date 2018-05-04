@@ -39,6 +39,7 @@ const mainPage = TabNavigator({
             title: '首页',
             tabBarLabel: '首页',
             headerBackTitle: null,
+            headerTitleAllowFontScaling: false,
             tabBarIcon: ({tintColor}) => (
                 <Image
                     source={
@@ -58,6 +59,7 @@ const mainPage = TabNavigator({
             title: '分类',
             tabBarLabel: '分类',
             headerBackTitle: null,
+            headerTitleAllowFontScaling: false,
             tabBarIcon: ({tintColor}) => (
                 <Image
                     source={
@@ -78,6 +80,7 @@ const mainPage = TabNavigator({
             title: '进货单',
             tabBarLabel: '进货单',
             headerBackTitle: null,
+            headerTitleAllowFontScaling: false,
             headerLeft: <View/>,
             headerStyle: styles.headerTitle,
             headerTintColor: 'black',
@@ -98,6 +101,7 @@ const mainPage = TabNavigator({
         navigationOptions: {
             tabBarLabel: '我的',
             header: null,
+            headerTitleAllowFontScaling: false,
             headerBackTitle: null,
             tabBarIcon: ({tintColor}) => (
                 <Image
@@ -126,6 +130,7 @@ const mainPage = TabNavigator({
             justifyContent: 'center',
             paddingBottom: 4
         },
+        allowFontScaling:false,
         labelStyle: {
             fontSize: 12, // 文字大小,
             marginTop: 4

@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActiveButton from '../../components/common/ActiveButton';
 import Text from '../../components/common/MyText';
+
 type Props = {};
 
 export default class ManageCertification extends Component<Props> {
@@ -37,11 +38,11 @@ export default class ManageCertification extends Component<Props> {
 
     static navigationOptions = ({navigation, screenProps}) => ({
         headerLeft:
-            <TouchableOpacity onPress={() => navigation.state.params.certificationGoBack()}>
-                <View style={{paddingLeft: 15}}>
-                    <Icon name='angle-left' size={40} color='black'></Icon>
-                </View>
-            </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.state.params && navigation.state.params.certificationGoBack &&navigation.state.params.certificationGoBack()}>
+            <View style={{paddingLeft: 15}}>
+                <Icon name='angle-left' size={40} color='black'></Icon>
+            </View>
+        </TouchableOpacity>
 
     });
 

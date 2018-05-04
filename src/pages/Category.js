@@ -12,11 +12,12 @@ import {
     TouchableHighlight,
     SafeAreaView,
     View,
-    TextInput,
     TouchableOpacity
 } from 'react-native';
 import Text from '../components/common/MyText';
+import TextInput from '../components/common/MyTextInput';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 type Props = {};
 export default class Category extends Component<Props> {
     constructor(props) {
@@ -59,7 +60,8 @@ export default class Category extends Component<Props> {
         ),
         headerLeft: (<View/>),
         headerRight: (
-            <TouchableOpacity onPress={() => navigation.state.params.search()}>
+
+            <TouchableOpacity onPress={() => navigation.state.params && navigation.state.params.search &&navigation.state.params.search()}>
                 <View style={styles.rightSearch}>
                     <Text>搜索</Text>
                 </View>
@@ -94,7 +96,7 @@ export default class Category extends Component<Props> {
                         <View style={styles.rightCatImgView}>
                             <Image
                                 style={styles.rightCatImg}
-                                source={{uri: catList[leftIndex].img}}
+                                source={{uri: catList[leftIndex].img + '?imageMogr2/thumbnail/200x200'}}
                                 resizeMode='contain'
                             />
                         </View>
@@ -112,7 +114,7 @@ export default class Category extends Component<Props> {
                             <View style={styles.rightCatImgView}>
                                 <Image
                                     style={styles.rightCatImg}
-                                    source={{uri: value.img}}
+                                    source={{uri: value.img + '?imageMogr2/thumbnail/200x200'}}
                                     resizeMode='contain'
                                 />
                             </View>

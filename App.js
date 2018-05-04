@@ -90,6 +90,7 @@ export default SimpleApp = StackNavigator({
             headerTintColor: 'black',
             headerTitleStyle: styles.headerTitleStyle,
             headerBackTitle: null,
+            headerTitleAllowFontScaling: false,
             headerRight: <View/>
         }
     },
@@ -99,6 +100,7 @@ export default SimpleApp = StackNavigator({
             title: '忘记密码',
             headerStyle: styles.headerStyles,
             headerTitleStyle: styles.headerTitleStyle,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>
@@ -109,6 +111,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '修改密码',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTitleStyle: styles.headerTitleStyle,
             headerTintColor: 'black',
             headerBackTitle: null,
@@ -119,6 +122,7 @@ export default SimpleApp = StackNavigator({
         screen: Agreement,
         navigationOptions: {
             title: '店力集盒平台服务协议',
+            headerTitleAllowFontScaling: false,
             headerStyle: styles.headerStyles,
             headerTitleStyle: styles.headerTitleStyle,
             headerTintColor: 'black',
@@ -131,6 +135,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '我的收藏',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTitleStyle: styles.headerTitleStyle,
             headerTintColor: 'black',
             headerBackTitle: null,
@@ -142,6 +147,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '我的足迹',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTitleStyle: styles.headerTitleStyle,
             headerTintColor: 'black',
             headerBackTitle: null,
@@ -153,6 +159,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '客服热线',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -164,6 +171,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '设置',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -175,6 +183,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '意见反馈',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -186,6 +195,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '关于店力集盒',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -197,6 +207,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '店铺认证',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -208,6 +219,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '店铺信息',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -219,6 +231,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '安全校验',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -230,6 +243,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '大贸地址管理',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -241,6 +255,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '跨境地址管理',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -252,6 +267,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '添加大贸地址',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -264,6 +280,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '修改大贸地址',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -276,6 +293,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '选择地址',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerTitleStyle: styles.headerTitleStyle,
@@ -287,6 +305,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '选择跨境地址',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerTitleStyle: styles.headerTitleStyle,
@@ -297,6 +316,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '添加跨境地址',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -309,6 +329,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '修改跨境地址',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -321,6 +342,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '实名认证管理',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -332,6 +354,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '添加实名认证',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -343,6 +366,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '选择实名认证',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerTitleStyle: styles.headerTitleStyle,
@@ -353,6 +377,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '商品列表',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerTitleStyle: styles.headerTitleStyle,
@@ -363,6 +388,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '商品详情',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerTitleStyle: styles.headerTitleStyle,
@@ -374,6 +400,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '品牌精选',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -385,6 +412,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '尿不湿通货',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -396,6 +424,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '限量秒杀',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -407,6 +436,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '奶粉通货',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -418,6 +448,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '夏季特卖',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -429,6 +460,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '确认订单',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -441,6 +473,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '查看物流',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -452,6 +485,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '物流详情',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -463,6 +497,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '评价',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerTitleStyle: styles.headerTitleStyle,
@@ -473,6 +508,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '选择支付方式',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -485,6 +521,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '支付成功',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -496,6 +533,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '订单列表',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -507,6 +545,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '订单详情',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -518,6 +557,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '我的售后',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -529,6 +569,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '售后详情',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -540,6 +581,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '申请售后',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -551,6 +593,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '优惠券',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
@@ -562,6 +605,7 @@ export default SimpleApp = StackNavigator({
         navigationOptions: {
             title: '选择优惠券',
             headerStyle: styles.headerStyles,
+            headerTitleAllowFontScaling: false,
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,

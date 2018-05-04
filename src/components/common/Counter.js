@@ -8,12 +8,12 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     TouchableHighlight,
-    TextInput,
     View
 } from 'react-native';
 import {observer} from 'mobx-react/native';
 import {action, autorun, observe} from 'mobx';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import TextInput from './MyTextInput';
 type Props = {};
 @observer
 export default class Counter extends Component<Props> {

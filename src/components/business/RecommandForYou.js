@@ -119,7 +119,7 @@ export default class RecommandForYou extends Component<Props> {
             <View style={styles.singleGoods}>
                 <View style={styles.goodsImgView}>
                     <Image
-                        source={{uri: item.img + '?imageView2/1/w/100/h/100'}}
+                        source={{uri: item.img + '?imageMogr2/thumbnail/400x400'}}
                         style={styles.goodsImg}
                         resizeMode='contain'
                     />

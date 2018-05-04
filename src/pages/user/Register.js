@@ -7,18 +7,18 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    TextInput,
     TouchableOpacity,
     SafeAreaView,
     Alert,
     View
 } from 'react-native';
 import Text from '../../components/common/MyText';
-type Props = {};
-import CryptoJS from 'crypto-js'
-import FormCell from '../../components/common/FormCell'
-import ActiveButton from '../../components/common/ActiveButton'
+import TextInput from '../../components/common/MyTextInput';
+import CryptoJS from 'crypto-js';
+import FormCell from '../../components/common/FormCell';
+import ActiveButton from '../../components/common/ActiveButton';
 
+type Props = {};
 export default class Register extends Component<Props> {
     constructor(props) {
         super(props);
@@ -185,7 +185,7 @@ export default class Register extends Component<Props> {
 
             this.state.timerCount--;
             this.setState({timerCount: this.state.timerCount});
-            if (this.state.timerCount === 0) {
+            if (this.state.timerCount <= 0) {
                 clearInterval(messageCount);
                 this.setState({enable: true, timerTitle: "获取验证码"});
             }

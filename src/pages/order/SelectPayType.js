@@ -43,21 +43,28 @@ export default class SelectPayType extends Component<Props> {
             currentAppState: AppState.currentState
         };
         this.data = selectPayTypeCountdown;
+        console.warn(this.appState)
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
-        headerLeft: <TouchableOpacity onPress={() => navigation.state.params.confirmBack()}>
-            <View style={{paddingLeft: 15}}>
-                <Icon name='angle-left' size={40} color='black'></Icon>
-            </View>
-        </TouchableOpacity>
+        headerLeft:
+            <TouchableOpacity
+                onPress={() => navigation.state.params && navigation.state.params.confirmBack && navigation.state.params.confirmBack()}>
+                <View style={{paddingLeft: 15}}>
+                    <Icon name='angle-left' size={40} color='black'></Icon>
+                </View>
+            </TouchableOpacity>
     });
 
     componentDidMount() {
         this.props.navigation.setParams({confirmBack: this.confirmBack.bind(this)});
         this.state.orderId = this.props.navigation.state.params.orderId;
-        AppState.addEventListener('change', this._handleAppStateChange.bind(this));
+        AppState.addEventListener('change', this._handleAppStateChange);
         this.fetchData()
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange)
     }
 
     render() {
@@ -65,7 +72,6 @@ export default class SelectPayType extends Component<Props> {
             return <View/>
         } else {
             let order = this.state.order;
-            console.warn(order)
             let goodsList = [];
             let totalNum = 0;
             order.orderItemList.map(value => {
@@ -74,7 +80,7 @@ export default class SelectPayType extends Component<Props> {
                     <View style={styles.goodsItemView}>
                         <View style={styles.goodsImgView}>
                             <Image
-                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/200x200'}}
+                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/400x400'}}
                                 resizeMode='contain'
                                 style={styles.goodsImg}/>
                         </View>
@@ -222,6 +228,7 @@ export default class SelectPayType extends Component<Props> {
     }
 
     fetchData() {
+        this.state.isLoading = true;
         HttpUtils.post('/order/viewOrderInfo', {orderId: this.state.orderId}, data => {
             if (!data.data) {
                 return;
@@ -290,8 +297,10 @@ export default class SelectPayType extends Component<Props> {
         })
     }
 
-    _handleAppStateChange() {
-        this.fetchData();
+    _handleAppStateChange = (nextState) => {
+        if (nextState === 'active') {
+            this.fetchData();
+        }
     }
 
     async weixinPay() {

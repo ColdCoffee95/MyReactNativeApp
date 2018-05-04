@@ -7,7 +7,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    TextInput,
     Image,
     ScrollView,
     SafeAreaView,
@@ -16,6 +15,7 @@ import {
 import ActiveButton from '../../components/common/ActiveButton';
 import UploadMultiImg from '../../components/common/UploadMultiImg';
 import Text from '../../components/common/MyText';
+import TextInput from '../../components/common/MyTextInput';
 type Props = {};
 export default class ApplyAfterSale extends Component<Props> {
 
@@ -44,7 +44,7 @@ export default class ApplyAfterSale extends Component<Props> {
                     <View style={styles.goodsView}>
                         <View style={styles.goodsImgView}>
                             <Image
-                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/200x200'}}
+                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/400x400'}}
                                 resizeMode='contain'
                                 style={styles.goodsImg}
                             />
