@@ -28,8 +28,9 @@ export default class Order extends Component<Props> {
             isLoading: true,
             loadingMore: false,//是否在上拉拉加载更多中
             allLoadCompleted: false,//是否全部加载完
-            pageSize: 5,
+            pageSize: 10,
             pageNo: 1,
+            total:0,
             tabList: [
                 {
                     id: -1,
@@ -83,6 +84,7 @@ export default class Order extends Component<Props> {
             orderList = <FlatList
                 data={this.state.orderList}
                 extraData={this.state}
+                initialNumToRender={this.state.total}
                 keyExtractor={this._keyExtractor}
                 renderItem={this._renderItem}
                 onEndReached={this._onEndReached.bind(this)}
@@ -138,6 +140,7 @@ export default class Order extends Component<Props> {
     // }
 
     _onEndReached() {
+
         if (this.state.allLoadCompleted || this.state.loadingMore) {
             return;
         }
@@ -149,13 +152,12 @@ export default class Order extends Component<Props> {
             searchWord: this.state.searchWord,
             orderStatus: this.state.orderType
         };
-        console.warn('params',params)
         HttpUtils.post('/order/viewOrderList', params, data => {
-            console.warn('_onEndReached',data)
+            console.warn('_onEndReached')
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({orderList: this.state.orderList.concat(data.data.list),loadingMore:false});
+            this.setState({orderList: this.state.orderList.concat(data.data.list), loadingMore: false});
         })
     }
 
@@ -167,7 +169,7 @@ export default class Order extends Component<Props> {
                 <View style={styles.goodsView}>
                     <View style={styles.goodsImgView}>
                         <Image
-                            source={{uri: value.goodsImg + '?imageMogr2/thumbnail/400x400'}}
+                            source={{uri: value.goodsImg + '?imageMogr2/thumbnail/200x200'}}
                             resizeMode='contain'
                             style={styles.goodsImg}
                         />
@@ -188,7 +190,11 @@ export default class Order extends Component<Props> {
             )
         });
         let orderTypeName = orderStatusList.find(value => item.orderStatus === value.id).name;
-        return <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.orderDetail(item.orderId)}>
+        // let height = 40 + 40 + item.orderItemList.length * 100 + 40;
+        return <TouchableHighlight
+            underlayColor='#f2f2f2'
+            onPress={() => this.orderDetail(item.orderId)}
+            >
             <View>
                 {/*yMMddHHmmss*/}
                 <View style={styles.orderTopView}>
@@ -280,12 +286,13 @@ export default class Order extends Component<Props> {
             orderStatus: this.state.orderType
         };
         HttpUtils.post('/order/viewOrderList', params, data => {
-            console.warn('fetch',data)
+            console.warn(data)
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
             this.setState({
                 orderList: data.data.list,
+                total:data.data.total,
                 isLoading: false,
             });
         })
@@ -302,15 +309,15 @@ export default class Order extends Component<Props> {
             [
                 {
                     text: "确定", onPress: () => {
-                        HttpUtils.post('/order/manuallyCancelOrder', {orderId: orderId}, data => {
-                            ToastUtil.show('操作成功');
-                            this.fetchData();
-                        })
-                    }
+                    HttpUtils.post('/order/manuallyCancelOrder', {orderId: orderId}, data => {
+                        ToastUtil.show('操作成功');
+                        this.fetchData();
+                    })
+                }
                 },
                 {
                     text: "取消", onPress: () => {
-                    }
+                }
                 },
             ],
             {cancelable: false}
@@ -326,15 +333,15 @@ export default class Order extends Component<Props> {
             [
                 {
                     text: "确认", onPress: () => {
-                        HttpUtils.post('/order/confirmReceive', {orderId: orderId}, data => {
-                            ToastUtil.show('操作成功');
-                            this.fetchData();
-                        })
-                    }
+                    HttpUtils.post('/order/confirmReceive', {orderId: orderId}, data => {
+                        ToastUtil.show('操作成功');
+                        this.fetchData();
+                    })
+                }
                 },
                 {
                     text: "取消", onPress: () => {
-                    }
+                }
                 },
             ],
             {cancelable: false}
@@ -356,14 +363,15 @@ export default class Order extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: whiteColor,
-        flex: 1,
-
+        flex:1
     },
     orderTopView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 12,
+        height: 40,
+        paddingLeft: 12,
+        paddingRight: 12,
         backgroundColor: whiteColor,
     },
     goodsWrapper: {
@@ -373,9 +381,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: screenWidth,
         alignItems: 'center',
-        marginBottom: 10,
-        paddingTop: 10,
-        paddingBottom: 10
+        height: 100,
     },
     goodsImgView: {
         width: screenWidth * 0.25,
@@ -436,8 +442,11 @@ const styles = StyleSheet.create({
     paymentPrice: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
+        alignItems: 'center',
         width: screenWidth,
-        padding: 12,
+        height: 40,
+        paddingLeft: 12,
+        paddingRight: 12,
         backgroundColor: whiteColor,
     },
     btnView: {
@@ -445,7 +454,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
         width: screenWidth,
-        padding: 5,
+        height: 40,
         backgroundColor: whiteColor,
         borderTopWidth: 1,
         borderTopColor: borderColor
@@ -456,8 +465,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 10,
         paddingRight: 10,
-        paddingTop: 6,
-        paddingBottom: 6,
+        height: 30,
+        justifyContent: 'center',
         borderRadius: 6,
         borderWidth: 1,
         borderColor: borderColor

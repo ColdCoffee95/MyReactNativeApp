@@ -76,7 +76,7 @@ export default class ConfirmOrder extends Component<Props> {
                     <View style={styles.goodsItemView}>
                         <View style={styles.goodsImgView}>
                             <Image
-                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/400x400'}}
+                                source={{uri: value.goodsImg + '?imageMogr2/thumbnail/200x200'}}
                                 resizeMode='contain'
                                 style={styles.goodsImg}/>
                         </View>

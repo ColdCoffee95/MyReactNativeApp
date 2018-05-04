@@ -76,7 +76,7 @@ export default class GoodsDetail extends Component<Props> {
                             <Image
                                 style={styles.banner}
                                 resizeMode='contain'
-                                source={{uri: value.url + '?imageMogr2/thumbnail/600x600'}}
+                                source={{uri: value.url + '?imageMogr2/thumbnail/400x400'}}
                             />
                         </View>
                     </TouchableHighlight>

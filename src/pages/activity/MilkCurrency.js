@@ -143,7 +143,7 @@ export default class MilkCurrency extends Component<Props> {
                     <Image
                         style={styles.goodsImg}
                         resizeMode='contain'
-                        source={{uri: item.img + '?imageMogr2/thumbnail/400x400'}}
+                        source={{uri: item.img + '?imageMogr2/thumbnail/200x200'}}
                     />
                 </View>
                 <View style={styles.goodsTitleView}>

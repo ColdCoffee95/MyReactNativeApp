@@ -96,7 +96,7 @@ export default class Category extends Component<Props> {
                         <View style={styles.rightCatImgView}>
                             <Image
                                 style={styles.rightCatImg}
-                                source={{uri: catList[leftIndex].img + '?imageMogr2/thumbnail/200x200'}}
+                                source={{uri: catList[leftIndex].img + '?imageMogr2/thumbnail/100x100'}}
                                 resizeMode='contain'
                             />
                         </View>
@@ -114,7 +114,7 @@ export default class Category extends Component<Props> {
                             <View style={styles.rightCatImgView}>
                                 <Image
                                     style={styles.rightCatImg}
-                                    source={{uri: value.img + '?imageMogr2/thumbnail/200x200'}}
+                                    source={{uri: value.img + '?imageMogr2/thumbnail/100x100'}}
                                     resizeMode='contain'
                                 />
                             </View>

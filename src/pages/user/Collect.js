@@ -75,7 +75,7 @@ export default class Collect extends Component<Props> {
             <View style={styles.singleGoods}>
                 <View style={styles.goodsImgView}>
                     <Image
-                        source={{uri: item.img + '?imageMogr2/thumbnail/400x400'}}
+                        source={{uri: item.img + '?imageMogr2/thumbnail/200x200'}}
                         style={styles.goodsImg}
                         resizeMode='contain'
                     />

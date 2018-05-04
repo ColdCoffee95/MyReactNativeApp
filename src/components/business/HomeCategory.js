@@ -53,7 +53,7 @@ export default class HomeCategory extends Component<Props> {
                         <Image
                             style={styles.catImg}
                             resizeMode='contain'
-                            source={{uri: value.img + '?imageMogr2/thumbnail/200x200'}}
+                            source={{uri: value.img + '?imageMogr2/thumbnail/100x100'}}
                         />
                         <Text style={styles.catName}>{value.name}</Text>
                     </View>
