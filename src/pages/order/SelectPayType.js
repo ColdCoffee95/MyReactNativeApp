@@ -24,8 +24,9 @@ import {action, autorun} from 'mobx';
 import selectPayTypeCountdown from '../../mobx/selectPayTypeCountdown'
 import Alipay from 'react-native-yunpeng-alipay';
 import * as WeChat from 'react-native-wechat';
-import LoadingView from '../../components/common/LoadingView';
 import Text from '../../components/common/MyText';
+import {NavigationActions} from 'react-navigation'
+
 WeChat.registerApp('wxb8f9e4f7b2576589');
 type Props = {};
 @observer
@@ -39,7 +40,6 @@ export default class SelectPayType extends Component<Props> {
             isLoading: true,
             payType: 1,//1是支付宝，2是微信
             toggle: false,
-            interval: null,
             currentAppState: AppState.currentState
         };
         this.data = selectPayTypeCountdown;
@@ -51,7 +51,6 @@ export default class SelectPayType extends Component<Props> {
                 <Icon name='angle-left' size={40} color='black'></Icon>
             </View>
         </TouchableOpacity>
-
     });
 
     componentDidMount() {
@@ -63,9 +62,10 @@ export default class SelectPayType extends Component<Props> {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingView/>
+            return <View/>
         } else {
             let order = this.state.order;
+            console.warn(order)
             let goodsList = [];
             let totalNum = 0;
             order.orderItemList.map(value => {
@@ -83,10 +83,10 @@ export default class SelectPayType extends Component<Props> {
                                   numberOfLines={2}>{value.goodsTitle}</Text>
                             <View>
                                 <Text style={styles.sku}>{value.sku}</Text>
-                                <Text style={styles.ems}>运费:{value.emsPrice}</Text>
+                                <Text style={styles.ems}>运费:¥{value.transportationFee.toFixed(2) || '0.00'}</Text>
                             </View>
                             <View style={styles.priceNumberView}>
-                                <Text style={styles.priceText}>{value.putPrice}</Text>
+                                <Text style={styles.priceText}>¥{value.putPrice}</Text>
                                 <Text>×{value.number}</Text>
                             </View>
                         </View>
@@ -203,16 +203,22 @@ export default class SelectPayType extends Component<Props> {
             [
                 {
                     text: "确认离开", onPress: () => {
-                    this.props.navigation.navigate('Order');
-                }
+                        this.back();
+                    }
                 },
                 {
                     text: "继续支付", onPress: () => {
-                }
+                    }
                 },
             ],
             {cancelable: false}
         )
+    }
+
+    back() {
+        const {navigate, goBack, state} = this.props.navigation;
+        state.params.goBack();
+        goBack();
     }
 
     fetchData() {
@@ -222,18 +228,8 @@ export default class SelectPayType extends Component<Props> {
             }
             let order = data.data;
             this.data.replace(order.payRemainingTime);
-            if (order.payRemainingTime > 0) {
+            if (order.payRemainingTime > 0 && !this.data.interval) {
                 this.start();
-            } else {
-                Alert.alert(null, '订单支付超时，请重新下单',
-                    [
-                        {
-                            text: '确定', onPress: () => {
-                            this.props.navigation.navigate('OrderList', {type: -1})
-                        }
-                        }
-                    ],
-                    {cancelable: false});
             }
 
             let goodsList = order.orderItemList;
@@ -265,7 +261,10 @@ export default class SelectPayType extends Component<Props> {
         Alipay.pay(alipayParams).then(data => {
             console.warn(data);
             if (data[0].resultStatus == '9000') {
-                this.props.navigation.navigate('PaySuccess', {type: 'alipay'});
+                this.props.navigation.replace('PaySuccess', {
+                    type: 'alipay',
+                    goBack: this.props.navigation.state.params.goBack
+                });
             }
         }, function (err) {
             console.log(err);
@@ -306,7 +305,10 @@ export default class SelectPayType extends Component<Props> {
         try {
             let payResult = await WeChat.pay(wxParams);
             if (payResult.errCode === 0) {
-                this.props.navigation.navigate('PaySuccess', {type: 'weixin'});
+                this.props.navigation.replace('PaySuccess', {
+                    type: 'weixin',
+                    goBack: this.props.navigation.state.params.goBack
+                });
             } else if (payResult.errCode === -1) {
                 console.warn(payResult.errStr);
                 Alert.alert(null, '支付失败,如果您已经支付,请联系客服');
@@ -350,19 +352,19 @@ export default class SelectPayType extends Component<Props> {
 
     @action
     start() {
-        if (this.state.interval) {
-            clearInterval(this.state.interval)
+        if (this.data.interval) {
+            clearInterval(this.data.interval);
         }
-        let interval = setInterval(() => {
+        this.data.interval = setInterval(() => {
             this.data.time--;
             if (this.data.time <= 0) {
-                clearInterval(interval)
+                clearInterval(this.data.interval);
                 Alert.alert(null, '订单支付超时，请重新下单',
                     [
                         {
                             text: '确定', onPress: () => {
-                            this.props.navigation.navigate('Order', {type: -1})
-                        }
+                                this.back();
+                            }
                         }
                     ],
                     {cancelable: false});

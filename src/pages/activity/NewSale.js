@@ -71,7 +71,7 @@ export default class NewSale extends Component<Props> {
                 <Text>暂无此类商品</Text>
             </View>}
         />
-        if (!this.state.isLoading && !this.state.loadingMore) {
+        if (!this.state.isLoading) {
             return (
                 <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
                     <View style={styles.container}>
@@ -94,9 +94,7 @@ export default class NewSale extends Component<Props> {
         };
         HttpUtils.post('/goods/selectActivityGoodsList', params, data => {
             if (data.data.isLastPage) {
-                this.setState({
-                    allLoadCompleted: true,
-                });
+                this.state.allLoadCompleted = true;
             }
             this.setState({
                 goodsList: data.data.list,

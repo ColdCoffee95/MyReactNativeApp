@@ -10,6 +10,7 @@ import {
     Image,
     TouchableOpacity,
     Alert,
+    Text,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -45,41 +46,35 @@ export default class UploadMultiImg extends Component<Props> {
             '取消',
         ];
         let imgView = [];
+        console.warn('imgs', this.state.imgs)
         this.state.imgs.map((value, index) => {
             imgView.push(
-                <TouchableOpacity
-                    onPress={() => {
-                        this.state.nowIndex = index;
-                        this.showActionSheet()
+                <View style={styles.uploadView}>
+                    <View style={{
+                        width: this.props.width || 100,
+                        height: this.props.height || 100,
+                        borderWidth: 1,
+                        borderColor: borderColor,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'relative'
                     }}>
-                    <View style={styles.uploadView}>
-                        <View style={{
-                            width: this.props.width || 100,
-                            height: this.props.height || 100,
-                            borderWidth: 1,
-                            borderColor: borderColor,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'relative'
-                        }}>
+                        <Image
+                            resizeMode='contain'
+                            style={{
+                                width: this.props.width || 100,
+                                height: this.props.height || 100,
+                            }}
+                            source={{uri: value}}
+                        />
+                        <TouchableOpacity onPress={() => this.deleteImg(index)} style={styles.deleteIconView}>
+                            <View style={styles.deleteIconView}>
+                                <Icon name='times-circle' color='black' size={30}></Icon>
+                            </View>
+                        </TouchableOpacity>
 
-                            <Image
-                                resizeMode='contain'
-                                style={{
-                                    width: this.props.width || 100,
-                                    height: this.props.height || 100,
-                                }}
-                                source={{uri: value}}
-                            />
-                            <TouchableOpacity onPress={() => this.deleteImg(index)} style={styles.deleteIconView}>
-                                <View style={styles.deleteIconView}>
-                                    <Icon name='times-circle' color='black' size={30}></Icon>
-                                </View>
-                            </TouchableOpacity>
-
-                        </View>
                     </View>
-                </TouchableOpacity>
+                </View>
             )
         });
         if (imgView.length < this.state.maxUploadNum) {
@@ -136,10 +131,9 @@ export default class UploadMultiImg extends Component<Props> {
                 width: 300,
                 height: 400,
                 mediaType: 'photo',
-                multiple: true,
                 maxFiles: this.state.maxUploadNum
             }).then(image => {
-                this.imageUpload(image)
+                this.imageUpload([image])
             })
         } else if (i === 1) {//相册选取
             ImagePicker.openPicker({
@@ -147,7 +141,7 @@ export default class UploadMultiImg extends Component<Props> {
                 height: 400,
                 mediaType: 'photo',
                 multiple: true,
-                maxFiles: this.state.maxUploadNum
+                maxFiles: this.state.maxUploadNum - this.state.imgs.length
             }).then(image => {
                 this.imageUpload(image)
             });
@@ -159,41 +153,36 @@ export default class UploadMultiImg extends Component<Props> {
         this.setState({imgs: this.state.imgs});
     }
 
-    imageUpload(image) {
-        // this.state.uploadingArr.push(this.state.nowIndex);
-        // this.setState({uploadingArr:this.state.uploadingArr});
-        HttpUtils.post('/oss/imgSignature', {bucketName: 'dianlijihe'}, data => {
-            let formData = new FormData();
-            formData.append("token", data.data);
-            formData.append("file", {uri: image.path, type: 'application/octet-stream', name: data.data});
-            //上传数据
-            fetch('http://upload.qiniu.com/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-                body: formData,
-            })
-                .then((response) => response.json())
-                .then((responseData) => {
-                    let url = `${imgDomain}${responseData.key}?imageView2/1/w/${this.props.width || 100}/h/${this.props.height || 100}`
-                    if (this.state.imgs.length > this.state.nowIndex) {
-                        this.state.imgs[this.state.nowIndex] = url;
-                    } else {
-                        this.state.imgs.push(url);
-                    }
-                    // this.state.uploadingArr.splice(this.state.nowIndex, 1)
-                    this.setState({
-                        imgs: this.state.imgs,
-                        // uploadingArr: this.state.uploadingArr,
-                        // isLoading:false
-                    });
-                    this.props.onChange(this.state.imgs);
+    imageUpload(images) {
+        images.map(image => {
+            HttpUtils.post('/oss/imgSignature', {bucketName: 'dianlijihe'}, data => {
+                let formData = new FormData();
+                formData.append("token", data.data);
+                formData.append("file", {uri: image.path, type: 'application/octet-stream', name: data.data});
+                //上传数据
+                fetch('http://upload.qiniu.com/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    body: formData,
                 })
-                .catch((error) => {
-                    Alert.alert(null, '上传失败，请稍后再试')
-                });
+                    .then((response) => response.json())
+                    .then((responseData) => {
+                        console.warn(responseData)
+                        let url = `${imgDomain}${responseData.key}?imageMogr2/thumbnail/${this.props.width || 100}x${this.props.height || 100}`
+                        this.state.imgs.push(url);
+                        this.setState({
+                            imgs: this.state.imgs,
+                        });
+                        this.props.onChange(this.state.imgs);
+                    })
+                    .catch((error) => {
+                        Alert.alert(null, '上传失败，请稍后再试')
+                    });
+            })
         })
+
     }
 
     showActionSheet() {

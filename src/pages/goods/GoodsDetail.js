@@ -4,6 +4,7 @@ import {
     ScrollView,
     View,
     Image,
+    Keyboard,
     TouchableHighlight,
     TouchableOpacity,
     SafeAreaView,
@@ -178,14 +179,21 @@ export default class GoodsDetail extends Component<Props> {
                                     <Text style={styles.titleText}>{detail.nowSku.title}</Text>
                                 </View>
                                 <View style={styles.buyInfoView}>
+                                    <View style={styles.buyInfoChild}>
+                                        <View>
+                                            <Text
+                                                style={styles.buyInfoText}>建议零售价:{detail.nowSku.retailPrice ? `¥${detail.nowSku.retailPrice}` : '暂无'}</Text>
+                                        </View>
+                                        <View style={styles.shu}>
+                                            <Text style={styles.buyInfoText}>|</Text>
+                                        </View>
+                                        <View>
+                                            <Text
+                                                style={styles.buyInfoText}>起订量:{detail.nowSku.mustBuyNum ? detail.nowSku.mustBuyNum : 1}</Text>
+                                        </View>
+                                    </View>
                                     <View style={styles.tradeNameView}>
                                         <Text style={{color: this.getColor(detail.tradeType)}}>{detail.tradeName}</Text>
-                                    </View>
-                                    <View style={styles.shu}>
-                                        <Text>|</Text>
-                                    </View>
-                                    <View>
-                                        <Text>起订量:{detail.nowSku.mustBuyNum ? detail.nowSku.mustBuyNum : 1}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.priceView}>
@@ -219,7 +227,7 @@ export default class GoodsDetail extends Component<Props> {
                             style={styles.modalBox}
                             position="bottom"
                             swipeToClose={false}
-                            >
+                        >
                             <View style={styles.dialogWrapper}>
                                 <View style={styles.popupHeader}>
                                     <View style={styles.popupPriceImg}>
@@ -240,12 +248,16 @@ export default class GoodsDetail extends Component<Props> {
                                         <Icon size={16} name='times-circle'></Icon>
                                     </TouchableHighlight>
                                 </View>
-                                <KeyboardAwareScrollView
-                                    contentContainerStyle={styles.popupScrollView}
-                                    keyboardDismissMode='on-drag'
-                                    showsVerticalScrollIndicator={true}>
+                                {/*<KeyboardAwareScrollView*/}
+                                {/*contentContainerStyle={styles.popupScrollView}*/}
+                                {/*keyboardDismissMode='on-drag'*/}
+                                {/*showsVerticalScrollIndicator={true}>*/}
+                                {/*{specView}*/}
+                                {/*</KeyboardAwareScrollView>*/}
+                                <ScrollView contentContainerStyle={styles.popupScrollView}
+                                            keyboardDismissMode='on-drag'>
                                     {specView}
-                                </KeyboardAwareScrollView>
+                                </ScrollView>
                                 <ActiveButton
                                     style={detail.nowSku.count > 0 ? styles.popupSureActive : styles.popupSureNegative}
                                     textStyle={styles.popupSureText}
@@ -370,6 +382,7 @@ export default class GoodsDetail extends Component<Props> {
             goodsSku: JSON.stringify(nowSku.sku),
             goodsSkuId: nowSku.id,
             goodsTitle: nowSku.title,
+            emsPrice: nowSku.emsPrice,
             number: this.state.buyNum,
             putPrice: nowSku.marketPrice,
             sellerId: detail.brandId,
@@ -379,7 +392,11 @@ export default class GoodsDetail extends Component<Props> {
             categoryId: detail.catId,
             categoryName: detail.catName
         };
-        this.props.navigation.navigate('ConfirmOrder', {cartList: [params], tradeType: nowSku.tradeType});
+        this.closePopover();
+        this.props.navigation.navigate('ConfirmOrder', {
+            cartList: [params], tradeType: nowSku.tradeType, goBack: () => {
+            }
+        });
     }
 
     showPopup(type) {//显示popup
@@ -388,6 +405,7 @@ export default class GoodsDetail extends Component<Props> {
 
     closePopover() {
         this.setState({isOpen: false})
+        Keyboard.dismiss();
     }
 
     getColor(type) {
@@ -498,6 +516,7 @@ const styles = StyleSheet.create({
     popupScrollView: {
         paddingLeft: 10,
         paddingRight: 10,
+        height: screenHeight * 0.4
     },
     popupHeader: {
         flexDirection: 'row',
@@ -619,7 +638,11 @@ const styles = StyleSheet.create({
     },
     buyInfoView: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
         marginTop: 5
+    },
+    buyInfoChild: {
+        flexDirection: 'row',
     },
     priceView: {
         flexDirection: 'row',
@@ -640,6 +663,9 @@ const styles = StyleSheet.create({
     shu: {
         marginLeft: 5,
         marginRight: 5
+    },
+    buyInfoText: {
+        color: '#ababab'
     },
     tradeNameView: {
         backgroundColor: '#f7f7f7',

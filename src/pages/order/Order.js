@@ -8,7 +8,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     TouchableHighlight,
-    ActivityIndicator,
     TouchableOpacity,
     FlatList,
     SafeAreaView,
@@ -19,6 +18,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
 import Text from '../../components/common/MyText';
+
 type Props = {};
 export default class Order extends Component<Props> {
 
@@ -57,22 +57,23 @@ export default class Order extends Component<Props> {
             searchWord: ''
         }
     }
+
     componentDidMount() {
         if (this.props.navigation.state.params && this.props.navigation.state.params.type) {
             this.state.orderType = this.props.navigation.state.params.type;
         }
-        this.props.navigation.setParams({orderGoBack: this.orderGoBack.bind(this)});
+        // this.props.navigation.setParams({orderGoBack: this.orderGoBack.bind(this)});
         this.fetchData()
     }
 
-    static navigationOptions = ({navigation, screenProps}) => ({
-        headerLeft: <TouchableOpacity onPress={() => navigation.state.params.orderGoBack()}>
-            <View style={{paddingLeft: 15}}>
-                <Icon name='angle-left' size={40} color='black'></Icon>
-            </View>
-        </TouchableOpacity>
-
-    });
+    // static navigationOptions = ({navigation, screenProps}) => ({
+    //     headerLeft: <TouchableOpacity onPress={() => navigation.state.params.orderGoBack()}>
+    //         <View style={{paddingLeft: 15}}>
+    //             <Icon name='angle-left' size={40} color='black'></Icon>
+    //         </View>
+    //     </TouchableOpacity>
+    //
+    // });
 
     render() {
         let orderList = null;
@@ -125,16 +126,16 @@ export default class Order extends Component<Props> {
                     {tabList}
                 </View>
                 {
-                    !this.state.isLoading && !this.state.loadingMore && orderList
+                    !this.state.isLoading && orderList
                 }
             </View>
         </SafeAreaView>
 
     }
 
-    orderGoBack() {
-        this.props.navigation.navigate('Mine');
-    }
+    // orderGoBack() {
+    //     this.props.navigation.pop();
+    // }
 
     _onEndReached() {
         if (this.state.allLoadCompleted || this.state.loadingMore) {
@@ -148,13 +149,13 @@ export default class Order extends Component<Props> {
             searchWord: this.state.searchWord,
             orderStatus: this.state.orderType
         };
+        console.warn('params',params)
         HttpUtils.post('/order/viewOrderList', params, data => {
-            console.warn(data.data.isLastPage)
+            console.warn('_onEndReached',data)
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({orderList: this.state.orderList.concat(data.data.list)});
-            this.state.loadingMore = false;
+            this.setState({orderList: this.state.orderList.concat(data.data.list),loadingMore:false});
         })
     }
 
@@ -255,38 +256,33 @@ export default class Order extends Component<Props> {
 
     _renderFooter() {
         if (this.state.loadingMore) {
-            return (<View>
-                <ActivityIndicator></ActivityIndicator>
-            </View>)
+            return <View/>
         } else if (this.state.allLoadCompleted) {
             if (this.state.orderList.length > 0) {
                 return (<View style={{alignItems: 'center', height: 30, justifyContent: 'center'}}>
                     <Text>没有更多订单了</Text>
                 </View>)
             } else {
-                return <View></View>
+                return <View/>
             }
         } else {
-            return (<View></View>)
+            return <View/>
         }
     }
 
     fetchData() {
-        this.setState({
-            isLoading: true,
-            pageNo: 1,
-        });
+        this.state.isLoading = true;
+        this.state.pageNo = 1;
         let params = {
             pageSize: this.state.pageSize,
-            pageNum: 1,
+            pageNum: this.state.pageNo,
             searchWord: this.state.searchWord,
             orderStatus: this.state.orderType
         };
         HttpUtils.post('/order/viewOrderList', params, data => {
+            console.warn('fetch',data)
             if (data.data.isLastPage) {
-                this.setState({
-                    allLoadCompleted: true,
-                });
+                this.state.allLoadCompleted = true;
             }
             this.setState({
                 orderList: data.data.list,
@@ -296,7 +292,9 @@ export default class Order extends Component<Props> {
     }
 
     jumpToPay(orderId) {//去支付
-        this.props.navigation.navigate('SelectPayType', {orderId: orderId});
+        this.props.navigation.navigate('SelectPayType', {
+            orderId: orderId, goBack: () => this.fetchData()
+        });
     }
 
     cancelOrder(orderId) {//取消订单
@@ -304,15 +302,15 @@ export default class Order extends Component<Props> {
             [
                 {
                     text: "确定", onPress: () => {
-                    HttpUtils.post('/order/manuallyCancelOrder', {orderId: orderId}, data => {
-                        ToastUtil.show('操作成功');
-                        this.fetchData();
-                    })
-                }
+                        HttpUtils.post('/order/manuallyCancelOrder', {orderId: orderId}, data => {
+                            ToastUtil.show('操作成功');
+                            this.fetchData();
+                        })
+                    }
                 },
                 {
                     text: "取消", onPress: () => {
-                }
+                    }
                 },
             ],
             {cancelable: false}
@@ -328,15 +326,15 @@ export default class Order extends Component<Props> {
             [
                 {
                     text: "确认", onPress: () => {
-                    HttpUtils.post('/order/confirmReceive', {orderId: orderId}, data => {
-                        ToastUtil.show('操作成功');
-                        this.fetchData();
-                    })
-                }
+                        HttpUtils.post('/order/confirmReceive', {orderId: orderId}, data => {
+                            ToastUtil.show('操作成功');
+                            this.fetchData();
+                        })
+                    }
                 },
                 {
                     text: "取消", onPress: () => {
-                }
+                    }
                 },
             ],
             {cancelable: false}

@@ -4,7 +4,7 @@ import {
     View,
     BackHandler
 } from 'react-native';
-import {Provider, observer,inject} from 'mobx-react';
+import {Provider, observer, inject} from 'mobx-react';
 import {StackNavigator, NavigationActions} from "react-navigation";
 import './src/utils/storage';
 import './src/utils/globalVariables';
@@ -63,6 +63,7 @@ import Comment from './src/pages/order/Comment'
 
 import CouponList from './src/pages/coupon/CouponList'
 import SelectCoupon from './src/pages/coupon/SelectCoupon'
+
 const styles = StyleSheet.create({
     headerStyles: {
         backgroundColor: whiteColor
@@ -431,6 +432,7 @@ export default SimpleApp = StackNavigator({
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
+            gesturesEnabled: false,
             headerTitleStyle: styles.headerTitleStyle,
         },
     },
@@ -474,6 +476,7 @@ export default SimpleApp = StackNavigator({
             headerTintColor: 'black',
             headerBackTitle: null,
             headerRight: <View/>,
+            gesturesEnabled: false,
             headerTitleStyle: styles.headerTitleStyle,
         },
     },
@@ -565,6 +568,6 @@ export default SimpleApp = StackNavigator({
             headerTitleStyle: styles.headerTitleStyle,
         },
     },
-},{
+}, {
     initialRouteName: 'Login',
 });

@@ -37,7 +37,6 @@ export default class Cart extends Component<Props> {
             isLoading: true,
         };
         this.data = CartGoods;
-        // this.data = new CartGoods()
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -66,7 +65,6 @@ export default class Cart extends Component<Props> {
         if (this.props.navigation.state.params) {
             this.state.tradeType = this.props.navigation.state.params.type || 1;
         }
-        console.warn('componentDidMount')
         this.fetchData();
     }
 
@@ -236,7 +234,7 @@ export default class Cart extends Component<Props> {
             ToastUtil.show('您还没有选择商品哦');
             return;
         }
-        this.props.navigation.navigate('ConfirmOrder', {cartList: arr, tradeType: this.state.tradeType});
+        this.props.navigation.navigate('ConfirmOrder', {cartList: arr, tradeType: this.state.tradeType,goBack:() => this.fetchData()});
     }
 
     deleteGoods(id) {//删掉购物车中某个商品
@@ -357,7 +355,7 @@ const styles = StyleSheet.create({
     deleteGoodsView: {
         backgroundColor: activeColor,
         width: 60,
-        height: screenWidth * 0.25 + 20,
+        height: screenWidth * 0.3 + 20,
         justifyContent: 'center',
         alignItems: 'center'
     },

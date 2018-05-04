@@ -1,5 +1,5 @@
 const successCode = 10000;
-const timeout = 15000;
+const timeout = 30000;
 import {Alert} from 'react-native';
 import Loading from '../mobx/loading'
 function timeoutFetch(ms, promise) {//超时请求

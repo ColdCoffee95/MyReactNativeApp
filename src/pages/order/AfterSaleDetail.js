@@ -101,6 +101,9 @@ export default class AfterSaleDetail extends Component<Props> {
                     <View style={styles.itemView}>
                         <Text>售后状态:{typeName}</Text>
                     </View>
+                    <View style={styles.itemView}>
+                        <Text>处理结果:{orderInfo.response}</Text>
+                    </View>
                 </View>
             </SafeAreaView>
         }
@@ -145,14 +148,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 10,
         paddingTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
     },
     goodsImgView: {
         width: screenWidth * 0.25,
         height: screenWidth * 0.25,
         marginLeft: screenWidth * 0.05,
-        borderWidth: 1,
-        borderColor: borderColor,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: whiteColor,
@@ -164,6 +165,7 @@ const styles = StyleSheet.create({
     goodsInfoView: {
         justifyContent: 'space-between',
         width: screenWidth * 0.7,
+        height: screenWidth * 0.25,
         paddingLeft: 10,
         paddingRight: 10
     },

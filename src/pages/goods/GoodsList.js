@@ -177,7 +177,7 @@ export default class GoodsList extends Component<Props> {
                             </TouchableOpacity>
                         </View>
                         {
-                            !this.state.isLoading && !this.state.loadingMore && goodsList
+                            !this.state.isLoading && goodsList
                         }
                     </View>
                 </Drawer>
@@ -301,10 +301,8 @@ export default class GoodsList extends Component<Props> {
     }
 
     async fetchData() {
-        this.setState({
-            isLoading: true,
-            pageNo: 1,
-        });
+        this.state.isLoading = true;
+        this.state.pageNo = 1;
         let params = {
             firstCatId: this.state.firstCatId,
             secondCatIds: this.state.secondCatIds,
@@ -318,9 +316,7 @@ export default class GoodsList extends Component<Props> {
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
             console.warn('fetchData', data.data.list)
             if (data.data.isLastPage) {
-                this.setState({
-                    allLoadCompleted: true,
-                });
+                this.state.allLoadCompleted = true;
             }
             this.setState({
                 goodsList: data.data.list,

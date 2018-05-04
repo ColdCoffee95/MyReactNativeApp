@@ -14,6 +14,7 @@ import {
     View
 } from 'react-native';
 import Text from '../../components/common/MyText';
+
 type Props = {};
 export default class AfterSaleOrders extends Component<Props> {
 
@@ -69,7 +70,7 @@ export default class AfterSaleOrders extends Component<Props> {
         return <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
             <View style={styles.container}>
                 {
-                    !this.state.isLoading && !this.state.loadingMore && orderList
+                    !this.state.isLoading && orderList
                 }
             </View>
         </SafeAreaView>
@@ -97,7 +98,7 @@ export default class AfterSaleOrders extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({orderList: this.state.orderList.concat(arr),loadingMore:false});
+            this.setState({orderList: this.state.orderList.concat(arr), loadingMore: false});
         })
     }
 
@@ -181,9 +182,7 @@ export default class AfterSaleOrders extends Component<Props> {
                 arr.push(value);
             });
             if (data.data.pageInfo.isLastPage) {
-                this.setState({
-                    allLoadCompleted: true,
-                });
+                this.state.allLoadCompleted = true;
             }
             this.setState({
                 orderList: arr,

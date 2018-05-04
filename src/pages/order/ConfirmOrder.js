@@ -11,11 +11,13 @@ import {
     SafeAreaView,
     Image,
     ScrollView,
+    TouchableOpacity,
     View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActiveButton from '../../components/common/ActiveButton';
 import Text from '../../components/common/MyText';
+
 type Props = {};
 
 export default class ConfirmOrder extends Component<Props> {
@@ -37,10 +39,17 @@ export default class ConfirmOrder extends Component<Props> {
     componentDidMount() {
         this.state.tradeType = this.props.navigation.state.params.tradeType;
         this.state.cartList = this.props.navigation.state.params.cartList;
-        console.warn(this.state.cartList)
+        this.props.navigation.setParams({confirmBack: this.confirmBack.bind(this)});
         this.fetchData();
-
     }
+
+    static navigationOptions = ({navigation, screenProps}) => ({
+        headerLeft: <TouchableOpacity onPress={() => navigation.state.params.confirmBack()}>
+            <View style={{paddingLeft: 15}}>
+                <Icon name='angle-left' size={40} color='black'></Icon>
+            </View>
+        </TouchableOpacity>
+    });
 
     render() {
         if (this.state.isLoading) {
@@ -74,7 +83,7 @@ export default class ConfirmOrder extends Component<Props> {
                                   numberOfLines={2}>{value.goodsTitle}</Text>
                             <View>
                                 <Text style={styles.sku}>{value.sku}</Text>
-                                <Text style={styles.ems}>运费:{value.emsPrice || 0.00}</Text>
+                                <Text style={styles.ems}>运费:¥{value.emsPrice || 0.00}</Text>
                             </View>
                             <View style={styles.priceNumberView}>
                                 <Text style={styles.priceText}>¥{value.putPrice}</Text>
@@ -226,6 +235,12 @@ export default class ConfirmOrder extends Component<Props> {
         }
     }
 
+    confirmBack() {//是否确认离开
+        const {navigate, goBack, state} = this.props.navigation;
+        state.params.goBack();
+        goBack();
+    }
+
     async fetchData() {//获取数据
         if (this.state.tradeType !== 1) {//不是一般贸易
             let defaultCertification = await this.getDefaultCertification();
@@ -304,7 +319,10 @@ export default class ConfirmOrder extends Component<Props> {
                 break;
         }
         HttpUtils.post('/order/createOrder', params, data => {
-            this.props.navigation.navigate('SelectPayType', {orderId: data.data});
+            this.props.navigation.replace('SelectPayType', {
+                orderId: data.data,
+                goBack: this.props.navigation.state.params.goBack
+            });
         })
     }
 

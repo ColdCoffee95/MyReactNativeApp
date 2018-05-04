@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton';
 import Text from '../../components/common/MyText';
+import {NavigationActions} from 'react-navigation';
+
 type Props = {};
 export default class PaySuccess extends Component<Props> {
 
@@ -76,7 +78,15 @@ export default class PaySuccess extends Component<Props> {
     }
 
     backToOrder() {
-        jumpAndClear(this.props.navigation, 'Order');
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            key: null,
+            actions: [
+                NavigationActions.navigate({routeName: 'Mine',key:null})
+            ],
+        });
+        this.props.navigation.dispatch(resetAction);
+        // jumpAndClear(this.props.navigation, 'Order');
     }
 
     backToHome() {

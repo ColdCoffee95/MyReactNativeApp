@@ -13,6 +13,7 @@ import {
     FlatList
 } from 'react-native';
 import Text from '../common/MyText';
+
 export default class RecommandForYou extends Component<Props> {
     constructor(props) {
         super(props);
@@ -39,7 +40,7 @@ export default class RecommandForYou extends Component<Props> {
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
             onEndReached={this._onEndReached.bind(this)}
-            onEndReachedThreshold={0.2}
+            onEndReachedThreshold={0.1}
             numColumns={2}
             ListHeaderComponent={() => this._renderHeader()}
             ListFooterComponent={this._renderFooter.bind(this)}
@@ -57,17 +58,13 @@ export default class RecommandForYou extends Component<Props> {
                 />
             </View>}
         />;
-        if (!this.state.isLoading && !this.state.loadingMore) {
-            return <View style={styles.container}>
-                <View style={styles.goodsListView}>
-                    {
-                        !this.state.isLoading && !this.state.loadingMore && goodsList
-                    }
-                </View>
+        return <View style={styles.container}>
+            <View style={styles.goodsListView}>
+                {
+                    !this.state.isLoading && goodsList
+                }
             </View>
-        } else {
-            return <View/>
-        }
+        </View>
 
 
     }
@@ -100,7 +97,6 @@ export default class RecommandForYou extends Component<Props> {
         if (this.state.allLoadCompleted || this.state.loadingMore) {
             return;
         }
-        console.warn('reaching')
         this.state.loadingMore = true;
         this.state.pageNo += 1;
         let params = {
@@ -112,7 +108,8 @@ export default class RecommandForYou extends Component<Props> {
             if (data.data.isLastPage) {
                 this.state.allLoadCompleted = true;
             }
-            this.setState({goodsList: this.state.goodsList.concat(data.data.list),loadingMore:false});
+            this.setState({goodsList: this.state.goodsList.concat(data.data.list)});
+            this.state.loadingMore = false;
         })
     }
 

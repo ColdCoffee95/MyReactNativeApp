@@ -143,12 +143,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginTop:10
     },
     priceText: {
         color: activeColor
     },
     skuView: {
-
+        marginTop:10
     },
     cartSku: {
         color: '#ababab',

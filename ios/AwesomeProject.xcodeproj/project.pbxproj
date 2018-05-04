@@ -46,8 +46,8 @@
 		6F253203F78346749FC168CF /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27700B02A87E4F09901E5E9A /* libRNSpinkit.a */; };
 		7AE9451B3A9A4BC3AB09F0D3 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2E8108CB82145B0BD4B0730 /* Ionicons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		8516028E2099E4290080E996 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 8516028D2099E4290080E996 /* assets */; };
-		851602922099E5CA0080E996 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 851602912099E5CA0080E996 /* index.ios.jsbundle */; };
+		85160294209BF0B70080E996 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 85160293209BF0B70080E996 /* assets */; };
+		8516029A209BF9910080E996 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 85160299209BF9910080E996 /* index.ios.jsbundle */; };
 		858B5CBB2060B88500E198AE /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 858B5CBA2060B88500E198AE /* RSKImageCropper.framework */; };
 		858B5CBC2060B88500E198AE /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 858B5CBA2060B88500E198AE /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		858B5CBE2060B88500E198AE /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 858B5CBD2060B88500E198AE /* QBImagePicker.framework */; };
@@ -490,8 +490,8 @@
 		6D60A9B9005743E9B583C0D9 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		8516028D2099E4290080E996 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
-		851602912099E5CA0080E996 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = bundle/index.ios.jsbundle; sourceTree = "<group>"; };
+		85160293209BF0B70080E996 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
+		85160299209BF9910080E996 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = bundle/index.ios.jsbundle; sourceTree = "<group>"; };
 		858B5CBA2060B88500E198AE /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		858B5CBD2060B88500E198AE /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85F9FCF6207C825F00A9E2F6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -774,8 +774,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				851602912099E5CA0080E996 /* index.ios.jsbundle */,
-				8516028D2099E4290080E996 /* assets */,
+				85160299209BF9910080E996 /* index.ios.jsbundle */,
+				85160293209BF0B70080E996 /* assets */,
 				858B5CBD2060B88500E198AE /* QBImagePicker.framework */,
 				858B5CBA2060B88500E198AE /* RSKImageCropper.framework */,
 				13B07FAE1A68108700A75B9A /* AwesomeProject */,
@@ -1486,14 +1486,14 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				98B79B465F51489BAC6801A7 /* Entypo.ttf in Resources */,
 				3B4D3DFB7E4847F9A8BF1763 /* EvilIcons.ttf in Resources */,
-				851602922099E5CA0080E996 /* index.ios.jsbundle in Resources */,
+				8516029A209BF9910080E996 /* index.ios.jsbundle in Resources */,
 				121D2B0CB84C48679A573731 /* Feather.ttf in Resources */,
 				1040DFFF7E1A4FC6BF689524 /* FontAwesome.ttf in Resources */,
 				F2FF0FA0BC984821933C4BDB /* Foundation.ttf in Resources */,
 				7AE9451B3A9A4BC3AB09F0D3 /* Ionicons.ttf in Resources */,
 				C905071CA9584B57AEBDFF3C /* MaterialCommunityIcons.ttf in Resources */,
 				46EFD35F73DB426D9D20065E /* MaterialIcons.ttf in Resources */,
-				8516028E2099E4290080E996 /* assets in Resources */,
+				85160294209BF0B70080E996 /* assets in Resources */,
 				85FD9B7D2071C68F000156F9 /* LaunchScreen.xib in Resources */,
 				3A8E1812E6024315AE3DF6E1 /* Octicons.ttf in Resources */,
 				CB022F1EE6D0406195C770B5 /* SimpleLineIcons.ttf in Resources */,

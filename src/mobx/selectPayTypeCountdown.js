@@ -1,8 +1,8 @@
 import {observable, action, computed, autorun} from 'mobx';
 
 class selectPayTypeCountdown {
-    @observable
-    time = {};
+    @observable time = {};
+    @observable interval = null;
 
     //设置数据
     replace = (data) => {
