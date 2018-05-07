@@ -168,10 +168,7 @@ export default class BrandSelection extends Component<Props> {
     );
 
     goodsDetail(id) {
-        // this.props.navigation.navigate('GoodsDetail', {id: id});
-        this.props.navigation.replace('PaySuccess', {
-            type: 'weixin'
-        });
+        this.props.navigation.navigate('GoodsDetail', {id: id});
     }
 }
 

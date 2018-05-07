@@ -10,6 +10,7 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     SafeAreaView,
+    Keyboard,
     View,
 } from 'react-native';
 import ActiveButton from '../../components/common/ActiveButton'
@@ -151,6 +152,7 @@ export default class EditCrossAddress extends Component<Props> {
 
     showPopup() {//显示popup
         this.popupDialog.show(() => {
+            Keyboard.dismiss();
         });
     }
 

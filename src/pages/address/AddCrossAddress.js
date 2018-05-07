@@ -9,6 +9,7 @@ import {
     StyleSheet,
     TouchableHighlight,
     TouchableOpacity,
+    Keyboard,
     SafeAreaView,
     View,
 } from 'react-native';
@@ -120,6 +121,7 @@ export default class AddCrossAddress extends Component<Props> {
 
     showPopup() {//显示popup
         this.popupDialog.show(() => {
+            Keyboard.dismiss();
         });
     }
 
