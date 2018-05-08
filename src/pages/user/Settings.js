@@ -132,6 +132,7 @@ export default class Settings extends Component<Props> {
                     text: "确定", onPress: () => {
                         storage.remove({key: 'loginState'});
                         storage.remove({key: 'userInfo'});
+                        storage.remove({key: 'addressData'});
                         jumpAndClear(this.props.navigation, 'Login')
                     }
                 },

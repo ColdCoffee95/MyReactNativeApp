@@ -3,6 +3,7 @@ package com.metchange.dianlijihe;
 import android.app.Application;
 import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
 import com.yunpeng.alipay.AlipayPackage;
 import com.theweflex.react.WeChatPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SvgPackage(),
             new AlipayPackage(),
             new WeChatPackage(),
             new VectorIconsPackage(),

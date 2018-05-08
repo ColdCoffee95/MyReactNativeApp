@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -70,6 +69,8 @@
 		F2FF0FA0BC984821933C4BDB /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D60A9B9005743E9B583C0D9 /* Foundation.ttf */; };
 		F7B94B9F1B79461C939698A1 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BDD6303116C41989091D578 /* libRNVectorIcons.a */; };
 		FC81C0BA14E24F9AB1C3FCE6 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4591CED7A6ED4EDFBB2DC05D /* Zocial.ttf */; };
+		9DE47693E38C45EA84A1C43C /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 424BE9C4670249C1B67EA864 /* libRNSVG.a */; };
+		2F95A51D0D1C4E8E882D2C95 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04CE716A626A42A5B87D518D /* libRNSVG-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -513,6 +514,9 @@
 		EBB7359B434143E5BC8CB2C9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		EBF5268BFF8847D2BE4D799E /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		EFAA8B299B1B403C84420210 /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
+		E1CC1DA597D242E58D2CDCFA /* RNSVG.xcodeproj */ = {isa = PBXFileReference; name = "RNSVG.xcodeproj"; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		424BE9C4670249C1B67EA864 /* libRNSVG.a */ = {isa = PBXFileReference; name = "libRNSVG.a"; path = "libRNSVG.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		04CE716A626A42A5B87D518D /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; name = "libRNSVG-tvOS.a"; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -558,6 +562,7 @@
 				3562FED3E81F496C85134BB0 /* RCTWeChatTests.xctest in Frameworks */,
 				4C56608C358642F692178F40 /* libAlipayModule.a in Frameworks */,
 				9375D3DC246E4D54BA7D4D87 /* libCodePush.a in Frameworks */,
+				9DE47693E38C45EA84A1C43C /* libRNSVG.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,6 +579,7 @@
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
 				8A2207179FF8456FB530972E /* libRNDeviceInfo-tvOS.a in Frameworks */,
+				2F95A51D0D1C4E8E882D2C95 /* libRNSVG-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -758,6 +764,7 @@
 				35700C2840FB4C63AAE7A2EB /* RCTWeChat.xcodeproj */,
 				56FAC73C1228451BA592C6A5 /* AlipayModule.xcodeproj */,
 				D2DE88230FE84B7AA9DD6D9D /* CodePush.xcodeproj */,
+				E1CC1DA597D242E58D2CDCFA /* RNSVG.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1631,12 +1638,15 @@
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)..\node_modules\neact-native-code-pushiosCodePush/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 				INFOPLIST_FILE = AwesomeProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1674,12 +1684,15 @@
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)..\node_modules\neact-native-code-pushiosCodePush/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 				INFOPLIST_FILE = AwesomeProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1729,6 +1742,7 @@
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)..\node_modules\neact-native-code-pushiosCodePush/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 				INFOPLIST_FILE = AwesomeProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1773,6 +1787,7 @@
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)..\node_modules\neact-native-code-pushiosCodePush/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 				INFOPLIST_FILE = AwesomeProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1813,11 +1828,14 @@
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)..\node_modules\neact-native-code-pushiosCodePush/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 				INFOPLIST_FILE = "AwesomeProject-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1865,11 +1883,14 @@
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)..\node_modules\neact-native-code-pushiosCodePush/**",
+					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
 				);
 				INFOPLIST_FILE = "AwesomeProject-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1920,6 +1941,8 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.AwesomeProject-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1944,6 +1967,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

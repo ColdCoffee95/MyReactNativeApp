@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="8px" height="14px" viewBox="0 0 8 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>&gt;@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-396.000000, -414.000000)">
+        <g id="限时抢购" transform="translate(0.000000, 380.000000)" fill="#999999">
+            <g id="更多" transform="translate(364.000000, 31.000000)">
+                <path d="M40,9.99934955 L33.1586225,3.26536391 C33.0090795,3.1181683 32.7690718,3.11826772 32.6196507,3.26558718 L32.2788556,3.60158906 C32.127836,3.75048459 32.1261141,3.99361385 32.2750097,4.14463345 C32.2763488,4.14599168 32.277698,4.14733992 32.2790572,4.14867805 L38.2219467,9.99934955 L32.2781019,15.8522043 C32.1269884,16.0010046 32.1251131,16.2441327 32.2739133,16.3952462 C32.275374,16.3967296 32.2768467,16.398201 32.2783313,16.3996604 L32.6196319,16.7351735 C32.7691225,16.8821291 33.0088443,16.8820412 33.1582271,16.734976 L40,9.99934955 Z" id="&gt;"></path>
+            </g>
+        </g>
+    </g>
+</svg>

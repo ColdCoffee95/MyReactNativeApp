@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="7px" height="8px" viewBox="0 0 7 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>标记icon@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FD4A70" offset="0%"></stop>
+            <stop stop-color="#F76B1C" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="新-关于我们" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-11.000000, -588.000000)">
+        <polygon id="标记icon" fill="url(#linearGradient-1)" points="14.5 588 18 590 18 594 14.5 596 11 594 11 590"></polygon>
+    </g>
+</svg>
