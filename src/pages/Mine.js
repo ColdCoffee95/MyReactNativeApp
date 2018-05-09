@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Foundation';
 import UploadOneImg from '../components/common/UploadOneImg'
 import Text from '../components/common/MyText';
+import Icon2 from 'react-native-vector-icons/MyIcon';
 type Props = {};
 export default class Mine extends Component<Props> {
 
@@ -176,6 +177,7 @@ export default class Mine extends Component<Props> {
                             <View style={styles.collectView}>
                                 <TouchableOpacity onPress={() => this.toCollect()}>
                                     <View style={styles.childView}>
+                                        <Icon2 name="jiarugouwucheiconx" size={30} color={activeColor}/>
                                         <Icon1 name='heart' size={30} color={activeColor}></Icon1>
                                         <Text>收藏</Text>
                                     </View>
