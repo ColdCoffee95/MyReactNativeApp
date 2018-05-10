@@ -23,9 +23,9 @@ export default class LoginScreen extends Component<Props> {
     }
 
     componentDidMount() {
+
         this.checkToken();
     }
-
     backButtonPress(){
         const nav = this.props.navigation;
         console.warn('nav',nav)

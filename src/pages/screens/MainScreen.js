@@ -37,6 +37,7 @@ const mainPage = TabNavigator({
         navigationOptions: {
             //默认参数
             title: '首页',
+
             tabBarLabel: '首页',
             headerBackTitle: null,
             headerTitleAllowFontScaling: false,
@@ -136,6 +137,11 @@ const mainPage = TabNavigator({
             marginTop: 4
         },
 
+    },
+    header: {
+        style: {
+            backgroundColor:'black'
+        },
     },
 });
 

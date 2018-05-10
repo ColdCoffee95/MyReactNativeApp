@@ -10,6 +10,7 @@ import {
     Image,
     TouchableHighlight,
     RefreshControl,
+    StatusBar,
     SafeAreaView,
     TouchableOpacity,
     View
@@ -72,7 +73,6 @@ export default class Cart extends Component<Props> {
         return (
             <SafeAreaView style={{flex: 1}}>
                 <View style={styles.container}>
-
                     {/*<RefreshControl*/}
                     {/*refreshing={this.state.isRefreshing}*/}
                     {/*onRefresh={this._onRefresh.bind(this)}*/}

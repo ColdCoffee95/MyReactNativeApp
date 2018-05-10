@@ -1,6 +1,7 @@
-import {Dimensions} from "react-native";
+import {Dimensions, StatusBar} from "react-native";
 import HttpUtils from "./http";
-import DeviceInfo from 'react-native-device-info'
+import DeviceInfo from 'react-native-device-info';
+global.StatusBarHeight = StatusBar.currentHeight;
 global.cutTypes = [
     {
         name: '满减',
@@ -105,6 +106,5 @@ global.hotline = '0571-56663386';
 global.serverUrl = 'http://api.metchange.com/api';
 
 global.imgDomain = 'http://dianlijiheoss.metchange.com/';
-global.deploymentKey = 'dFdfJbvEypEEPdDg8vv6hZ-9AM-Y19ccb09f-4b96-4bd9-8aea-386962cba91f';//codepush的key
 global.version = DeviceInfo.getVersion();
 global.platform = DeviceInfo.getSystemName();

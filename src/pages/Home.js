@@ -40,6 +40,7 @@ export default class Home extends Component<Props> {
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
+
         headerTitle: (
             <View style={styles.searchView}>
                 <Icon name='search' size={14} color={borderColor}></Icon>
@@ -75,7 +76,7 @@ export default class Home extends Component<Props> {
             <SafeAreaView style={{flex: 1, backgroundColor: whiteColor}}>
                 <View style={styles.container}>
                     <RecommandForYou {...this.props} header={
-                        <ScrollView contentContainerStyle={styles.container}>
+                        <ScrollView contentContainerStyle={styles.container} onScroll={() => this.onScroll()}>
                             <HomeSwiper {...this.props}></HomeSwiper>
                             <PlatformPlate {...this.props}></PlatformPlate>
                             <HomeCategory {...this.props}></HomeCategory>
@@ -94,6 +95,10 @@ export default class Home extends Component<Props> {
         this.state.keyword = text.trim();
     }
 
+    onScroll() {
+        console.warn('123')
+    }
+
     search() {
         if (!this.state.keyword) {
             ToastUtil.show('请输入关键字');
@@ -107,6 +112,7 @@ const styles = StyleSheet.create({
         backgroundColor: whiteColor,
         flex: 1
     },
+
     scrollView: {
         alignItems: 'center',
     },
@@ -124,6 +130,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 10,
+        opacity:0.6
     },
     keyword: {
         width: screenWidth * 0.65 - 40,

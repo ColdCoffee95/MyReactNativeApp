@@ -28,8 +28,7 @@ export default class UploadMultiImg extends Component<Props> {
             nowIndex: 0,
             uploadingArr: [],//正在加载的图片的index在这个数组中
             maxUploadNum: props.maxUploadNum || 5,//最多上传几张
-            isLoading: true,
-            loadingImgNum: 0
+            isLoading: true
         }
     }
 
@@ -115,7 +114,7 @@ export default class UploadMultiImg extends Component<Props> {
 
                 <ActionSheet
                     ref={o => this.ActionSheet = o}
-                    title='选择上传方式'
+                    title='请选择上传方式'
                     options={options}
                     cancelButtonIndex={2}
                     onPress={(index) => this.handlePress(index)}
@@ -141,10 +140,9 @@ export default class UploadMultiImg extends Component<Props> {
                 height: 400,
                 mediaType: 'photo',
                 multiple: true,
-                maxFiles: this.state.maxUploadNum - this.state.imgs.length - this.state.loadingImgNum
+                maxFiles: this.state.maxUploadNum - this.state.imgs.length
             }).then(image => {
-                this.state.loadingImgNum = image.length;
-                this.imageUpload(image);
+                this.imageUpload(image)
             });
         }
     }
@@ -176,11 +174,10 @@ export default class UploadMultiImg extends Component<Props> {
                         this.setState({
                             imgs: this.state.imgs,
                         });
-                        this.state.loadingImgNum -= 1;
                         this.props.onChange(this.state.imgs);
                     })
                     .catch((error) => {
-                        Alert.alert(null, '上传失败，请稍后再试!')
+                        Alert.alert(null, '上传失败，请稍后再试')
                     });
             })
         })

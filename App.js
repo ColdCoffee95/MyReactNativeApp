@@ -9,6 +9,7 @@ import {StackNavigator, NavigationActions} from "react-navigation";
 import './src/utils/storage';
 import './src/utils/globalVariables';
 import './src/utils/globalFunctions';
+
 import MainScreen from './src/pages/screens/MainScreen';
 import LoginScreen from './src/pages/screens/LoginScreen';
 import Register from './src/pages/user/Register';
@@ -157,7 +158,7 @@ export default SimpleApp = StackNavigator({
     Hotline: {
         screen: Hotline,
         navigationOptions: {
-            title: '客服热线',
+            title: '客服',
             headerStyle: styles.headerStyles,
             headerTitleAllowFontScaling: false,
             headerTintColor: 'black',

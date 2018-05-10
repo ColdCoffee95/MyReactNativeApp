@@ -3,8 +3,7 @@ import {
     StyleSheet,
     View,
     BackHandler,
-    AppState,
-    Alert
+    AppState
 } from 'react-native';
 import {observable, action} from 'mobx';
 import {Provider, observer, inject} from 'mobx-react';
@@ -17,66 +16,16 @@ import codePush from 'react-native-code-push';
 import SplashScreen from 'react-native-splash-screen';
 import {addNavigationHelpers, NavigationActions, createNavigationContainer} from "react-navigation";
 import Route from '../../App';
-
+import CommonStatusBar from '../components/common/CommonStatusBar';
+import TransparentStatusBar from "../components/common/TransparentStatusBar";
 const RootNavigator = Route;
 const rootNavigation = new NavigationStore(RootNavigator);
-
 // console.disableYellowBox = true;
 class Root extends Component {
-    componentDidMount() {
-        SplashScreen.hide();
-        this.checkForUpdate()
-    }
     render() {
         return <Provider rootNavigation={rootNavigation}>
             <App/>
         </Provider>
-    }
-    checkForUpdate(){
-        codePush.checkForUpdate(deploymentKey).then((update) => {
-            if (update) {
-                codePush.sync({
-                        deploymentKey: deploymentKey,
-                        updateDialog: {
-                            optionalIgnoreButtonLabel: '稍后',
-                            optionalInstallButtonLabel: '立即更新',
-                            optionalUpdateMessage: '有新版本了，是否更新？',
-                            title: '更新提示'
-                        },
-                        installMode: codePush.InstallMode.IMMEDIATE,
-
-                    },
-                    (status) => {
-                        switch (status) {
-                            case codePush.SyncStatus.DOWNLOADING_PACKAGE:
-                                console.log("DOWNLOADING_PACKAGE");
-                                break;
-                            case codePush.SyncStatus.INSTALLING_UPDATE:
-                                console.log(" INSTALLING_UPDATE");
-                                break;
-                        }
-                    },
-                    (progress) => {
-                        console.log(progress.receivedBytes + " of " + progress.totalBytes + " received.");
-                    }
-                );
-                // Alert.alert(null, '发现新版本，是否立即更新？',
-                //     [
-                //         {
-                //             text: "立即更新", onPress: () => {
-                //                 codePush.sync();
-                //             }
-                //         },
-                //         {
-                //             text: "稍后更新", onPress: () => {
-                //             }
-                //         },
-                //     ],
-                //     {cancelable: false}
-                // )
-
-            }
-        })
     }
 }
 
@@ -84,6 +33,9 @@ class Root extends Component {
 @observer
 class App extends React.Component {
     componentDidMount() {
+        setTimeout(() => {
+            SplashScreen.hide();
+        }, 2000);
         if (platform === 'Android') {
             this.backAndroidHandler = this.backHandle.bind(this);
             BackHandler.addEventListener('hardwareBackPress', this.backAndroidHandler);
@@ -91,6 +43,7 @@ class App extends React.Component {
         global.ToastUtil = this.refs.toast;
         AppState.addEventListener("change", (newState) => {
             appState.changeStatus(newState);
+            newState === "active" && codePush.sync();
         });
     }
 
@@ -120,8 +73,20 @@ class App extends React.Component {
 
     render() {
         const {state, dispatch, addListener} = this.props.rootNavigation;
+        let nowRoute = state.routes[state.routes.length - 1];
+        let isTransparent = false;
+        if (nowRoute.routeName === 'Main' && (nowRoute.index === 0 || nowRoute.index === 3)) {
+            isTransparent = true;
+        }
         return (
             <View style={styles.rootContainer}>
+                {
+                    isTransparent && <TransparentStatusBar/>
+                }
+                {
+                    !isTransparent && <CommonStatusBar/>
+                }
+
                 <RootNavigator
                     navigation={addNavigationHelpers({state, dispatch, addListener})}
                 />
@@ -135,7 +100,22 @@ class App extends React.Component {
         );
     }
 }
-
+// // //主要是这一步
+// const navigateOnce = (getStateForAction) => (action, state) => {
+//     const {type, routeName} = action;
+//     if(state &&
+//         type === NavigationActions.NAVIGATE &&
+//         routeName === state.routes[state.routes.length - 1].routeName){
+//         return;
+//     }else{
+//         return getStateForAction(action, state)
+//     }
+//
+//
+// };
+//
+// //这是第二步
+// Route.router.getStateForAction = navigateOnce(Route.router.getStateForAction);
 function routeIsInCurrentState(state: Object, routeName: string) {
     if (state && state.routeName === routeName) {
         return true
@@ -176,5 +156,4 @@ const styles = StyleSheet.create({
         flex: 1,
     }
 });
-let codePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL };
-export default codePush(codePushOptions)(Root);
+export default codePush(Root);

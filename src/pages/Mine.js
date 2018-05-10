@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Foundation';
 import UploadOneImg from '../components/common/UploadOneImg'
 import Text from '../components/common/MyText';
+import MyIcon from 'react-native-vector-icons/MyIcon';
 type Props = {};
 export default class Mine extends Component<Props> {
 
@@ -58,44 +59,24 @@ export default class Mine extends Component<Props> {
             toolList: [
                 {
                     id: 1,
-                    name: "客服热线",
-                    img: require('../images/hotline.png')
+                    name: "优惠券",
+                    img: require('../images/coupon.png')
                 },
                 {
                     id: 2,
-                    name: "我的设置",
-                    img: require('../images/settings.png')
-                },
-                // {
-                //     id: 3,
-                //     name: "会员中心",
-                //     img: require('../images/memberCenter.png')
-                // },
-                {
-                    id: 4,
-                    name: "意见反馈",
-                    img: require('../images/feedback.png')
-                },
-                {
-                    id: 5,
-                    name: "大贸地址",
-                    img: require('../images/bigTradeAddress.png')
-                },
-                {
-                    id: 6,
-                    name: "跨境地址",
-                    img: require('../images/crossBorderAddress.png')
-                },
-                {
-                    id: 7,
                     name: "实名认证",
                     img: require('../images/certification.png')
                 },
                 {
-                    id: 8,
-                    name: "优惠券",
-                    img: require('../images/coupon.png')
-                }
+                    id: 3,
+                    name: "大贸地址",
+                    img: require('../images/bigTradeAddress.png')
+                },
+                {
+                    id: 4,
+                    name: "跨境地址",
+                    img: require('../images/crossBorderAddress.png')
+                },
             ]
         }
     }
@@ -151,6 +132,7 @@ export default class Mine extends Component<Props> {
         });
         return (
             <SafeAreaView style={{flex: 1}}>
+
                 <ScrollView contentContainerStyle={styles.container}
                             refreshControl={
                                 <RefreshControl
@@ -162,44 +144,58 @@ export default class Mine extends Component<Props> {
                                 </RefreshControl>
                             }>
                     {/*<Loading isVisible={this.state.isVisible} size={50} type={'CircleFlip'} color={'orange'}/>*/}
-
                     <View style={styles.mineHeader}>
-                        <View style={styles.mineHeaderActive}>
-
-                        </View>
                         <View style={styles.mineHeaderBackground}>
-
+                            <Image
+                                style={styles.headerBackground}
+                                resizeMode="contain"
+                                source={require('../images/mineHeader.png')}
+                            />
                         </View>
 
                         <View style={styles.userView}>
-                            <Text style={styles.memberName}>{this.state.userInfo.memberName}</Text>
-                            <View style={styles.collectView}>
-                                <TouchableOpacity onPress={() => this.toCollect()}>
-                                    <View style={styles.childView}>
-                                        <Icon1 name='heart' size={30} color={activeColor}></Icon1>
-                                        <Text>收藏</Text>
-                                    </View>
+                            <View style={styles.userTopView}>
+                                <TouchableOpacity onPress={() => this.toSettings()}>
+                                    <MyIcon name="shezhix" size={20} color={whiteColor}/>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.toFootPrint()}>
-                                    <View style={styles.childView}>
-                                        <Icon1 name='foot' size={30} color={activeColor}></Icon1>
-                                        <Text>足迹</Text>
-                                    </View>
+                                <TouchableOpacity onPress={() => this.toHotline()}>
+                                    <MyIcon name="kefux" size={20} color={whiteColor}/>
                                 </TouchableOpacity>
-
-
+                            </View>
+                            <View style={styles.avatarView}>
+                                {
+                                    this.state.userInfo.memberId && <UploadOneImg
+                                        style={styles.avatar}
+                                        onChange={img => this.updateAvatar(img)}
+                                        img={this.state.userInfo.avatar || 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}>
+                                    </UploadOneImg>
+                                }
+                            </View>
+                            <View>
+                                <Text style={styles.memberName}>{this.state.userInfo.memberName}</Text>
                             </View>
                         </View>
-                        <View style={styles.avatarView}>
-                            {
-                                this.state.userInfo.memberId && <UploadOneImg
-                                    style={styles.avatar}
-                                    onChange={img => this.updateAvatar(img)}
-                                    img={this.state.userInfo.avatar || 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}>
-                                </UploadOneImg>
-                            }
 
-                        </View>
+                    </View>
+                    <View style={styles.userCollectView}>
+                        <TouchableOpacity onPress={() => this.toCollect()}>
+                            <View style={styles.collectView}>
+                                <MyIcon name="wode-shoucangx" size={16}/>
+                                <Text style={styles.collectText}>收藏</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.toFootPrint()}>
+                            <View style={styles.collectView}>
+                                <MyIcon name="zujix" size={16}/>
+                                <Text style={styles.collectText}>足迹</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.toFeedback()}>
+                            <View style={styles.collectView}>
+                                <MyIcon name="fankuix" size={16}/>
+                                <Text style={styles.collectText}>反馈</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.cellView}>
                         <Text style={styles.leftCell}>我的订单</Text>
@@ -251,7 +247,9 @@ export default class Mine extends Component<Props> {
     toFootPrint() {
         this.props.navigation.navigate('FootPrint');
     }
-
+    toFeedback(){
+        this.props.navigation.navigate('Feedback');
+    }
     async updateAvatar(img) {
         let userInfo = await HttpUtils.getUserInfo();
         let params = {
@@ -266,40 +264,36 @@ export default class Mine extends Component<Props> {
         })
     }
 
+    toSettings() {
+        this.props.navigation.navigate('Settings');
+    }
+
+    toHotline() {
+        this.props.navigation.navigate('Hotline');
+    }
+
     jumpToTools(id) {
         switch (id) {
-            case 1://客服热线
-                this.props.navigation.navigate('Hotline');
+            case 1://优惠券
+                this.props.navigation.navigate('CouponList');
                 break;
-            case 2://我的设置
-                this.props.navigation.navigate('Settings');
-                break;
-            case 3://会员中心
-                ToastUtil.show('此功能暂未开放，敬请期待!');
-                break;
-            case 4://意见反馈
-                this.props.navigation.navigate('Feedback');
-                break;
-            case 5://大贸地址
-                this.props.navigation.navigate('ManageAddress', {
-                    goBack: () => {
-                    }
-                });
-                break;
-            case 6://跨境地址
-                this.props.navigation.navigate('ManageCrossAddress', {
-                    goBack: () => {
-                    }
-                });
-                break;
-            case 7://实名认证
+            case 2://实名认证
                 this.props.navigation.navigate('ManageCertification', {
                     goBack: () => {
                     }
                 });
                 break;
-            case 8://优惠券
-                this.props.navigation.navigate('CouponList');
+            case 3://大贸地址
+                this.props.navigation.navigate('ManageAddress', {
+                    goBack: () => {
+                    }
+                });
+                break;
+            case 4://跨境地址
+                this.props.navigation.navigate('ManageCrossAddress', {
+                    goBack: () => {
+                    }
+                });
                 break;
         }
     }
@@ -319,29 +313,34 @@ const styles = StyleSheet.create({
         backgroundColor: '#f2f2f2',
     },
     mineHeader: {},
-    mineHeaderActive: {
+    mineHeaderBackground: {},
+    userCollectView: {
         width: screenWidth,
-        height: 90,
-        backgroundColor: activeColor,
-    },
-    mineHeaderBackground: {
-        width: screenWidth,
-        height: 90,
-        backgroundColor: '#f2f2f2',
+        flexDirection: 'row',
+        height: 50,
+        backgroundColor: whiteColor,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom:10
     },
     collectView: {
+        width: screenWidth / 3,
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: 0.3 * screenWidth,
-        marginTop: 20
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 50,
+    },
+    collectText:{
+      marginLeft:5
+    },
+    headerBackground: {
+        width: screenWidth,
+        height: 384 * screenWidth / 828
     },
     childView: {
         alignItems: 'center'
     },
     avatarView: {
-        position: 'absolute',
-        top: 25,
-        left: screenWidth * 0.1,
         backgroundColor: whiteColor,
         borderRadius: 50,
         borderWidth: 1,
@@ -360,17 +359,25 @@ const styles = StyleSheet.create({
     userView: {
         position: 'absolute',
         alignItems: 'center',
-        top: 40,
-        margin: 10,
-        borderRadius: 5,
-        height: 120,
-        width: screenWidth - 20,
-        backgroundColor: whiteColor
+        width: screenWidth,
+        height: 384 * screenWidth / 828,
+    },
+    userTopView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: screenWidth - 40,
+        marginTop: StatusBarHeight + 10
+    },
+    memberNameView: {
+        alignItems: 'center',
+        width: screenWidth,
     },
     memberName: {
-        marginLeft: 90,
         marginTop: 10,
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        color: whiteColor,
+
+
     },
     cellView: {
         width: screenWidth,
@@ -422,7 +429,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     toolItemTouch: {
-        width: screenWidth / 5,
+        width: screenWidth / 4,
         alignItems: 'center',
         marginTop: 10,
     },
