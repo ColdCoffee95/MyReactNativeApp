@@ -3,6 +3,7 @@ import {
     StyleSheet,
     View,
     BackHandler,
+    StatusBar,
     AppState
 } from 'react-native';
 import {observable, action} from 'mobx';
@@ -18,6 +19,8 @@ import {addNavigationHelpers, NavigationActions, createNavigationContainer} from
 import Route from '../../App';
 const RootNavigator = Route;
 const rootNavigation = new NavigationStore(RootNavigator);
+// global.statusBarHeight = StatusBar.currentHeight;
+
 // console.disableYellowBox = true;
 class Root extends Component {
     render() {
@@ -34,7 +37,6 @@ class App extends React.Component {
         setTimeout(() => {
             SplashScreen.hide();
         }, 2000);
-
         if (platform === 'Android') {
             this.backAndroidHandler = this.backHandle.bind(this);
             BackHandler.addEventListener('hardwareBackPress', this.backAndroidHandler);
@@ -74,6 +76,7 @@ class App extends React.Component {
         const {state, dispatch, addListener} = this.props.rootNavigation;
         return (
             <View style={styles.rootContainer}>
+                <StatusBar translucent={true} barStyle="dark-content" backgroundColor={whiteColor}/>
                 <RootNavigator
                     navigation={addNavigationHelpers({state, dispatch, addListener})}
                 />

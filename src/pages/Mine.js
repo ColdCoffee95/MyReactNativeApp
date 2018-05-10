@@ -19,6 +19,7 @@ import Icon1 from 'react-native-vector-icons/Foundation';
 import UploadOneImg from '../components/common/UploadOneImg'
 import Text from '../components/common/MyText';
 import Icon2 from 'react-native-vector-icons/MyIcon';
+import TransparentStatusBar from '../components/common/TransparentStatusBar'
 type Props = {};
 export default class Mine extends Component<Props> {
 
@@ -152,6 +153,7 @@ export default class Mine extends Component<Props> {
         });
         return (
             <SafeAreaView style={{flex: 1}}>
+
                 <ScrollView contentContainerStyle={styles.container}
                             refreshControl={
                                 <RefreshControl
@@ -162,46 +164,54 @@ export default class Mine extends Component<Props> {
 
                                 </RefreshControl>
                             }>
+                    <TransparentStatusBar/>
                     {/*<Loading isVisible={this.state.isVisible} size={50} type={'CircleFlip'} color={'orange'}/>*/}
-
                     <View style={styles.mineHeader}>
-                        <View style={styles.mineHeaderActive}>
-
-                        </View>
                         <View style={styles.mineHeaderBackground}>
-
+                            <Image
+                                style={styles.headerBackground}
+                                resizeMode="contain"
+                                source={require('../images/mineHeader.png')}
+                            />
                         </View>
 
                         <View style={styles.userView}>
-                            <Text style={styles.memberName}>{this.state.userInfo.memberName}</Text>
-                            <View style={styles.collectView}>
-                                <TouchableOpacity onPress={() => this.toCollect()}>
-                                    <View style={styles.childView}>
-                                        <Icon2 name="jiarugouwucheiconx" size={30} color={activeColor}/>
-                                        <Icon1 name='heart' size={30} color={activeColor}></Icon1>
-                                        <Text>收藏</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.toFootPrint()}>
-                                    <View style={styles.childView}>
-                                        <Icon1 name='foot' size={30} color={activeColor}></Icon1>
-                                        <Text>足迹</Text>
-                                    </View>
-                                </TouchableOpacity>
-
-
+                            <View style={styles.userTopView}>
+                                <Icon2 name="shezhix" size={20} color={whiteColor}/>
+                                <Icon2 name="kefux" size={20} color={whiteColor}/>
                             </View>
-                        </View>
-                        <View style={styles.avatarView}>
-                            {
-                                this.state.userInfo.memberId && <UploadOneImg
-                                    style={styles.avatar}
-                                    onChange={img => this.updateAvatar(img)}
-                                    img={this.state.userInfo.avatar || 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}>
-                                </UploadOneImg>
-                            }
+                            <View style={styles.avatarView}>
+                                {
+                                    this.state.userInfo.memberId && <UploadOneImg
+                                        style={styles.avatar}
+                                        onChange={img => this.updateAvatar(img)}
+                                        img={this.state.userInfo.avatar || 'http://dianlijiheoss.metchange.com/161516865146_.pic.jpg'}>
+                                    </UploadOneImg>
+                                }
+                            </View>
+                            <View>
+                                <Text style={styles.memberName}>{this.state.userInfo.memberName}</Text>
+                            </View>
 
+                            {/*<View style={styles.collectView}>*/}
+                            {/*<TouchableOpacity onPress={() => this.toCollect()}>*/}
+                            {/*<View style={styles.childView}>*/}
+                            {/*<Icon2 name="jiarugouwucheiconx" size={30} color={activeColor}/>*/}
+                            {/*<Icon1 name='heart' size={30} color={activeColor}></Icon1>*/}
+                            {/*<Text>收藏</Text>*/}
+                            {/*</View>*/}
+                            {/*</TouchableOpacity>*/}
+                            {/*<TouchableOpacity onPress={() => this.toFootPrint()}>*/}
+                            {/*<View style={styles.childView}>*/}
+                            {/*<Icon1 name='foot' size={30} color={activeColor}></Icon1>*/}
+                            {/*<Text>足迹</Text>*/}
+                            {/*</View>*/}
+                            {/*</TouchableOpacity>*/}
+
+
+                            {/*</View>*/}
                         </View>
+
                     </View>
                     <View style={styles.cellView}>
                         <Text style={styles.leftCell}>我的订单</Text>
@@ -321,15 +331,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#f2f2f2',
     },
     mineHeader: {},
-    mineHeaderActive: {
+    mineHeaderBackground: {},
+    headerBackground: {
         width: screenWidth,
-        height: 90,
-        backgroundColor: activeColor,
-    },
-    mineHeaderBackground: {
-        width: screenWidth,
-        height: 90,
-        backgroundColor: '#f2f2f2',
+        height: 384 * screenWidth / 828
     },
     collectView: {
         flexDirection: 'row',
@@ -341,9 +346,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     avatarView: {
-        position: 'absolute',
-        top: 25,
-        left: screenWidth * 0.1,
         backgroundColor: whiteColor,
         borderRadius: 50,
         borderWidth: 1,
@@ -362,17 +364,25 @@ const styles = StyleSheet.create({
     userView: {
         position: 'absolute',
         alignItems: 'center',
-        top: 40,
-        margin: 10,
-        borderRadius: 5,
-        height: 120,
-        width: screenWidth - 20,
-        backgroundColor: whiteColor
+        width: screenWidth,
+        height: 384 * screenWidth / 828,
+    },
+    userTopView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: screenWidth - 40,
+        marginTop: TransparentStatusBar.currentHeight + 10
+    },
+    memberNameView: {
+        alignItems: 'center',
+        width: screenWidth,
     },
     memberName: {
-        marginLeft: 90,
         marginTop: 10,
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        color: whiteColor,
+
+
     },
     cellView: {
         width: screenWidth,

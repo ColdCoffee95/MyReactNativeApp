@@ -10,6 +10,7 @@ import {
     Image,
     TouchableHighlight,
     RefreshControl,
+    StatusBar,
     SafeAreaView,
     TouchableOpacity,
     View
