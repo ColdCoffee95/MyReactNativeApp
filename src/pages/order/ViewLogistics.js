@@ -47,7 +47,7 @@ export default class ViewLogistics extends Component<Props> {
                             />
                         </View>
                         <View style={styles.deliveryInfoView}>
-                            <Text numberOfLines={2}>物流状态：{value.headInfo}</Text>
+                            <Text numberOfLines={2}>物流状态：{value.headInfo || '等待揽件'}</Text>
                             <Text>承运来源：{value.logisticsName}</Text>
                             <Text>运单编号：{value.logsiticsNumber}</Text>
                         </View>
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     lookView: {
         borderColor: borderColor,
         borderWidth: 1,
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 6,
+        paddingRight: 6,
         paddingTop: 6,
         paddingBottom: 6,
         borderRadius: 6,

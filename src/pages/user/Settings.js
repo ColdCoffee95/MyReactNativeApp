@@ -12,6 +12,7 @@ import {
     Alert,
     View
 } from 'react-native';
+import codePush from 'react-native-code-push';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Text from '../../components/common/MyText';
 type Props = {};
@@ -69,6 +70,11 @@ export default class Settings extends Component<Props> {
                                 </View>
                             </View>
                         </TouchableHighlight>
+                        <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.checkForUpdate()}>
+                            <View style={styles.cellView}>
+                                <Text style={styles.leftCell}>检查更新</Text>
+                            </View>
+                        </TouchableHighlight>
                         <TouchableHighlight underlayColor='#f2f2f2' onPress={() => {
                             this.aboutus()
                         }}>
@@ -124,6 +130,45 @@ export default class Settings extends Component<Props> {
         }
 
     }
+    checkForUpdate(){
+        codePush.checkForUpdate(deploymentKey).then((update) => {
+            if (!update) {
+                Alert.alert("提示", "当前已经是最新版本！", [
+                    {
+                        text: "Ok", onPress: () => {
+                            console.log("点了OK");
+                        }
+                    }
+                ]);
+            } else {
+                codePush.sync({
+                        deploymentKey: deploymentKey,
+                        updateDialog: {
+                            optionalIgnoreButtonLabel: '稍后',
+                            optionalInstallButtonLabel: '立即更新',
+                            optionalUpdateMessage: '有新版本了，是否更新？',
+                            title: '更新提示'
+                        },
+                        installMode: codePush.InstallMode.IMMEDIATE,
+
+                    },
+                    (status) => {
+                        switch (status) {
+                            case codePush.SyncStatus.DOWNLOADING_PACKAGE:
+                                console.log("DOWNLOADING_PACKAGE");
+                                break;
+                            case codePush.SyncStatus.INSTALLING_UPDATE:
+                                console.log(" INSTALLING_UPDATE");
+                                break;
+                        }
+                    },
+                    (progress) => {
+                        console.log(progress.receivedBytes + " of " + progress.totalBytes + " received.");
+                    }
+                );
+            }
+        })
+    }
 
     logout() {
         Alert.alert(null, '是否确定退出登录？',
@@ -132,6 +177,7 @@ export default class Settings extends Component<Props> {
                     text: "确定", onPress: () => {
                         storage.remove({key: 'loginState'});
                         storage.remove({key: 'userInfo'});
+                        storage.remove({key: 'addressData'});
                         jumpAndClear(this.props.navigation, 'Login')
                     }
                 },

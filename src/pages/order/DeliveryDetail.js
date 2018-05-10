@@ -37,25 +37,28 @@ export default class DeliveryDetail extends Component<Props> {
         } else {
             let deliveryView = [];
             const {deliveryList, deliveryInfo} = this.state;
-            deliveryList.map((value, index) => {
-                let colorValue = index === 0 ? '#0b74c4' : '#888';
-                let backgroundColor = index === 0 ? '#0b74c4' : '#e0e0e0';
-                deliveryView.push(
-                    <View style={styles.expressItem} key={index}>
-                        <View style={styles.expressRightFirst}>
-                            <View style={styles.process}>
-                                <Text style={{color: colorValue, fontSize: 14}}>{value.Context}</Text>
-                                <Text style={{
-                                    color: colorValue,
-                                    fontSize: 12,
-                                    marginTop: 10
-                                }}>{dateFormat(value.Time)}</Text>
+            if(deliveryList.length > 0){
+                deliveryList.map((value, index) => {
+                    let colorValue = index === 0 ? '#0b74c4' : '#888';
+                    let backgroundColor = index === 0 ? '#0b74c4' : '#e0e0e0';
+                    deliveryView.push(
+                        <View style={styles.expressItem} key={index}>
+                            <View style={styles.expressRightFirst}>
+                                <View style={styles.process}>
+                                    <Text style={{color: colorValue, fontSize: 14}}>{value.Context}</Text>
+                                    <Text style={{
+                                        color: colorValue,
+                                        fontSize: 12,
+                                        marginTop: 10
+                                    }}>{dateFormat(value.Time)}</Text>
+                                </View>
                             </View>
+                            <View style={[styles.expressLeft, {backgroundColor: backgroundColor}]}/>
                         </View>
-                        <View style={[styles.expressLeft, {backgroundColor: backgroundColor}]}/>
-                    </View>
-                );
-            });
+                    );
+                });
+            }
+
             return <SafeAreaView style={{flex: 1}}>
                 <ScrollView contentContainerStyle={styles.content}>
                     <View style={styles.itemView}>
@@ -67,7 +70,7 @@ export default class DeliveryDetail extends Component<Props> {
                             />
                         </View>
                         <View style={styles.deliveryInfoView}>
-                            <Text numberOfLines={2}>物流状态：{deliveryList[0].Context}</Text>
+                            <Text numberOfLines={2}>物流状态：{deliveryList.length > 0?deliveryList[0].Context:'等待揽件中'}</Text>
                             <Text>承运来源：{deliveryInfo.companyName}</Text>
                             <Text>运单编号：{deliveryInfo.number}</Text>
                         </View>
@@ -91,7 +94,6 @@ export default class DeliveryDetail extends Component<Props> {
             detail.map(value => {
                 arr.push(JSON.parse(value))
             });
-            console.warn(arr)
             this.setState({
                 deliveryList: arr,
                 deliveryInfo: data.data,

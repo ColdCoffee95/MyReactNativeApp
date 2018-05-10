@@ -100,10 +100,11 @@ global.borderColor = '#e9e9e9';
 global.screenWidth = Dimensions.get('window').width;
 global.screenHeight = Dimensions.get('window').height;
 global.HttpUtils = HttpUtils;
-global.hotline = '0571-28218551';
+global.hotline = '0571-56663386';
 // global.serverUrl = 'http://192.168.41.78:9010/api';
 global.serverUrl = 'http://api.metchange.com/api';
 
 global.imgDomain = 'http://dianlijiheoss.metchange.com/';
+global.deploymentKey = 'dFdfJbvEypEEPdDg8vv6hZ-9AM-Y19ccb09f-4b96-4bd9-8aea-386962cba91f';//codepush的key
 global.version = DeviceInfo.getVersion();
 global.platform = DeviceInfo.getSystemName();
