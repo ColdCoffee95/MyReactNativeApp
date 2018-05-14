@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="58px" height="58px" viewBox="0 0 58 58" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>优惠券@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FDD33D" offset="0%"></stop>
+            <stop stop-color="#E68650" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-2" cx="25" cy="25" r="25"></circle>
+        <filter x="-14.0%" y="-10.0%" width="128.0%" height="128.0%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.12 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="47.3955341%" y1="10.3940351%" x2="47.3955333%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#FFFFFF" stop-opacity="0.7" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <path d="M39.16668,22.3332456 C37.3033558,23.1312591 36.6666857,23.7521801 36.6666514,24.9999177 C36.6666514,26.2476828 37.3464768,26.9159345 39.1666457,27.6666173 C39.7909759,28.0410401 39.9999657,28.2718253 39.9999657,28.9999671 C39.9999657,30.3334266 39.9999657,32.999989 39.9999657,32.999989 C39.9999657,34.1046651 38.8806343,35 37.4999714,35 L12.4999943,35 C11.1193314,35 10,34.1046651 10,32.999989 C10,32.999989 10,29.3174339 10,28.9999671 C10,28.631824 10.1520207,28.0295502 10.8825082,27.6638202 C11.920362,27.3834008 13.3333485,26.7983481 13.3333485,25.0000548 C13.3333485,23.6143286 11.9718467,22.7573848 10.8333543,22.3332456 C10.0520332,21.9958976 10.0000343,21.5973707 10.0000343,20.9998958 C10.0000343,20.682045 10.0000343,17.000011 10.0000343,17.000011 C10.0000343,15.895472 11.1193656,15 12.5000285,15 L37.5000057,15 C38.8806686,15 40,15.8954721 40,17.000011 C40,17.000011 40,20.2216263 40,20.9998958 C40,21.5735135 39.9773426,21.902717 39.16668,22.3332456 Z M29.5833457,23.6665954 L26.4373579,23.6665954 L29.8523554,20.7312405 C30.0000228,20.6021642 30.0000228,20.3927134 29.8523554,20.2635 L29.3178665,19.7957594 C29.1701991,19.666546 28.9310451,19.666546 28.7833776,19.7957594 L24.996058,23.0509943 L21.207196,19.79469 C21.060694,19.666546 20.8231853,19.666546 20.6768547,19.79469 L20.1465134,20.2588382 C20.0000114,20.3869821 20.0000114,20.5947053 20.1465134,20.7228493 L23.5716913,23.6665954 L20.4166885,23.6665954 C20.1865152,23.6665954 20.0000114,23.8159367 20.0000114,23.9999397 L20.0000114,24.666738 C20.0000114,24.8508781 20.1865152,25.0000823 20.4166885,25.0000823 L24.16668,25.0000823 L24.16668,26.333432 L20.4166885,26.333432 C20.1865152,26.333432 20.0000114,26.4826363 20.0000114,26.6667763 L20.0000114,27.3334375 C20.0000114,27.5174405 20.1865152,27.6667818 20.4166885,27.6667818 L24.16668,27.6667818 L24.16668,30.0001371 C24.16668,30.1841401 24.3531838,30.3334814 24.5833571,30.3334814 L25.4166771,30.3334814 C25.6468504,30.3334814 25.8333542,30.1841401 25.8333542,30.0001371 L25.8333542,27.6667818 L29.5833457,27.6667818 C29.813519,27.6667818 30.0000228,27.5174405 30.0000228,27.3334375 L30.0000228,26.6667763 C30.0000228,26.4826363 29.813519,26.333432 29.5833457,26.333432 L25.8333543,26.333432 L25.8333543,25.0000823 L29.5833457,25.0000823 C29.813519,25.0000823 30.0000228,24.8508781 30.0000228,24.666738 L30.0000228,23.9999397 C30.0000229,23.8159093 29.813519,23.6665954 29.5833457,23.6665954 Z" id="path-5"></path>
+        <filter x="-23.3%" y="-25.0%" width="146.7%" height="170.0%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.12 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-322.000000, -278.000000)">
+        <g id="分类" transform="translate(35.000000, 280.000000)">
+            <g id="Group-10" transform="translate(288.000000, 0.000000)">
+                <g id="优惠券" transform="translate(3.000000, 0.000000)">
+                    <g id="Oval-2-Copy-3">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                        <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+                    </g>
+                    <g id="Shape" fill-rule="nonzero">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                        <use fill="url(#linearGradient-4)" fill-rule="evenodd" xlink:href="#path-5"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

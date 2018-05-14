@@ -16,6 +16,8 @@ import codePush from 'react-native-code-push';
 import SplashScreen from 'react-native-splash-screen';
 import {addNavigationHelpers, NavigationActions, createNavigationContainer} from "react-navigation";
 import Route from '../../App';
+import CommonStatusBar from '../components/common/CommonStatusBar';
+import TransparentStatusBar from "../components/common/TransparentStatusBar";
 const RootNavigator = Route;
 const rootNavigation = new NavigationStore(RootNavigator);
 // console.disableYellowBox = true;
@@ -34,7 +36,6 @@ class App extends React.Component {
         setTimeout(() => {
             SplashScreen.hide();
         }, 2000);
-
         if (platform === 'Android') {
             this.backAndroidHandler = this.backHandle.bind(this);
             BackHandler.addEventListener('hardwareBackPress', this.backAndroidHandler);
@@ -72,8 +73,20 @@ class App extends React.Component {
 
     render() {
         const {state, dispatch, addListener} = this.props.rootNavigation;
+        let nowRoute = state.routes[state.routes.length - 1];
+        let isTransparent = false;
+        if (nowRoute.routeName === 'Main' && (nowRoute.index === 0 || nowRoute.index === 3)) {
+            isTransparent = true;
+        }
         return (
             <View style={styles.rootContainer}>
+                {
+                    isTransparent && <TransparentStatusBar/>
+                }
+                {
+                    !isTransparent && <CommonStatusBar/>
+                }
+
                 <RootNavigator
                     navigation={addNavigationHelpers({state, dispatch, addListener})}
                 />
@@ -104,11 +117,11 @@ class App extends React.Component {
 // //这是第二步
 // Route.router.getStateForAction = navigateOnce(Route.router.getStateForAction);
 function routeIsInCurrentState(state: Object, routeName: string) {
-    if(state && state.routeName === routeName) {
+    if (state && state.routeName === routeName) {
         return true
     }
 
-    if(state && state.routes) {
+    if (state && state.routes) {
         return routeIsInCurrentState(state.routes[state.index], routeName)
     }
 
@@ -131,7 +144,7 @@ Route.router.getStateForAction = (action, state) => {
         }
     }
     if (state && action.type === NavigationActions.NAVIGATE) {
-        if(routeIsInCurrentState(state, action.routeName)) {
+        if (routeIsInCurrentState(state, action.routeName)) {
 //避免重复跳转
             return state
         }

@@ -13,7 +13,7 @@ import {
 import ActiveButton from '../../components/common/ActiveButton'
 import FormCell from '../../components/common/FormCell'
 import UploadOneImg from '../../components/common/UploadOneImg'
-
+import Text from '../../components/common/MyText';
 type Props = {};
 export default class AddCertification extends Component<Props> {
 
@@ -45,19 +45,23 @@ export default class AddCertification extends Component<Props> {
                         maxLength={18}
                         onChange={text => this.setState({idCard: text})}>
                     </FormCell>
+                    <View style={styles.idCardTextView}>
+                        <Text style={{marginLeft: 10}}>身份证照片</Text>
+                        <Text style={{color: '#999', marginLeft: 10, fontSize: 12}}>(可选填)</Text>
+                    </View>
                     <View style={styles.uploadImgView}>
                         <View style={styles.uploadView}>
                             <UploadOneImg
-                                width={100}
-                                height={100}
+                                width={120}
+                                height={75}
                                 onChange={img => this.setState({idCardImg: img})}
                                 title="身份证正面">
                             </UploadOneImg>
                         </View>
                         <View style={styles.uploadView}>
                             <UploadOneImg
-                                width={100}
-                                height={100}
+                                width={120}
+                                height={75}
                                 onChange={img => this.setState({idCardBgImg: img})}
                                 title="身份证反面">
                             </UploadOneImg>
@@ -98,6 +102,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: whiteColor,
     },
+    idCardTextView: {
+        width: screenWidth,
+        flexDirection: 'row',
+        height: 40,
+        alignItems: 'center'
+    },
     bottomBtnView: {
         position: 'absolute',
         bottom: 0
@@ -111,7 +121,7 @@ const styles = StyleSheet.create({
     uploadImgView: {
         width: screenWidth,
         flexDirection: 'row',
-        marginTop: 30
+        marginTop: 10
     },
     uploadView: {
         width: screenWidth / 2,

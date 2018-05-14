@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+import MyIcon from 'react-native-vector-icons/MyIcon';
 import ActiveButton from '../../components/common/ActiveButton';
 import Text from '../../components/common/MyText';
 
@@ -66,9 +67,13 @@ export default class ManageCertification extends Component<Props> {
                                             (<Icon name="check-circle" size={16} color={activeColor}></Icon>) :
                                             (<Icon2 name="checkbox-blank-circle-outline" size={16}></Icon2>)
                                     }
+                                    {
+                                        value.defaults ?
+                                            (<Text style={styles.defaultOperate}>默认</Text>) :
+                                            (<Text style={styles.defaultOperate}>设为默认实名信息</Text>)
+                                    }
 
 
-                                    <Text style={styles.defaultOperate}>默认实名信息</Text>
                                 </View>
                             </TouchableHighlight>
 
@@ -81,7 +86,7 @@ export default class ManageCertification extends Component<Props> {
                                     onPress={() => this.deleteCertification(value.id)}
                                     underlayColor='#fff'>
                                     <View style={styles.editView}>
-                                        <Icon name="trash" size={16}></Icon>
+                                        <MyIcon name="shanchuiconx" size={16}/>
                                         <Text style={styles.editText}>删除</Text>
                                     </View>
                                 </TouchableHighlight>
