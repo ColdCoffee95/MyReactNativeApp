@@ -305,6 +305,7 @@ export default class GoodsList extends Component<Props> {
     async fetchData() {
         this.state.isLoading = true;
         this.state.pageNo = 1;
+        this.state.allLoadCompleted = false;
         let params = {
             firstCatId: this.state.firstCatId,
             secondCatIds: this.state.secondCatIds,

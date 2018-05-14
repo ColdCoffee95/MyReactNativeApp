@@ -279,6 +279,7 @@ export default class Order extends Component<Props> {
     fetchData() {
         this.state.isLoading = true;
         this.state.pageNo = 1;
+        this.state.allLoadCompleted = false;
         let params = {
             pageSize: this.state.pageSize,
             pageNum: this.state.pageNo,

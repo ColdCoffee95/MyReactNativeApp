@@ -269,8 +269,7 @@ export default class SelectPayType extends Component<Props> {
             console.warn(data);
             if (data[0].resultStatus == '9000') {
                 this.props.navigation.replace('PaySuccess', {
-                    type: 'alipay',
-                    goBack: this.props.navigation.state.params.goBack
+                    type: 'alipay'
                 });
             }
         }, function (err) {
@@ -315,8 +314,7 @@ export default class SelectPayType extends Component<Props> {
             let payResult = await WeChat.pay(wxParams);
             if (payResult.errCode === 0) {
                 this.props.navigation.replace('PaySuccess', {
-                    type: 'weixin',
-                    goBack: this.props.navigation.state.params.goBack
+                    type: 'weixin'
                 });
             } else if (payResult.errCode === -1) {
                 console.warn(payResult.errStr);
