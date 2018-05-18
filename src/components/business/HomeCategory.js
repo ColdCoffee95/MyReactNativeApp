@@ -37,14 +37,14 @@ export default class HomeCategory extends Component<Props> {
         );
     }
 
-    async fetchData() {
+    async fetchData() {//获取数据
         HttpUtils.get('/goodsCat/catList', {catId: -1}, data => {
             this.setState({catList: data.data});
             this.setState({isLoading: false});
         })
     }
 
-    showPage() {
+    showPage() {//显示页面
         let catImgList = [];
         this.state.catList.map(value => {
             catImgList.push(
@@ -66,7 +66,7 @@ export default class HomeCategory extends Component<Props> {
 
     }
 
-    goodsList(id) {
+    goodsList(id) {//跳转到商品列表
         this.props.navigation.navigate('GoodsList', {id: id});
     }
 }

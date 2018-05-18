@@ -79,17 +79,17 @@ export default class CartComponent extends Component {
         </View>
     }
 
-    toGoodsDetail(id) {
+    toGoodsDetail(id) {//跳转到商品详情
         this.props.navigation.navigate('GoodsDetail', {id: id});
     }
 
     @action
-    changeNumber = (id, number) => {
+    changeNumber = (id, number) => {//改变购物车
         this.props.data.changeNumber(id, number);
     };
 
     @action
-    selectPress = (id) => {
+    selectPress = (id) => {//选择或反选商品
         this.props.data.itemPress(id);
     };
 }

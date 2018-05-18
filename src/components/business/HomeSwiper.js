@@ -75,7 +75,7 @@ export default class HomeSwiper extends Component<Props> {
         }
 
     }
-    toGoodsDetail(id){
+    toGoodsDetail(id){//跳转到商品详情
         this.props.navigation.navigate('GoodsDetail', {id: id});
     }}
 

@@ -47,13 +47,12 @@ export default class SelectPayType extends Component<Props> {
     }
 
     static navigationOptions = ({navigation, screenProps}) => ({
-        headerLeft:
-            <TouchableOpacity
-                onPress={() => navigation.state.params && navigation.state.params.confirmBack && navigation.state.params.confirmBack()}>
-                <View style={{paddingLeft: 15}}>
-                    <Icon name='angle-left' size={40} color='black'></Icon>
-                </View>
-            </TouchableOpacity>
+        headerLeft: <TouchableOpacity
+            onPress={() => navigation.state.params && navigation.state.params.confirmBack && navigation.state.params.confirmBack()}>
+            <View style={{paddingLeft: 15}}>
+                <Icon name='angle-left' size={40} color='black'></Icon>
+            </View>
+        </TouchableOpacity>
     });
 
     componentDidMount() {
@@ -209,12 +208,12 @@ export default class SelectPayType extends Component<Props> {
             [
                 {
                     text: "确认离开", onPress: () => {
-                        this.back();
-                    }
+                    this.back();
+                }
                 },
                 {
                     text: "继续支付", onPress: () => {
-                    }
+                }
                 },
             ],
             {cancelable: false}
@@ -228,7 +227,6 @@ export default class SelectPayType extends Component<Props> {
     }
 
     fetchData() {
-        this.state.isLoading = true;
         HttpUtils.post('/order/viewOrderInfo', {orderId: this.state.orderId}, data => {
             if (!data.data) {
                 return;
@@ -266,13 +264,10 @@ export default class SelectPayType extends Component<Props> {
         let alipayParams = await this.getAliPayParams(loginState);
         // let isInstalled = await WeChat.isWXAppInstalled();
         Alipay.pay(alipayParams).then(data => {
-            console.warn(data);
-            if (data[0].resultStatus == '9000') {
-                this.props.navigation.replace('PaySuccess', {
-                    type: 'alipay',
-                    goBack: this.props.navigation.state.params.goBack
-                });
-            }
+            this.props.navigation.replace('PaySuccess', {
+                type: 'alipay',
+                goBack: this.props.navigation.state.params.goBack
+            });
         }, function (err) {
             console.log(err);
         });
@@ -299,6 +294,7 @@ export default class SelectPayType extends Component<Props> {
 
     _handleAppStateChange = (nextState) => {
         if (nextState === 'active') {
+
             this.fetchData();
         }
     }
@@ -372,8 +368,8 @@ export default class SelectPayType extends Component<Props> {
                     [
                         {
                             text: '确定', onPress: () => {
-                                this.back();
-                            }
+                            this.back();
+                        }
                         }
                     ],
                     {cancelable: false});

@@ -62,23 +62,23 @@ export default class PlatformPlate extends Component<Props> {
         );
     }
 
-    milkCurrency() {
+    milkCurrency() {//跳转到奶粉通货
         this.props.navigation.navigate('MilkCurrency');
     }
 
-    diaperCurrency() {
+    diaperCurrency() {//跳转到尿不湿通货
         this.props.navigation.navigate('DiaperCurrency');
     }
 
-    limitedPurchase() {
+    limitedPurchase() {//跳转到限时抢购
         this.props.navigation.navigate('LimitedPurchase');
     }
 
-    brandSelection() {
+    brandSelection() {//跳转到品牌精选
         this.props.navigation.navigate('BrandSelection');
     }
 
-    newSale() {
+    newSale() {//跳转到新品特卖
         this.props.navigation.navigate('NewSale');
     }
 }

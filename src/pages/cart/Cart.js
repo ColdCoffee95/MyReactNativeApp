@@ -39,8 +39,8 @@ export default class Cart extends Component<Props> {
         this.data = CartGoods;
     }
 
-    static navigationOptions = ({navigation, screenProps}) => ({
-        tabBarOnPress: (scene, jumpToIndex) => {
+    static navigationOptions = ({navigation, screenProps}) => ({//导航栏
+        tabBarOnPress: (scene, jumpToIndex) => {//点击tab时调用
             navigation.navigate(scene.scene.route.key);
             if (navigation.state.params && navigation.state.params.fetchData) {
                 navigation.state.params.fetchData();
@@ -217,14 +217,14 @@ export default class Cart extends Component<Props> {
         this.fetchData();
     }
 
-    closeRow(rowMap, rowKey) {
+    closeRow(rowMap, rowKey) {//关闭左滑
         if (rowMap[rowKey]) {
             rowMap[rowKey].closeRow();
         }
     }
 
     confirmOrder() {
-        //生成订单
+        //确认订单
         let cartList = this.data.itemData.data;
         let arr = [];
         cartList.filter(value => value.itemSelect === 1).map(value => {
@@ -244,16 +244,16 @@ export default class Cart extends Component<Props> {
         })
     }
 
-    changeTab(index) {
+    changeTab(index) {//改变贸易形态时调用
         this.state.tradeType = index;
         this.fetchData();
     }
 
-    backToHome() {
+    backToHome() {//返回首页
         this.props.navigation.navigate('Home')
     }
 
-    fetchData() {
+    fetchData() {//获取购物车列表
         this.state.isLoading = true;
         let params = {
             tradeType: this.state.tradeType

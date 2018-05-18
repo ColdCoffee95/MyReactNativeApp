@@ -86,7 +86,7 @@ export default class BrandSelection extends Component<Props> {
         }
     }
 
-    fetchData() {
+    fetchData() {//获取数据
         let params = {
             pageSize: this.state.pageSize,
             pageNo: 1,
@@ -103,7 +103,7 @@ export default class BrandSelection extends Component<Props> {
         })
     }
 
-    _renderFooter() {
+    _renderFooter() {//渲染尾部
         if (this.state.loadingMore) {
             return <View/>
         } else if (this.state.allLoadCompleted) {
@@ -115,7 +115,7 @@ export default class BrandSelection extends Component<Props> {
         }
     }
 
-    _onEndReached() {
+    _onEndReached() {//滑到底部时获取新数据
         if (this.state.allLoadCompleted || this.state.loadingMore) {
             return;
         }
@@ -138,7 +138,7 @@ export default class BrandSelection extends Component<Props> {
     }
 
     _keyExtractor = (item, index) => item.id;
-    _renderItem = ({item}) => (
+    _renderItem = ({item}) => (//渲染每个商品
         <TouchableHighlight underlayColor='#f2f2f2' onPress={() => this.goodsDetail(item.id)}>
             <View style={styles.goodsView} key={item.id}>
                 <View style={styles.goodsImgView}>
@@ -167,7 +167,7 @@ export default class BrandSelection extends Component<Props> {
         </TouchableHighlight>
     );
 
-    goodsDetail(id) {
+    goodsDetail(id) {//跳转到商品详情
         this.props.navigation.navigate('GoodsDetail', {id: id});
     }
 }

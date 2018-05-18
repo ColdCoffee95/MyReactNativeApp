@@ -138,7 +138,7 @@ export default class AddAddress extends Component<Props> {
         });
     }
 
-    save() {
+    save() {//保存
         let params = {
             contacts: this.state.contacts.trim(),
             mobile: this.state.mobile.trim(),

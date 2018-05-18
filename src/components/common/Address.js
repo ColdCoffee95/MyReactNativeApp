@@ -88,7 +88,7 @@ export default class Address extends Component<Props> {
         );
     }
 
-    selectRegionList() {
+    selectRegionList() {//查询地区列表
         return new Promise((resolve, reject) => {
             storage.load({key: 'addressData'}).then(res => {
                 resolve(res)
@@ -102,7 +102,7 @@ export default class Address extends Component<Props> {
 
     }
 
-    async fetchData() {
+    async fetchData() {//数据初始化
         this.state.addressData = await this.selectRegionList();
         let provinceList = this.getProvinceList();
         this.setState({provinceList: provinceList})
@@ -125,7 +125,7 @@ export default class Address extends Component<Props> {
         }
     }
 
-    getProvinceList() {
+    getProvinceList() {//获取省列表
         let arr = [];
         this.state.addressData.filter(value => !value.parent).map(value => {
             arr.push(value)
@@ -133,7 +133,7 @@ export default class Address extends Component<Props> {
         return arr;
     }
 
-    getCityList(provinceId) {
+    getCityList(provinceId) {//获取市列表
         let arr = [];
         this.state.addressData.filter(value => value.parent == provinceId).map(value => {
             arr.push(value)
@@ -141,18 +141,18 @@ export default class Address extends Component<Props> {
         return arr;
     }
 
-    changeProvince(provinceId) {//
+    changeProvince(provinceId) {//改变省调用此方法
         this.state.provinceId = provinceId;
         this.state.provinceName = this.state.addressData.find(value => value.value == provinceId).name;
     }
 
 
-    changeCity(cityId) {
+    changeCity(cityId) {//改变市调用此方法
         this.state.cityId = cityId;
         this.state.cityName = this.state.addressData.find(value => value.value == cityId).name;
     }
 
-    getAreaList(cityId) {
+    getAreaList(cityId) {//获取地区列表
         let arr = [];
         this.state.addressData.filter(value => value.parent == cityId).map(value => {
             arr.push(value)
@@ -160,7 +160,7 @@ export default class Address extends Component<Props> {
         return arr;
     }
 
-    changeArea(areaId) {
+    changeArea(areaId) {//改变地区调用此方法
         this.state.areaId = areaId;
         this.state.areaName = this.state.addressData.find(value => value.value == areaId).name;
         this.setState({

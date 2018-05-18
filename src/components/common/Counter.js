@@ -72,12 +72,12 @@ export default class Counter extends Component<Props> {
         );
     }
 
-    changeNumber(num) {
+    changeNumber(num) {//值变化后返回给父组件
         this.setState({currentValue: num});
         this.props.onChangeNum(num);
     }
 
-    judgeNum() {
+    judgeNum() {//判断新数字是否符合要求
         let num = this.state.currentValue;
         if (!num) {
             this.changeNumber(this.state.min);
@@ -103,7 +103,7 @@ export default class Counter extends Component<Props> {
         this.changeNumber(num);
     }
 
-    addValue() {
+    addValue() {//点击加号
         let num = parseInt(this.state.currentValue);
         if (this.state.sellout) {
             ToastUtil.show('该商品已售罄');
@@ -117,7 +117,7 @@ export default class Counter extends Component<Props> {
         this.changeNumber(value);
     }
 
-    cutValue() {
+    cutValue() {//点击减号
         let num = parseInt(this.state.currentValue);
         if (this.state.sellout) {
             ToastUtil.show('该商品已售罄');

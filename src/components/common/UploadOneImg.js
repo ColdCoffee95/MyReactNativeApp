@@ -81,7 +81,7 @@ export default class UploadOneImg extends Component<Props> {
                 </TouchableOpacity>
                 <ActionSheet
                     ref={o => this.ActionSheet = o}
-                    title='请选择上传方式'
+                    title='选择上传方式'
                     options={options}
                     cancelButtonIndex={2}
                     onPress={(index) => this.handlePress(index)}
@@ -90,7 +90,7 @@ export default class UploadOneImg extends Component<Props> {
         );
     }
 
-    handlePress(i) {
+    handlePress(i) {//点击选择图片的视图
         this.setState({selected: i})
         if (i === 0) {//拍照上传
             ImagePicker.openCamera({
@@ -111,7 +111,7 @@ export default class UploadOneImg extends Component<Props> {
         }
     }
 
-    imageUpload(image) {
+    imageUpload(image) {//上传图片时调用的方法
         this.setState({imageUploading: true});
         HttpUtils.post('/oss/imgSignature', {bucketName: 'dianlijihe'}, data => {
             let formData = new FormData();
@@ -140,7 +140,7 @@ export default class UploadOneImg extends Component<Props> {
         })
     }
 
-    showActionSheet() {
+    showActionSheet() {//显示actionsheet
         this.ActionSheet.show()
     }
 }

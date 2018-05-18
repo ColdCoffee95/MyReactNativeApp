@@ -124,7 +124,7 @@ export default class UploadMultiImg extends Component<Props> {
         );
     }
 
-    handlePress(i) {
+    handlePress(i) {//点击加号
         this.setState({selected: i});
         if (i === 0) {//拍照上传
             ImagePicker.openCamera({
@@ -149,12 +149,12 @@ export default class UploadMultiImg extends Component<Props> {
         }
     }
 
-    deleteImg(index) {
+    deleteImg(index) {//删除图片
         this.state.imgs.splice(index, 1);
         this.setState({imgs: this.state.imgs});
     }
 
-    imageUpload(images) {
+    imageUpload(images) {//上传图片时调用的方法
         images.map(image => {
             HttpUtils.post('/oss/imgSignature', {bucketName: 'dianlijihe'}, data => {
                 let formData = new FormData();
@@ -187,7 +187,7 @@ export default class UploadMultiImg extends Component<Props> {
 
     }
 
-    showActionSheet() {
+    showActionSheet() {//显示actionsheet
         this.ActionSheet.show()
     }
 }

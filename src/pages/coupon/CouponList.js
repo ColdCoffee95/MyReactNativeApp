@@ -354,7 +354,7 @@ export default class CouponList extends Component<Props> {
         );
     }
 
-    async fetchData() {
+    async fetchData() {//获取列表
         this.getCanReceiveCouponList();
         this.getCanUseNum();
     }
@@ -370,7 +370,7 @@ export default class CouponList extends Component<Props> {
         })
     }
 
-    goUse(id) {
+    goUse(id) {//点击去使用
         let params = {brandIds: [], secondIds: []};
         let coupon = this.state.couponList.find(value => value.id === id);
         if (coupon.brandRuleId) {

@@ -105,6 +105,6 @@ global.hotline = '0571-56663386';
 global.serverUrl = 'http://api.metchange.com/api';
 
 global.imgDomain = 'http://dianlijiheoss.metchange.com/';
-global.deploymentKey = 'dFdfJbvEypEEPdDg8vv6hZ-9AM-Y19ccb09f-4b96-4bd9-8aea-386962cba91f';//codepush的key
+global.deploymentKey = 'CvX2nTlPfbmW-oPWq2ECIw3oNfaF19ccb09f-4b96-4bd9-8aea-386962cba91f';//codepush的key
 global.version = DeviceInfo.getVersion();
 global.platform = DeviceInfo.getSystemName();

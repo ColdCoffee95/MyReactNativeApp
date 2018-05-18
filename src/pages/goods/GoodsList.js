@@ -31,13 +31,15 @@ export default class GoodsList extends Component<Props> {
             isLoading: true,
             loadingMore: false,//是否在上拉拉加载更多中
             goodsList: [],
-            firstCatId: "",
-            secondCatIds: [],
+            firstCategoryId: "",
+            secondCategoryIds: [],
             brandIds: [],
             keyword: "",
             pageSize: 10,
             pageNo: 1,
             type: 1,
+            orderByOrders: 'asc',//销量排序
+            orderByPv: 'asc',//人气排序
             tradeType: '',
             allLoadCompleted: false,//是否全部加载完
         }
@@ -48,8 +50,8 @@ export default class GoodsList extends Component<Props> {
             changeKeyword: this.changeKeyword.bind(this),
             search: this.search.bind(this)
         });
-        this.state.firstCatId = this.props.navigation.state.params.id || '';
-        this.state.secondCatIds = this.props.navigation.state.params.secondIds || [];
+        this.state.firstCategoryId = this.props.navigation.state.params.id || '';
+        this.state.secondCategoryIds = this.props.navigation.state.params.secondIds || [];
         this.state.brandIds = this.props.navigation.state.params.brandIds || [];
         this.state.keyword = this.props.navigation.state.params.keyword || '';
         this.fetchData();
@@ -129,6 +131,13 @@ export default class GoodsList extends Component<Props> {
                         firstId={this.props.navigation.state.params.id || ''}
                         secondIds={this.props.navigation.state.params.secondId ?
                             [this.props.navigation.state.params.secondId] : []}
+                        conditions={{
+                            firstCategoryId: this.state.firstCategoryId,
+                            secondCategoryIds: this.state.secondCategoryIds,
+                            brandIds: this.state.brandIds,
+                            keyword: this.state.keyword,
+                            tradeType: this.state.tradeType
+                        }}
                         sureBtn={(obj) => this.sureBtn(obj)}/>}
                     openDrawerOffset={0.2}
                     panCloseMask={0.2}
@@ -211,13 +220,15 @@ export default class GoodsList extends Component<Props> {
         this.state.loadingMore = true;
         this.state.pageNo += 1;
         let params = {
-            firstCatId: this.state.firstCatId,
-            secondCatIds: this.state.secondCatIds,
+            firstCategoryId: this.state.firstCategoryId,
+            secondCategoryIds: this.state.secondCategoryIds,
             brandIds: this.state.brandIds,
             keyword: this.state.keyword,
             pageSize: this.state.pageSize,
             pageNo: this.state.pageNo,
-            type: this.state.type,
+            orderByOrders: this.state.orderByOrders,
+            orderByPv: this.state.orderByPv,
+            orderByPrice: this.state.orderByPrice,
             tradeType: this.state.tradeType
         };
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {
@@ -265,8 +276,8 @@ export default class GoodsList extends Component<Props> {
     sureBtn(obj) {//子组件筛选完成
         this._drawer.close();
         setTimeout(() => {
-            this.state.firstCatId = obj.firstId;
-            this.state.secondCatIds = obj.secondIds;
+            this.state.firstCategoryId = obj.firstId;
+            this.state.secondCategoryIds = obj.secondIds;
             this.state.tradeType = obj.tradeType;
             this.fetchData();
         }, 500)
@@ -306,13 +317,15 @@ export default class GoodsList extends Component<Props> {
         this.state.isLoading = true;
         this.state.pageNo = 1;
         let params = {
-            firstCatId: this.state.firstCatId,
-            secondCatIds: this.state.secondCatIds,
+            firstCategoryId: this.state.firstCategoryId,
+            secondCategoryIds: this.state.secondCategoryIds,
             brandIds: this.state.brandIds,
             keyword: this.state.keyword,
             pageSize: this.state.pageSize,
+            orderByOrders: this.state.orderByOrders,
+            orderByPv: this.state.orderByPv,
+            orderByPrice: this.state.orderByPrice,
             pageNo: 1,
-            type: this.state.type,
             tradeType: this.state.tradeType
         };
         HttpUtils.post('/goods/catBrandGoodsList', params, data => {

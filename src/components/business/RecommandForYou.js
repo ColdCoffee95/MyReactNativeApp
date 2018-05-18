@@ -69,7 +69,7 @@ export default class RecommandForYou extends Component<Props> {
 
     }
 
-    _renderHeader() {
+    _renderHeader() {//渲染头部
         return <View>
             {this.props.header}
             <View style={styles.activityTitle}>
@@ -81,7 +81,7 @@ export default class RecommandForYou extends Component<Props> {
         </View>
     }
 
-    _renderFooter() {
+    _renderFooter() {//渲染尾部
         if (this.state.loadingMore) {
             return (<View/>)
         } else if (this.state.allLoadCompleted) {
@@ -93,7 +93,7 @@ export default class RecommandForYou extends Component<Props> {
         }
     }
 
-    _onEndReached() {
+    _onEndReached() {//滑到底部时获取商品列表
         if (this.state.allLoadCompleted || this.state.loadingMore) {
             return;
         }
@@ -113,7 +113,7 @@ export default class RecommandForYou extends Component<Props> {
     }
 
     _keyExtractor = (item, index) => index;
-    _renderItem = ({item}) => (
+    _renderItem = ({item}) => (//渲染每个商品的render
         <TouchableHighlight underlayColor='#f2f2f2' style={styles.goodsTouch} onPress={() => this.goodsDetail(item.id)}>
             <View style={styles.singleGoods}>
                 <View style={styles.goodsImgView}>
@@ -135,7 +135,7 @@ export default class RecommandForYou extends Component<Props> {
         </TouchableHighlight>
     );
 
-    getColor(type) {
+    getColor(type) {//不同贸易形态的颜色
         let color = '#78E285';
         cartTabList.map(value => {
             if (value.id === type) {
@@ -145,11 +145,11 @@ export default class RecommandForYou extends Component<Props> {
         return color;
     }
 
-    goodsDetail(id) {
+    goodsDetail(id) {//跳转到商品详情
         this.props.navigation.navigate('GoodsDetail', {id: id});
     }
 
-    async fetchData() {
+    async fetchData() {//获取商品列表
         let params = {
             pageSize: this.state.pageSize,
             pageNo: 1,

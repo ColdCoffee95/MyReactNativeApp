@@ -17,16 +17,15 @@ export default class GoodsSideMenu extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
-            firstCategories: [],
-            secondCategories: [],
-            currentFirstId: '',
-            currentSecondIds: [],
-            tradeType: ''
+            firstCategories: [],//第一级分类列表
+            secondCategories: [],//第二级分类列表
+            currentFirstId: '',//选中的第一级分类
+            currentSecondIds: [],//选中的第二级分类
+            tradeType: ''//选中的贸易形态
         }
     }
 
     componentDidMount() {
-
         this.fetchData()
     }
 
@@ -119,7 +118,7 @@ export default class GoodsSideMenu extends Component<Props> {
         </View>;
     }
 
-    resetBtn() {
+    resetBtn() {//重置按钮
         this.setState({
             secondCategories: [],
             currentFirstId: '',
@@ -127,19 +126,26 @@ export default class GoodsSideMenu extends Component<Props> {
         })
     }
 
-    async fetchData() {
+    async fetchData() {//获取数据
         // this.getCatBrandGoodsList();
-        this.getFirstCategories();
-        if (this.props.firstId) {
-            this.clickFirstCat(this.props.firstId);
-        }
-        if (this.props.secondIds) {
-            this.props.secondIds.map(value => {
-                this.clickSecondId(value);
-            })
-        }
-    }
 
+        this.searchGoodsSku(this.props.conditions)
+
+        // this.getFirstCategories();
+        // if (this.props.firstId) {
+        //     this.clickFirstCat(this.props.firstId);
+        // }
+        // if (this.props.secondIds) {
+        //     this.props.secondIds.map(value => {
+        //         this.clickSecondId(value);
+        //     })
+        // }
+    }
+    searchGoodsSku(conditions){
+        HttpUtils.post('/goodsV1/searchGoodsCondition',conditions,data=>{
+            console.warn('searchGoodsSku',data)
+        })
+    }
     // getCatBrandGoodsList() {
     //     let params = {
     //         firstCatId: this.state.firstCatId,
@@ -177,7 +183,7 @@ export default class GoodsSideMenu extends Component<Props> {
         }
     }
 
-    clickTradeType(id) {
+    clickTradeType(id) {//点击贸易形态
         if (this.state.tradeType === id) {
             this.setState({tradeType: ''});
         } else {
@@ -185,7 +191,7 @@ export default class GoodsSideMenu extends Component<Props> {
         }
     }
 
-    clickSecondId(id) {
+    clickSecondId(id) {//点击第二级分类
         let arr = this.state.currentSecondIds;
         let index = arr.findIndex(value => value === id);
         if (index !== -1) {

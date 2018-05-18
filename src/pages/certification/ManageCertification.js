@@ -107,7 +107,7 @@ export default class ManageCertification extends Component<Props> {
 
     }
 
-    async fetchData() {
+    async fetchData() {//查询列表
         HttpUtils.get('/idCard/selectIdCardList', {}, data => {
             this.setState({certificationList: data.data, isLoading: false});
         })
@@ -120,13 +120,13 @@ export default class ManageCertification extends Component<Props> {
         })
     }
 
-    certificationGoBack() {
+    certificationGoBack() {//回退到选择页面
         const {navigate, goBack, state} = this.props.navigation;
         state.params.goBack();
         goBack();
     }
 
-    deleteCertification(id) {
+    deleteCertification(id) {//删除
         Alert.alert(null, '删除后将无法恢复，确认删除？',
             [
                 {
@@ -146,7 +146,7 @@ export default class ManageCertification extends Component<Props> {
         )
     }
 
-    addCertification() {
+    addCertification() {//跳转到添加页面
         this.props.navigation.navigate('AddCertification', {
             goBack: () => this.fetchData(),
         });
