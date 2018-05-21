@@ -61,7 +61,8 @@ export default class Category extends Component<Props> {
         headerLeft: (<View/>),
         headerRight: (
 
-            <TouchableOpacity onPress={() => navigation.state.params && navigation.state.params.search &&navigation.state.params.search()}>
+            <TouchableOpacity
+                onPress={() => navigation.state.params && navigation.state.params.search && navigation.state.params.search()}>
                 <View style={styles.rightSearch}>
                     <Text>搜索</Text>
                 </View>
@@ -91,7 +92,7 @@ export default class Category extends Component<Props> {
             rightArr.push(
                 <TouchableHighlight
                     underlayColor='#f2f2f2'
-                    onPress={() => this.clickCategory(this.state.currentLeftId, '')}>
+                    onPress={() => this.clickCategory(this.state.currentLeftId, [])}>
                     <View style={styles.rightCatView} key={0}>
                         <View style={styles.rightCatImgView}>
                             <Image
@@ -109,7 +110,7 @@ export default class Category extends Component<Props> {
                 rightArr.push(
                     <TouchableHighlight
                         underlayColor='#f2f2f2'
-                        onPress={() => this.clickCategory(value.parentId, value.id)}>
+                        onPress={() => this.clickCategory(value.parentId, [value.id])}>
                         <View style={styles.rightCatView} key={value.id}>
                             <View style={styles.rightCatImgView}>
                                 <Image
@@ -160,12 +161,13 @@ export default class Category extends Component<Props> {
         })
     }
 
-    clickCategory(parentId, id) {//点击分类
-        let secondIds = [];
-        if (id) {
-            secondIds = [id];
-        }
-        this.props.navigation.navigate('GoodsList', {id: parentId, secondIds: secondIds});
+    clickCategory(parentId, secondIds) {//点击分类
+        this.props.navigation.navigate('GoodsList', {
+            conditions: {
+                firstCategoryId: parentId,
+                secondCategoryIds: secondIds
+            }
+        });
     }
 
 

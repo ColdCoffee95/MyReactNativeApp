@@ -19,6 +19,7 @@ export default class GoodsSideMenu extends Component<Props> {
         this.state = {
             firstCategories: [],//第一级分类列表
             secondCategories: [],//第二级分类列表
+            brandIds:[],//品牌id
             currentFirstId: '',//选中的第一级分类
             currentSecondIds: [],//选中的第二级分类
             tradeType: ''//选中的贸易形态
@@ -128,9 +129,11 @@ export default class GoodsSideMenu extends Component<Props> {
 
     async fetchData() {//获取数据
         // this.getCatBrandGoodsList();
-
-        this.searchGoodsSku(this.props.conditions)
-
+        let conditions = this.props.conditions || {};
+        console.warn(conditions)
+        HttpUtils.post('/goodsV1/searchGoodsCondition',conditions,data=>{
+            console.warn('searchGoodsSku',data)
+        })
         // this.getFirstCategories();
         // if (this.props.firstId) {
         //     this.clickFirstCat(this.props.firstId);
@@ -141,11 +144,7 @@ export default class GoodsSideMenu extends Component<Props> {
         //     })
         // }
     }
-    searchGoodsSku(conditions){
-        HttpUtils.post('/goodsV1/searchGoodsCondition',conditions,data=>{
-            console.warn('searchGoodsSku',data)
-        })
-    }
+
     // getCatBrandGoodsList() {
     //     let params = {
     //         firstCatId: this.state.firstCatId,

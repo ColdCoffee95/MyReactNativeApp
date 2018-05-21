@@ -42,6 +42,7 @@ export default class GoodsList extends Component<Props> {
             orderByPv: 'asc',//人气排序
             tradeType: '',
             allLoadCompleted: false,//是否全部加载完
+            conditions:{}//查询条件
         }
     }
 
@@ -50,10 +51,10 @@ export default class GoodsList extends Component<Props> {
             changeKeyword: this.changeKeyword.bind(this),
             search: this.search.bind(this)
         });
-        this.state.firstCategoryId = this.props.navigation.state.params.id || '';
-        this.state.secondCategoryIds = this.props.navigation.state.params.secondIds || [];
-        this.state.brandIds = this.props.navigation.state.params.brandIds || [];
-        this.state.keyword = this.props.navigation.state.params.keyword || '';
+        // this.state.firstCategoryId = this.props.navigation.state.params.id || '';
+        // this.state.secondCategoryIds = this.props.navigation.state.params.secondIds || [];
+        // this.state.brandIds = this.props.navigation.state.params.brandIds || [];
+        // this.state.keyword = this.props.navigation.state.params.keyword || '';
         this.fetchData();
     }
 
@@ -131,13 +132,7 @@ export default class GoodsList extends Component<Props> {
                         firstId={this.props.navigation.state.params.id || ''}
                         secondIds={this.props.navigation.state.params.secondId ?
                             [this.props.navigation.state.params.secondId] : []}
-                        conditions={{
-                            firstCategoryId: this.state.firstCategoryId,
-                            secondCategoryIds: this.state.secondCategoryIds,
-                            brandIds: this.state.brandIds,
-                            keyword: this.state.keyword,
-                            tradeType: this.state.tradeType
-                        }}
+                        conditions={this.props.navigation.state.params.conditions}
                         sureBtn={(obj) => this.sureBtn(obj)}/>}
                     openDrawerOffset={0.2}
                     panCloseMask={0.2}
