@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import {observable, action} from 'mobx';
 import {Provider, observer, inject} from 'mobx-react';
+import ModalBox from 'react-native-modalbox';
+import ProgressBar from 'react-native-progress/Circle';
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Loading from '../mobx/loading'
 import appState from '../mobx/appState'
@@ -25,14 +27,44 @@ const rootNavigation = new NavigationStore(RootNavigator);
 class Root extends Component {
     componentDidMount() {
         SplashScreen.hide();
-        this.checkForUpdate()
+
     }
     render() {
         return <Provider rootNavigation={rootNavigation}>
             <App/>
         </Provider>
     }
-    checkForUpdate(){
+
+}
+
+@inject('rootNavigation')
+@observer
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isOpen: false,
+            codePushProgress: 0,
+        }
+    }
+    componentDidMount() {
+        if (platform === 'Android') {
+            this.backAndroidHandler = this.backHandle.bind(this);
+            BackHandler.addEventListener('hardwareBackPress', this.backAndroidHandler);
+        }
+        global.ToastUtil = this.refs.toast;
+        AppState.addEventListener("change", (newState) => {
+            appState.changeStatus(newState);
+        });
+        this.checkForUpdate()
+    }
+
+    componentWillUnmount() {
+        if (platform === 'Android') {
+            BackHandler.removeEventListener('hardwareBackPress');
+        }
+    }
+    checkForUpdate() {
         codePush.checkForUpdate(deploymentKey).then((update) => {
             if (update) {
                 codePush.sync({
@@ -47,59 +79,44 @@ class Root extends Component {
 
                     },
                     (status) => {
+
                         switch (status) {
+                            case codePush.SyncStatus.CHECKING_FOR_UPDATE:
+                                break;
+                            case codePush.SyncStatus.AWAITING_USER_ACTION:
+                                break;
                             case codePush.SyncStatus.DOWNLOADING_PACKAGE:
-                                console.log("DOWNLOADING_PACKAGE");
+                                if (!this.state.isOpen) {
+                                    this.setState({isOpen: true});
+                                }
                                 break;
                             case codePush.SyncStatus.INSTALLING_UPDATE:
-                                console.log(" INSTALLING_UPDATE");
+                                ToastUtil.show('安装中...');
+                                break;
+                            case codePush.SyncStatus.UP_TO_DATE:
+                                break;
+                            case codePush.SyncStatus.UPDATE_IGNORED:
+                                break;
+                            case codePush.SyncStatus.UPDATE_INSTALLED:
+                                break;
+                            case codePush.SyncStatus.SYNC_IN_PROGRESS:
+                                break;
+                            case codePush.SyncStatus.UNKNOWN_ERROR:
+                                this.setState({isOpen: false});
+                                Alert.alert(null, '遇到未知错误，安装失败');
                                 break;
                         }
                     },
                     (progress) => {
-                        console.log(progress.receivedBytes + " of " + progress.totalBytes + " received.");
+                        this.setState({codePushProgress: progress.receivedBytes / progress.totalBytes})
+                        if (progress.receivedBytes / progress.totalBytes === 1) {
+                            this.setState({isOpen: false});
+                        }
                     }
                 );
-                // Alert.alert(null, '发现新版本，是否立即更新？',
-                //     [
-                //         {
-                //             text: "立即更新", onPress: () => {
-                //                 codePush.sync();
-                //             }
-                //         },
-                //         {
-                //             text: "稍后更新", onPress: () => {
-                //             }
-                //         },
-                //     ],
-                //     {cancelable: false}
-                // )
-
             }
         })
     }
-}
-
-@inject('rootNavigation')
-@observer
-class App extends React.Component {
-    componentDidMount() {
-        if (platform === 'Android') {
-            this.backAndroidHandler = this.backHandle.bind(this);
-            BackHandler.addEventListener('hardwareBackPress', this.backAndroidHandler);
-        }
-        global.ToastUtil = this.refs.toast;
-        AppState.addEventListener("change", (newState) => {
-            appState.changeStatus(newState);
-        });
-    }
-
-    componentWillUnmount() {
-        if (platform === 'Android') {
-            BackHandler.removeEventListener('hardwareBackPress');
-        }
-    }
-
     backHandle() {
         const nav = this.props.rootNavigation;
         const routers = nav.state.routes;
@@ -125,6 +142,21 @@ class App extends React.Component {
                 <RootNavigator
                     navigation={addNavigationHelpers({state, dispatch, addListener})}
                 />
+                <ModalBox
+                    isOpen={this.state.isOpen}
+                    style={styles.modalBox}
+                    position="center"
+                    backdropPressToClose={false}
+                    swipeToClose={false}
+                    backButtonClose={false}
+                    coverScreen={true}
+                    animationDuration={0}
+                >
+                    <ProgressBar
+                        showsText={true}
+                        progress={this.state.codePushProgress}
+                        size={50}/>
+                </ModalBox>
                 <Toast ref='toast' position='center'>
                 </Toast>
                 {
@@ -174,7 +206,12 @@ Route.router.getStateForAction = (action, state) => {
 const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
-    }
+    },
+    modalBox: {
+        width: 50,
+        height: 50,
+        borderRadius: 50
+    },
 });
 let codePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL };
 export default codePush(codePushOptions)(Root);

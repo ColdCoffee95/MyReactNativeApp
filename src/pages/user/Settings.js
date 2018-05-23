@@ -12,9 +12,11 @@ import {
     Alert,
     View
 } from 'react-native';
+import ProgressBar from 'react-native-progress/Circle';
 import codePush from 'react-native-code-push';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Text from '../../components/common/MyText';
+import ModalBox from 'react-native-modalbox';
 type Props = {};
 
 export default class Settings extends Component<Props> {
@@ -23,6 +25,8 @@ export default class Settings extends Component<Props> {
         super(props);
         this.state = {
             isLoading: true,
+            codePushProgress: 0,
+            isOpen: false,
             userInfo: {}
         }
     }
@@ -38,6 +42,22 @@ export default class Settings extends Component<Props> {
             return (
                 <SafeAreaView style={{flex: 1}}>
                     <View style={styles.container}>
+                        <ModalBox
+                            isOpen={this.state.isOpen}
+                            style={styles.modalBox}
+                            position="center"
+                            backdropPressToClose={false}
+                            swipeToClose={false}
+                            backButtonClose={false}
+                            coverScreen={true}
+                            animationDuration={0}
+                        >
+                            <ProgressBar
+                                showsText={true}
+                                progress={this.state.codePushProgress}
+                                size={50}/>
+                        </ModalBox>
+
                         <View style={styles.cellView}>
                             <Text style={styles.leftCell}>账号</Text>
                             <View style={styles.rightCell}>
@@ -130,14 +150,16 @@ export default class Settings extends Component<Props> {
         }
 
     }
-    checkForUpdate(){
+
+    checkForUpdate() {
+        ToastUtil.show('检查更新中...');
         codePush.checkForUpdate(deploymentKey).then((update) => {
             if (!update) {
                 Alert.alert("提示", "当前已经是最新版本！", [
                     {
                         text: "Ok", onPress: () => {
-                            console.log("点了OK");
-                        }
+                        console.log("点了OK");
+                    }
                     }
                 ]);
             } else {
@@ -153,17 +175,39 @@ export default class Settings extends Component<Props> {
 
                     },
                     (status) => {
+
                         switch (status) {
+                            case codePush.SyncStatus.CHECKING_FOR_UPDATE:
+                                break;
+                            case codePush.SyncStatus.AWAITING_USER_ACTION:
+                                break;
                             case codePush.SyncStatus.DOWNLOADING_PACKAGE:
-                                console.log("DOWNLOADING_PACKAGE");
+                                if (!this.state.isOpen) {
+                                    this.setState({isOpen: true});
+                                }
                                 break;
                             case codePush.SyncStatus.INSTALLING_UPDATE:
-                                console.log(" INSTALLING_UPDATE");
+                                ToastUtil.show('安装中...');
+                                break;
+                            case codePush.SyncStatus.UP_TO_DATE:
+                                break;
+                            case codePush.SyncStatus.UPDATE_IGNORED:
+                                break;
+                            case codePush.SyncStatus.UPDATE_INSTALLED:
+                                break;
+                            case codePush.SyncStatus.SYNC_IN_PROGRESS:
+                                break;
+                            case codePush.SyncStatus.UNKNOWN_ERROR:
+                                this.setState({isOpen: false});
+                                Alert.alert(null, '遇到未知错误，安装失败');
                                 break;
                         }
                     },
                     (progress) => {
-                        console.log(progress.receivedBytes + " of " + progress.totalBytes + " received.");
+                        this.setState({codePushProgress: progress.receivedBytes / progress.totalBytes})
+                        if (progress.receivedBytes / progress.totalBytes === 1) {
+                            this.setState({isOpen: false});
+                        }
                     }
                 );
             }
@@ -175,15 +219,15 @@ export default class Settings extends Component<Props> {
             [
                 {
                     text: "确定", onPress: () => {
-                        storage.remove({key: 'loginState'});
-                        storage.remove({key: 'userInfo'});
-                        storage.remove({key: 'addressData'});
-                        jumpAndClear(this.props.navigation, 'Login')
-                    }
+                    storage.remove({key: 'loginState'});
+                    storage.remove({key: 'userInfo'});
+                    storage.remove({key: 'addressData'});
+                    jumpAndClear(this.props.navigation, 'Login')
+                }
                 },
                 {
                     text: "取消", onPress: () => {
-                    }
+                }
                 },
             ],
             {cancelable: false}
@@ -222,6 +266,11 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderBottomWidth: 1,
         borderBottomColor: borderColor
+    },
+    modalBox: {
+        width: 50,
+        height: 50,
+        borderRadius: 50
     },
     leftCell: {},
     rightCell: {},

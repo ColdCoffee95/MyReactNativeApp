@@ -115,7 +115,7 @@ export default class UploadMultiImg extends Component<Props> {
 
                 <ActionSheet
                     ref={o => this.ActionSheet = o}
-                    title='选择上传方式'
+                    title='请选择上传方式'
                     options={options}
                     cancelButtonIndex={2}
                     onPress={(index) => this.handlePress(index)}
